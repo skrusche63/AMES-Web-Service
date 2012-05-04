@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/OMAR-SAMLv32-Client"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="lib/opensaml-2.5.1-1.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/omar-saml-securityoverlay-jdk6.jar"/>
+	<classpathentry kind="lib" path="lib/jaxr-api.jar"/>
+	<classpathentry kind="lib" path="lib/omar-client-3.2.0-jdk6.jar"/>
+	<classpathentry kind="lib" path="lib/omar-common-3.2.0-jdk6.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
