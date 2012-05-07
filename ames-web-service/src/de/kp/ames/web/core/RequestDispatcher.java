@@ -38,6 +38,7 @@ import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.method.RequestMethod;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.service.Service;
+import de.kp.ames.web.core.service.search.SearchImpl;
 import de.kp.ames.web.core.util.SamlUtil;
 
 /**
@@ -148,18 +149,24 @@ public class RequestDispatcher extends HttpServlet {
 		
 	}
 		
+	/**
+	 * The main method to register new services, i.e. additional
+	 * core and business functionality 
+	 */
 	private void initializeServices() {
 
 		if (initialized == true) return;
 		registeredServices = new HashMap<String, Service>();
 		
+		registeredServices.put("search", new SearchImpl());
 		// TODO
 		
 	}
 
 	/**
-	 * This method is used to inform the caller's user that the
-	 * current request is not authorized to be performed
+	 * This method is used to inform the caller's user that
+	 * the current request is not authorized to be performed
+	 * 
 	 * @param content
 	 * @param mimetype
 	 * @param response

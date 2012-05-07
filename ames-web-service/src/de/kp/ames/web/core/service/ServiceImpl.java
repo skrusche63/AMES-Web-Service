@@ -1,5 +1,4 @@
 package de.kp.ames.web.core.service;
-
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *

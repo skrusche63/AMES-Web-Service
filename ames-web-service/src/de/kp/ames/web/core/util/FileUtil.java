@@ -40,6 +40,8 @@ public class FileUtil {
 	private String filename;
 	private String mimetype;
 
+	private String name;
+	
 	private int length;
 	
 	private byte[] file;
@@ -110,6 +112,20 @@ public class FileUtil {
 		return this.filename;
 	}
 
+	/**
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getName() {
+		return this.name;
+	}
+	
 	/**
 	 * @param file
 	 * @param mimetype

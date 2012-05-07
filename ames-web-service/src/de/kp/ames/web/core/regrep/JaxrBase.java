@@ -582,6 +582,54 @@ public class JaxrBase {
 	}
 
 	/**
+	 * A helper method to retrieve the repository item
+	 * of a certain extrinsic object as a FileUtil instance
+	 * 
+	 * @param eo
+	 * @return
+	 * @throws JAXRException
+	 */
+	public FileUtil getRepositoryItemImpl(ExtrinsicObjectImpl eo) throws JAXRException {
+
+		DataHandler handler = eo.getRepositoryItem();
+		if (handler != null) {
+
+			FileUtil file = null;
+			
+			try {
+			
+				file = new FileUtil();
+
+				String mimetype = eo.getMimeType();
+				mimetype = (mimetype==null) ? "application/octet-stream" : mimetype;			
+					    	
+		    	file.setName(eo.getDisplayName());
+		    	file.setInputStream(handler.getInputStream(), mimetype);
+	    	
+		    	/* 
+		    	 * Determine filename (optional)
+		    	 */
+		    	SlotImpl slot = (SlotImpl) eo.getSlot("File");
+		    	if (slot != null) {
+		    		
+		    		Object[] values = slot.getValues().toArray();
+		    		if (values.length > 0) file.setFilename((String)values[0]);
+		    		
+		    	}
+	    	
+			} catch(Exception e) {
+				// do nothing
+			}
+			
+	    	return file;
+	    	
+		}
+	   	   	
+    	return null;
+    	
+	}
+	
+	/**
 	 * A helper method to determine the size of a repository
 	 * item attached to a certain extrinsic object
 	 * 
