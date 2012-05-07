@@ -67,7 +67,7 @@ public class JaxrBase {
 	 * Default value of the locale used to build
 	 * an international string
 	 */
-	protected Locale defaultLocale = Locale.GERMAN;
+	public Locale defaultLocale = Locale.GERMAN;
 
 	protected static HashMap<Integer, String> eventMap;
 	protected static HashMap<Integer, String> statusMap;
