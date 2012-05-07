@@ -405,6 +405,20 @@ public class JaxrBase {
 	 * @return
 	 * @throws JAXRException
 	 */
+	public InternationalString createInternationalString(String text) throws JAXRException {
+		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
+		return blcm.createInternationalString(defaultLocale, text);
+	}
+
+	/**
+	 * Wrapper method of the respective (same) method of the 
+	 * BusinessLifeCycleManagerImpl of the OMAR Registry Client
+	 * 
+	 * @param text
+	 * @param locale
+	 * @return
+	 * @throws JAXRException
+	 */
 	public InternationalString createInternationalString(Locale locale, String text) throws JAXRException {
 		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
 		return blcm.createInternationalString(locale, text);
