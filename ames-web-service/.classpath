@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="lib/omar-client-3.2.0-jdk6.jar"/>
 	<classpathentry kind="lib" path="lib/omar-common-3.2.0-jdk6.jar"/>
 	<classpathentry kind="lib" path="lib/json.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-impl-2.2.4-1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

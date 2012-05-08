@@ -44,7 +44,6 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
  *
  */
-
 public class KmlObject {
 	
 	private static String KML_NS  = "http://www.opengis.net/kml/2.2";
@@ -180,6 +179,9 @@ public class KmlObject {
 
 	}
 	
+	/**
+	 * @throws ParserConfigurationException
+	 */
 	private void createKmlDoc() throws ParserConfigurationException {
 	    
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -407,7 +409,7 @@ public class KmlObject {
 	 * @throws Exception
 	 */
 	private Element createExtendedData(RegistryObjectImpl ro) throws Exception {
-		
+
 		Element extendedDataElem = kmlDoc.createElementNS(KML_NS, KML_PRE + ":" + EXTENDED_DATA_TAG);
 
 		/* 
