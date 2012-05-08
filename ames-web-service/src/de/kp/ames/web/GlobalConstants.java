@@ -20,6 +20,7 @@ package de.kp.ames.web;
 
 public class GlobalConstants {
 
+	public static String FEDREP_ENDPOINT = "ames.fedrep.endpoint";
 	public static String REGREP_ENDPOINT = "ames.regrep.endpoint";
 
 	// HTTP Response parameters

@@ -117,7 +117,7 @@ public class JaxrClient {
      * @return
      * @throws JAXRException
      */
-    private ConnectionImpl createConnection(String endpoint) throws JAXRException {
+    public ConnectionImpl createConnection(String endpoint) throws JAXRException {
 		
 	    ProviderProperties.getInstance().put("javax.xml.registry.queryManagerURL", endpoint);
 	    ConnectionFactory connectionFactory = JAXRUtility.getConnectionFactory();
