@@ -23,6 +23,7 @@ import java.util.Locale;
 import javax.xml.registry.JAXRException;
 import javax.xml.registry.LifeCycleManager;
 import javax.xml.registry.infomodel.Concept;
+import javax.xml.registry.infomodel.InternationalString;
 
 import org.freebxml.omar.client.xml.registry.BusinessLifeCycleManagerImpl;
 import org.freebxml.omar.client.xml.registry.DeclarativeQueryManagerImpl;
@@ -82,6 +83,20 @@ public class JaxrLCM extends JaxrBase {
 
 		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
 		return (ClassificationImpl) blcm.createClassification(getConcept(conceptType));
+
+	}
+
+	/**
+	 * A helper method to create a Classification instance
+	 * 
+	 * @param concept
+	 * @return
+	 * @throws JAXRException
+	 */
+	public ClassificationImpl createClassification(ConceptImpl concept) throws JAXRException {
+
+		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
+		return (ClassificationImpl) blcm.createClassification(concept);
 
 	}
 
@@ -231,6 +246,35 @@ public class JaxrLCM extends JaxrBase {
 	public RegistryPackageImpl createRegistryPackage(String name) throws JAXRException {
  		
 		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
+		return (RegistryPackageImpl) blcm.createRegistryPackage(createInternationalString(name));
+		
+	}
+
+	/**
+	 * A helper method to create a new RegistryPackage instance
+	 * 
+	 * @param locale
+	 * @param name
+	 * @return
+	 * @throws JAXRException
+	 */
+	public RegistryPackageImpl createRegistryPackage(Locale locale, String name) throws JAXRException {
+ 		
+		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
+		return (RegistryPackageImpl) blcm.createRegistryPackage(createInternationalString(locale, name));
+		
+	}
+
+	/**
+	 * A helper method to create a new RegistryPackage instance
+	 * 
+	 * @param name
+	 * @return
+	 * @throws JAXRException
+	 */
+	public RegistryPackageImpl createRegistryPackage(InternationalString name) throws JAXRException {
+ 		
+		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
 		return (RegistryPackageImpl) blcm.createRegistryPackage(name);
 		
 	}
@@ -263,7 +307,21 @@ public class JaxrLCM extends JaxrBase {
 		return (ServiceImpl)blcm.createService(createInternationalString(locale, name));
 		
 	}
-	
+
+	/**
+	 * A helper method to create a Service instance
+	 * 
+	 * @param name
+	 * @return
+	 * @throws JAXRException
+	 */
+	public ServiceImpl createService(InternationalString name) throws JAXRException {
+
+		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
+		return (ServiceImpl)blcm.createService(name);
+		
+	}
+
 	/**
 	 * A helper method to create a ServiceBindung instance
 	 * 

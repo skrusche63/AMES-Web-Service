@@ -833,7 +833,7 @@ public class JaxrBase {
 	 * @return
 	 * @throws JAXRException
 	 */
-	public BulkResponse saveObjects(Collection<Object> objectsToSave, boolean versionMetadata, boolean versionContent) throws JAXRException {
+	public BulkResponse saveObjects(Collection<RegistryObjectImpl> objectsToSave, boolean versionMetadata, boolean versionContent) throws JAXRException {
 
     	BulkResponse bulkResponse = null;
         HashMap<String,String> slotsMap = new HashMap<String, String>();
