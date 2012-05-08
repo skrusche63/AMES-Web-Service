@@ -18,6 +18,13 @@ package de.kp.ames.web.core.reactor;
  *
  */
 
+/**
+ * ReactorImpl supports additional functionality
+ * with respect to Read/Write requests
+ * 
+ * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
+ *
+ */
 public class ReactorImpl implements Reactor {
 
 }
