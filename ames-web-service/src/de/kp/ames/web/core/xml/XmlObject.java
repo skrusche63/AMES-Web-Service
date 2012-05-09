@@ -18,6 +18,7 @@ package de.kp.ames.web.core.xml;
  *
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -30,31 +31,40 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.registry.JAXRException;
 import javax.xml.registry.infomodel.ClassificationScheme;
 import javax.xml.registry.infomodel.Concept;
+import javax.xml.registry.infomodel.PersonName;
 import javax.xml.registry.infomodel.RegistryObject;
+import javax.xml.registry.infomodel.User;
 
 import org.freebxml.omar.client.xml.registry.infomodel.AssociationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.EmailAddressImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExternalLinkImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.InternationalStringImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.LocalizedStringImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.OrganizationImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.PostalAddressImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.freebxml.omar.common.BindingUtility;
 import org.freebxml.omar.common.CanonicalSchemes;
 import org.oasis.ebxml.registry.bindings.rim.AssociationType1;
 import org.oasis.ebxml.registry.bindings.rim.ClassificationType;
+import org.oasis.ebxml.registry.bindings.rim.EmailAddressType;
 import org.oasis.ebxml.registry.bindings.rim.ExternalLinkType;
 import org.oasis.ebxml.registry.bindings.rim.ExtrinsicObjectType;
 import org.oasis.ebxml.registry.bindings.rim.InternationalStringType;
 import org.oasis.ebxml.registry.bindings.rim.LocalizedStringType;
 import org.oasis.ebxml.registry.bindings.rim.ObjectFactory;
 import org.oasis.ebxml.registry.bindings.rim.OrganizationType;
+import org.oasis.ebxml.registry.bindings.rim.PersonNameType;
+import org.oasis.ebxml.registry.bindings.rim.PostalAddressType;
 import org.oasis.ebxml.registry.bindings.rim.RegistryObjectListType;
 import org.oasis.ebxml.registry.bindings.rim.RegistryObjectType;
 import org.oasis.ebxml.registry.bindings.rim.RegistryPackageType;
+import org.oasis.ebxml.registry.bindings.rim.TelephoneNumberType;
 import org.oasis.ebxml.registry.bindings.rim.UserType;
 import org.oasis.ebxml.registry.bindings.rim.VersionInfoType;
 import org.w3c.dom.Document;
@@ -510,9 +520,38 @@ public class XmlObject {
 		
 	}
 	
-	private OrganizationType createOrganizationType(OrganizationImpl o) {
+	/**
+	 * A helper method to convert an organization
+	 * 
+	 * @param o
+	 * @return
+	 * @throws JAXRException
+	 */
+	private OrganizationType createOrganizationType(OrganizationImpl o) throws JAXRException {
 		
 		OrganizationType organizationType = rimFactory.createOrganizationType();
+		
+		/*
+		 * Email address
+		 */
+		organizationType.getEmailAddress().addAll(createEmailAddresses(o.getEmailAddresses()));
+		
+		/*
+		 * Postal address
+		 */
+		organizationType.getAddress().addAll(createPostalAddresses(o.getPostalAddresses()));
+		
+		/*
+		 * Telephone number
+		 */
+		organizationType.getTelephoneNumber().addAll(createTelephoneNumbers(o.getTelephoneNumbers()));
+		
+		/*
+		 * Primary contact
+		 */
+		User primaryContact = o.getPrimaryContact();
+		if (primaryContact != null) organizationType.setPrimaryContact(primaryContact.getKey().getId());
+		
 		return organizationType;
 		
 	}
@@ -543,12 +582,196 @@ public class XmlObject {
 		
 	}
 	
-	private UserType createUserType(UserImpl u) {
+	/**
+	 * A helper method to convert a user
+	 * 
+	 * @param u
+	 * @return
+	 * @throws JAXRException
+	 */
+	private UserType createUserType(UserImpl u) throws JAXRException {
 		
 		UserType userType = rimFactory.createUserType();
+		
+		/*
+		 * Email address
+		 */
+		userType.getEmailAddress().addAll(createEmailAddresses(u.getEmailAddresses()));
+		
+		/*
+		 * Postal address
+		 */
+		userType.getAddress().addAll(createPostalAddresses(u.getPostalAddresses()));
+		
+		/*
+		 * Telephone number
+		 */
+		userType.getTelephoneNumber().addAll(createTelephoneNumbers(u.getTelephoneNumbers()));
+		
+		/*
+		 * Person name
+		 */
+		userType.setPersonName(createPersonNameType(u.getPersonName()));
+		
 		return userType;
 		
 	}
+
+	/**
+	 * A helper method to convert email addresses
+	 * 
+	 * @param emailAddresses
+	 * @return
+	 * @throws JAXRException
+	 */
+	private Collection<EmailAddressType> createEmailAddresses(Collection<?> emailAddresses) throws JAXRException {
+		
+		ArrayList<EmailAddressType> emailAddressTypeList = new ArrayList<EmailAddressType>();
+		
+		Iterator<?> iter = emailAddresses.iterator();
+		while (iter.hasNext()) {
+			EmailAddressImpl emailAddress = (EmailAddressImpl)iter.next();
+			EmailAddressType emailAddressType = rimFactory.createEmailAddressType();
+
+			emailAddressType.setAddress(emailAddress.getAddress());
+			emailAddressType.setType(emailAddress.getType());
+			
+			emailAddressTypeList.add(emailAddressType);
+			
+		}
+		
+		return emailAddressTypeList;
+		
+	}
+	
+	/**
+	 * A helper method to convert postal addresses
+	 * 
+	 * @param postalAddresses
+	 * @return
+	 * @throws JAXRException
+	 */
+	private Collection<PostalAddressType> createPostalAddresses(Collection<?> postalAddresses) throws JAXRException {
+
+		ArrayList<PostalAddressType> postalAddressTypeList = new ArrayList<PostalAddressType>();
+		
+		Iterator<?> iter = postalAddresses.iterator();
+		while (iter.hasNext()) {
+			PostalAddressImpl postalAddress = (PostalAddressImpl)iter.next();
+			PostalAddressType postalAddressType = rimFactory.createPostalAddressType();
+			
+			/*
+			 * City
+			 */
+			postalAddressType.setCity(postalAddress.getCity());
+			
+			/*
+			 * Country
+			 */
+			postalAddressType.setCountry(postalAddress.getCountry());
+			
+			/*
+			 * Postal code
+			 */
+			postalAddress.setPostalCode(postalAddress.getPostalCode());
+			
+			/*
+			 * State or province
+			 */
+			postalAddress.setStateOrProvince(postalAddress.getStateOrProvince());
+			
+			/*
+			 * Street
+			 */
+			postalAddress.setStreet(postalAddress.getStreet());
+			
+			/*
+			 * Street number
+			 */
+			postalAddress.setStreetNumber(postalAddress.getStreetNumber());
+			
+			postalAddressTypeList.add(postalAddressType);
+			
+		}
+		
+		return postalAddressTypeList;
+
+	}
+	
+	/**
+	 * A helper method to create telephone numbers
+	 * 
+	 * @param telephoneNumbers
+	 * @return
+	 * @throws JAXRException
+	 */
+	private Collection<TelephoneNumberType> createTelephoneNumbers(Collection<?> telephoneNumbers) throws JAXRException {
+		
+		ArrayList<TelephoneNumberType> telephoneNumberTypeList = new ArrayList<TelephoneNumberType>();
+
+		Iterator<?> iter = telephoneNumbers.iterator();
+		while (iter.hasNext()) {
+			TelephoneNumberImpl telephoneNumber = (TelephoneNumberImpl)iter.next();
+			TelephoneNumberType telephoneNumberType = rimFactory.createTelephoneNumberType();
+			
+			/*
+			 * Area code
+			 */
+			telephoneNumberType.setAreaCode(telephoneNumber.getAreaCode());
+			
+			/*
+			 * Country code
+			 */
+			telephoneNumberType.setCountryCode(telephoneNumber.getCountryCode());
+			
+			/*
+			 * Extension
+			 */
+			telephoneNumberType.setExtension(telephoneNumber.getExtension());
+			
+			/*
+			 * Number
+			 */
+			telephoneNumberType.setNumber(telephoneNumber.getNumber());
+			
+			telephoneNumberTypeList.add(telephoneNumberType);
+			
+		}
+		
+		return telephoneNumberTypeList;
+		
+	}
+	
+	/**
+	 * A helper method to convert a person name
+	 * 
+	 * @param personName
+	 * @return
+	 * @throws JAXRException
+	 */
+	private PersonNameType createPersonNameType(PersonName personName) throws JAXRException {
+		
+		PersonNameType personNameType = rimFactory.createPersonNameType();
+		
+		/*
+		 * First name
+		 */
+		if (personName.getFirstName() != null) personNameType.setFirstName(personName.getFirstName());
+		
+		/*
+		 * Middle name
+		 */
+		if (personName.getMiddleName() != null) personNameType.setMiddleName(personName.getMiddleName());
+		
+		/*
+		 * Last name
+		 */
+		personNameType.setLastName(personName.getLastName());
+		
+		return personNameType;
+		
+	}
+	
 	/**
 	 * A helper method to retrieve the W3C document
 	 * 
