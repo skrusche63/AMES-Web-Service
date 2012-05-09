@@ -37,8 +37,8 @@ import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.method.RequestMethod;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.search.SearchImpl;
 import de.kp.ames.web.core.service.Service;
-import de.kp.ames.web.core.service.search.SearchImpl;
 import de.kp.ames.web.core.util.SamlUtil;
 
 /**

@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.service.search;
+package de.kp.ames.web.function.scm;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -20,9 +20,15 @@ package de.kp.ames.web.core.service.search;
 
 import de.kp.ames.web.core.service.ServiceImpl;
 
-public class SearchImpl extends ServiceImpl {
+/**
+ * ScmImpl supports any eGIT access to an OASIS ebXML RegRep
+ * 
+ * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
+ *
+ */
+public class ScmImpl extends ServiceImpl {
 
-	public SearchImpl() {
+	public ScmImpl() {		
 	}
 	
 }
