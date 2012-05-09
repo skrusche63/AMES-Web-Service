@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.scm;
+package de.kp.ames.web.core.search;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,17 +18,9 @@ package de.kp.ames.web.function.scm;
  *
  */
 
-import de.kp.ames.web.core.service.ServiceImpl;
+public class SearchConstants {
 
-/**
- * ScmImpl supports eGIT access to an OASIS ebXML RegRep
- * 
- * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
- *
- */
-public class ScmImpl extends ServiceImpl {
-
-	public ScmImpl() {		
-	}
+	public static String TERMS_FIELD = "tags_kpg";
+	public static String TERMS_LIMIT = "10";
 	
 }

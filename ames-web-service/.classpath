@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="lib/json.jar"/>
 	<classpathentry kind="lib" path="lib/jaxb-api-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/jaxb-impl-2.2.4-1.jar"/>
+	<classpathentry kind="lib" path="lib/solr-solrj-1.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

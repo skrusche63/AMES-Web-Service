@@ -23,6 +23,8 @@ public class GlobalConstants {
 	public static String FEDREP_ENDPOINT = "ames.fedrep.endpoint";
 	public static String REGREP_ENDPOINT = "ames.regrep.endpoint";
 
+	public static String SEARCH_ENDPOINT = "ames.search.endpoint";
+	
 	// HTTP Response parameters
 	public static String UTF_8 = "UTF-8";
 
