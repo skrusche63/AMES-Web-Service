@@ -1,4 +1,8 @@
 package de.kp.ames.web.core.search;
+
+import de.kp.ames.web.Bundle;
+import de.kp.ames.web.GlobalConstants;
+
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -20,7 +24,44 @@ package de.kp.ames.web.core.search;
 
 public class SearchConstants {
 
-	public static String TERMS_FIELD = "tags_kpg";
-	public static String TERMS_LIMIT = "10";
+	/*
+	 * Term suggest parameters
+	 */
+	public static String TERMS_FIELD;
+	public static String TERMS_LIMIT;
 	
+	/*
+	 * Search methods
+	 */
+	public static String METH_SUGGEST = "suggest";
+	
+	/*
+	 * Search method attributes
+	 */
+	public static String ATTR_REQUEST;
+	public static String ATTR_START;
+	public static String ATTR_LIMIT;
+
+	/*
+	 * initialize constants
+	 */
+	static {
+		
+		Bundle bundle = Bundle.getInstance();
+		
+		/*
+		 * Search method attributes
+		 */
+		ATTR_REQUEST = bundle.getString(GlobalConstants.ATTR_REQUEST);
+		ATTR_START   = bundle.getString(GlobalConstants.ATTR_START);
+		ATTR_LIMIT   = bundle.getString(GlobalConstants.ATTR_LIMIT);
+	
+		/*
+		 * Search parameters
+		 */
+		TERMS_FIELD = bundle.getString(GlobalConstants.TERMS_FIELD);
+		TERMS_LIMIT = bundle.getString(GlobalConstants.TERMS_LIMIT);
+		
+	}
+
 }

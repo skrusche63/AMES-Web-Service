@@ -73,6 +73,20 @@ public class JaxrLCM extends JaxrBase {
 	}
 
 	/**
+	 * A helper method to create a RelatedTo Association instance
+	 * 
+	 * @param targetObject
+	 * @return
+	 * @throws Exception
+	 */
+	public AssociationImpl createAssociation_RelatedTo(RegistryObjectImpl targetObject) throws JAXRException {
+
+		String associationType = CanonicalSchemes.CANONICAL_ASSOCIATION_TYPE_ID_RelatedTo;
+    	return createAssociation(associationType, targetObject);
+
+	}
+
+	/**
 	 * A helper method to create a Classification instance
 	 * 
 	 * @param conceptType

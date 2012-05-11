@@ -20,12 +20,39 @@ package de.kp.ames.web;
 
 public class GlobalConstants {
 
+	/*
+	 * Endpoints
+	 */
 	public static String FEDREP_ENDPOINT = "ames.fedrep.endpoint";
 	public static String REGREP_ENDPOINT = "ames.regrep.endpoint";
 
 	public static String SEARCH_ENDPOINT = "ames.search.endpoint";
 	
-	// HTTP Response parameters
+	/* 
+	 * HTTP response parameters
+	 */
 	public static String UTF_8 = "UTF-8";
 
+	/*
+	 * Method attributes
+	 */
+	public static String ATTR_ALIAS   = "ames.attr.alias";
+	public static String ATTR_KEYPASS = "ames.attr.keypass";
+	public static String ATTR_REQUEST = "ames.attr.request";
+	public static String ATTR_SERVICE = "ames.attr.service";
+	public static String ATTR_START   = "ames.attr.start";
+	public static String ATTR_LIMIT   = "ames.attr.limit";
+	
+	/*
+	 * Prefixes
+	 */
+	public static String BASE_PRE = "ames.prefix";	
+
+	/*
+	 * Search parameters
+	 */
+	
+	public static String TERMS_FIELD = "ames.search.terms.field";
+	public static String TERMS_LIMIT = "ames.search.terms.limit";
+	
 }

@@ -35,7 +35,7 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
  *
  */
 
-public class ServiceImpl implements Service{
+public class ServiceImpl implements Service {
 
 	/*
 	 * RequestMethod describes the method to be
@@ -160,6 +160,26 @@ public class ServiceImpl implements Service{
 		os.write(bytes);
 		os.close();
 
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.Service#sendBadResponse(java.lang.String, int, javax.servlet.http.HttpServletResponse)
+	 */
+	public void sendErrorResponse(String content, int errorStatus, HttpServletResponse response) throws IOException {
+
+		response.setStatus(errorStatus);
+		response.setCharacterEncoding(GlobalConstants.UTF_8);
+		
+		response.setContentType(MT_TEXT);
+		
+		byte[] bytes = content.getBytes(GlobalConstants.UTF_8);
+		response.setContentLength(bytes.length);
+
+		OutputStream os = response.getOutputStream();
+
+		os.write(bytes);
+		os.close();
+		
 	}
 
 }

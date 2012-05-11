@@ -108,4 +108,12 @@ public class RequestMethod {
 		return this.attributes;
 	}
 	
+	/**
+	 * @param key
+	 * @return
+	 */
+	public String getAttribute(String key) {
+		if (this.attributes.containsKey(key)) return this.attributes.get(key);
+		return null;
+	}
 }

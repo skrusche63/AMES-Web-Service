@@ -65,6 +65,14 @@ public interface Service {
 	
 	/**
 	 * @param content
+	 * @param status
+	 * @param response
+	 * @throws IOException
+	 */
+	public void sendErrorResponse(String content, int errorStatus, HttpServletResponse response) throws IOException;
+	
+	/**
+	 * @param content
 	 * @param response
 	 * @throws IOException
 	 */

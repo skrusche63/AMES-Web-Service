@@ -28,6 +28,8 @@ import org.freebxml.omar.client.xml.registry.ConnectionImpl;
 import org.freebxml.omar.client.xml.registry.DeclarativeQueryManagerImpl;
 import org.opensaml.saml2.core.Assertion;
 
+import de.kp.ames.web.core.util.SamlUtil;
+
 public class JaxrHandle {
 	
 	/*
@@ -93,22 +95,56 @@ public class JaxrHandle {
 		return this.endpoint;
 	}
 	
+	/**
+	 * @return
+	 */
 	public HashSet<Assertion> getCredentials() {
 		return this.assertions;
 	}
 	
+	/**
+	 * Retrieve unique identifier of caller's user
+	 * from the associated SAML v2.0 assertion
+	 * 
+	 * @return
+	 */
+	public String getUser() {
+		
+		Assertion assertion = getAssertion();
+		if (assertion == null) return null;
+		
+		String uid = SamlUtil.getUser(assertion);
+		return uid;
+		
+	}
+	
+	/**
+	 * @param service
+	 */
 	public void setService(RegistryService service) {
 		this.service = service;
 	}
 
+	/**
+	 * @param connection
+	 */
 	public void setConnection(ConnectionImpl connection) {
 		this.connection = connection;
 	}
 	
+	/**
+	 * @return
+	 */
 	public ConnectionImpl getConnection() {
 		return this.connection;
 	}
 	
+    /**
+     * Return Business LCM from registry service
+     * 
+     * @return
+     * @throws JAXRException
+     */
     public BusinessLifeCycleManagerImpl getBLCM() throws JAXRException {
 
 		RegistryService service = this.service;
@@ -118,6 +154,12 @@ public class JaxrHandle {
 
     }
 
+    /**
+     * Return Declarative QM from registry service
+     * 
+     * @return
+     * @throws JAXRException
+     */
     public DeclarativeQueryManagerImpl getDQM() throws JAXRException {
 
 		RegistryService service = this.service;

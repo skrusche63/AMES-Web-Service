@@ -18,11 +18,84 @@ package de.kp.ames.web.core.search;
  *
  */
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
+import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.service.ServiceImpl;
 
 public class SearchImpl extends ServiceImpl {
 
+	/**
+	 * Constructor
+	 */
 	public SearchImpl() {
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.core.RequestContext)
+	 */
+	public void processRequest(RequestContext ctx) {		
+
+		String methodName = this.method.getName();
+		if (methodName.equals(SearchConstants.METH_SUGGEST)) {
+			
+			/*
+			 * Call suggest method
+			 */
+			String request = this.method.getAttribute(SearchConstants.ATTR_REQUEST);
+			String start   = this.method.getAttribute(SearchConstants.ATTR_START);
+			String limit   = this.method.getAttribute(SearchConstants.ATTR_LIMIT);
+			
+			if ((request == null) || (start == null) || (limit == null)) {
+
+				String errorMessage = "[" + this.getClass().getName() + "] Required parameters not provided.";
+				int errorStatus = HttpServletResponse.SC_NOT_IMPLEMENTED;
+				
+				try {
+					sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
+
+				} catch (IOException e1) {
+					// do nothing
+				}
+				
+			} else {
+				
+				try {
+					String content = suggest(request, start, limit);
+					this.sendJSONResponse(content, ctx.getResponse());
+					
+				} catch (Exception e) {
+
+					String errorMessage = "[" + this.getClass().getName() + "] " + e.getMessage();
+					int errorStatus = HttpServletResponse.SC_BAD_REQUEST;
+					
+					try {
+						sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
+
+					} catch (IOException e1) {
+						// do nothing
+					}
+
+				}
+				
+			}
+			
+		}
+	}
+
+	/**
+	 * Term suggestion returns a JSON object as response
+	 * 
+	 * @param request
+	 * @param start
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	private String suggest(String request, String start, String limit) throws Exception {
+		return SearchClient.getInstance().suggest(request, start, limit);
 	}
 	
 }

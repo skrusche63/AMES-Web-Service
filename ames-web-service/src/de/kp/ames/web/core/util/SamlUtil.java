@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.opensaml.saml2.core.Assertion;
+import org.opensaml.saml2.core.NameID;
 
 import de.kp.omar.jaas.realm.UserPrincipal;
 
@@ -38,7 +39,16 @@ import de.kp.omar.jaas.realm.UserPrincipal;
 
 public class SamlUtil {
 
+	/*
+	 * Reference to session principal parameter
+	 */
 	private static String SESSION_PRINCIPAL = "picketlink.principal";
+	
+	/*
+	 * OASIS ebXML RegRep compliant name format
+	 */
+	private static String SAML2_NAME_FORMAT = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent";
+
 	
 	/**
 	 * This method retrieves the SAML v2.0 assertion associated
@@ -64,4 +74,21 @@ public class SamlUtil {
 
 	}
 	
+	/**
+	 * The value of the SAML V2.0 Assertion Parameter
+	 * NAMEID is equivalent to the unique user identifier
+	 * 
+	 * @param assertion
+	 * @return
+	 */
+	public static String getUser(Assertion assertion) {
+
+		NameID nameId = assertion.getSubject().getNameID();
+		if (nameId.getFormat().equals(SAML2_NAME_FORMAT)) {
+			return nameId.getValue();
+		}
+
+		return null;
+	}
+
 }

@@ -38,8 +38,10 @@ import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.method.RequestMethod;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.search.SearchImpl;
+import de.kp.ames.web.core.service.DisclaimerImpl;
 import de.kp.ames.web.core.service.Service;
 import de.kp.ames.web.core.util.SamlUtil;
+import de.kp.ames.web.function.security.SecurityImpl;
 
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
@@ -103,6 +105,26 @@ public class RequestDispatcher extends HttpServlet {
 			ctx.setContext(getServletContext());
 
 			/* 
+			 * Evaluate method
+			 */
+			
+			if (service.getMethod() == null) {
+				
+				String errorMessage = "[" + service.getClass().getName() + "] Method not available.";
+				int errorStatus = HttpServletResponse.SC_NOT_IMPLEMENTED;
+				
+				try {
+					service.sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
+
+				} catch (IOException e) {
+					// do nothing
+				}
+
+				return;
+				
+			}
+
+			/* 
 			 * Process GET request
 			 */
 			service.processRequest(ctx);
@@ -130,6 +152,7 @@ public class RequestDispatcher extends HttpServlet {
 			sendUnauthorizedResponse(message, "text/plain", response);
 			
 		} else {
+
 			/*
 			 * Retrieve service from the unique service identifier
 			 * provided with the actual request url
@@ -139,6 +162,26 @@ public class RequestDispatcher extends HttpServlet {
 			
 			RequestContext ctx = new RequestContext(request, response);
 			ctx.setContext(getServletContext());
+			
+			/* 
+			 * Evaluate method
+			 */
+			
+			if (service.getMethod() == null) {
+				
+				String errorMessage = "[" + service.getClass().getName() + "] Method not available.";
+				int errorStatus = HttpServletResponse.SC_NOT_IMPLEMENTED;
+				
+				try {
+					service.sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
+
+				} catch (IOException e) {
+					// do nothing
+				}
+
+				return;
+				
+			}
 
 			/* 
 			 * Process POST request
@@ -156,10 +199,30 @@ public class RequestDispatcher extends HttpServlet {
 	private void initializeServices() {
 
 		if (initialized == true) return;
+
+		/*
+		 * Temporary cache for all registered services
+		 */
 		registeredServices = new HashMap<String, Service>();
-		
+
+		/*
+		 * Disclaimer Service to represent a disclaimer
+		 * to the caller's user; a disclaimer is returned
+		 * after successful login
+		 */
+		registeredServices.put("disclaimer", new DisclaimerImpl());
+
+		/*
+		 * Security Service is used to register additional
+		 * user credentials (i.e. alias, keypass) that
+		 * are used to access external chat & mail server
+		 */
+		registeredServices.put("security", new SecurityImpl());
+		/*
+		 * Core Search Service that supports access to
+		 * the Enterprise Search Server Solr
+		 */
 		registeredServices.put("search", new SearchImpl());
-		// TODO
 		
 	}
 
