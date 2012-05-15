@@ -24,7 +24,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.activation.DataHandler;
-import javax.servlet.http.HttpServletResponse;
 import javax.xml.registry.JAXRException;
 import javax.xml.registry.UnsupportedCapabilityException;
 
@@ -67,16 +66,7 @@ public class SecurityImpl extends ServiceImpl {
 			 */
 			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);
 			if (service == null) {
-
-				String errorMessage = "[" + this.getClass().getName() + "] Required parameters not provided.";
-				int errorStatus = HttpServletResponse.SC_NOT_IMPLEMENTED;
-				
-				try {
-					sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
-
-				} catch (IOException e1) {
-					// do nothing
-				}
+				sendNotImplemented(ctx);
 				
 			} else {
 				
@@ -85,15 +75,8 @@ public class SecurityImpl extends ServiceImpl {
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
-					String errorMessage = "[" + this.getClass().getName() + "] " + e.getMessage();
-					int errorStatus = HttpServletResponse.SC_BAD_REQUEST;
-					
-					try {
-						sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
+					sendBadRequest(ctx, e);
 
-					} catch (IOException e1) {
-						// do nothing
-					}
 				}
 				
 			}
@@ -126,16 +109,7 @@ public class SecurityImpl extends ServiceImpl {
 			}
 
 			if ((service == null) || (creds == null)) {
-
-				String errorMessage = "[" + this.getClass().getName() + "] Required parameters not provided.";
-				int errorStatus = HttpServletResponse.SC_NOT_IMPLEMENTED;
-				
-				try {
-					sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
-
-				} catch (IOException e1) {
-					// do nothing
-				}
+				sendNotImplemented(ctx);
 				
 			} else {
 
@@ -144,15 +118,8 @@ public class SecurityImpl extends ServiceImpl {
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
-					String errorMessage = "[" + this.getClass().getName() + "] " + e.getMessage();
-					int errorStatus = HttpServletResponse.SC_BAD_REQUEST;
-					
-					try {
-						sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
+					sendBadRequest(ctx, e);
 
-					} catch (IOException e1) {
-						// do nothing
-					}
 				}
 				
 			}
@@ -166,16 +133,7 @@ public class SecurityImpl extends ServiceImpl {
 			String keypass = this.method.getAttribute(FncConstants.ATTR_KEYPASS);
 
 			if ((alias == null) || (keypass == null)) {
-
-				String errorMessage = "[" + this.getClass().getName() + "] Required parameters not provided.";
-				int errorStatus = HttpServletResponse.SC_NOT_IMPLEMENTED;
-				
-				try {
-					sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
-
-				} catch (IOException e1) {
-					// do nothing
-				}
+				sendNotImplemented(ctx);
 				
 			} else {
 
@@ -184,15 +142,8 @@ public class SecurityImpl extends ServiceImpl {
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
-					String errorMessage = "[" + this.getClass().getName() + "] " + e.getMessage();
-					int errorStatus = HttpServletResponse.SC_BAD_REQUEST;
-					
-					try {
-						sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
+					sendBadRequest(ctx, e);
 
-					} catch (IOException e1) {
-						// do nothing
-					}
 				}
 
 			}

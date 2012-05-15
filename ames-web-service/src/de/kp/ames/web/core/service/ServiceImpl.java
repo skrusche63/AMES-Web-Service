@@ -182,4 +182,45 @@ public class ServiceImpl implements Service {
 		
 	}
 
+	/**
+	 * Send Bad Request response
+	 * 
+	 * @param ctx
+	 * @param e
+	 */
+	protected void sendBadRequest(RequestContext ctx, Throwable e) {
+
+		String errorMessage = "[" + this.getClass().getName() + "] " + e.getMessage();
+		int errorStatus = HttpServletResponse.SC_BAD_REQUEST;
+		
+		try {
+			sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
+
+		} catch (IOException e1) {
+			// do nothing
+		}
+
+	}
+
+	/**
+	 * Send Not Implemented response
+	 * 
+	 * @param ctx
+	 */
+	protected void sendNotImplemented(RequestContext ctx) {
+
+		String errorMessage = "[" + this.getClass().getName() + "] Required parameters not provided.";
+		int errorStatus = HttpServletResponse.SC_NOT_IMPLEMENTED;
+		
+		try {
+			sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
+
+		} catch (IOException e1) {
+			// do nothing
+		}
+
+	}
+
+
+	
 }

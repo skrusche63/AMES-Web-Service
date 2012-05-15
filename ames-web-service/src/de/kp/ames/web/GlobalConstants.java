@@ -42,6 +42,7 @@ public class GlobalConstants {
 	public static String ATTR_SERVICE = "ames.attr.service";
 	public static String ATTR_START   = "ames.attr.start";
 	public static String ATTR_LIMIT   = "ames.attr.limit";
+	public static String ATTR_URI     = "ames.attr.uri";
 	
 	/*
 	 * Prefixes
@@ -54,5 +55,10 @@ public class GlobalConstants {
 	
 	public static String TERMS_FIELD = "ames.search.terms.field";
 	public static String TERMS_LIMIT = "ames.search.terms.limit";
+	
+	/*
+	 * Source code discovery
+	 */
+	public static String GIT_HOME = "ames.git.home";
 	
 }

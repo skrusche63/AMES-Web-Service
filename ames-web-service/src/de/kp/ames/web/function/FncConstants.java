@@ -1,8 +1,4 @@
 package de.kp.ames.web.function;
-
-import de.kp.ames.web.Bundle;
-import de.kp.ames.web.GlobalConstants;
-
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -21,6 +17,9 @@ import de.kp.ames.web.GlobalConstants;
  *	along with this software. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+import de.kp.ames.web.Bundle;
+import de.kp.ames.web.GlobalConstants;
 
 public class FncConstants {
 
@@ -44,7 +43,9 @@ public class FncConstants {
 	/*
 	 * Security methods
 	 */
-	public static String METH_GET_CREDS = "get-creds";
+    public static String METH_EXPLORE   = "explore";
+    public static String METH_GET_CREDS = "get-creds";
+    public static String METH_MODULE    = "module";
 	public static String METH_SET_CREDS = "set-creds";
 	public static String METH_REGISTER  = "register";
 
@@ -54,7 +55,13 @@ public class FncConstants {
 	public static String ATTR_ALIAS;
 	public static String ATTR_KEYPASS;
 	public static String ATTR_SERVICE;
+	public static String ATTR_URI;
 
+	/*
+	 * SCM Repository
+	 */
+	public static String GIT_HOME;
+	
 	/*
 	 * initialize constants
 	 */
@@ -75,6 +82,13 @@ public class FncConstants {
 		ATTR_ALIAS   = bundle.getString(GlobalConstants.ATTR_ALIAS);
 		ATTR_KEYPASS = bundle.getString(GlobalConstants.ATTR_KEYPASS);
 		ATTR_SERVICE = bundle.getString(GlobalConstants.ATTR_SERVICE);
+		ATTR_URI     = bundle.getString(GlobalConstants.ATTR_URI);
+		
+		/*
+		 * SCM Repository
+		 */
+		
+		GIT_HOME = bundle.getString(GlobalConstants.GIT_HOME);
 		
 	}
 
