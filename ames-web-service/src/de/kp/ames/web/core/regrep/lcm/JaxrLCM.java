@@ -53,8 +53,8 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
  */
 public class JaxrLCM extends JaxrBase {
 
-	public JaxrLCM(JaxrHandle requestHandle) {
-		super(requestHandle);
+	public JaxrLCM(JaxrHandle jaxrHandle) {
+		super(jaxrHandle);
 	}
 
 	/**

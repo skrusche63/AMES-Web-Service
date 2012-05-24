@@ -29,6 +29,11 @@ public class FncConstants {
 	public static String FNC_ID = "urn:oasis:names:tc:ebxml-regrep:FNC";
 
 	/*
+	 * Bulletin Classification Nodes
+	 */
+	public static String FNC_ID_Posting = FNC_ID + ":Posting";
+	
+	/*
 	 * Security Classification Nodes
 	 */
 	public static String FNC_ID_Security = FNC_ID + ":Security";
@@ -38,6 +43,7 @@ public class FncConstants {
 	/*
 	 * Identity Prefixes
 	 */	
+	public static String POSTING_PRE;
     public static String SECURITY_PRE;
 
 	/*
@@ -45,16 +51,21 @@ public class FncConstants {
 	 */
     public static String METH_EXPLORE   = "explore";
     public static String METH_GET_CREDS = "get-creds";
+    public static String METH_GET_FEED  = "get-feed";
     public static String METH_MODULE    = "module";
-	public static String METH_SET_CREDS = "set-creds";
 	public static String METH_REGISTER  = "register";
-
+	public static String METH_SET_CREDS = "set-creds";
+	public static String METH_SUBMIT    = "submit";
+	
 	/*
 	 * Method attributes
 	 */
 	public static String ATTR_ALIAS;
+	public static String ATTR_FORMAT;
 	public static String ATTR_KEYPASS;
+	public static String ATTR_RECIPIENT;
 	public static String ATTR_SERVICE;
+	public static String ATTR_TYPE;
 	public static String ATTR_URI;
 
 	/*
@@ -74,15 +85,19 @@ public class FncConstants {
 		 */
 		
 		String basePrefix = bundle.getString(GlobalConstants.BASE_PRE);
+		POSTING_PRE  = basePrefix + ":posting";
 		SECURITY_PRE = basePrefix + ":security";
 		
 		/*
 		 * Method attributes
 		 */
-		ATTR_ALIAS   = bundle.getString(GlobalConstants.ATTR_ALIAS);
-		ATTR_KEYPASS = bundle.getString(GlobalConstants.ATTR_KEYPASS);
-		ATTR_SERVICE = bundle.getString(GlobalConstants.ATTR_SERVICE);
-		ATTR_URI     = bundle.getString(GlobalConstants.ATTR_URI);
+		ATTR_ALIAS     = bundle.getString(GlobalConstants.ATTR_ALIAS);
+		ATTR_FORMAT    = bundle.getString(GlobalConstants.ATTR_FORMAT);
+		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
+		ATTR_RECIPIENT = bundle.getString(GlobalConstants.ATTR_RECIPIENT);
+		ATTR_SERVICE   = bundle.getString(GlobalConstants.ATTR_SERVICE);
+		ATTR_TYPE      = bundle.getString(GlobalConstants.ATTR_TYPE);
+		ATTR_URI       = bundle.getString(GlobalConstants.ATTR_URI);
 		
 		/*
 		 * SCM Repository

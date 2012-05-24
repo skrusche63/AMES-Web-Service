@@ -18,6 +18,8 @@ package de.kp.ames.web.function.scm;
  *
  */
 
+import java.io.IOException;
+
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.function.FncConstants;
@@ -47,7 +49,7 @@ public class ScmImpl extends ServiceImpl {
 			 */
 			String parent = this.method.getAttribute(FncConstants.ATTR_URI);
 			if (parent == null) {
-				sendNotImplemented(ctx);
+				this.sendNotImplemented(ctx);
 				
 			} else {
 
@@ -56,7 +58,7 @@ public class ScmImpl extends ServiceImpl {
 					this.sendHTMLResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
-					sendBadRequest(ctx, e);
+					this.sendBadRequest(ctx, e);
 
 				}
 				
@@ -69,16 +71,22 @@ public class ScmImpl extends ServiceImpl {
 			 */
 			String uri = this.method.getAttribute(FncConstants.ATTR_URI);
 			if (uri == null) {
-				sendNotImplemented(ctx);
+				this.sendNotImplemented(ctx);
 				
 			} else {
 
 				try {
 					String content = module(uri);
-					this.sendHTMLResponse(content, ctx.getResponse());
+					if (content == null) {
+						this.sendNotFound(ctx);
+						
+					} else {
+						this.sendHTMLResponse(content, ctx.getResponse());
+						
+					}
 
 				} catch (Exception e) {
-					sendBadRequest(ctx, e);
+					this.sendBadRequest(ctx, e);
 
 				}
 				
@@ -126,4 +134,15 @@ public class ScmImpl extends ServiceImpl {
 
 	}
 
+	/**
+	 * A helper method to return a Not Found HTML response
+	 * @param ctx
+	 * @return
+	 * @throws IOException 
+	 */
+	private void sendNotFound(RequestContext ctx) throws IOException {
+		String content = null;
+		// TODO
+		sendHTMLResponse(content, ctx.getResponse());
+	}
 }

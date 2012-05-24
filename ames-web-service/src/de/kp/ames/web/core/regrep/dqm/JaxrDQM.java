@@ -43,8 +43,8 @@ import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 
 public class JaxrDQM extends JaxrBase {
 
-	public JaxrDQM(JaxrHandle requestHandle) {
-		super(requestHandle);
+	public JaxrDQM(JaxrHandle jaxrHandle) {
+		super(jaxrHandle);
 	}
 
 	/************************************************************************

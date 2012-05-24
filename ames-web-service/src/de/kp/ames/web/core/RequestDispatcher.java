@@ -37,10 +37,12 @@ import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.method.RequestMethod;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.rss.RssImpl;
 import de.kp.ames.web.core.search.SearchImpl;
-import de.kp.ames.web.core.service.DisclaimerImpl;
 import de.kp.ames.web.core.service.Service;
 import de.kp.ames.web.core.util.SamlUtil;
+import de.kp.ames.web.function.bulletin.BulletinImpl;
+import de.kp.ames.web.function.security.DisclaimerImpl;
 import de.kp.ames.web.function.security.SecurityImpl;
 
 /**
@@ -206,6 +208,13 @@ public class RequestDispatcher extends HttpServlet {
 		registeredServices = new HashMap<String, Service>();
 
 		/*
+		 * Bulletin Service to support a posting between
+		 * different communities of interest and their
+		 * associated members
+		 */
+		registeredServices.put("bulletin", new BulletinImpl());
+
+		/*
 		 * Disclaimer Service to represent a disclaimer
 		 * to the caller's user; a disclaimer is returned
 		 * after successful login
@@ -213,11 +222,18 @@ public class RequestDispatcher extends HttpServlet {
 		registeredServices.put("disclaimer", new DisclaimerImpl());
 
 		/*
+		 * RSS Service is used to provide actually registered
+		 * and temporarily cached registry objects as an RSS feed
+		 */
+		registeredServices.put("rss", new RssImpl());
+
+		/*
 		 * Security Service is used to register additional
 		 * user credentials (i.e. alias, keypass) that
 		 * are used to access external chat & mail server
 		 */
 		registeredServices.put("security", new SecurityImpl());
+
 		/*
 		 * Core Search Service that supports access to
 		 * the Enterprise Search Server Solr

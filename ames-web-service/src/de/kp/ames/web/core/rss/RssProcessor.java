@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.service;
+package de.kp.ames.web.core.rss;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -17,22 +17,40 @@ package de.kp.ames.web.core.service;
  *	along with this software. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+import java.util.List;
 
-import de.kp.ames.web.core.RequestContext;
+import com.sun.syndication.feed.synd.SyndEntry;
 
-public class DisclaimerImpl extends ServiceImpl {
+public class RssProcessor {
 
-	/**
-	 * Constructor
-	 */
-	public DisclaimerImpl() {		
+	private static RssProcessor instance = new RssProcessor();
+	private RssCache cache;
+	
+	private RssProcessor() {
+		cache = new RssCache();
+	}
+		
+	public static RssProcessor getInstance() {
+		if (instance == null) instance = new RssProcessor();
+		return instance;
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.core.RequestContext)
+	/**
+	 * Add syndication entry
+	 * 
+	 * @param entry
 	 */
-	public void processRequest(RequestContext ctx) {	
-		
+	public void addEntry(SyndEntry entry) {
+		cache.add(entry);
 	}
-
+		
+	/**
+	 * Get all syndication entries
+	 * 
+	 * @return
+	 */
+	public List<SyndEntry> getEntries() {
+		return cache.getAll();
+	}
+	
 }

@@ -19,6 +19,7 @@ package de.kp.ames.web.core.service;
  */
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -48,12 +49,6 @@ public class ServiceImpl implements Service {
 	 * that holds all connection specific information
 	 */
 	protected JaxrHandle jaxrHandle;
-	
-	private static String MT_HTML = "text/html";
-	private static String MT_JSON = "application/json";
-	private static String MT_PNG  = "image/png";
-	private static String MT_TEXT = "text/plain";
-	private static String MT_XML  = "text/xml";
 	
 	/**
 	 * Constructor
@@ -100,7 +95,7 @@ public class ServiceImpl implements Service {
 	 */
 	public void sendHTMLResponse(String content, HttpServletResponse response) throws IOException {
 		if (content == null) return;
-		sendResponse(content, MT_HTML, response);
+		sendResponse(content, GlobalConstants.MT_HTML, response);
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +103,12 @@ public class ServiceImpl implements Service {
 	 */
 	public void sendJSONResponse(String content, HttpServletResponse response) throws IOException {
 		if (content == null) return;
-		sendResponse(content, MT_JSON, response);		
+		sendResponse(content, GlobalConstants.MT_JSON, response);		
+	}
+
+	public void sendRSSResponse(String content, HttpServletResponse response) throws IOException {
+		if (content == null) return;
+		sendResponse(content, GlobalConstants.MT_RSS, response);		
 	}
 
 	/* (non-Javadoc)
@@ -116,7 +116,7 @@ public class ServiceImpl implements Service {
 	 */
 	public void sendTextResponse(String content, HttpServletResponse response) throws IOException {
 		if (content == null) return;
-		sendResponse(content, MT_TEXT, response);
+		sendResponse(content, GlobalConstants.MT_TEXT, response);
 	}
 
 	/* (non-Javadoc)
@@ -124,7 +124,7 @@ public class ServiceImpl implements Service {
 	 */
 	public void sendXMLResponse(String content, HttpServletResponse response) throws IOException {
 		if (content == null) return;
-		sendResponse(content, MT_XML, response);
+		sendResponse(content, GlobalConstants.MT_XML, response);
 	}
 	
 	/* (non-Javadoc)
@@ -133,7 +133,7 @@ public class ServiceImpl implements Service {
 	public void sendImageResponse(BufferedImage image, HttpServletResponse response) throws IOException {
 
 		response.setStatus( HttpServletResponse.SC_OK );			    		
-	    response.setContentType(MT_PNG);					
+	    response.setContentType(GlobalConstants.MT_PNG);					
 
 		OutputStream os = response.getOutputStream();
 
@@ -162,6 +162,35 @@ public class ServiceImpl implements Service {
 
 	}
 
+	/**
+	 * A helper method to retrieve the request data (POST) 
+	 * in terms of a String representation
+	 * 
+	 * @param ctx
+	 * @return
+	 */
+	protected String getRequestData(RequestContext ctx) {
+		
+		StringBuffer buffer = null;;
+
+		try {
+			BufferedReader reader = ctx.getRequest().getReader();
+			buffer = new StringBuffer();
+			
+			String line;
+			while ( (line = reader.readLine()) != null) {
+				buffer.append(line);
+			}
+
+		} catch (IOException e) {
+			// do nothing
+		}
+
+		return (buffer == null) ? null : buffer.toString();
+		
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.Service#sendBadResponse(java.lang.String, int, javax.servlet.http.HttpServletResponse)
 	 */
@@ -170,7 +199,7 @@ public class ServiceImpl implements Service {
 		response.setStatus(errorStatus);
 		response.setCharacterEncoding(GlobalConstants.UTF_8);
 		
-		response.setContentType(MT_TEXT);
+		response.setContentType(GlobalConstants.MT_TEXT);
 		
 		byte[] bytes = content.getBytes(GlobalConstants.UTF_8);
 		response.setContentLength(bytes.length);

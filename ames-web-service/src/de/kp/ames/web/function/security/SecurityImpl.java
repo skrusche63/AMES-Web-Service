@@ -17,7 +17,6 @@ package de.kp.ames.web.function.security;
  *	along with this software. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -66,7 +65,7 @@ public class SecurityImpl extends ServiceImpl {
 			 */
 			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);
 			if (service == null) {
-				sendNotImplemented(ctx);
+				this.sendNotImplemented(ctx);
 				
 			} else {
 				
@@ -75,7 +74,7 @@ public class SecurityImpl extends ServiceImpl {
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
-					sendBadRequest(ctx, e);
+					this.sendBadRequest(ctx, e);
 
 				}
 				
@@ -109,7 +108,7 @@ public class SecurityImpl extends ServiceImpl {
 			}
 
 			if ((service == null) || (creds == null)) {
-				sendNotImplemented(ctx);
+				this.sendNotImplemented(ctx);
 				
 			} else {
 
@@ -118,7 +117,7 @@ public class SecurityImpl extends ServiceImpl {
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
-					sendBadRequest(ctx, e);
+					this.sendBadRequest(ctx, e);
 
 				}
 				
@@ -142,7 +141,7 @@ public class SecurityImpl extends ServiceImpl {
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
-					sendBadRequest(ctx, e);
+					this.sendBadRequest(ctx, e);
 
 				}
 

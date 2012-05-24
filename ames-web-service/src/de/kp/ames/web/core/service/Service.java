@@ -90,6 +90,13 @@ public interface Service {
 	 * @param response
 	 * @throws IOException
 	 */
+	public void sendRSSResponse(String content, HttpServletResponse response) throws IOException;
+	
+	/**
+	 * @param content
+	 * @param response
+	 * @throws IOException
+	 */
 	public void sendTextResponse(String content, HttpServletResponse response) throws IOException;
 
 	/**

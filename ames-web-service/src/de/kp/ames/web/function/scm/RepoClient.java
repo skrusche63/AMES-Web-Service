@@ -1,5 +1,8 @@
 package de.kp.ames.web.function.scm;
 
+import java.io.File;
+import de.kp.ames.web.function.FncConstants;
+
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -27,10 +30,36 @@ package de.kp.ames.web.function.scm;
  */
 public class RepoClient {
 
+	private String FILE_PROTOCOL = "file://";
+	
 	public RepoClient() {		
 	}
 	
-	public String getModuleAsHtml(String path) {
+	public String getModuleAsHtml(String uri) {
+
+		String path = getPathFromUri(uri);
+		
+		String fileName = FncConstants.GIT_HOME + File.separator + path;
+		File module = new File(fileName);
+		
+		if (module == null) return null;
+		// TODO
+		
 		return null;
 	}
+	
+	/**
+	 * A helper method to retrieve the file system path to
+	 * a certain source code module from an external uri
+	 * 
+	 * @param uri
+	 * @return
+	 */
+	private String getPathFromUri(String uri) {
+		/*
+		 * The file protocol is file://host/path
+		 */
+		return uri.replace(FILE_PROTOCOL, "");
+	}
+	
 }

@@ -1,4 +1,6 @@
 package de.kp.ames.web.core.reactor;
+
+import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,6 +20,8 @@ package de.kp.ames.web.core.reactor;
  *
  */
 
+import de.kp.ames.web.core.reactor.ReactorParams.RAction;
+
 /**
  * ReactorImpl supports additional functionality
  * with respect to Read/Write requests
@@ -26,5 +30,50 @@ package de.kp.ames.web.core.reactor;
  *
  */
 public class ReactorImpl implements Reactor {
+
+	/* 
+	 * The reactor actually supports to reaction right after a certain registry
+	 * object has been created or updated: this is a provisioning for (a) the
+	 * search index, and (b) the rss processor
+	 */
+	
+	public static void execute(ReactorParams params) throws Exception {
+
+		// retrieve registry object & referenced domain
+		String domain = params.getDomain();
+		RegistryObjectImpl ro = params.getRO();
+		
+		// retrieve action to distinguish further processing
+		RAction action = params.getAction();
+		
+		if (action.equals(RAction.C_INDEX) || action.equals(RAction.C_INDEX_RSS)) {
+		
+			// TODO
+			// index reaction
+			//JSONObject jEntry = getJEntry(handle, ro, domain);
+			//new FProxy().index(jEntry.toString());
+
+		}
+
+		if (action.equals(RAction.D_INDEX)) {
+			
+			/*
+			JSONArray jEntries = new JSONArray();
+			jEntries.put(ro.getId());
+			
+			new FProxy().remove(jEntries.toString());
+			*/
+		}
+		
+		if (action.equals(RAction.C_RSS) || action.equals(RAction.C_INDEX_RSS)) {
+
+			/*
+			// rss reaction:: CAVE service
+			XRSSProcessor.getInstance().addRegistryObject(domain, ro);
+			*/
+			
+		}
+		
+	}
 
 }

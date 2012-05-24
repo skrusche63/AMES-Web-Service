@@ -33,6 +33,7 @@ import javax.xml.registry.JAXRResponse;
 import javax.xml.registry.Query;
 import javax.xml.registry.infomodel.InternationalString;
 import javax.xml.registry.infomodel.Key;
+import javax.xml.registry.infomodel.PersonName;
 import javax.xml.registry.infomodel.User;
 
 import org.freebxml.omar.client.xml.registry.BusinessLifeCycleManagerImpl;
@@ -475,7 +476,56 @@ public class JaxrBase {
 		DeclarativeQueryManagerImpl dqm = jaxrHandle.getDQM();
 		return dqm.getCallersUser();
 	}
+
+	/**
+	 * A helper method to retrieve the author of a certain
+	 * registry object in a String representation
+	 * 
+	 * @param ro
+	 * @return
+	 * @throws JAXRException
+	 */
+	public String getAuthor(RegistryObjectImpl ro) throws JAXRException {
+
+		User user = null;		
+
+		AuditableEventImpl auditableEvent = getLastEvent(ro);
+		if (auditableEvent != null) user = auditableEvent.getUser();
+
+		if (user != null) return getAuthorName(user);
+		return null;
+		
+	}
+
+	/**
+	 * A helper method to retrieve the name of a certain user
+	 * in a String representation
+	 * 
+	 * @param user
+	 * @return
+	 * @throws JAXRException
+	 */
+	public String getAuthorName(User user) throws JAXRException {
+		
+		String author = "";
+		
+		if (user == null) return "unknown author";
+		
+		PersonName personName = user.getPersonName();
+		
+		String firstName  = personName.getFirstName();
+		String middleName = personName.getMiddleName();
+		String lastName   = personName.getLastName();
+		
+		if (firstName!=null) author = firstName + " ";
+		if (middleName!=null) author += middleName + " ";
+		if (lastName!=null) author += lastName;
+		
+		author = author.trim();			
+		return author;
 	
+	}
+
 	/**
 	 * A helper method to determine the status of a registry
 	 * object in a String representation
