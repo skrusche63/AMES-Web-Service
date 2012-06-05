@@ -34,6 +34,8 @@ public class RssImpl extends ServiceImpl {
 	private RssProvider provider;
 	private RssConsumer consumer;
 	
+	private static String UNKNOWN_RSS_REQUEST = "[RssImpl] Unknown RSS Request.";
+	
 	/**
 	 * Constructor
 	 */
@@ -128,7 +130,7 @@ public class RssImpl extends ServiceImpl {
 				/*
 				 * Throw exception
 				 */
-				throw new Exception("Unknown RSS request.");
+				throw new Exception(UNKNOWN_RSS_REQUEST);
 				
 			} else {
 
@@ -164,7 +166,7 @@ public class RssImpl extends ServiceImpl {
 			/*
 			 * Throw exception
 			 */
-			throw new Exception("Unknown RSS request.");
+			throw new Exception(UNKNOWN_RSS_REQUEST);
 			
 		}
 		
@@ -210,7 +212,7 @@ public class RssImpl extends ServiceImpl {
 				/*
 				 * Throw exception
 				 */
-				throw new Exception("Unknown RSS request.");
+				throw new Exception(UNKNOWN_RSS_REQUEST);
 				
 			} else {
 
@@ -246,7 +248,7 @@ public class RssImpl extends ServiceImpl {
 			/*
 			 * Throw exception
 			 */
-			throw new Exception("Unknown RSS request.");
+			throw new Exception(UNKNOWN_RSS_REQUEST);
 			
 		}
 

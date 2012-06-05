@@ -66,7 +66,9 @@ public class GlobalConstants {
 	public static String ATTR_RECIPIENT = "ames.attr.recipient";
 	public static String ATTR_REQUEST 	= "ames.attr.request";
 	public static String ATTR_SERVICE 	= "ames.attr.service";
+	public static String ATTR_SOURCE 	= "ames.attr.source";
 	public static String ATTR_START   	= "ames.attr.start";
+	public static String ATTR_TARGET    = "ames.attr.target";
 	public static String ATTR_TYPE    	= "ames.attr.type";
 	public static String ATTR_URI     	= "ames.attr.uri";
 	

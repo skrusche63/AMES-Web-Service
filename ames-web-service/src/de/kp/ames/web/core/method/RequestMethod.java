@@ -32,6 +32,9 @@ public class RequestMethod {
 	private String name;
 	private HashMap<String, String> attributes;
 	
+	private static String ATTRIBUTE_ERROR = "[RequestMethod] Attribute Retrieval Error";
+	private static String METHOD_ERROR    = "[RequestMethod] Method Retrieval Error";
+	
 	/**
 	 * @param query
 	 * @throws Exception
@@ -63,7 +66,7 @@ public class RequestMethod {
 
 		String[] tokens = token.split("=");
 
-		if (tokens.length != 2) throw new Exception("Attribute Retrieval Error");
+		if (tokens.length != 2) throw new Exception(ATTRIBUTE_ERROR);
 		
 		String key = tokens[0];
 		String val = tokens[1];
@@ -80,8 +83,8 @@ public class RequestMethod {
 		
 		String[] tokens = token.split("=");
 
-		if (tokens.length != 2) throw new Exception("Method Retrieval Error");
-		if (tokens[0].equals("method") == false) throw new Exception("Method Retrieval Error");
+		if (tokens.length != 2) throw new Exception(METHOD_ERROR);
+		if (tokens[0].equals("method") == false) throw new Exception(METHOD_ERROR);
 		
 		this.name = tokens[1];
 		

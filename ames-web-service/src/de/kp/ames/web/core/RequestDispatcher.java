@@ -20,6 +20,8 @@ package de.kp.ames.web.core;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -37,13 +39,9 @@ import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.method.RequestMethod;
 import de.kp.ames.web.core.regrep.JaxrHandle;
-import de.kp.ames.web.core.rss.RssImpl;
-import de.kp.ames.web.core.search.SearchImpl;
 import de.kp.ames.web.core.service.Service;
+import de.kp.ames.web.core.util.BaseParam;
 import de.kp.ames.web.core.util.SamlUtil;
-import de.kp.ames.web.function.bulletin.BulletinImpl;
-import de.kp.ames.web.function.security.DisclaimerImpl;
-import de.kp.ames.web.function.security.SecurityImpl;
 
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
@@ -208,38 +206,22 @@ public class RequestDispatcher extends HttpServlet {
 		registeredServices = new HashMap<String, Service>();
 
 		/*
-		 * Bulletin Service to support a posting between
-		 * different communities of interest and their
-		 * associated members
+		 * Retrieve actual service configuration
+		 * and initialize respective services
 		 */
-		registeredServices.put("bulletin", new BulletinImpl());
+		ArrayList<BaseParam> serviceConfig = getServiceConfig();
+		for (BaseParam param:serviceConfig) {
+			
+			String key = param.getKey();
+			String val = param.getValue();
+			
+			Service service = createServiceForName(val);
+			if (service == null) continue;
+			
+			registeredServices.put(key, service);
 
-		/*
-		 * Disclaimer Service to represent a disclaimer
-		 * to the caller's user; a disclaimer is returned
-		 * after successful login
-		 */
-		registeredServices.put("disclaimer", new DisclaimerImpl());
-
-		/*
-		 * RSS Service is used to provide actually registered
-		 * and temporarily cached registry objects as an RSS feed
-		 */
-		registeredServices.put("rss", new RssImpl());
-
-		/*
-		 * Security Service is used to register additional
-		 * user credentials (i.e. alias, keypass) that
-		 * are used to access external chat & mail server
-		 */
-		registeredServices.put("security", new SecurityImpl());
-
-		/*
-		 * Core Search Service that supports access to
-		 * the Enterprise Search Server Solr
-		 */
-		registeredServices.put("search", new SearchImpl());
-		
+		}
+	
 	}
 
 	/**
@@ -354,4 +336,75 @@ public class RequestDispatcher extends HttpServlet {
 		
 	}
 
+	/**
+	 * Helper method to create a certain service from a given class name
+	 * 
+	 * @param serviceName
+	 * @return
+	 */
+	private Service createServiceForName(String serviceName) {
+
+		try {
+
+			Class<?> clazz = Class.forName(serviceName);
+			Constructor<?> constructor = clazz.getConstructor();
+			
+			Object instance = constructor.newInstance();
+			return (Service)instance;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		
+		} finally {}
+		
+		return null;
+		
+	}
+	
+	private ArrayList<BaseParam> getServiceConfig() {
+		
+		ArrayList<BaseParam> services = new ArrayList<BaseParam>();
+
+		/*
+		 * Bulletin Service to support a posting between
+		 * different communities of interest and their
+		 * associated members
+		 */
+		services.add(new BaseParam("bulletin", "de.kp.ames.web.function.bulletin.BulletinImpl"));
+		
+		/*
+		 * Disclaimer Service to represent a disclaimer
+		 * to the caller's user; a disclaimer is returned
+		 * after successful login
+		 */
+		services.add(new BaseParam("disclaimer", "de.kp.ames.web.function.security.DisclaimerImpl"));
+
+		/*
+		 * RSS Service is used to provide actually registered
+		 * and temporarily cached registry objects as an RSS feed
+		 */
+		services.add(new BaseParam("rss", "de.kp.ames.web.core.rss.RssImpl"));
+
+		/*
+		 * Security Service is used to register additional
+		 * user credentials (i.e. alias, keypass) that
+		 * are used to access external chat & mail server
+		 */
+		services.add(new BaseParam("security", "de.kp.ames.web.function.security.SecurityImpl"));
+
+		/*
+		 * Core Search Service that supports access to
+		 * the Enterprise Search Server Solr
+		 */
+		services.add(new BaseParam("search", "de.kp.ames.web.core.search.SearchImpl"));
+		
+		/*
+		 * Core Transform Service that supports the XSL
+		 * transformation of registry objects
+		 */
+		services.add(new BaseParam("transform", "de.kp.ames.web.core.transform.TransformImpl"));
+		
+		return services;
+		
+	}
 }

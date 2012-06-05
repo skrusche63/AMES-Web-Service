@@ -62,6 +62,11 @@ public class JaxrIdentity {
 		return prefix + ":" + newUID();		
 	}
 	
+	public String getXslUID(String fileName) {
+		// TODO
+		return null;
+	}
+	
    /**
     * this method is taken from the ebXML registry service (OMAR) reference 
     * implementation and generates a new uuid.

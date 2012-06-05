@@ -49,6 +49,7 @@ public class FncConstants {
 	/*
 	 * Security methods
 	 */
+    public static String METH_APPLY     = "apply";
     public static String METH_EXPLORE   = "explore";
     public static String METH_GET_CREDS = "get-creds";
     public static String METH_GET_FEED  = "get-feed";
@@ -65,6 +66,8 @@ public class FncConstants {
 	public static String ATTR_KEYPASS;
 	public static String ATTR_RECIPIENT;
 	public static String ATTR_SERVICE;
+	public static String ATTR_SOURCE;
+	public static String ATTR_TARGET;
 	public static String ATTR_TYPE;
 	public static String ATTR_URI;
 
@@ -96,6 +99,8 @@ public class FncConstants {
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
 		ATTR_RECIPIENT = bundle.getString(GlobalConstants.ATTR_RECIPIENT);
 		ATTR_SERVICE   = bundle.getString(GlobalConstants.ATTR_SERVICE);
+		ATTR_SOURCE    = bundle.getString(GlobalConstants.ATTR_SOURCE);
+		ATTR_TARGET    = bundle.getString(GlobalConstants.ATTR_TARGET);
 		ATTR_TYPE      = bundle.getString(GlobalConstants.ATTR_TYPE);
 		ATTR_URI       = bundle.getString(GlobalConstants.ATTR_URI);
 		

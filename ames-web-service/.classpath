@@ -22,6 +22,7 @@
 	<classpathentry kind="lib" path="lib/gt-api-2.7-M3.jar"/>
 	<classpathentry kind="lib" path="lib/gt-main-2.7-M3.jar"/>
 	<classpathentry kind="lib" path="lib/gt-wms-2.7-M3.jar"/>
+	<classpathentry kind="lib" path="lib/saxon-he-9.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

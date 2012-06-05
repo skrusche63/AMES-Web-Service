@@ -50,10 +50,10 @@ public class PostingLCM extends JaxrLCM {
 	/**
 	 * Constructor requires jaxrHandle
 	 * 
-	 * @param requestHandle
+	 * @param jaxrHandle
 	 */
-	public PostingLCM(JaxrHandle requestHandle) {
-		super(requestHandle);
+	public PostingLCM(JaxrHandle jaxrHandle) {
+		super(jaxrHandle);
 	}
 
 	/**
@@ -70,11 +70,6 @@ public class PostingLCM extends JaxrLCM {
 	 * @throws Exception 
 	 */
 	public String submit(String recipient, String data) throws Exception {
-
-		/*
-		 * Login
-		 */		
-		JaxrClient.getInstance().logon(jaxrHandle);
 		
 		/*
 		 * Create or retrieve registry package that is 
@@ -207,10 +202,6 @@ public class PostingLCM extends JaxrLCM {
 		jResponse.put("success", true);
 		jResponse.put("message", "Posting successfully created.");
 		
-		/*
-		 * Logoff
-		 */
-		JaxrClient.getInstance().logoff(jaxrHandle);
 		return jResponse.toString();
 		
 	}

@@ -69,6 +69,7 @@ public class JaxrConstants {
 	 */
 	public static String SLOT_LATITUDE  = "Latitude";
 	public static String SLOT_LONGITUDE = "Longitude";
+	public static String SLOT_SEQNO     = "SeqNo";
 	public static String SLOT_SYMBOL    = "Symbol";
 	public static String SLOT_TRACK     = "Track";
 

@@ -32,9 +32,9 @@ import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 public class ReactorImpl implements Reactor {
 
 	/* 
-	 * The reactor actually supports to reaction right after a certain registry
-	 * object has been created or updated: this is a provisioning for (a) the
-	 * search index, and (b) the rss processor
+	 * The reactor actually supports ac right after a certain registry
+	 * object has been created or updated: this is a provisioning for 
+	 * (a) the search index, and (b) the rss processor
 	 */
 	
 	public static void execute(ReactorParams params) throws Exception {

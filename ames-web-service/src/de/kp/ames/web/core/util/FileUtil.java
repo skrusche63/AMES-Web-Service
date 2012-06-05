@@ -47,6 +47,8 @@ public class FileUtil {
 	private byte[] file;
 	private InputStream inputStream;
 
+	private String identifier;
+
 	/**
 	 * Constructor
 	 */
@@ -110,6 +112,20 @@ public class FileUtil {
 	 */
 	public String getFilename() {
 		return this.filename;
+	}
+
+	/**
+	 * @param identifier
+	 */
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getIdentifier() {
+		return this.identifier;
 	}
 
 	/**

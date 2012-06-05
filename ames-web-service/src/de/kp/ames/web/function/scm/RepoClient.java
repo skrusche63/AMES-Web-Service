@@ -23,7 +23,7 @@ import de.kp.ames.web.function.FncConstants;
  */
 
 /**
- * LocalRepoClient supports the access to the local Git repository
+ * RepoClient supports the access to the local Git repository
  * 
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
  *

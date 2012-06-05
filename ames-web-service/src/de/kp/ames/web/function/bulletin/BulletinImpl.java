@@ -19,6 +19,7 @@ package de.kp.ames.web.function.bulletin;
  */
 
 import de.kp.ames.web.core.RequestContext;
+import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.function.FncConstants;
 
@@ -90,8 +91,22 @@ public class BulletinImpl extends ServiceImpl {
 		 * Access OASIS ebXML RegRep to register
 		 * a certain posting for a specific recipient
 		 */
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+
 		PostingLCM lcm = new PostingLCM(jaxrHandle);
-		return lcm.submit(recipient, data);
+		content = lcm.submit(recipient, data);
+
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
 
 	}
 
