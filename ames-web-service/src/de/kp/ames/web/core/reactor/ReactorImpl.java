@@ -1,5 +1,7 @@
 package de.kp.ames.web.core.reactor;
 
+import java.util.ArrayList;
+
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
@@ -37,7 +39,7 @@ public class ReactorImpl implements Reactor {
 	 * (a) the search index, and (b) the rss processor
 	 */
 	
-	public static void execute(ReactorParams params) throws Exception {
+	public static void onCreate(ReactorParams params) throws Exception {
 
 		// retrieve registry object & referenced domain
 		String domain = params.getDomain();
@@ -74,6 +76,10 @@ public class ReactorImpl implements Reactor {
 			
 		}
 		
+	}
+	
+	public static void onDelete(ArrayList<RegistryObjectImpl> ros) {
+		// TODO
 	}
 
 }

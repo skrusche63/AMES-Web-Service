@@ -50,6 +50,7 @@ public class FncConstants {
 	 * Security methods
 	 */
     public static String METH_APPLY     = "apply";
+    public static String METH_DELETE    = "delete";
     public static String METH_EXPLORE   = "explore";
     public static String METH_GET_CREDS = "get-creds";
     public static String METH_GET_FEED  = "get-feed";

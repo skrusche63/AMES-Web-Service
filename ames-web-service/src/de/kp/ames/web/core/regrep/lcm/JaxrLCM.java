@@ -18,12 +18,15 @@ package de.kp.ames.web.core.regrep.lcm;
  *
  */
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.xml.registry.JAXRException;
 import javax.xml.registry.LifeCycleManager;
 import javax.xml.registry.infomodel.Concept;
 import javax.xml.registry.infomodel.InternationalString;
+import javax.xml.registry.infomodel.Key;
 
 import org.freebxml.omar.client.xml.registry.BusinessLifeCycleManagerImpl;
 import org.freebxml.omar.client.xml.registry.DeclarativeQueryManagerImpl;
@@ -44,14 +47,19 @@ import org.freebxml.omar.client.xml.registry.infomodel.SpecificationLinkImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.common.CanonicalSchemes;
 
+import de.kp.ames.web.core.reactor.ReactorImpl;
 import de.kp.ames.web.core.regrep.JaxrBase;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.regrep.JaxrTransaction;
+import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
  *
  */
 public class JaxrLCM extends JaxrBase {
+
+	private static String REGISTRY_PACKAGE = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_RegistryPackage;
 
 	public JaxrLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
@@ -375,6 +383,178 @@ public class JaxrLCM extends JaxrBase {
 
 	}
 
+	/**
+	 * Public method to delete a registry object identified
+	 * by its unique identifier; in case of a composite object
+	 * a cascading deleted is invoked
+	 * 
+	 * @param uid
+	 */
+	public void deleteRegistryObject(String uid) {
+		
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		try {
+			
+			RegistryObjectImpl ro = getRegistryObjectById(uid);
+			if (ro == null) return;				
+			
+			/* 
+			 * Distinguish between single and composite objects
+			 */
+			String objectType = ro.getObjectType().getKey().getId();
+			if (objectType.startsWith(REGISTRY_PACKAGE)) {
+				
+				/* 
+				 * A composite object that requires a cascading delete; 
+				 * actually deletion of these objects is restricted to 
+				 * the system administrator
+				 */
+				this.deleteRegistryPackage((RegistryPackageImpl)ro, transaction);
+				
+			} else {				
+				/* 
+				 * A single object is prepared for deletion
+				 */
+				this.deleteRegistryObject(ro, transaction);
+			}
+
+			/*
+			 * Finally delete objects
+			 */
+			this.removeObjects(transaction.getObjectsToDelete());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	/**
+	 * A helper method to finally remove a list of 
+	 * registry objects from an OASIS ebXML RegRep
+	 * 
+	 * @param objectsToDelete
+	 * @throws JAXRException
+	 */
+	private void removeObjects(ArrayList<RegistryObjectImpl> objectsToDelete) throws JAXRException {
+
+		/*
+		 * Build list of keys from registry objects
+		 */
+		ArrayList<Key> keys = new ArrayList<Key>();
+
+		for (RegistryObjectImpl object:objectsToDelete) {
+			keys.add(object.getKey());
+		}
+		
+		/*
+		 * Remove referenced objects (by key) from RegRep
+		 */
+		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
+		blcm.deleteObjects(keys);
+
+		/*
+		 * Reactor post processing 
+		 */
+		ReactorImpl.onDelete(objectsToDelete);
+
+	}
+	
+	/**
+	 * A private method to delete a certain registry object and
+	 * all of its associations, classificatons and external links
+	 * 
+	 * @param ro
+	 * @param transaction
+	 * @throws Exception
+	 */
+	private void deleteRegistryObject(RegistryObjectImpl ro, JaxrTransaction transaction) throws Exception {
+
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+		
+		/* 
+		 * Determine all associations that are affected by the
+		 * current registry object and prepare them fro removal
+		 * 
+		 * This also removes the associations to the external
+		 * links referenced by this object
+		 */
+		
+		List<AssociationImpl> associations = dqm.getAssociations_All(ro);
+		if (associations.size() > 0) {	
+			
+			for (AssociationImpl association:associations) {
+				deleteRegistryObject(association, transaction);
+			}
+
+		}
+		
+		/* 
+		 * Determine all classifications that are effected by the 
+		 * current registry object and prepare them to be removed
+		 */
+
+		List<ClassificationImpl> classifications = dqm.getClassifications_ByObject(ro);
+		if (classifications.size() > 0) {
+			
+			for (ClassificationImpl classification:classifications) {
+				transaction.addObjectToDelete(classification);
+			}
+
+		}
+
+		/* 
+		 * Register this object to be deleted
+		 */
+		transaction.addObjectToDelete(ro);
+				
+	}
+
+	/**
+	 * A private method to delete a composite object
+	 * 
+	 * @param rp
+	 * @param transaction
+	 * @throws Exception
+	 */
+	private void deleteRegistryPackage(RegistryPackageImpl rp, JaxrTransaction transaction) throws Exception {
+
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+		
+		/* 
+		 * Delete registry objects bottom up, so first start with
+		 * all members of this registry package; finally the package 
+		 * is prepared of deleting
+		 */
+
+		List<RegistryObjectImpl> members = dqm.getPackageMembers(rp);
+		if (members.size() > 0) {
+			
+			for (RegistryObjectImpl member:members) {
+				String objectType = dqm.getObjectType(member);
+
+				if (objectType.startsWith(REGISTRY_PACKAGE)) {
+					/* 
+					 * A composite object that requires a cascading delete
+					 */
+					this.deleteRegistryPackage((RegistryPackageImpl)member, transaction);
+					
+				} else {				
+					/* 
+					 * A single object is prepared for deletion
+					 */
+					this.deleteRegistryObject(member, transaction);
+
+				}
+
+			}
+		}
+		
+		this.deleteRegistryObject((RegistryObjectImpl)rp, transaction);
+		
+	}
+	
 	/**
 	 * A helper method to retrieve a concept from type
 	 * 

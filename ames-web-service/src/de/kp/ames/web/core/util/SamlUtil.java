@@ -49,6 +49,8 @@ public class SamlUtil {
 	 */
 	private static String SAML2_NAME_FORMAT = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent";
 
+	private static String NO_HTTP_SESSION   = "[SamlUtil] No Http Session established.";
+	private static String NO_USER_PRINCIPAL = "[SamlUtil] No User Principal derived from Http Session.";
 	
 	/**
 	 * This method retrieves the SAML v2.0 assertion associated
@@ -64,11 +66,11 @@ public class SamlUtil {
 
 		// The session MUST exist
 		HttpSession session = request.getSession(false);
-		if (session == null) throw new Exception("[SamlUtil] No Http Session established.");
+		if (session == null) throw new Exception(NO_HTTP_SESSION);
 		
 		// The user principal MUST exist 
 		UserPrincipal userPrincipal = (UserPrincipal) session.getAttribute(SESSION_PRINCIPAL);
-		if (userPrincipal == null) throw new Exception("[SamlUtil] No User Principal derived from Http Session.");
+		if (userPrincipal == null) throw new Exception(NO_USER_PRINCIPAL);
 		
 		return userPrincipal.getAssertion();
 

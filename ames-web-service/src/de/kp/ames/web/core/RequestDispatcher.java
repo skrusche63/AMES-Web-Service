@@ -380,6 +380,13 @@ public class RequestDispatcher extends HttpServlet {
 		services.add(new BaseParam("disclaimer", "de.kp.ames.web.function.security.DisclaimerImpl"));
 
 		/*
+		 * Core Group Service is used to manage community
+		 * of interest specific information objects including
+		 * organizations
+		 */
+		services.add(new BaseParam("group", "de.kp.ames.web.core.group.GroupImpl"));
+		
+		/*
 		 * RSS Service is used to provide actually registered
 		 * and temporarily cached registry objects as an RSS feed
 		 */
