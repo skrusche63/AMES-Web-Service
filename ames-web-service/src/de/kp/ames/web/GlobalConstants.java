@@ -26,6 +26,11 @@ public class GlobalConstants {
 	public static final int BUFFER_SIZE = 1024;
 
 	/*
+	 * Default Gui Renderer
+	 */
+	public static String GUI_RENDERER = "ames.gui.renderer";
+	
+	/*
 	 * Endpoints
 	 */
 	public static String FEDREP_ENDPOINT = "ames.fedrep.endpoint";
@@ -60,6 +65,7 @@ public class GlobalConstants {
 	 * Method attributes
 	 */
 	public static String ATTR_ALIAS   	= "ames.attr.alias";
+	public static String ATTR_ENDPOINT  = "ames.attr.endpoint";
 	public static String ATTR_FORMAT    = "ames.attr.feed";
 	public static String ATTR_KEYPASS 	= "ames.attr.keypass";
 	public static String ATTR_LIMIT   	= "ames.attr.limit";

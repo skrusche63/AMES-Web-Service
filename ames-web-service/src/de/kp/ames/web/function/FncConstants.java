@@ -47,13 +47,25 @@ public class FncConstants {
     public static String SECURITY_PRE;
 
 	/*
-	 * Security methods
+	 * Methods
 	 */
+    
+    // appy a certain set of xsl stylesheets to a specific
+    // registry object
     public static String METH_APPLY     = "apply";
     public static String METH_DELETE    = "delete";
     public static String METH_EXPLORE   = "explore";
     public static String METH_GET_CREDS = "get-creds";
     public static String METH_GET_FEED  = "get-feed";
+    
+    // retrieve a kml representation of a certain registry 
+    // package and all of its content
+    public static String METH_EDGES   	= "edges";
+    public static String METH_NODES   	= "nodes";
+    
+    // retrieve all registered wms layers from the respective
+    // geo server
+    public static String METH_LAYERS    = "layers";
     public static String METH_MODULE    = "module";
 	public static String METH_REGISTER  = "register";
 	public static String METH_SET_CREDS = "set-creds";
@@ -63,6 +75,7 @@ public class FncConstants {
 	 * Method attributes
 	 */
 	public static String ATTR_ALIAS;
+	public static String ATTR_ENDPOINT;
 	public static String ATTR_FORMAT;
 	public static String ATTR_KEYPASS;
 	public static String ATTR_RECIPIENT;
@@ -96,6 +109,7 @@ public class FncConstants {
 		 * Method attributes
 		 */
 		ATTR_ALIAS     = bundle.getString(GlobalConstants.ATTR_ALIAS);
+		ATTR_ENDPOINT  = bundle.getString(GlobalConstants.ATTR_ENDPOINT);
 		ATTR_FORMAT    = bundle.getString(GlobalConstants.ATTR_FORMAT);
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
 		ATTR_RECIPIENT = bundle.getString(GlobalConstants.ATTR_RECIPIENT);

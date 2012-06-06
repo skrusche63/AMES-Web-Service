@@ -385,7 +385,13 @@ public class RequestDispatcher extends HttpServlet {
 		 * organizations
 		 */
 		services.add(new BaseParam("group", "de.kp.ames.web.core.group.GroupImpl"));
-		
+
+		/*
+		 * Map Service is used to retrieve map specific
+		 * information such as layers
+		 */
+		services.add(new BaseParam("map", "de.kp.ames.web.function.map.MapImpl"));
+
 		/*
 		 * RSS Service is used to provide actually registered
 		 * and temporarily cached registry objects as an RSS feed
@@ -410,7 +416,13 @@ public class RequestDispatcher extends HttpServlet {
 		 * transformation of registry objects
 		 */
 		services.add(new BaseParam("transform", "de.kp.ames.web.core.transform.TransformImpl"));
-		
+
+		/*
+		 * Core Vocabulary Service is used to retrieve all
+		 * semantic information to classify other objects
+		 */
+		services.add(new BaseParam("vocab", "de.kp.ames.web.core.vocab.VocabImpl"));
+
 		return services;
 		
 	}

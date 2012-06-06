@@ -78,6 +78,7 @@ import org.oasis.ebxml.registry.bindings.rim.UserType;
 import org.oasis.ebxml.registry.bindings.rim.VersionInfoType;
 import org.w3c.dom.Document;
 
+import de.kp.ames.web.core.format.StringOutputStream;
 import de.kp.ames.web.core.regrep.JaxrBase;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 

@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.format.xml;
+package de.kp.ames.web.function;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -17,24 +17,19 @@ package de.kp.ames.web.core.format.xml;
  *	along with this software. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+import org.json.JSONArray;
 
-import java.io.IOException;
-import java.io.OutputStream;
+public interface GuiRenderer {
 
-public class StringOutputStream extends OutputStream {
-    
-	private StringBuilder stringBuilder;
-
-    public StringOutputStream() {
-    	stringBuilder = new StringBuilder();
-    }
-
-    public void write(int b) throws IOException {
-    	stringBuilder.append( (char) b );
-    }
-
-    public String toString() {
-        return stringBuilder.toString();
-    }
-
+	/*
+	 * Build GUI grid representation from a JSON array
+	 */
+	public String createGrid(JSONArray jArray, String start, String limit);
+	
+	/*
+	 * Paging paramters depend on registered Gui
+	 */
+	public String getStartParam();
+	public String getLimitParam();
+	
 }
