@@ -64,6 +64,7 @@ public class GlobalConstants {
 	/*
 	 * Method attributes
 	 */
+	public static String ATTR_AFFILIATE = "ames.attr.affiliate";
 	public static String ATTR_ALIAS   	= "ames.attr.alias";
 	public static String ATTR_ENDPOINT  = "ames.attr.endpoint";
 	public static String ATTR_FORMAT    = "ames.attr.feed";

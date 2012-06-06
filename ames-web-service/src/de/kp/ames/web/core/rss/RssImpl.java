@@ -50,7 +50,7 @@ public class RssImpl extends ServiceImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_GET_FEED)) {
+		if (methodName.equals(FncConstants.METH_GET)) {
 			
 			/*
 			 * Call getXXFeed method
@@ -73,12 +73,12 @@ public class RssImpl extends ServiceImpl {
 					/*
 					 * Distinguish between two different formats
 					 */
-					if (format.equals("json")) {
+					if (format.equals(FncConstants.FNC_FORMAT_ID_Json)) {
 						
 						String content = getJFeed(type, uri);
 						this.sendJSONResponse(content, ctx.getResponse());
 						
-					} else if (format.equals("rss")) {
+					} else if (format.equals(FncConstants.FNC_FORMAT_ID_Rss)) {
 
 						String content = getRssFeed(type, uri);
 						this.sendRSSResponse(content, ctx.getResponse());

@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.wms;
+package de.kp.ames.web.function.access.wms;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *

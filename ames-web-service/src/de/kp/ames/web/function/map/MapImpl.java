@@ -25,10 +25,10 @@ import org.json.JSONArray;
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.service.ServiceImpl;
-import de.kp.ames.web.core.wms.WmsConsumer;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.GuiFactory;
 import de.kp.ames.web.function.GuiRenderer;
+import de.kp.ames.web.function.access.wms.WmsConsumer;
 
 public class MapImpl extends ServiceImpl {
 
@@ -55,6 +55,9 @@ public class MapImpl extends ServiceImpl {
 			} else {
 
 				try {
+					/*
+					 * Kml response
+					 */
 					String content = nodes(source);
 					sendXMLResponse(content, ctx.getResponse());
 
@@ -66,6 +69,28 @@ public class MapImpl extends ServiceImpl {
 			}
 
 		} else if (methodName.equals(FncConstants.METH_EDGES)) {
+			/*
+			 * Call edges method
+			 */
+			String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);			
+			if (source == null) {
+				this.sendNotImplemented(ctx);
+
+			} else {
+
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = edges(source);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+				
+			}
 
 		} else if (methodName.equals(FncConstants.METH_LAYERS)) {
 			/*
@@ -90,6 +115,9 @@ public class MapImpl extends ServiceImpl {
 				String limit = request.getParameter(limitParam);
 
 				try {
+					/*
+					 * JSON response
+					 */
 					String content = layers(endpoint, start, limit);
 					sendJSONResponse(content, ctx.getResponse());
 
@@ -134,7 +162,38 @@ public class MapImpl extends ServiceImpl {
 		return content;
 	
 	}
+
+	/**
+	 * This method retrieves a kml representation of all associations
+	 * that are members of a specific registry package
+	 * 
+	 * @param source
+	 * @return
+	 * @throws Exception 
+	 */
+	private String edges(String source) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+		
+		/*
+		 * Retrieve kml representation from source
+		 */
+		MapDQM dqm = new MapDQM(jaxrHandle);
+		content =dqm.getEdges(source);
+
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
 	
+	}
+
 	/**
 	 * This method returns all registered layers of a certain
 	 * geo server in a SmartGwt 3.0 compliant Grid (JSON) result

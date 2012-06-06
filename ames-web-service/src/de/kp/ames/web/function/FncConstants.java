@@ -34,6 +34,20 @@ public class FncConstants {
 	public static String FNC_ID_Posting = FNC_ID + ":Posting";
 	
 	/*
+	 * Community Classification Nodes
+	 */
+	public static String FNC_ID_Community = FNC_ID + ":Community";
+	
+	/*
+	 * Format Classification Nodes
+	 */
+	public static String FNC_ID_Format = FNC_ID + ":Format";
+	
+	public static String FNC_FORMAT_ID_Grid = FNC_ID_Format + ":Grid";
+	public static String FNC_FORMAT_ID_Json = FNC_ID_Format + ":Json";
+	public static String FNC_FORMAT_ID_Rss  = FNC_ID_Format + ":Rss";
+	
+	/*
 	 * Security Classification Nodes
 	 */
 	public static String FNC_ID_Security = FNC_ID + ":Security";
@@ -55,8 +69,8 @@ public class FncConstants {
     public static String METH_APPLY     = "apply";
     public static String METH_DELETE    = "delete";
     public static String METH_EXPLORE   = "explore";
+    public static String METH_GET       = "get";
     public static String METH_GET_CREDS = "get-creds";
-    public static String METH_GET_FEED  = "get-feed";
     
     // retrieve a kml representation of a certain registry 
     // package and all of its content
@@ -75,6 +89,7 @@ public class FncConstants {
 	 * Method attributes
 	 */
 	public static String ATTR_ALIAS;
+	public static String ATTR_AFFILIATE;
 	public static String ATTR_ENDPOINT;
 	public static String ATTR_FORMAT;
 	public static String ATTR_KEYPASS;
@@ -109,6 +124,7 @@ public class FncConstants {
 		 * Method attributes
 		 */
 		ATTR_ALIAS     = bundle.getString(GlobalConstants.ATTR_ALIAS);
+		ATTR_AFFILIATE = bundle.getString(GlobalConstants.ATTR_AFFILIATE);
 		ATTR_ENDPOINT  = bundle.getString(GlobalConstants.ATTR_ENDPOINT);
 		ATTR_FORMAT    = bundle.getString(GlobalConstants.ATTR_FORMAT);
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
