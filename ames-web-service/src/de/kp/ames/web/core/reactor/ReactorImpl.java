@@ -39,7 +39,7 @@ public class ReactorImpl implements Reactor {
 	 * (a) the search index, and (b) the rss processor
 	 */
 	
-	public static void onCreate(ReactorParams params) throws Exception {
+	public static void onSubmit(ReactorParams params) throws Exception {
 
 		// retrieve registry object & referenced domain
 		String domain = params.getDomain();

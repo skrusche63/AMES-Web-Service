@@ -67,7 +67,8 @@ public class GlobalConstants {
 	public static String ATTR_AFFILIATE = "ames.attr.affiliate";
 	public static String ATTR_ALIAS   	= "ames.attr.alias";
 	public static String ATTR_ENDPOINT  = "ames.attr.endpoint";
-	public static String ATTR_FORMAT    = "ames.attr.feed";
+	public static String ATTR_FORMAT    = "ames.attr.format";
+	public static String ATTR_IMAGE     = "ames.attr.image";
 	public static String ATTR_KEYPASS 	= "ames.attr.keypass";
 	public static String ATTR_LIMIT   	= "ames.attr.limit";
 	public static String ATTR_RECIPIENT = "ames.attr.recipient";

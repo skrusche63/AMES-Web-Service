@@ -57,6 +57,7 @@ public class FncConstants {
 	/*
 	 * Identity Prefixes
 	 */	
+	public static String COMMUNITY_PRE;
 	public static String POSTING_PRE;
     public static String SECURITY_PRE;
 
@@ -114,11 +115,12 @@ public class FncConstants {
 		
 		/*
 		 * Identity prefixes
-		 */
-		
+		 */		
 		String basePrefix = bundle.getString(GlobalConstants.BASE_PRE);
-		POSTING_PRE  = basePrefix + ":posting";
-		SECURITY_PRE = basePrefix + ":security";
+		
+		COMMUNITY_PRE = basePrefix + ":community";
+		POSTING_PRE   = basePrefix + ":posting";
+		SECURITY_PRE  = basePrefix + ":security";
 		
 		/*
 		 * Method attributes
@@ -137,8 +139,7 @@ public class FncConstants {
 		
 		/*
 		 * SCM Repository
-		 */
-		
+		 */		
 		GIT_HOME = bundle.getString(GlobalConstants.GIT_HOME);
 		
 	}

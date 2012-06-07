@@ -605,9 +605,9 @@ public class JaxrDQM extends JaxrBase {
 	 * @return
 	 * @throws JAXRException 
 	 */
-	public List<OrganizationImpl> getOrganization_All() throws JAXRException {
+	public List<OrganizationImpl> getOrganizations_All() throws JAXRException {
 		
-		String sqlString = JaxrSQL.getSQLOrganization_All();
+		String sqlString = JaxrSQL.getSQLOrganizations_All();
     	return getOrganizationsByQuery(sqlString);    	
 
 	}

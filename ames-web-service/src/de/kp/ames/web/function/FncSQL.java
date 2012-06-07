@@ -24,13 +24,18 @@ public class FncSQL {
 	 * This is the classification of a password safe that may be assigned to the
 	 * caller's user; actually, this safe is used to manage credentials for the
 	 * chat and also mail service that is affiliated with the sense maker
+	 * 
+	 * The password safe is actually restricted to support an automatic login to 
+	 * chat and mail servers associated with AMES
 	 */
 	private static String SAFE  = FncConstants.FNC_SECURITY_ID_Safe;
 
 	/*
-	 * the password safe is actually restricted to support an automatic
-	 * login to chat and mail servers associated with AMES
+	 * This is the classification of a posting associated with the bulletin
+	 * board functionality
 	 */
+	private static String POSTING = FncConstants.FNC_ID_Posting;
+
 	
 	/**
 	 * @param user
@@ -43,6 +48,19 @@ public class FncSQL {
 
 		return query;
 
+	}
+
+	/**
+	 * @param recipient
+	 * @return
+	 */
+	public static String getSQLPostings_All(String recipient) {
+		
+		String query = "SELECT DISTINCT eo.* FROM ExtrinsicObject eo, Association a, Classification clas" + 
+		" WHERE a.sourceObject='" + recipient + "' AND a.targetObject=eo.id AND clas.classifiedObject=eo.id AND clas.classificationNode='" + POSTING + "'";
+
+		return query;
+		
 	}
 
 }

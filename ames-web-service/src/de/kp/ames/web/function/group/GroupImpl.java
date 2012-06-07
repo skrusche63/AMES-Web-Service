@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.group;
+package de.kp.ames.web.function.group;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -151,12 +151,15 @@ public class GroupImpl extends ServiceImpl {
 		/*
 		 * Login
 		 */		
-		JaxrClient.getInstance().logon(jaxrHandle);
-		
+		JaxrClient.getInstance().logon(jaxrHandle);		
 		if (type.equals(FncConstants.FNC_ID_Community)) {
-			// TODO
+			
+			GroupLCM lcm = new GroupLCM(jaxrHandle);
+			content = lcm.submitCommunity(data);
+			
 		} else {
 			throw new Exception("[GroupImpl] Information type <" + type + "> is not supported");
+		
 		}
 		
 		/*

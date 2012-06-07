@@ -35,7 +35,6 @@ import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.reactor.ReactorParams;
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 import de.kp.ames.web.core.reactor.ReactorImpl;
-import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
@@ -192,7 +191,7 @@ public class PostingLCM extends JaxrLCM {
 		 * Supply reactor
 		 */
 		ReactorParams reactorParams = new ReactorParams(eo, FncConstants.FNC_ID_Posting, RAction.C_INDEX);
-		ReactorImpl.onCreate(reactorParams);
+		ReactorImpl.onSubmit(reactorParams);
 
 		/*
 		 * Set JSON response

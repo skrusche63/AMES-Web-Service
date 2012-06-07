@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.group;
+package de.kp.ames.web.core.format.json;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,18 +18,15 @@ package de.kp.ames.web.core.group;
  *
  */
 
+import org.freebxml.omar.client.xml.registry.infomodel.OrganizationImpl;
+import org.json.JSONObject;
+
 import de.kp.ames.web.core.regrep.JaxrHandle;
-import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 
-public class GroupDQM extends JaxrDQM {
+public class JsonProvider {
 
-	public GroupDQM(JaxrHandle jaxrHandle) {
-		super(jaxrHandle);
-	}
-	
-	public String getCommunities(String affiliate, String format) throws Exception {
+	public static JSONObject getOrganization(JaxrHandle jaxrHandle, OrganizationImpl organization) throws Exception {
 		// TODO
 		return null;
 	}
-	
 }

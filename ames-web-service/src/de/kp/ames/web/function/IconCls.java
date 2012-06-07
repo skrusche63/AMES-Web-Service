@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.group;
+package de.kp.ames.web.function;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,13 +18,8 @@ package de.kp.ames.web.core.group;
  *
  */
 
-import de.kp.ames.web.core.regrep.JaxrHandle;
-import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
+public class IconCls {
 
-public class GroupLCM extends JaxrLCM {
+	public static String POST = "x-post";
 
-	public GroupLCM(JaxrHandle jaxrHandle) {
-		super(jaxrHandle);
-	}
-	
 }

@@ -27,4 +27,7 @@ public class JsonConstants {
 	public static String J_NAME 	= "name";
 	public static String J_START 	= "start";
 
+	public static String J_SUCCESS  = "success";
+	public static String J_MESSAGE  = "message";
+	
 }

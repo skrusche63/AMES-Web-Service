@@ -483,7 +483,7 @@ public class JaxrSQL {
 	 * 
 	 * @return
 	 */
-	public static String getSQLOrganization_All() {
+	public static String getSQLOrganizations_All() {
 		
     	String query = "SELECT o.* FROM Organization o";
     	return query;    	

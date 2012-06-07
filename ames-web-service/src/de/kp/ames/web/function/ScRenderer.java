@@ -36,6 +36,32 @@ public class ScRenderer implements GuiRenderer {
 	}
 	
 	/* (non-Javadoc)
+	 * @see de.kp.ames.web.function.GuiRenderer#createGrid(org.json.JSONArray)
+	 */
+	public String createGrid(JSONArray jArray) {
+
+		JSONObject jResponse = new JSONObject();
+		int card = jResponse.length();
+
+		try {
+		
+			jResponse.put(ScConstants.SC_STATUS, 0);	
+			jResponse.put(ScConstants.SC_TOTALROWS, card);
+
+			jResponse.put(ScConstants.SC_DATA, jArray);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+		} finally {}
+
+		
+		return jResponse.toString();
+		
+
+	}
+	
+	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#createGrid(org.json.JSONArray, java.lang.String, java.lang.String)
 	 */
 	public String createGrid(JSONArray jArray, String start, String limit) {
@@ -89,6 +115,13 @@ public class ScRenderer implements GuiRenderer {
 	 */
 	public String getLimitParam() {
 		return ScConstants.SC_LIMIT;
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.function.GuiRenderer#getIconParam()
+	 */
+	public String getIconParam() {
+		return ScConstants.SC_ICON;
 	}
 	
 	/**

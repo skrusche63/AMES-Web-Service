@@ -492,8 +492,7 @@ public class JaxrBase {
 		AuditableEventImpl auditableEvent = getLastEvent(ro);
 		if (auditableEvent != null) user = auditableEvent.getUser();
 
-		if (user != null) return getAuthorName(user);
-		return null;
+		return getAuthorName(user);
 		
 	}
 
@@ -653,7 +652,7 @@ public class JaxrBase {
 	 * @return
 	 * @throws JAXRException
 	 */
-	public FileUtil getRepositoryItemImpl(ExtrinsicObjectImpl eo) throws JAXRException {
+	public FileUtil getRepositoryItem(ExtrinsicObjectImpl eo) throws JAXRException {
 
 		DataHandler handler = eo.getRepositoryItem();
 		if (handler != null) {
@@ -673,7 +672,7 @@ public class JaxrBase {
 		    	/* 
 		    	 * Determine filename (optional)
 		    	 */
-		    	SlotImpl slot = (SlotImpl) eo.getSlot("File");
+		    	SlotImpl slot = (SlotImpl) eo.getSlot(JaxrConstants.SLOT_FILE);
 		    	if (slot != null) {
 		    		
 		    		Object[] values = slot.getValues().toArray();

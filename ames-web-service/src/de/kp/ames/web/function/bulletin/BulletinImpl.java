@@ -18,14 +18,24 @@ package de.kp.ames.web.function.bulletin;
  *
  */
 
+import javax.servlet.http.HttpServletRequest;
+
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.GuiFactory;
+import de.kp.ames.web.function.GuiRenderer;
 
 public class BulletinImpl extends ServiceImpl {
-	
+
+	/*
+	 * Reference to the registered renderer
+	 */
+	private GuiRenderer renderer;
+
 	public BulletinImpl() {
+		renderer = GuiFactory.getInstance().getRenderer();
 	}
 	
 	/* (non-Javadoc)
@@ -34,7 +44,51 @@ public class BulletinImpl extends ServiceImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_SUBMIT)) {
+		if (methodName.equals(FncConstants.METH_GET)) {
+			/*
+			 * Call get method
+			 */
+
+			String recipient = this.method.getAttribute("recipient");
+			if (recipient == null) {
+				this.sendNotImplemented(ctx);
+
+			} else {
+				/*
+				 * Additional request parameters are directly provided
+				 * by a (e.g.) SmartGwt 3.0 widget (Grid) and must be 
+				 * retrieved from the respective Http Request
+				 */
+				HttpServletRequest request = ctx.getRequest();
+				
+				String startParam = renderer.getStartParam();
+				String start = request.getParameter(startParam);
+				
+				String limitParam = renderer.getLimitParam();
+				String limit = request.getParameter(limitParam);
+		
+				if ((start == null) || (limit == null)) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
+
+					try {
+						/*
+						 * JSON response
+						 */
+						String content = get(recipient, start, limit);
+						sendJSONResponse(content, ctx.getResponse());
+
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+
+					}
+					
+				}
+
+			}
+
+		} else if (methodName.equals(FncConstants.METH_SUBMIT)) {
 			/*
 			 * Call submit method
 			 */
@@ -78,6 +132,35 @@ public class BulletinImpl extends ServiceImpl {
 		}
 	}
 	
+	/**
+	 * A helper method to retrieve all postings registered
+	 * for a certain recipient
+	 * 
+	 * @param recipient
+	 * @param start
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	private String get(String recipient, String start, String limit) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+		
+		PostingDQM dqm = new PostingDQM(jaxrHandle);
+		content = dqm.getPostings(recipient, start, limit);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+		
+	}
 	/**
 	 * A helper method to submit a certain posting
 	 * 

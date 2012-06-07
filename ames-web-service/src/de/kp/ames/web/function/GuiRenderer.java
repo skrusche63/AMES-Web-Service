@@ -22,7 +22,12 @@ import org.json.JSONArray;
 public interface GuiRenderer {
 
 	/*
-	 * Build GUI grid representation from a JSON array
+	 * Build a Grid representation from a JSON array
+	 */
+	public String createGrid(JSONArray jArray);
+	
+	/*
+	 * Build a paged GUI grid representation from a JSON array
 	 */
 	public String createGrid(JSONArray jArray, String start, String limit);
 	
@@ -31,5 +36,10 @@ public interface GuiRenderer {
 	 */
 	public String getStartParam();
 	public String getLimitParam();
+	
+	/*
+	 * Icon parameter
+	 */
+	public String getIconParam();
 	
 }
