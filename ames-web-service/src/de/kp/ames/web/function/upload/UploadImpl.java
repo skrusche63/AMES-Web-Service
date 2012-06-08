@@ -28,6 +28,7 @@ import org.apache.commons.io.FilenameUtils;
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.malware.MalwareScanner;
 import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.core.transform.cache.XslCacheManager;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
 
@@ -111,11 +112,7 @@ public class UploadImpl extends ServiceImpl {
 										 * "save" uploaded transformator for later processing in
 										 * the transformator cache of the transformator processor
 										 */
-
-										// TODO
-										
-										//XSLTProcessor processor = XSLTProcessor.getInstance();								
-										//processor.setUploadTransformator(requestHandle, item, filename, mimetype, bytes);
+										XslCacheManager.getInstance().setToCache(item, filename, mimetype, bytes);
 
 									} else {
 										Exception e = new Exception("[UploadImpl] Information type <" + type + "> is not supported");

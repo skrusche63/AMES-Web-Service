@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.chat;
+package de.kp.ames.web.function.mail;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -40,20 +40,20 @@ import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
 
-public class ChatLCM extends JaxrLCM {
+public class MailLCM extends JaxrLCM {
 
-	public ChatLCM(JaxrHandle jaxrHandle) {
+	public MailLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
-
+	
 	/**
-	 * Register a new chat message
+	 * Register a new mail message
 	 * 
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	public String submitChat(String data) throws Exception {
+	public String submitMail(String data) throws Exception {
 		
 		/*
 		 * Initialize transaction
@@ -67,17 +67,17 @@ public class ChatLCM extends JaxrLCM {
 
 		/*
 		 * Create or retrieve registry package that is 
-		 * responsible for managing chat message
+		 * responsible for managing mail message
 		 */
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Chat);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Mail);
 		if (list.size() == 0) {
 			/*
 			 * Create container
 			 */
-			container = createChatPackage();
+			container = createMailPackage();
 			
 		} else {
 			/*
@@ -96,7 +96,7 @@ public class ChatLCM extends JaxrLCM {
 
 		/* 
 		 * Create extrinsic object that serves as a container for
-		 * the respective chat message
+		 * the respective mail message
 		 */
 		eo = createExtrinsicObject();
 		if (eo == null) throw new JAXRException();
@@ -104,7 +104,7 @@ public class ChatLCM extends JaxrLCM {
 		/* 
 		 * Identifier
 		 */
-		String eid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.CHAT_PRE);
+		String eid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.MAIL_PRE);
 
 		eo.setLid(eid);
 		eo.getKey().setId(eid);
@@ -144,7 +144,7 @@ public class ChatLCM extends JaxrLCM {
 		c.setName(createInternationalString(Locale.US, "Chat Classification"));
 
 		/* 
-		 * Associate classification and chat message
+		 * Associate classification and mail message
 		 */
 		eo.addClassification(c);
 		transaction.addObjectToSave(c);				
@@ -171,20 +171,20 @@ public class ChatLCM extends JaxrLCM {
 	}
 
 	/**
-	 * A helper method to create a new chat message container
+	 * A helper method to create a new mail message container
 	 * 
 	 * @return
 	 * @throws JAXRException
 	 */
-	private RegistryPackageImpl createChatPackage() throws JAXRException  {
+	private RegistryPackageImpl createMailPackage() throws JAXRException  {
 
 		JaxrTransaction transaction = new JaxrTransaction();
-		RegistryPackageImpl rp = this.createRegistryPackage(Locale.US, "Chat Messages");
+		RegistryPackageImpl rp = this.createRegistryPackage(Locale.US, "Mails");
 	
 		/* 
 		 * Identifier
 		 */
-		String uid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.CHAT_PRE);
+		String uid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.MAIL_PRE);
 	
 		rp.setLid(uid);
 		rp.getKey().setId(uid);
@@ -192,7 +192,7 @@ public class ChatLCM extends JaxrLCM {
 		/* 
 		 * Description
 		 */
-		rp.setDescription(createInternationalString(Locale.US, "This is the top package to manage all chat messages submitted to this RegRep instance."));
+		rp.setDescription(createInternationalString(Locale.US, "This is the top package to manage all mails submitted to this RegRep instance."));
 		
 		/*
 		 * home url
@@ -209,11 +209,11 @@ public class ChatLCM extends JaxrLCM {
 		/*
 		 * Create classification
 		 */
-		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Chat);
-		c.setName(createInternationalString(Locale.US, "Chat Classification"));
+		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Mail);
+		c.setName(createInternationalString(Locale.US, "Mail Classification"));
 
 		/* 
-		 * Associate classification and chat container
+		 * Associate classification and mail container
 		 */
 		rp.addClassification(c);
 		transaction.addObjectToSave(c);				
@@ -225,5 +225,4 @@ public class ChatLCM extends JaxrLCM {
 		return (RegistryPackageImpl)jaxrHandle.getDQM().getRegistryObject(uid);
 	
 	}
-
 }

@@ -393,6 +393,12 @@ public class RequestDispatcher extends HttpServlet {
 		services.add(new BaseParam("group", "de.kp.ames.web.core.group.GroupImpl"));
 
 		/*
+		 * Mail Service to support the registration (submit)
+		 * of mail messages via a selected mail client
+		 */
+		services.add(new BaseParam("mail", "de.kp.ames.web.function.mail.MailImpl"));
+
+		/*
 		 * Map Service is used to retrieve map specific
 		 * information such as layers
 		 */

@@ -37,6 +37,7 @@ public class FncConstants {
 	 * Communication Classification Nodes
 	 */
 	public static String FNC_ID_Chat = FNC_ID + ":Chat";
+	public static String FNC_ID_Mail = FNC_ID + ":Mail";
 		
 	/*
 	 * Community Classification Nodes
@@ -72,6 +73,7 @@ public class FncConstants {
 	public static String AFFILIATION_PRE;
 	public static String CHAT_PRE;
 	public static String COMMUNITY_PRE;
+	public static String MAIL_PRE;
 	public static String POSTING_PRE;
     public static String SECURITY_PRE;
 
@@ -135,6 +137,7 @@ public class FncConstants {
 		AFFILIATION_PRE = basePrefix + ":affiliation";
 		CHAT_PRE        = basePrefix + ":chat";
 		COMMUNITY_PRE   = basePrefix + ":community";
+		MAIL_PRE        = basePrefix + ":mail";
 		POSTING_PRE     = basePrefix + ":posting";
 		SECURITY_PRE    = basePrefix + ":security";
 		
