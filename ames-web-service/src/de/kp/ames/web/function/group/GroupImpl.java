@@ -18,16 +18,31 @@ package de.kp.ames.web.function.group;
  *
  */
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONArray;
+
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.GuiFactory;
+import de.kp.ames.web.function.GuiRenderer;
 
 public class GroupImpl extends ServiceImpl {
 
+	/*
+	 * Reference to the registered renderer
+	 */
+	private GuiRenderer renderer;
+
 	public GroupImpl() {		
+		renderer = GuiFactory.getInstance().getRenderer();
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.core.RequestContext)
+	 */
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
@@ -77,8 +92,43 @@ public class GroupImpl extends ServiceImpl {
 				this.sendNotImplemented(ctx);
 				
 			} else {
-				
-				if (type.equals(FncConstants.FNC_ID_Community)) {
+
+				if (type.equals(FncConstants.FNC_ID_Category)) {
+					/*
+					 * Additional request parameters are directly provided
+					 * by a (e.g.) SmartGwt 3.0 widget (Grid) and must be 
+					 * retrieved from the respective Http Request
+					 */
+					HttpServletRequest request = ctx.getRequest();
+					
+					String startParam = renderer.getStartParam();
+					String start = request.getParameter(startParam);
+					
+					String limitParam = renderer.getLimitParam();
+					String limit = request.getParameter(limitParam);
+			
+					if ((start == null) || (limit == null)) {
+						this.sendNotImplemented(ctx);
+						
+					} else {
+
+						/* 
+						 * Retrieve all categories that are actually registered 
+						 * to classify a certain community of interest
+						 */
+
+						try {
+							String content = categories(start, limit);
+							sendJSONResponse(content, ctx.getResponse());
+
+						} catch (Exception e) {
+							this.sendBadRequest(ctx, e);
+
+						}
+						
+					}
+					
+				} else if (type.equals(FncConstants.FNC_ID_Community)) {
 					
 					/*
 					 * Retrieve communities of interest, either
@@ -146,6 +196,40 @@ public class GroupImpl extends ServiceImpl {
 	}
 
 	/**
+	 * Retrieve registered categories in a JSON paging
+	 * Grid representation
+	 * 
+	 * @param start
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	private String categories(String start, String limit) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+
+		GroupDQM dqm = new GroupDQM(jaxrHandle);
+		JSONArray jArray = dqm.getCategories();
+
+		/*
+		 * Render result
+		 */
+		content = renderer.createGrid(jArray);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+		
+	}
+
+	/**
 	 * Retrieve registered communities 
 	 * 
 	 * @param affiliate
@@ -163,7 +247,20 @@ public class GroupImpl extends ServiceImpl {
 		JaxrClient.getInstance().logon(jaxrHandle);
 
 		GroupDQM dqm = new GroupDQM(jaxrHandle);
-		content = dqm.getCommunities(affiliate, format);
+		JSONArray jArray = dqm.getCommunities(affiliate);
+		
+		/*
+		 * Render result
+		 */
+		if (format.equals(FncConstants.FNC_FORMAT_ID_Grid)) {
+			
+			GuiRenderer renderer = GuiFactory.getInstance().getRenderer();
+			content = renderer.createGrid(jArray);
+			
+		} else {
+			throw new Exception("[GroupImpl] Format <" + format + "> not supported.");
+
+		}
 		
 		/*
 		 * Logoff
@@ -295,8 +392,6 @@ public class GroupImpl extends ServiceImpl {
 	 * - get namespaces
 	 * 
 	 * - html
-	 * 
-	 * - post as grid
 	 * 
 	 * - responsibility as grid
 	 * 

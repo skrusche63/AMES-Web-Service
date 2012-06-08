@@ -30,9 +30,8 @@ import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
+import de.kp.ames.web.core.vocab.VocabDQM;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.function.GuiFactory;
-import de.kp.ames.web.function.GuiRenderer;
 
 public class GroupDQM extends JaxrDQM {
 
@@ -44,19 +43,30 @@ public class GroupDQM extends JaxrDQM {
 	public GroupDQM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
+
+	/**
+	 * Retrieve all registered categories as 
+	 * a sort list in a JSON representation
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public JSONArray getCategories() throws Exception {
+
+		VocabDQM vocab = new VocabDQM(jaxrHandle);
+		return vocab.getConceptsByParent(FncConstants.FNC_ID_Community);
 	
+	}
+
 	/**
 	 * Get registered communities as a sorted list in 
 	 * a JSON representation
 	 * 
 	 * @param affiliate
-	 * @param format
 	 * @return
 	 * @throws Exception
 	 */
-	public String getCommunities(String affiliate, String format) throws Exception {
-		
-		String result = null;
+	public JSONArray getCommunities(String affiliate) throws Exception {
 		
 		/*
 		 * Sort result by name of community
@@ -79,23 +89,8 @@ public class GroupDQM extends JaxrDQM {
 
 		}
 			
-		JSONArray jArray = new JSONArray(collector.values());
-		
-		/*
-		 * Render result
-		 */
-		if (format.equals(FncConstants.FNC_FORMAT_ID_Grid)) {
-			
-			GuiRenderer renderer = GuiFactory.getInstance().getRenderer();
-			result = renderer.createGrid(jArray);
-			
-		} else {
-			throw new Exception("[GroupDQM] Format <" + format + "> not supported.");
-
-		}
-		 
-		return result;
+		return new JSONArray(collector.values());
 		
 	}
-	
+
 }
