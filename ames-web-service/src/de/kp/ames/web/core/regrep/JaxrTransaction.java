@@ -22,6 +22,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.xml.registry.infomodel.Key;
+
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 
@@ -130,6 +132,30 @@ public class JaxrTransaction {
 	 */
 	public ArrayList<RegistryObjectImpl> getObjectsToDelete() {
 		return this.objectsToDelete;
+	}
+	
+	/**
+	 * @return
+	 */
+	public ArrayList<Key> getKeysToDelete() {
+		
+		ArrayList<Key> keysToDelete = new ArrayList<Key>();
+		if (this.objectsToDelete == null) return keysToDelete;
+		
+		try {
+			for (RegistryObjectImpl object:this.objectsToDelete) {
+				keysToDelete.add(object.getKey());
+			}
+		
+		} catch (Exception e) {
+			// do nothing
+			
+		} finally {
+			
+		}
+		
+		return keysToDelete;
+		
 	}
 	
 	/**

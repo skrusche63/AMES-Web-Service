@@ -81,6 +81,20 @@ public class JaxrLCM extends JaxrBase {
 	}
 
 	/**
+	 * A helper method to create an AffiliatedWith Association instance
+	 * 
+	 * @param targetObject
+	 * @return
+	 * @throws JAXRException
+	 */
+	public AssociationImpl createAssociation_AffiliatedWith(RegistryObjectImpl targetObject) throws JAXRException {
+
+		String associationType = CanonicalSchemes.CANONICAL_ASSOCIATION_TYPE_ID_AffiliatedWith;
+    	return createAssociation(associationType, targetObject);
+
+	}
+
+	/**
 	 * A helper method to create a RelatedTo Association instance
 	 * 
 	 * @param targetObject
@@ -119,6 +133,25 @@ public class JaxrLCM extends JaxrBase {
 
 		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
 		return (ClassificationImpl) blcm.createClassification(concept);
+
+	}
+
+	/**
+	 * A helper method to create a list of classification instances
+	 * 
+	 * @param conceptTypes
+	 * @return
+	 * @throws JAXRException
+	 */
+	public ArrayList<ClassificationImpl> createClassifications(ArrayList<String> conceptTypes) throws JAXRException {
+		
+		ArrayList<ClassificationImpl> clases = new ArrayList<ClassificationImpl>();
+
+		for (String conceptType:conceptTypes) {
+			clases.add(createClassification(conceptType));
+		}
+		
+		return clases;
 
 	}
 
@@ -382,6 +415,183 @@ public class JaxrLCM extends JaxrBase {
         return (TelephoneNumberImpl)blcm.createTelephoneNumber();
 
 	}
+	
+	/**
+	 * This method updates the existing classifications of a 
+	 * certain registry object from a list of classification 
+	 * nodes; this implies that certain classifications must 
+	 * be deleted and other one created
+	 * 
+	 * @param ro
+	 * @param conceptTypes
+	 * @return
+	 * @throws JAXRException
+	 */
+	public List<ClassificationImpl> updateClassifications(RegistryObjectImpl ro, ArrayList<String>conceptTypes) throws JAXRException {
+		
+		/* 
+		 * This list contains all classifications that have to be created
+		 */
+		List<ClassificationImpl> clases = null;
+
+		/* 
+		 * The list of classifications (key) that must be deleted
+		 */
+		ArrayList<Key> objectsToDelete = new ArrayList<Key>();
+
+		/* 
+		 * Determine classifications actually assigned to the registry object;
+		 * at least an empty array list is returned (see RegistryObjectImpl)
+		 */
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+		List<ClassificationImpl> classifications = dqm.getClassifications_ByObject(ro);
+
+		if ((classifications.size() == 0) && (conceptTypes == null)) return clases;
+
+		if (classifications.size() == 0) {			
+			/* 
+			 * The registry object has no classifications assigned, 
+			 * so create classifications for each classification node
+			 */
+			clases = createClassifications(conceptTypes);
+			/*
+			 * Classifications that have been added to a registry
+			 * object must not be saved explicitly
+			 */
+			ro.addClassifications(clases);			
+			
+		} else {
+
+			if (conceptTypes == null) {
+
+				/*
+				 * Remove all allocated classifications
+				 */
+				for (ClassificationImpl classification:classifications) {
+					objectsToDelete.add(classification.getKey());
+				}
+
+				/*
+				 * Delete classifications
+				 */
+				deleteObjects(objectsToDelete);
+				
+			} else {
+				
+				/* Determine which classifications have to be removed, 
+				 * and which have to created
+				 */
+				for (ClassificationImpl classification:classifications) {
+					
+					ConceptImpl concept = (ConceptImpl) classification.getConcept();
+					if (concept == null) continue;
+					
+					String conceptType = concept.getId();
+					if (conceptTypes.contains(conceptType)) {
+						/* 
+						 * The respective classification already exists; this implies 
+						 * that nothing must be done, so remove conceptType from input 
+						 * list
+						 */
+						conceptTypes.remove(conceptType);
+	
+					} else {
+
+						/* 
+						 * Remove classification from registry object
+						 */
+						ro.removeClassification(classification);
+						
+						/* 
+						 * In this case the respective classification 
+						 * MUST be removed
+						 */
+						objectsToDelete.add(classification.getKey());
+					}
+				}
+				
+				/*
+				 * Delete classifications
+				 */
+				deleteObjects(objectsToDelete);
+				
+				/* 
+				 * Create classifications from remaining conceptTypes
+				 */
+				if (conceptTypes.isEmpty() == false) {
+
+					clases = createClassifications(conceptTypes);
+					/*
+					 * Classifications that have been added to a registry
+					 * object must not be saved explicitly
+					 */
+					ro.addClassifications(clases);			
+				
+				}
+			}
+
+		}
+		
+		return clases;
+		
+	}
+
+	/**
+	 * This method deletes a set of classifications from
+	 * a certain registry object, that refer to classification
+	 * nodes that start with a specific prefix
+	 * 
+	 * @param ro
+	 * @param prefix
+	 * @throws JAXRException
+	 */
+	public void deleteClassifications(RegistryObjectImpl ro, String prefix) throws JAXRException {
+
+		/* 
+		 * The list of classifications (key) that must be deleted
+		 */
+		ArrayList<Key> objectsToDelete = new ArrayList<Key>();
+
+		/* 
+		 * Determine classifications actually assigned to the registry object;
+		 * at least an empty array list is returned (see RegistryObjectImpl)
+		 */
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+
+		List<ClassificationImpl> classifications = dqm.getClassifications_ByObject(ro);
+		if (classifications.size() > 0) return;
+		
+		/*
+		 * Remove all allocated classifications
+		 */
+		for (ClassificationImpl classification:classifications) {
+				
+			ConceptImpl concept = (ConceptImpl) classification.getConcept();
+			if (concept == null) continue;
+			
+			String conceptType = concept.getId();
+			if (conceptType.startsWith(prefix)) {
+
+				/* 
+				 * Remove classification from registry object
+				 */
+				ro.removeClassification(classification);
+				
+				/*
+				 * The respective classification MUST be removed
+				 */
+				objectsToDelete.add(classification.getKey());
+
+			}
+			
+		}
+			
+		/* 
+		 * Delete the detected classifications
+		 */
+		deleteObjects(objectsToDelete);
+		
+	}
 
 	/**
 	 * Public method to delete a registry object identified
@@ -469,7 +679,7 @@ public class JaxrLCM extends JaxrBase {
 	 * @param transaction
 	 * @throws Exception
 	 */
-	private void deleteRegistryObject(RegistryObjectImpl ro, JaxrTransaction transaction) throws Exception {
+	public void deleteRegistryObject(RegistryObjectImpl ro, JaxrTransaction transaction) throws Exception {
 
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		

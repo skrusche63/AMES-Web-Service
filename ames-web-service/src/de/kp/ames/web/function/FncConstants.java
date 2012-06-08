@@ -36,7 +36,10 @@ public class FncConstants {
 	/*
 	 * Community Classification Nodes
 	 */
-	public static String FNC_ID_Community = FNC_ID + ":Community";
+	public static String FNC_ID_Affiliation = FNC_ID + ":Affiliation";
+	public static String FNC_ID_Category    = FNC_ID + ":Category";
+	public static String FNC_ID_Contact     = FNC_ID + ":Contact";	
+	public static String FNC_ID_Community   = FNC_ID + ":Community";
 	
 	/*
 	 * Format Classification Nodes
@@ -57,6 +60,7 @@ public class FncConstants {
 	/*
 	 * Identity Prefixes
 	 */	
+	public static String AFFILIATION_PRE;
 	public static String COMMUNITY_PRE;
 	public static String POSTING_PRE;
     public static String SECURITY_PRE;
@@ -118,9 +122,10 @@ public class FncConstants {
 		 */		
 		String basePrefix = bundle.getString(GlobalConstants.BASE_PRE);
 		
-		COMMUNITY_PRE = basePrefix + ":community";
-		POSTING_PRE   = basePrefix + ":posting";
-		SECURITY_PRE  = basePrefix + ":security";
+		AFFILIATION_PRE = basePrefix + ":affiliation";
+		COMMUNITY_PRE   = basePrefix + ":community";
+		POSTING_PRE     = basePrefix + ":posting";
+		SECURITY_PRE    = basePrefix + ":security";
 		
 		/*
 		 * Method attributes

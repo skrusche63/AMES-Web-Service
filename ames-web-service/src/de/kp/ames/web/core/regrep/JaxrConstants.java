@@ -39,6 +39,12 @@ public class JaxrConstants {
     public static String RIM_URI       = "rimExternalURI";
     public static String RIM_VERSION   = "rimVersion";
    
+    /*
+     * Semantic description
+     */
+	public static String RIM_CATE = "rimCategory";
+	public static String RIM_CLAS = "rimClassification";
+
 	/* 
 	 * Person name (User)
 	 */

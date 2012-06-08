@@ -35,6 +35,37 @@ public class GroupImpl extends ServiceImpl {
 			/*
 			 * Call delete method
 			 */
+			String type = this.method.getAttribute(FncConstants.ATTR_TYPE);			
+			if (type == null) {
+				this.sendNotImplemented(ctx);
+				
+			} else {
+				
+				/*
+				 * Delete request requires data
+				 */
+				String data = this.getRequestData(ctx);
+				if (data == null) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
+					
+					try {
+						/*
+						 * JSON response
+						 */
+						String content = delete(type, data);
+						sendJSONResponse(content, ctx.getResponse());
+
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+
+					}
+					
+				}
+				
+			}
+
 		} else if (methodName.equals(FncConstants.METH_GET)) {
 			/*
 			 * Call get method
@@ -87,12 +118,18 @@ public class GroupImpl extends ServiceImpl {
 					this.sendNotImplemented(ctx);
 					
 				} else {
+
+					/* 
+					 * 'source' is an optional parameter that refers to an already
+					 * existing registry object referenced by this submission
+					 */
+					String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);	
 					
 					try {
 						/*
 						 * JSON response
 						 */
-						String content = submit(type, data);
+						String content = submit(type, source, data);
 						sendJSONResponse(content, ctx.getResponse());
 
 					} catch (Exception e) {
@@ -137,14 +174,15 @@ public class GroupImpl extends ServiceImpl {
 	}
 
 	/**
-	 * This method submits community and community related
-	 * information to the OASIS ebXML RegRep
+	 * This method deletes community related information
+	 * from an OASIS ebXML RegRep
 	 * 
 	 * @param type
 	 * @param data
 	 * @return
+	 * @throws Exception
 	 */
-	private String submit(String type, String data) throws Exception {
+	private String delete(String type, String data) throws Exception {
 
 		String content = null;
 		
@@ -152,7 +190,78 @@ public class GroupImpl extends ServiceImpl {
 		 * Login
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
-		if (type.equals(FncConstants.FNC_ID_Community)) {
+		
+		if (type.equals(FncConstants.FNC_ID_Affiliation)) {
+
+			GroupLCM lcm = new GroupLCM(jaxrHandle);
+			content = lcm.deleteAffiliation(data);
+		
+		} else {
+			throw new Exception("[GroupImpl] Information type <" + type + "> is not supported");
+		
+		}
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+		
+	}
+
+	/**
+	 * This method submits community and community related
+	 * information to the OASIS ebXML RegRep
+	 * 
+	 * @param type
+	 * @param source
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	private String submit(String type, String source, String data) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+		
+		if (type.equals(FncConstants.FNC_ID_Affiliation)) {
+
+			/* 
+			 * An affiliation is a specific association between a certain user
+			 * and a community of interest; with this request an affiliation is
+			 * either created or modified; 'source' refers to an existing affiliation
+			 */
+
+			GroupLCM lcm = new GroupLCM(jaxrHandle);
+			content = lcm.submitAffiliation(source, data);
+
+		} else if (type.equals(FncConstants.FNC_ID_Category)) {
+
+			/* 
+			 * A 'category' is a specific classification for a community of
+			 * interest; it is used to distinguish between groups with and
+			 * without responsibility about namespaces
+			 */
+
+			GroupLCM lcm = new GroupLCM(jaxrHandle);
+			content = lcm.submitCategory(data);
+
+		} else if (type.equals(FncConstants.FNC_ID_Contact)) {
+
+			/* 
+			 * This is a request to assign a certain primary contact
+			 * to a specific community of interest; source refers to
+			 * the organization that is affected by this request 
+			 */
+
+			GroupLCM lcm = new GroupLCM(jaxrHandle);
+			content = lcm.submitContact(source, data);
+
+		} else if (type.equals(FncConstants.FNC_ID_Community)) {
 			
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
 			content = lcm.submitCommunity(data);
