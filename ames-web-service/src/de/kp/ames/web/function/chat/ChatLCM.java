@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.bulletin;
+package de.kp.ames.web.function.chat;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -24,18 +24,13 @@ import java.util.Locale;
 import javax.activation.DataHandler;
 import javax.xml.registry.JAXRException;
 
-import org.freebxml.omar.client.xml.registry.infomodel.AssociationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.format.json.JsonConstants;
-import de.kp.ames.web.core.reactor.ReactorParams;
-import de.kp.ames.web.core.reactor.ReactorParams.RAction;
-import de.kp.ames.web.core.reactor.ReactorImpl;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
@@ -45,45 +40,44 @@ import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
 
-public class PostingLCM extends JaxrLCM {
+public class ChatLCM extends JaxrLCM {
 
-	/**
-	 * Constructor requires jaxrHandle
-	 * 
-	 * @param jaxrHandle
-	 */
-	public PostingLCM(JaxrHandle jaxrHandle) {
+	public ChatLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
 
 	/**
-	 * Submit posting for a certain recipient; a posting is an 
-	 * extrinsic object that is classified as posting and contained
-	 * within the respective positing container; 
+	 * Register a new chat message
 	 * 
-	 * the association to the addressed recipient is mapped onto an 
-	 * association instance
-	 * 
-	 * @param recipient
 	 * @param data
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public String submit(String recipient, String data) throws Exception {
+	public String submitChat(String data) throws Exception {
 		
 		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+	
+		/*
+		 * Initialize data
+		 */
+		JSONObject jForm = new JSONObject(data);
+
+		/*
 		 * Create or retrieve registry package that is 
-		 * responsible for managing posting
+		 * responsible for managing chat message
 		 */
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Posting);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Chat);
 		if (list.size() == 0) {
 			/*
 			 * Create container
 			 */
-			container = createPostingPackage();
+			container = createChatPackage();
 			
 		} else {
 			/*
@@ -94,41 +88,42 @@ public class PostingLCM extends JaxrLCM {
 		}
 
 		/* 
-		 * A positing is a certain extrinsic object that holds all relevant
-		 * and related information in a single JSON repository item
+		 * A chat message is a certain extrinsic object that holds all 
+		 * relevant and related information in a single JSON repository item
 		 */
 
 		ExtrinsicObjectImpl eo = null;
-		JaxrTransaction transaction = new JaxrTransaction();
 
-		// create extrinsic object that serves as a container for
-		// the respective posting
+		/* 
+		 * Create extrinsic object that serves as a container for
+		 * the respective chat message
+		 */
 		eo = createExtrinsicObject();
 		if (eo == null) throw new JAXRException();
 				
 		/* 
 		 * Identifier
 		 */
-		String eid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.POSTING_PRE);
+		String eid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.CHAT_PRE);
+
+		eo.setLid(eid);
+		eo.getKey().setId(eid);
 
 		/*
-		* Name & description using default locale
-		*/
-		
-		JSONObject jPosting = new JSONObject(data);
+		 * Name & description using default locale
+		 */
+		String name = jForm.getString(JaxrConstants.RIM_NAME);				
+		eo.setName(createInternationalString(name));
 
-		String name = jPosting.getString(JaxrConstants.RIM_NAME);				
-		String desc = jPosting.getString(JaxrConstants.RIM_DESC);
+		String desc = jForm.getString(JaxrConstants.RIM_DESC);
+		eo.setDescription(createInternationalString(desc));
+		
 		/* 
 		 * Home url
 		 */
 		String home = jaxrHandle.getEndpoint().replace("/soap", "");
-		
-		/*
-		 * Set properties
-		 */
-		setProperties(eo, eid, name, desc, home);
-				
+		eo.setHome(home);
+
 		/* 
 		 * Mime type & handler
 		 */
@@ -145,8 +140,8 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Create classification
 		 */
-		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Posting);
-		c.setName(createInternationalString(Locale.US, "Posting Classification"));
+		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Chat);
+		c.setName(createInternationalString(Locale.US, "Chat Classification"));
 
 		/* 
 		 * Associate classification and posting container
@@ -159,90 +154,37 @@ public class PostingLCM extends JaxrLCM {
 		 */
 		container.addRegistryObject(eo);
 		transaction.addObjectToSave(container);
-				
-		/*
-		 * Create association
-		 */
-		String aid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.POSTING_PRE);
-		AssociationImpl a = this.createAssociation_RelatedTo(eo);		
-		/*
-		 * Set properties
-		 */
-		setProperties(a, aid, "Recipient Link", "This is a directed association between a recipient and the respective posting.", home);
 
 		/*
-		 * Source object
+		 * Save objects	
 		 */
-		RegistryObjectImpl so = (RegistryObjectImpl)jaxrHandle.getDQM().getRegistryObject(recipient);
-		
-		so.addAssociation(a);
-		transaction.addObjectToSave(a);
-		
-		/*
-		 * Add association to container
-		 */
-		container.addRegistryObject(a);
-
-		/*
-		 * Save objects
-		 */
-		transaction.addObjectToSave(container);
 		saveObjects(transaction.getObjectsToSave(), false, false);
 
 		/*
-		 * Supply reactor
-		 */
-		ReactorParams reactorParams = new ReactorParams(eo, FncConstants.FNC_ID_Posting, RAction.C_INDEX);
-		ReactorImpl.onSubmit(reactorParams);
-
-		/*
-		 * Set JSON response
+		 * Prepare response 
 		 */
 		JSONObject jResponse = new JSONObject();
-				
-		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, "Posting successfully created.");
+		jResponse.put(JsonConstants.J_ID, eid);
 		
 		return jResponse.toString();
 		
 	}
 
-	private void setProperties(RegistryObjectImpl ro, String uid, String name, String desc, String home) throws JAXRException {
-
-		/*
-		 * Identifier
-		 */
-		ro.setLid(uid);
-		ro.getKey().setId(uid);
-
-		/*
-		 * Name & description using default locale
-		 */
-		ro.setName(createInternationalString(name));
-		ro.setDescription(createInternationalString(desc));
-
-		/* 
-		 * Home url
-		 */
-		ro.setHome(home);
-
-	}
-	
 	/**
-	 * A helper method to create a new posting container
+	 * A helper method to create a new chat message container
 	 * 
 	 * @return
 	 * @throws JAXRException
 	 */
-	private RegistryPackageImpl createPostingPackage() throws JAXRException  {
+	private RegistryPackageImpl createChatPackage() throws JAXRException  {
 
 		JaxrTransaction transaction = new JaxrTransaction();
-		RegistryPackageImpl rp = this.createRegistryPackage(Locale.US, "Postings");
+		RegistryPackageImpl rp = this.createRegistryPackage(Locale.US, "Chat Messages");
 	
 		/* 
 		 * Identifier
 		 */
-		String uid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.POSTING_PRE);
+		String uid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.CHAT_PRE);
 	
 		rp.setLid(uid);
 		rp.getKey().setId(uid);
@@ -250,7 +192,7 @@ public class PostingLCM extends JaxrLCM {
 		/* 
 		 * Description
 		 */
-		rp.setDescription(createInternationalString(Locale.US, "This is the top package to manage all postings submitted to this RegRep instance."));
+		rp.setDescription(createInternationalString(Locale.US, "This is the top package to manage all chat messages submitted to this RegRep instance."));
 		
 		/*
 		 * home url
@@ -267,8 +209,8 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Create classification
 		 */
-		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Posting);
-		c.setName(createInternationalString(Locale.US, "Posting Classification"));
+		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Chat);
+		c.setName(createInternationalString(Locale.US, "Chat Classification"));
 
 		/* 
 		 * Associate classification and posting container
@@ -283,5 +225,5 @@ public class PostingLCM extends JaxrLCM {
 		return (RegistryPackageImpl)jaxrHandle.getDQM().getRegistryObject(uid);
 	
 	}
-	
+
 }

@@ -34,6 +34,11 @@ public class FncConstants {
 	public static String FNC_ID_Posting = FNC_ID + ":Posting";
 	
 	/*
+	 * Communication Classification Nodes
+	 */
+	public static String FNC_ID_Chat = FNC_ID + ":Chat";
+		
+	/*
 	 * Community Classification Nodes
 	 */
 	public static String FNC_ID_Affiliation = FNC_ID + ":Affiliation";
@@ -53,14 +58,19 @@ public class FncConstants {
 	/*
 	 * Security Classification Nodes
 	 */
-	public static String FNC_ID_Security = FNC_ID + ":Security";
-	
+	public static String FNC_ID_Security = FNC_ID + ":Security";	
 	public static String FNC_SECURITY_ID_Safe  = FNC_ID_Security + ":Safe";
 
+	/*
+	 * Transformation Classification Nodes
+	 */
+	public static String FNC_ID_Transformator =  FNC_ID + ":Transformator";
+	
 	/*
 	 * Identity Prefixes
 	 */	
 	public static String AFFILIATION_PRE;
+	public static String CHAT_PRE;
 	public static String COMMUNITY_PRE;
 	public static String POSTING_PRE;
     public static String SECURITY_PRE;
@@ -75,7 +85,6 @@ public class FncConstants {
     public static String METH_DELETE    = "delete";
     public static String METH_EXPLORE   = "explore";
     public static String METH_GET       = "get";
-    public static String METH_GET_CREDS = "get-creds";
     
     // retrieve a kml representation of a certain registry 
     // package and all of its content
@@ -87,7 +96,7 @@ public class FncConstants {
     public static String METH_LAYERS    = "layers";
     public static String METH_MODULE    = "module";
 	public static String METH_REGISTER  = "register";
-	public static String METH_SET_CREDS = "set-creds";
+	public static String METH_SET       = "set";
 	public static String METH_SUBMIT    = "submit";
 	
 	/*
@@ -97,6 +106,7 @@ public class FncConstants {
 	public static String ATTR_AFFILIATE;
 	public static String ATTR_ENDPOINT;
 	public static String ATTR_FORMAT;
+	public static String ATTR_ITEM;
 	public static String ATTR_KEYPASS;
 	public static String ATTR_RECIPIENT;
 	public static String ATTR_SERVICE;
@@ -123,6 +133,7 @@ public class FncConstants {
 		String basePrefix = bundle.getString(GlobalConstants.BASE_PRE);
 		
 		AFFILIATION_PRE = basePrefix + ":affiliation";
+		CHAT_PRE        = basePrefix + ":chat";
 		COMMUNITY_PRE   = basePrefix + ":community";
 		POSTING_PRE     = basePrefix + ":posting";
 		SECURITY_PRE    = basePrefix + ":security";
@@ -134,6 +145,7 @@ public class FncConstants {
 		ATTR_AFFILIATE = bundle.getString(GlobalConstants.ATTR_AFFILIATE);
 		ATTR_ENDPOINT  = bundle.getString(GlobalConstants.ATTR_ENDPOINT);
 		ATTR_FORMAT    = bundle.getString(GlobalConstants.ATTR_FORMAT);
+		ATTR_ITEM      = bundle.getString(GlobalConstants.ATTR_ITEM);
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
 		ATTR_RECIPIENT = bundle.getString(GlobalConstants.ATTR_RECIPIENT);
 		ATTR_SERVICE   = bundle.getString(GlobalConstants.ATTR_SERVICE);

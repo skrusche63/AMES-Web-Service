@@ -19,6 +19,7 @@ package de.kp.ames.web.function.chat;
  */
 
 import de.kp.ames.web.core.RequestContext;
+import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.function.FncConstants;
 
@@ -37,9 +38,55 @@ public class ChatImpl extends ServiceImpl {
 			/*
 			 * Call submit method
 			 */
+			String data = this.getRequestData(ctx);
+			if (data == null) {
+				this.sendNotImplemented(ctx);
+				
+			} else {
+
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = submit(data);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+
+			}
 			
 		}
 		
 	}
 
+	/**
+	 * A helper method to submit a chat message
+	 * 
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	private String submit(String data) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+
+		ChatLCM lcm = new ChatLCM(jaxrHandle);
+		content = lcm.submitChat(data);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+
+	}
+	
 }

@@ -69,6 +69,7 @@ public class GlobalConstants {
 	public static String ATTR_ENDPOINT  = "ames.attr.endpoint";
 	public static String ATTR_FORMAT    = "ames.attr.format";
 	public static String ATTR_IMAGE     = "ames.attr.image";
+	public static String ATTR_ITEM      = "ames.attr.item";
 	public static String ATTR_KEYPASS 	= "ames.attr.keypass";
 	public static String ATTR_LIMIT   	= "ames.attr.limit";
 	public static String ATTR_RECIPIENT = "ames.attr.recipient";
@@ -101,5 +102,14 @@ public class GlobalConstants {
 	 * URL Part
 	 */	
 	public static String WMS_PATH = "/wms";
+	
+	/*
+	 * Malware scan
+	 */
+	public static String MALWARE_SCAN = "ames.malware.scan";
+	
+	public static String MALWARE_DAEMON_HOST    = "ames.malware.daemon.host";
+	public static String MALWARE_DAEMON_PORT    = "ames.malware.daemon.port";
+	public static String MALWARE_DAEMON_TIMEOUT = "ames.malware.daemon.timeout";
 
 }

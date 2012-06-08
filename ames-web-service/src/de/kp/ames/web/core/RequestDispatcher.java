@@ -373,6 +373,12 @@ public class RequestDispatcher extends HttpServlet {
 		services.add(new BaseParam("bulletin", "de.kp.ames.web.function.bulletin.BulletinImpl"));
 		
 		/*
+		 * Chat Service to support the registration (submit)
+		 * of chat message via a selected chat client
+		 */
+		services.add(new BaseParam("chat", "de.kp.ames.web.function.chat.ChatImpl"));
+		
+		/*
 		 * Disclaimer Service to represent a disclaimer
 		 * to the caller's user; a disclaimer is returned
 		 * after successful login
@@ -416,6 +422,12 @@ public class RequestDispatcher extends HttpServlet {
 		 * transformation of registry objects
 		 */
 		services.add(new BaseParam("transform", "de.kp.ames.web.core.transform.TransformImpl"));
+
+		/*
+		 * Upload service that supports the upload and
+		 * malware scan of external files
+		 */
+		services.add(new BaseParam("upload", "de.kp.ames.web.function.upload.UploadImpl"));
 
 		/*
 		 * Core Vocabulary Service is used to retrieve all

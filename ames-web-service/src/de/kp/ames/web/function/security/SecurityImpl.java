@@ -58,7 +58,7 @@ public class SecurityImpl extends ServiceImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_GET_CREDS)) {
+		if (methodName.equals(FncConstants.METH_GET)) {
 			
 			/*
 			 * Call getCreds method
@@ -70,7 +70,7 @@ public class SecurityImpl extends ServiceImpl {
 			} else {
 				
 				try {
-					String content = getCreds(service);
+					String content = get(service);
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -80,7 +80,7 @@ public class SecurityImpl extends ServiceImpl {
 				
 			}
 
-		} else if (methodName.equals(FncConstants.METH_SET_CREDS)) {
+		} else if (methodName.equals(FncConstants.METH_SET)) {
 
 			/*
 			 * Call setCreds method
@@ -113,7 +113,7 @@ public class SecurityImpl extends ServiceImpl {
 			} else {
 
 				try {
-					String content = setCreds(service, creds);
+					String content = set(service, creds);
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -206,7 +206,7 @@ public class SecurityImpl extends ServiceImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String getCreds(String service) throws Exception {
+	private String get(String service) throws Exception {
 		
 		/*
 		 * Retrieve caller's unique identifier
@@ -293,7 +293,7 @@ public class SecurityImpl extends ServiceImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String setCreds(String service, String creds) throws Exception {
+	private String set(String service, String creds) throws Exception {
 
 		/*
 		 * Retrieve caller's unique identifier
