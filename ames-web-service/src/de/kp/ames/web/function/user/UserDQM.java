@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.group;
+package de.kp.ames.web.function.user;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -20,7 +20,7 @@ package de.kp.ames.web.function.group;
 
 import java.util.List;
 
-import org.freebxml.omar.client.xml.registry.infomodel.OrganizationImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,62 +30,41 @@ import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
-import de.kp.ames.web.core.vocab.VocabDQM;
-import de.kp.ames.web.function.FncConstants;
 
-public class GroupDQM extends JaxrDQM {
-	
-	/**
-	 * Constructor
-	 * 
-	 * @param jaxrHandle
-	 */
-	public GroupDQM(JaxrHandle jaxrHandle) {
+public class UserDQM extends JaxrDQM {
+
+	public UserDQM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
-
-	/**
-	 * Retrieve all registered categories as 
-	 * a sort list in a JSON representation
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public JSONArray getCategories() throws Exception {
-
-		VocabDQM vocab = new VocabDQM(jaxrHandle);
-		return vocab.getConceptsByParent(FncConstants.FNC_ID_Community);
 	
-	}
-
 	/**
-	 * Get registered communities as a sorted list in 
-	 * a JSON representation
+	 * Retrieve affiliated users of a certain community
+	 * as a sorted list in a JSON representation
 	 * 
-	 * @param affiliate
+	 * @param community
 	 * @return
 	 * @throws Exception
 	 */
-	public JSONArray getCommunities(String affiliate) throws Exception {
-		
+	public JSONArray getUsers(String community) throws Exception {
+
 		/*
-		 * Sort result by name of community
+		 * Sort result by name of user
 		 */
 		StringCollector collector = new StringCollector();
 
 		/*
 		 * Determine SQL statement
 		 */
-		String sqlString = (affiliate == null) ? JaxrSQL.getSQLOrganizations_All() : JaxrSQL.getSQLOrganisations_AffiliatedWith(affiliate);
-		List<OrganizationImpl> organizations = getOrganizationsByQuery(sqlString);
+		String sqlString = (community == null) ? JaxrSQL.getSQLUsers_All() : JaxrSQL.getSQLUsers_AffiliatedWith(community);
+		List<UserImpl> users = getUsersByQuery(sqlString);
 		
 		/*
 		 * Build sorted list
 		 */
-		for (OrganizationImpl organization:organizations) {
+		for (UserImpl user:users) {
 
-			JSONObject jOrganization = JsonProvider.getOrganization(jaxrHandle, organization);	
-			collector.put(jOrganization.getString(JaxrConstants.RIM_NAME), jOrganization);
+			JSONObject jUser = JsonProvider.getUser(jaxrHandle, user);	
+			collector.put(jUser.getString(JaxrConstants.RIM_NAME), jUser);
 
 		}
 			

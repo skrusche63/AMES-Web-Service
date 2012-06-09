@@ -24,21 +24,14 @@ import org.json.JSONArray;
 
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
-import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.function.GuiFactory;
-import de.kp.ames.web.function.GuiRenderer;
 import de.kp.ames.web.function.access.wms.WmsConsumer;
 
-public class MapImpl extends ServiceImpl {
-
-	/*
-	 * Reference to the registered renderer
-	 */
-	private GuiRenderer renderer;
+public class MapImpl extends BusinessImpl {
 	
 	public MapImpl() {		
-		renderer = GuiFactory.getInstance().getRenderer();
+		super();
 	}
 	
 	public void processRequest(RequestContext ctx) {	
@@ -200,7 +193,7 @@ public class MapImpl extends ServiceImpl {
 	 * 
 	 * @return
 	 */
-	private String layers(String endpoint, String start, String limit) {
+	private String layers(String endpoint, String start, String limit) throws Exception {
 		
 		/*
 		 * Connect to WMS service defined by endpoint parameter
@@ -211,7 +204,8 @@ public class MapImpl extends ServiceImpl {
 		/*
 		 * Process result to be compliant to request SmartGwt 3.0 GUI
 		 */
-		return renderer.createGrid(jCapabilities, start, limit);
+		String format = FncConstants.FNC_FORMAT_ID_Grid;
+		return render(jCapabilities, start, limit, format);
 
 	}
 	

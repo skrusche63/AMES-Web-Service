@@ -850,9 +850,9 @@ public class JaxrDQM extends JaxrBase {
 	 * @return
 	 * @throws JAXRException
 	 */
-	public List<UserImpl> getUser_AffiliatedWith(OrganizationImpl group) throws JAXRException {
+	public List<UserImpl> getUsers_AffiliatedWith(OrganizationImpl group) throws JAXRException {
 		
-		String sqlString = JaxrSQL.getSQLUser_AffiliatedWith(group.getId());
+		String sqlString = JaxrSQL.getSQLUsers_AffiliatedWith(group.getId());
     	return getUsersByQuery(sqlString);    	
 
 	}
@@ -864,9 +864,9 @@ public class JaxrDQM extends JaxrBase {
 	 * @return
 	 * @throws JAXRException 
 	 */
-	public List<UserImpl> getUser_All() throws JAXRException {
+	public List<UserImpl> getUsers_All() throws JAXRException {
 		
-		String sqlString = JaxrSQL.getSQLUser_All();
+		String sqlString = JaxrSQL.getSQLUsers_All();
     	return getUsersByQuery(sqlString);    	
 
 	}

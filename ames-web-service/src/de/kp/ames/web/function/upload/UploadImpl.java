@@ -27,14 +27,15 @@ import org.apache.commons.io.FilenameUtils;
 
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.malware.MalwareScanner;
-import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.core.transform.cache.XslCacheManager;
 import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 
-public class UploadImpl extends ServiceImpl {
+public class UploadImpl extends BusinessImpl {
 
 	public UploadImpl() {
+		super();
 	}
 
 	/* (non-Javadoc)

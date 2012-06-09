@@ -42,10 +42,14 @@ public class FncConstants {
 	/*
 	 * Community Classification Nodes
 	 */
-	public static String FNC_ID_Affiliation = FNC_ID + ":Affiliation";
-	public static String FNC_ID_Category    = FNC_ID + ":Category";
-	public static String FNC_ID_Contact     = FNC_ID + ":Contact";	
-	public static String FNC_ID_Community   = FNC_ID + ":Community";
+	public static String FNC_ID_Affiliation    = FNC_ID + ":Affiliation";
+	public static String FNC_ID_Category       = FNC_ID + ":Category";
+	public static String FNC_ID_Contact        = FNC_ID + ":Contact";	
+	public static String FNC_ID_Community      = FNC_ID + ":Community";
+	public static String FNC_ID_Namespace      = FNC_ID + ":Namespace";	
+	public static String FNC_ID_Responsibility = FNC_ID + ":Responsibility";
+	public static String FNC_ID_Role           = FNC_ID + ":Role";
+	public static String FNC_ID_User           = FNC_ID + ":User";
 	
 	/*
 	 * Format Classification Nodes
@@ -74,6 +78,7 @@ public class FncConstants {
 	public static String CHAT_PRE;
 	public static String COMMUNITY_PRE;
 	public static String MAIL_PRE;
+	public static String NAMESPACE_PRE;
 	public static String POSTING_PRE;
     public static String SECURITY_PRE;
 
@@ -106,6 +111,7 @@ public class FncConstants {
 	 */
 	public static String ATTR_ALIAS;
 	public static String ATTR_AFFILIATE;
+	public static String ATTR_COMMUNITY;
 	public static String ATTR_ENDPOINT;
 	public static String ATTR_FORMAT;
 	public static String ATTR_ITEM;
@@ -138,6 +144,7 @@ public class FncConstants {
 		CHAT_PRE        = basePrefix + ":chat";
 		COMMUNITY_PRE   = basePrefix + ":community";
 		MAIL_PRE        = basePrefix + ":mail";
+		NAMESPACE_PRE   = basePrefix + ":namespace";
 		POSTING_PRE     = basePrefix + ":posting";
 		SECURITY_PRE    = basePrefix + ":security";
 		
@@ -146,6 +153,7 @@ public class FncConstants {
 		 */
 		ATTR_ALIAS     = bundle.getString(GlobalConstants.ATTR_ALIAS);
 		ATTR_AFFILIATE = bundle.getString(GlobalConstants.ATTR_AFFILIATE);
+		ATTR_COMMUNITY = bundle.getString(GlobalConstants.ATTR_COMMUNITY);
 		ATTR_ENDPOINT  = bundle.getString(GlobalConstants.ATTR_ENDPOINT);
 		ATTR_FORMAT    = bundle.getString(GlobalConstants.ATTR_FORMAT);
 		ATTR_ITEM      = bundle.getString(GlobalConstants.ATTR_ITEM);

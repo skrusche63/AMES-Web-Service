@@ -109,6 +109,20 @@ public class JaxrLCM extends JaxrBase {
 	}
 
 	/**
+	 * A helper method to create a  ResponsibleFor Association instance
+	 * 
+	 * @param targetObject
+	 * @return
+	 * @throws JAXRException
+	 */
+	public AssociationImpl createAssociation_ResponsibleFor(RegistryObjectImpl targetObject) throws JAXRException {
+
+		String associationType = CanonicalSchemes.CANONICAL_ASSOCIATION_TYPE_ID_ResponsibleFor;
+    	return createAssociation(associationType, targetObject);
+
+	}
+
+	/**
 	 * A helper method to create a Classification instance
 	 * 
 	 * @param conceptType
@@ -537,6 +551,53 @@ public class JaxrLCM extends JaxrBase {
 	}
 
 	/**
+	 * This method deletes all classification of
+	 * a certain registry object
+	 * 
+	 * @param ro
+	 * @param prefix
+	 * @throws JAXRException
+	 */
+	public void deleteClassifications_All(RegistryObjectImpl ro) throws JAXRException {
+
+		/* 
+		 * The list of classifications (key) that must be deleted
+		 */
+		ArrayList<Key> objectsToDelete = new ArrayList<Key>();
+
+		/* 
+		 * Determine classifications actually assigned to the registry object;
+		 * at least an empty array list is returned (see RegistryObjectImpl)
+		 */
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+
+		List<ClassificationImpl> classifications = dqm.getClassifications_ByObject(ro);
+		if (classifications.size() > 0) return;
+		
+		/*
+		 * Remove all allocated classifications
+		 */
+		for (ClassificationImpl classification:classifications) {
+			/* 
+			 * Remove classification from registry object
+			 */
+			ro.removeClassification(classification);
+			
+			/*
+			 * The respective classification MUST be removed
+			 */
+			objectsToDelete.add(classification.getKey());
+			
+		}
+			
+		/* 
+		 * Delete the detected classifications
+		 */
+		deleteObjects(objectsToDelete);
+		
+	}
+
+	/**
 	 * This method deletes a set of classifications from
 	 * a certain registry object, that refer to classification
 	 * nodes that start with a specific prefix
@@ -545,7 +606,7 @@ public class JaxrLCM extends JaxrBase {
 	 * @param prefix
 	 * @throws JAXRException
 	 */
-	public void deleteClassifications(RegistryObjectImpl ro, String prefix) throws JAXRException {
+	public void deleteClassifications_Prefix(RegistryObjectImpl ro, String prefix) throws JAXRException {
 
 		/* 
 		 * The list of classifications (key) that must be deleted

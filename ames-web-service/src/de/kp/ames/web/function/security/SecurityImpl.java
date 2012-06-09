@@ -39,17 +39,18 @@ import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
-import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncSQL;
 
-public class SecurityImpl extends ServiceImpl {
+public class SecurityImpl extends BusinessImpl {
 
 	/**
 	 * Constructor
 	 */
 	public SecurityImpl() {
+		super();
 	}
 	
 	/* (non-Javadoc)

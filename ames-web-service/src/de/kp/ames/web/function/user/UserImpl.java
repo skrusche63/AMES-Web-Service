@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.mail;
+package de.kp.ames.web.function.user;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,59 +18,71 @@ package de.kp.ames.web.function.mail;
  *
  */
 
+import org.json.JSONArray;
+
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 
-public class MailImpl extends BusinessImpl {
+public class UserImpl extends BusinessImpl {
 
-	public MailImpl() {
+	public UserImpl() {
 		super();
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.core.RequestContext)
 	 */
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_SUBMIT)) {
+		if (methodName.equals(FncConstants.METH_GET)) {
 			/*
-			 * Call submit method
+			 * Call get method
 			 */
-			String data = this.getRequestData(ctx);
-			if (data == null) {
+			String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+	
+			if (format == null) {
 				this.sendNotImplemented(ctx);
 				
 			} else {
+				/* 
+				 * Retrieve all users that are affiliated to a certain community (source)
+				 */
+				String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);
+				if (source == null) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
 
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = submit(data);
-					sendJSONResponse(content, ctx.getResponse());
+					try {
+						String content = users(source, format);
+						sendJSONResponse(content, ctx.getResponse());
 
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
 
+					}
+					
 				}
-
+				
 			}
 			
 		}
-		
+
 	}
 
 	/**
-	 * A helper method to submit a mail message
+	 * Retrieve all users that are affiliated to 
+	 * a certain community of interest
 	 * 
-	 * @param data
+	 * @param community
+	 * @param format
 	 * @return
 	 * @throws Exception
 	 */
-	private String submit(String data) throws Exception {
+	private String users(String community, String format) throws Exception {
 
 		String content = null;
 		
@@ -79,15 +91,20 @@ public class MailImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
 
-		MailLCM lcm = new MailLCM(jaxrHandle);
-		content = lcm.submitMail(data);
+		UserDQM dqm = new UserDQM(jaxrHandle);
+		JSONArray jArray = dqm.getUsers(community);
+		
+		/*
+		 * Render result
+		 */
+		content = render(jArray, format);
 		
 		/*
 		 * Logoff
 		 */
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return content;
-
+		
 	}
 
 }

@@ -378,10 +378,12 @@ public class GroupLCM extends JaxrLCM {
 		 */
 
 		String prefix = FncConstants.FNC_ID_Community;
-		deleteClassifications(ro, prefix);
+		deleteClassifications_Prefix(ro, prefix);
 
 		/*
-		 * Create classification
+		 * Create classification (note, that it must
+		 * NOT be added to the transaction, as it is
+		 * registered implicitly)
 		 */
 		ClassificationImpl clas = createClassification(category);
 		ro.addClassification(clas);

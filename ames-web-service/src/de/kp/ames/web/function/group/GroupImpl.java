@@ -24,20 +24,13 @@ import org.json.JSONArray;
 
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
-import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.function.GuiFactory;
-import de.kp.ames.web.function.GuiRenderer;
 
-public class GroupImpl extends ServiceImpl {
+public class GroupImpl extends BusinessImpl {
 
-	/*
-	 * Reference to the registered renderer
-	 */
-	private GuiRenderer renderer;
-
-	public GroupImpl() {		
-		renderer = GuiFactory.getInstance().getRenderer();
+	public GroupImpl() {	
+		super();
 	}
 
 	/* (non-Javadoc)
@@ -118,7 +111,7 @@ public class GroupImpl extends ServiceImpl {
 						 */
 
 						try {
-							String content = categories(start, limit);
+							String content = categories(start, limit, format);
 							sendJSONResponse(content, ctx.getResponse());
 
 						} catch (Exception e) {
@@ -204,7 +197,7 @@ public class GroupImpl extends ServiceImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String categories(String start, String limit) throws Exception {
+	private String categories(String start, String limit, String format) throws Exception {
 
 		String content = null;
 		
@@ -219,7 +212,7 @@ public class GroupImpl extends ServiceImpl {
 		/*
 		 * Render result
 		 */
-		content = renderer.createGrid(jArray);
+		content = render(jArray, start, limit, format);
 		
 		/*
 		 * Logoff
@@ -252,15 +245,7 @@ public class GroupImpl extends ServiceImpl {
 		/*
 		 * Render result
 		 */
-		if (format.equals(FncConstants.FNC_FORMAT_ID_Grid)) {
-			
-			GuiRenderer renderer = GuiFactory.getInstance().getRenderer();
-			content = renderer.createGrid(jArray);
-			
-		} else {
-			throw new Exception("[GroupImpl] Format <" + format + "> not supported.");
-
-		}
+		content = render(jArray, format);
 		
 		/*
 		 * Logoff
@@ -362,7 +347,7 @@ public class GroupImpl extends ServiceImpl {
 			
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
 			content = lcm.submitCommunity(data);
-			
+
 		} else {
 			throw new Exception("[GroupImpl] Information type <" + type + "> is not supported");
 		
@@ -375,31 +360,15 @@ public class GroupImpl extends ServiceImpl {
 		return content;
 		
 	}
-
+	
 	/*
-	 * APP-6 Maker
-	 * 
-	 * - get
-	 * 
-	 * - html
-	 * 
-	 * - load
-	 * 
 	 * Sense Maker
-	 * 
-	 * - category as grid
 	 * 
 	 * - get namespaces
 	 * 
 	 * - html
 	 * 
-	 * - responsibility as grid
-	 * 
-	 * - role as grid
-	 * 
 	 * - load
-	 * 
-	 * - user as grid
 	 * 
 	 * 
 	 */

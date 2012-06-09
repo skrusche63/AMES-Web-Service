@@ -20,22 +20,17 @@ package de.kp.ames.web.function.bulletin;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONArray;
+
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
-import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.function.GuiFactory;
-import de.kp.ames.web.function.GuiRenderer;
 
-public class BulletinImpl extends ServiceImpl {
-
-	/*
-	 * Reference to the registered renderer
-	 */
-	private GuiRenderer renderer;
+public class BulletinImpl extends BusinessImpl {
 
 	public BulletinImpl() {
-		renderer = GuiFactory.getInstance().getRenderer();
+		super();
 	}
 	
 	/* (non-Javadoc)
@@ -152,7 +147,13 @@ public class BulletinImpl extends ServiceImpl {
 		JaxrClient.getInstance().logon(jaxrHandle);
 		
 		PostingDQM dqm = new PostingDQM(jaxrHandle);
-		content = dqm.getPostings(recipient, start, limit);
+		JSONArray jArray = dqm.getPostings(recipient);
+		
+		/*
+		 * Render result
+		 */
+		String format = FncConstants.FNC_FORMAT_ID_Grid;
+		content = render(jArray, start, limit, format);
 		
 		/*
 		 * Logoff

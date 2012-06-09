@@ -53,7 +53,7 @@ public class PostingDQM extends JaxrDQM {
 	}
 	
 	/**
-	 * Retrieve sorted list of postings that refere to a 
+	 * Retrieve sorted list of postings that refer to a 
 	 * specific recipient
 	 * 
 	 * @param recipient
@@ -62,7 +62,7 @@ public class PostingDQM extends JaxrDQM {
 	 * @return
 	 * @throws Exception
 	 */
-	public String getPostings(String recipient, String start, String limit) throws Exception {
+	public JSONArray getPostings(String recipient) throws Exception {
 		
 		/*
 		 * Sort result by datetime
@@ -110,12 +110,7 @@ public class PostingDQM extends JaxrDQM {
 
 		}
 		
-		/*
-		 * Render result
-		 */
-		
-		JSONArray jArray = new JSONArray(collector.values());
-		return renderer.createGrid(jArray, start, limit);
+		return new JSONArray(collector.values());
 
 	}
 	

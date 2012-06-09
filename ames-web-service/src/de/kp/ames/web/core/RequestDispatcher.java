@@ -405,6 +405,12 @@ public class RequestDispatcher extends HttpServlet {
 		services.add(new BaseParam("map", "de.kp.ames.web.function.map.MapImpl"));
 
 		/*
+		 * Role service is used to retrieve role & rights
+		 * specific information
+		 */
+		services.add(new BaseParam("role", "de.kp.ames.web.function.role.RoleImpl"));
+
+		/*
 		 * RSS Service is used to provide actually registered
 		 * and temporarily cached registry objects as an RSS feed
 		 */
@@ -434,6 +440,12 @@ public class RequestDispatcher extends HttpServlet {
 		 * malware scan of external files
 		 */
 		services.add(new BaseParam("upload", "de.kp.ames.web.function.upload.UploadImpl"));
+
+		/*
+		 * User service is used to retrieve user
+		 * specific information
+		 */
+		services.add(new BaseParam("user", "de.kp.ames.web.function.user.UserImpl"));
 
 		/*
 		 * Core Vocabulary Service is used to retrieve all

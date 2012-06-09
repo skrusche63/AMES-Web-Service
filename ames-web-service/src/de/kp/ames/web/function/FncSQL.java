@@ -18,6 +18,8 @@ package de.kp.ames.web.function;
  *
  */
 
+import org.freebxml.omar.common.CanonicalSchemes;
+
 public class FncSQL {
 
 	/*
@@ -28,14 +30,23 @@ public class FncSQL {
 	 * The password safe is actually restricted to support an automatic login to 
 	 * chat and mail servers associated with AMES
 	 */
-	private static String SAFE  = FncConstants.FNC_SECURITY_ID_Safe;
+	private static String SAFE = FncConstants.FNC_SECURITY_ID_Safe;
 
+	/*
+	 * This is the classification of a certain namespace
+	 */
+	private static String NAMESPACE = FncConstants.FNC_ID_Namespace;
+	
 	/*
 	 * This is the classification of a posting associated with the bulletin
 	 * board functionality
 	 */
 	private static String POSTING = FncConstants.FNC_ID_Posting;
 
+	/*
+	 * Association classification nodes
+	 */
+	private static String RESPONSIBLE_FOR = CanonicalSchemes.CANONICAL_ASSOCIATION_TYPE_ID_ResponsibleFor;
 	
 	/**
 	 * @param user
@@ -61,6 +72,37 @@ public class FncSQL {
 
 		return query;
 		
+	}
+
+	/**
+	 * @param responsible
+	 * @return
+	 */
+	public static String getSQLResponsibilities_All(String responsible) {
+		
+		String query = null;
+
+		if (responsible == null) {
+			/* 
+			 * In case of no responsible provided, all registered namespaces
+			 * must be retrieved
+			 */
+			query = "SELECT DISTINCT rp.* FROM RegistryPackage rp, Classification clas" + 
+			" WHERE clas.classifiedObject=rp.id AND clas.classificationNode='" + NAMESPACE + "'";
+			
+		} else {
+			/* 
+			 * In this case we retrieve all registry packages that are characterised 
+			 * as target objects in an association between an organization or user; 
+			 * the respective association type describes the relation as 'responsible for'
+			 */
+			query = "SELECT DISTINCT rp.* FROM RegistryPackage rp, Association a WHERE a.sourceObject='" + responsible + "'" +
+			" AND a.associationType='" + RESPONSIBLE_FOR + "' AND a.targetObject=rp.id";
+    	
+		}
+
+		return query;    	
+
 	}
 
 }

@@ -20,17 +20,20 @@ package de.kp.ames.web.core.format.json;
 
 public class JsonConstants {
 
-	public static String J_DESC     = "desc";
-	public static String J_END  	= "end";
-	public static String J_ID  		= "id";
-	public static String J_KEY      = "key";
-	public static String J_LAT  	= "lat";
-	public static String J_LON  	= "lon";
-	public static String J_MIME     = "mimetype";
-	public static String J_NAME 	= "name";
-	public static String J_START 	= "start";
+	public static String J_AFFILIATE = "affiliate";
+	public static String J_CHECK     = "checked";
+	public static String J_DESC      = "desc";
+	public static String J_END  	 = "end";
+	public static String J_GROUP     = "group";
+	public static String J_ID  		 = "id";
+	public static String J_KEY       = "key";
+	public static String J_LAT  	 = "lat";
+	public static String J_LON  	 = "lon";
+	public static String J_MIME      = "mimetype";
+	public static String J_NAME 	 = "name";
+	public static String J_START 	 = "start";
 
-	public static String J_SUCCESS  = "success";
-	public static String J_MESSAGE  = "message";
-	
+	public static String J_SUCCESS   = "success";
+	public static String J_MESSAGE   = "message";
+
 }

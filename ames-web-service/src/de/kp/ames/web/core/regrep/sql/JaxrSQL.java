@@ -673,7 +673,7 @@ public class JaxrSQL {
 	 * @param group
 	 * @return
 	 */
-	public static String getSQLUser_AffiliatedWith(String group) {
+	public static String getSQLUsers_AffiliatedWith(String group) {
 		
     	String query = "SELECT DISTINCT u.* FROM User_ u, Association a WHERE a.sourceObject=u.id" + 
     	" AND a.associationType='" + AFFILIATED_WITH + "' AND a.targetObject='" + group + "'";
@@ -688,7 +688,7 @@ public class JaxrSQL {
 	 * 
 	 * @return
 	 */
-	public static String getSQLUser_All() {
+	public static String getSQLUsers_All() {
 		
     	String query = "SELECT u.* FROM User_ u";
     	return query;    	

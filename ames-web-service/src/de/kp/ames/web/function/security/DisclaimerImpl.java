@@ -19,14 +19,15 @@ package de.kp.ames.web.function.security;
  */
 
 import de.kp.ames.web.core.RequestContext;
-import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.function.BusinessImpl;
 
-public class DisclaimerImpl extends ServiceImpl {
+public class DisclaimerImpl extends BusinessImpl {
 
 	/**
 	 * Constructor
 	 */
 	public DisclaimerImpl() {		
+		super();
 	}
 	
 	/* (non-Javadoc)

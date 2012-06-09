@@ -18,11 +18,12 @@ package de.kp.ames.web.function.access;
  *
  */
 
-import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.function.BusinessImpl;
 
-public class AccessImpl extends ServiceImpl {
+public class AccessImpl extends BusinessImpl {
 
 	public AccessImpl() {
+		super();
 	}
 	
 }

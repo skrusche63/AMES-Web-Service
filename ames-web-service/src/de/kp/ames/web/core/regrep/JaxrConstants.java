@@ -42,8 +42,9 @@ public class JaxrConstants {
     /*
      * Semantic description
      */
-	public static String RIM_CATE = "rimCategory";
-	public static String RIM_CLAS = "rimClassification";
+	public static String RIM_CATE  = "rimCategory";
+	public static String RIM_CLAS  = "rimClassification";
+	public static String RIM_ROLES = "rimRoles";
 
 	/* 
 	 * Person name (User)
@@ -82,6 +83,11 @@ public class JaxrConstants {
 	public static String RIM_CONTACT_NAME  = "rimContactName";
 	public static String RIM_CONTACT_EMAIL = "rimContactEmail";
 	public static String RIM_CONTACT_PHONE = "rimContactPhone";
+
+	/*
+	 * Namespace
+	 */
+	public static String RIM_NAMESPACE = "rimNamespace";
 
 	/*
 	 * Symbol representation

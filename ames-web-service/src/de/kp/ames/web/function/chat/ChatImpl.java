@@ -20,12 +20,13 @@ package de.kp.ames.web.function.chat;
 
 import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
-import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 
-public class ChatImpl extends ServiceImpl {
+public class ChatImpl extends BusinessImpl {
 
-	public ChatImpl() {		
+	public ChatImpl() {	
+		super();
 	}
 	
 	/* (non-Javadoc)

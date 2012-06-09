@@ -19,6 +19,7 @@ package de.kp.ames.web.core.format.json;
  */
 
 import org.freebxml.omar.client.xml.registry.infomodel.OrganizationImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
@@ -26,6 +27,11 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
 public class JsonProvider {
 
 	public static JSONObject getOrganization(JaxrHandle jaxrHandle, OrganizationImpl organization) throws Exception {
+		// TODO
+		return null;
+	}
+	
+	public static JSONObject getUser(JaxrHandle jaxrHandle, UserImpl user) throws Exception {
 		// TODO
 		return null;
 	}
