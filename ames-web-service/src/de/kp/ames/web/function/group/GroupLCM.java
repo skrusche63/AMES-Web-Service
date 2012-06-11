@@ -32,7 +32,6 @@ import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.format.json.JsonConstants;
 import de.kp.ames.web.core.format.json.JsonUtil;
 import de.kp.ames.web.core.reactor.ReactorImpl;
 import de.kp.ames.web.core.reactor.ReactorParams;
@@ -51,14 +50,14 @@ public class GroupLCM extends PartyLCM {
 
 	/*
 	 * Response messages
-	 */
-	private static String MISSING_PARAMETERS   = FncMessages.MISSING_PARAMETERS;
-	
+	 */	
 	private static String AFFILIATION_CREATED  = FncMessages.AFFILIATION_CREATED;
 	private static String AFFILIATION_DELETED  = FncMessages.AFFILIATION_DELETED;
+	private static String AFFILIATION_UPDATED  = FncMessages.AFFILIATION_UPDATED;
 	private static String CATEGORY_CREATED     = FncMessages.CATEGORY_CREATED;
 	private static String CONTACT_CREATED      = FncMessages.CONTACT_CREATED;
 	private static String ORGANIZATION_CREATED = FncMessages.ORGANIZATION_CREATED;
+	private static String ORGANIZATION_UPDATED = FncMessages.ORGANIZATION_UPDATED;
 
 	/*
 	 * Predefined name for a system generated affiliation
@@ -104,28 +103,18 @@ public class GroupLCM extends PartyLCM {
 	 * @throws Exception
 	 */
 	public String deleteAffiliation(String data) throws Exception {
-
-		JSONObject jResponse = new JSONObject();
-		
-		/*
-		 * Prepare (pessimistic) response message
-		 */
-		String message = MISSING_PARAMETERS;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, false);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
 		
 		/*
 		 * Initialize transaction
 		 */
 		JaxrTransaction transaction = new JaxrTransaction();
-	
+
 		/*
 		 * Initialize data
 		 */
 		JSONObject jForm = new JSONObject(data);
 
-		if ((jForm.has(RIM_SOURCE) == false) || (jForm.has(RIM_TARGET) == false)) return jResponse.toString();
+		if ((jForm.has(RIM_SOURCE) == false) || (jForm.has(RIM_TARGET) == false)) return transaction.getJResponse().toString();
 		
 		/*
 		 * Determine source object (user)
@@ -164,13 +153,9 @@ public class GroupLCM extends PartyLCM {
 		deleteObjects(transaction.getKeysToDelete());
 
 		/*
-		 * Update response message
+		 * Retrieve response message
 		 */
-		message = AFFILIATION_DELETED;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
-
+		JSONObject jResponse = transaction.getJResponse(AFFILIATION_DELETED);
 		return jResponse.toString();
 
 	}
@@ -185,16 +170,6 @@ public class GroupLCM extends PartyLCM {
 	 */
 	public String submitAffiliation(String source, String data) throws Exception {
 
-		JSONObject jResponse = new JSONObject();
-		
-		/*
-		 * Prepare (pessimistic) response message
-		 */
-		String message = MISSING_PARAMETERS;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, false);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
-	
 		/*
 		 * Initialize transaction
 		 */
@@ -214,7 +189,7 @@ public class GroupLCM extends PartyLCM {
 			RegistryObjectImpl sourceObject = null;
 			RegistryObjectImpl targetObject = null;
 
-			if ((jForm.has(RIM_SOURCE) == false) || (jForm.has(RIM_TARGET) == false)) return jResponse.toString();
+			if ((jForm.has(RIM_SOURCE) == false) || (jForm.has(RIM_TARGET) == false)) return transaction.getJResponse().toString();
 
 			/*
 			 * Determine source object (user)
@@ -267,9 +242,10 @@ public class GroupLCM extends PartyLCM {
 			saveObjects(transaction.getObjectsToSave(), false, false);
 
 			/*
-			 * Update response message
+			 * Retrieve response message
 			 */
-			message = AFFILIATION_CREATED;
+			JSONObject jResponse = transaction.getJResponse(affiliation.getId(), AFFILIATION_CREATED);
+			return jResponse.toString();
 
 			
 		} else {
@@ -295,16 +271,12 @@ public class GroupLCM extends PartyLCM {
 			saveObjects(transaction.getObjectsToSave(), false, false);
 
 			/*
-			 * Update response message
+			 * Retrieve response message
 			 */
-			message = AFFILIATION_CREATED;
+			JSONObject jResponse = transaction.getJResponse(affiliation.getId(), AFFILIATION_UPDATED);
+			return jResponse.toString();
 			
 		}
-		
-		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
-
-		return jResponse.toString();
 
 	}
 
@@ -317,16 +289,6 @@ public class GroupLCM extends PartyLCM {
 	 * @throws Exception
 	 */
 	public String submitCategory(String data) throws Exception {
-
-		JSONObject jResponse = new JSONObject();
-		
-		/*
-		 * Prepare (pessimistic) response message
-		 */
-		String message = MISSING_PARAMETERS;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, false);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
 	
 		/*
 		 * Initialize transaction
@@ -373,13 +335,9 @@ public class GroupLCM extends PartyLCM {
 		saveObjects(transaction.getObjectsToSave(), false, false);
 
 		/*
-		 * Update response message
+		 * Retrieve response message
 		 */
-		message = CATEGORY_CREATED;
-
-		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
-		
+		JSONObject jResponse = transaction.getJResponse(CATEGORY_CREATED);
 		return jResponse.toString();
 		
 	}
@@ -394,16 +352,6 @@ public class GroupLCM extends PartyLCM {
 	 * @throws Exception
 	 */
 	public String submitContact(String source, String data) throws Exception {
-
-		JSONObject jResponse = new JSONObject();
-		
-		/*
-		 * Prepare (pessimistic) response message
-		 */
-		String message = MISSING_PARAMETERS;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, false);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
 	
 		/*
 		 * Initialize transaction
@@ -443,13 +391,9 @@ public class GroupLCM extends PartyLCM {
 		saveObjects(transaction.getObjectsToSave(), false, false);
 			
 		/*
-		 * Update response message
+		 * Retrieve response message
 		 */
-		message = CONTACT_CREATED;
-	
-		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
-		
+		JSONObject jResponse = transaction.getJResponse(CONTACT_CREATED);
 		return jResponse.toString();
 		
 	}
@@ -461,16 +405,6 @@ public class GroupLCM extends PartyLCM {
 	 * @return
 	 */
 	public String submitCommunity(String data) throws Exception {
-
-		JSONObject jResponse = new JSONObject();
-			
-		/*
-		 * Prepare (pessimistic) response message
-		 */
-		String message = MISSING_PARAMETERS;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, false);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
 
 		/*
 		 * Initialize transaction
@@ -492,41 +426,42 @@ public class GroupLCM extends PartyLCM {
 		String source = jForm.has(RIM_ID) ? jForm.getString(RIM_ID) : null;			
 		if (source == null) {
 				
-				/* 
-				 * Name				
-				 */
-				String rimName = jForm.getString(RIM_NAME);
-				org = createOrganization(rimName);
+			/* 
+			 * Name				
+			 */
+			String rimName = jForm.getString(RIM_NAME);
+			org = createOrganization(rimName);
 
-				/* 
-				 * Unique identifier
-				 */
-				String oid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.COMMUNITY_PRE);
-				
-				org.setLid(oid);
-				org.getKey().setId(oid);
+			/* 
+			 * Unique identifier
+			 */
+			String oid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.COMMUNITY_PRE);
+			
+			org.setLid(oid);
+			org.getKey().setId(oid);
 
-				/* 
-				 * Set community information
-				 */
-				org = setCommunity(org, jForm);
+			/* 
+			 * Set community information
+			 */
+			org = setCommunity(org, jForm);
 
-				/*
-				 * Save organisation (without versioning)
-				 */
-				transaction.addObjectToSave(org);
-				saveObjects(transaction.getObjectsToSave(), false, false);
+			/*
+			 * Save organisation (without versioning)
+			 */
+			transaction.addObjectToSave(org);
+			saveObjects(transaction.getObjectsToSave(), false, false);
 
-				/*
-				 * Index community
-				 */				
-				ReactorParams reactorParams = new ReactorParams(org, FncConstants.FNC_ID_Community, RAction.C_INDEX);
-				ReactorImpl.onSubmit(reactorParams);
+			/*
+			 * Index community
+			 */				
+			ReactorParams reactorParams = new ReactorParams(org, FncConstants.FNC_ID_Community, RAction.C_INDEX);
+			ReactorImpl.onSubmit(reactorParams);
 
-				/*
-				 * Update response message
-				 */
-				message = ORGANIZATION_CREATED;
+			/*
+			 * Retrieve response message
+			 */
+			JSONObject jResponse = transaction.getJResponse(oid, ORGANIZATION_CREATED);
+			return jResponse.toString();
 
 		} else {
 
@@ -568,18 +503,14 @@ public class GroupLCM extends PartyLCM {
 				ReactorImpl.onSubmit(reactorParams);
 
 				/*
-				 * Update response message
+				 * Retrieve response message
 				 */
-				message = ORGANIZATION_CREATED;
+				JSONObject jResponse = transaction.getJResponse(org.getId(), ORGANIZATION_UPDATED);
+				return jResponse.toString();
 
 			}
 
 		}
-		
-		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
-		
-		return jResponse.toString();
 		
 	}
 

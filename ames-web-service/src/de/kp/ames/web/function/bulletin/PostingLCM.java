@@ -32,7 +32,6 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.GlobalConstants;
-import de.kp.ames.web.core.format.json.JsonConstants;
 import de.kp.ames.web.core.reactor.ReactorParams;
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 import de.kp.ames.web.core.reactor.ReactorImpl;
@@ -199,13 +198,9 @@ public class PostingLCM extends JaxrLCM {
 		ReactorImpl.onSubmit(reactorParams);
 
 		/*
-		 * Set JSON response
+		 * Retrieve response message
 		 */
-		JSONObject jResponse = new JSONObject();
-				
-		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, "Posting successfully created.");
-		
+		JSONObject jResponse = transaction.getJResponse(eid, FncMessages.POSTING_CREATED);
 		return jResponse.toString();
 		
 	}

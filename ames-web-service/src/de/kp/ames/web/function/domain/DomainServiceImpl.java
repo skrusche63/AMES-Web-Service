@@ -40,6 +40,31 @@ public class DomainServiceImpl extends BusinessImpl {
 		String methodName = this.method.getName();
 		if (methodName.equals(FncConstants.METH_DELETE)) {
 
+			/*
+			 * Call delete method
+			 */
+			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
+			String type = this.method.getAttribute(FncConstants.ATTR_TYPE);	
+
+			if ((item == null) || (type == null)) {
+				this.sendNotImplemented(ctx);
+				
+			} else {
+
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = delete(type, item);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+				
+			}
+			
 		} else if (methodName.equals(FncConstants.METH_GET)) {
 
 			/*
@@ -52,6 +77,12 @@ public class DomainServiceImpl extends BusinessImpl {
 				this.sendNotImplemented(ctx);
 				
 			} else {
+				
+				/*
+				 * Optional reference to existing registry object
+				 */
+				String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
+				
 				/*
 				 * Reference to registry package that manages registry objects
 				 * of a certain type
@@ -62,7 +93,7 @@ public class DomainServiceImpl extends BusinessImpl {
 					/*
 					 * JSON response
 					 */
-					String content = get(type, parent, format);
+					String content = get(type, item, parent, format);
 					sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -114,7 +145,18 @@ public class DomainServiceImpl extends BusinessImpl {
 		
 	}
 
-	private String get(String type, String parent, String format) throws Exception {
+	/**
+	 * A helper method to retrieve RegistryObject instances
+	 * of a certain type and in a specific format
+	 * 
+	 * @param type
+	 * @param item
+	 * @param parent
+	 * @param format
+	 * @return
+	 * @throws Exception
+	 */
+	private String get(String type, String item, String parent, String format) throws Exception {
 
 		String content = null;
 		
@@ -135,6 +177,10 @@ public class DomainServiceImpl extends BusinessImpl {
 			 * Render result
 			 */
 			content = render(jArray, format);
+
+		} else if (type.equals(CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_RegistryObject)) {
+
+			// TODO
 			
 		} else {
 			throw new Exception("[DomainServiceImpl] Information type <" + type + "> is not supported");
@@ -149,6 +195,39 @@ public class DomainServiceImpl extends BusinessImpl {
 
 	}
 
+	/**
+	 * A helper method to delete a RegistryObject instance
+	 * of a certain type
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private String delete(String type, String item) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+		
+		/*
+		 * The type parameter is a MUST for the interface,
+		 * but actually not used 
+		 */
+		DomainLCM lcm = new DomainLCM(jaxrHandle);
+		content = lcm.deleteRegistryObject(item);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+
+	}
+		
 	/**
 	 * A helper method to submit a RegistryObject instance
 	 * of a certain type
@@ -175,7 +254,15 @@ public class DomainServiceImpl extends BusinessImpl {
 			 */
 			DomainLCM lcm = new DomainLCM(jaxrHandle);
 			content = lcm.submitExternalLink(parent, data);
-		
+
+		} else if (type.equals(CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_RegistryPackage)) {
+
+			/*
+			 * Submit registry package
+			 */
+			DomainLCM lcm = new DomainLCM(jaxrHandle);
+			content = lcm.submitRegistryPackage(parent, data);
+			
 		} else {
 			throw new Exception("[DomainServiceImpl] Information type <" + type + "> is not supported");
 			

@@ -17,7 +17,7 @@ package de.kp.ames.web.function.domain;
  *	along with this software. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-import java.util.List;
+
 import java.util.Locale;
 
 import javax.xml.registry.JAXRException;
@@ -28,24 +28,15 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.format.json.JsonConstants;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
-import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 
 public class DomainLCM extends JaxrLCM {
-
-	/*
-	 * Response messages
-	 */
-	private static String MISSING_PARAMETERS    = FncMessages.MISSING_PARAMETERS;
-	private static String EXTERNAL_LINK_CREATED = FncMessages.EXTERNAL_LINK_CREATED;
 
 	/*
 	 * Registry object
@@ -57,6 +48,33 @@ public class DomainLCM extends JaxrLCM {
 	}
 	
 	/**
+	 * Delete registry object
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteRegistryObject(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.REGISTRY_OBJECT_DELETED);
+		return jResponse.toString();
+		
+	}
+	
+	/**
 	 * Submit an external link to the OASIS ebXML RegRep
 	 * 
 	 * @param parent
@@ -65,60 +83,30 @@ public class DomainLCM extends JaxrLCM {
 	 * @throws Exception
 	 */
 	public String submitExternalLink(String parent, String data) throws Exception {
-		
-		JSONObject jResponse = new JSONObject();
-		
-		/*
-		 * Prepare (pessimistic) response message
-		 */
-		String message = MISSING_PARAMETERS;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, false);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
-	
+			
 		/*
 		 * Initialize transaction
 		 */
 		JaxrTransaction transaction = new JaxrTransaction();
-	
-		/*
-		 * Initialize data
-		 */
-		JSONObject jForm = new JSONObject(data);
+		transaction.setData(data);
 
 		/*
-		 * Create or retrieve registry package that is 
-		 * responsible for managing external links
+		 * Retrieve parent package
 		 */
-		RegistryPackageImpl container = null;		
-		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
-		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Link);
-		if (list.size() == 0) {
-			/*
-			 * Create container
-			 */
-			container = createLinkPackage();
-			
-		} else {
-			/*
-			 * Retrieve container
-			 */
-			container = list.get(0);
-
-		}
+		RegistryPackageImpl container = (RegistryPackageImpl)getRegistryObjectById(parent);
+		if (container == null) throw new Exception("[DomainLCM] Containing registry package for id <" + parent + "> does not exist.");
 
 		/*
 		 * Determine whether registry object exists
 		 */
-		RegistryObjectImpl ro = getObject(jForm);
+		RegistryObjectImpl ro = getObject(transaction);
 		if (ro == null) {
 			/*
 			 * create request (note, that the created
 			 * object is added to the transaction within
 			 * the subsequent method call
 			 */
-			ro = createExternalLink(jForm, transaction);
+			ro = createExternalLink(transaction);
 
 			/*
 			 * Allocate external link to container
@@ -132,7 +120,7 @@ public class DomainLCM extends JaxrLCM {
 			 * respective object is already attached to
 			 * a top registry package)
 			 */
-			ro = updateExternalLink((ExternalLinkImpl)ro, jForm, transaction);
+			ro = updateExternalLink((ExternalLinkImpl)ro, transaction);
 
 		}
 
@@ -142,23 +130,26 @@ public class DomainLCM extends JaxrLCM {
 		saveObjects(transaction.getObjectsToSave(), false, false);
 		
 		/*
-		 * Add identifier to the response
-		 * for retrieval purpose
+		 * Get response
 		 */
-		jResponse.put(JsonConstants.J_ID, ro.getId());
-
-		/*
-		 * Update response message
-		 */
-		message = EXTERNAL_LINK_CREATED;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
-
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.EXTERNAL_LINK_CREATED);
 		return jResponse.toString();
 
 	}
 
+	/**
+	 * Submit a registry package to an OASIS ebXML RegRep
+	 * 
+	 * @param parent
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public String submitRegistryPackage(String parent, String data) throws Exception {
+		// TODO
+		return null;
+	}
+	
 	/**
 	 * A helper method to determine whether a referenced
 	 * registry object exists or not
@@ -167,11 +158,12 @@ public class DomainLCM extends JaxrLCM {
 	 * @return
 	 * @throws Exception
 	 */
-	private RegistryObjectImpl getObject(JSONObject jForm) throws Exception {
+	private RegistryObjectImpl getObject(JaxrTransaction transaction) throws Exception {
 		
 		/*
 		 * Determine unique identifier from JSON Object
 		 */
+		JSONObject jForm = transaction.getData();
 		if (jForm.has(RIM_ID) == false) return null;
 
 		String uid = jForm.getString(RIM_ID);
@@ -179,48 +171,24 @@ public class DomainLCM extends JaxrLCM {
 		
 	}
 	
-	private ExternalLinkImpl createExternalLink(JSONObject jForm, JaxrTransaction transaction) throws Exception {
+	private ExternalLinkImpl createExternalLink(JaxrTransaction transaction) throws Exception {
 		// TODO
 		return null;
 	}
 	
-	private ExternalLinkImpl updateExternalLink(ExternalLinkImpl el, JSONObject jForm, JaxrTransaction transaction) throws Exception {
+	private RegistryPackageImpl createRegistryPackage(JaxrTransaction transction) throws Exception {
 		// TODO
 		return null;
 	}
 	
-	/**
-	 * A helper method to create a top registry package
-	 * to manage external links
-	 * 
-	 * @return
-	 * @throws JAXRException
-	 */
-	private RegistryPackageImpl createLinkPackage() throws JAXRException  {
+	private ExternalLinkImpl updateExternalLink(ExternalLinkImpl el, JaxrTransaction transaction) throws Exception {
+		// TODO
+		return null;
+	}
 
-		FncParams params = new FncParams();
-		
-		/*
-		 * Name & description
-		 */
-		params.put(FncParams.K_NAME, "External Links");
-		params.put(FncParams.K_DESC, FncMessages.LINK_DESC);
-		
-		/*
-		 * Prefix
-		 */
-		params.put(FncParams.K_PRE, FncConstants.LINK_PRE);
-		
-		/*
-		 * Classification
-		 */
-		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Link);
-		
-		/*
-		 * Create package
-		 */
-		return createBusinessPackage(params);
-	
+	private RegistryPackageImpl updateRegistryPackage(RegistryPackageImpl rp, JaxrTransaction transaction) throws Exception {
+		// TODO
+		return null;
 	}
 
 	/**

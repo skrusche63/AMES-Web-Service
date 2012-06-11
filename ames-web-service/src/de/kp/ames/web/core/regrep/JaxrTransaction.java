@@ -26,6 +26,10 @@ import javax.xml.registry.infomodel.Key;
 
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
+import org.json.JSONObject;
+
+import de.kp.ames.web.core.CoreMessages;
+import de.kp.ames.web.core.format.json.JsonConstants;
 
 /**
  * JaxrTransaction is a temporary data structure that is used to
@@ -78,13 +82,57 @@ public class JaxrTransaction {
 
 	private boolean index = true;
 
+	/*
+	 * Reference to the request data
+	 */
+	private JSONObject jData;
+	
+	/*
+	 * Reference to JSON Response
+	 */
+	private JSONObject jResponse;
+
 	public JaxrTransaction() {		
 		
+		/*
+		 * Initialize temporary data cache
+		 */
 		this.objectsToSave   = new ArrayList<RegistryObjectImpl>();
 		this.objectsToDelete = new ArrayList<RegistryObjectImpl>();
 
+		/*
+		 * Initialize (pessimistic) response
+		 */
+		this.setJResponse();
+		
 	}
 
+	/**
+	 * Set request data
+	 * 
+	 * @param data
+	 */
+	public void setData(String data) {
+		
+		try {
+			jData = new JSONObject(data);
+		
+		} catch (Exception e) {
+			// do nothing
+		
+		} finally {}
+		
+	}
+	
+	/**
+	 * Retrieve request data
+	 * 
+	 * @return
+	 */
+	public JSONObject getData() {
+		return this.jData;
+	}
+	
 	/**
 	 * @param taid
 	 */
@@ -228,6 +276,79 @@ public class JaxrTransaction {
 	public InputStream getRepositoryItem() {
 		return this.stream;
 		
+	}
+
+	/**
+	 * A helper method to initialize the JSON response object
+	 */
+	private void setJResponse() {
+
+		jResponse = new JSONObject();
+		
+		String message = CoreMessages.MISSING_PARAMETERS;
+
+		try {
+			jResponse.put(JsonConstants.J_SUCCESS, false);
+			jResponse.put(JsonConstants.J_MESSAGE, message);
+			
+		} catch (Exception e) {
+			// do nothing
+		
+		} finally {}
+	
+	}
+	
+	/**
+	 * @return
+	 */
+	public JSONObject getJResponse() {
+		return this.jResponse;
+	}
+	
+	/**
+	 * Retrieve request response
+	 * 
+	 * @param message
+	 * @return
+	 */
+	public JSONObject getJResponse(String message) {
+		
+		try {
+			jResponse.put(JsonConstants.J_SUCCESS, true);
+			jResponse.put(JsonConstants.J_MESSAGE, message);
+			
+		} catch (Exception e) {
+			// do nothing
+		
+		} finally {}
+
+		return this.jResponse;
+	
+	}
+	
+	/**
+	 * Retrieve request response
+	 * 
+	 * @param uid
+	 * @param message
+	 * @return
+	 */
+	public JSONObject getJResponse(String uid, String message) {
+		
+		try {
+			
+			jResponse.put(JsonConstants.J_ID, uid);
+
+			jResponse.put(JsonConstants.J_SUCCESS, true);
+			jResponse.put(JsonConstants.J_MESSAGE, message);
+			
+		} catch (Exception e) {
+			// do nothing
+		
+		} finally {}
+
+		return this.jResponse;
+	
 	}
 
 }

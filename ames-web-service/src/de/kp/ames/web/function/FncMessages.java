@@ -20,22 +20,33 @@ package de.kp.ames.web.function;
 
 public class FncMessages {
 
-	public static String MISSING_PARAMETERS = "Please provide valid parameters.";
-
+	/*
+	 * Bulletin specific messages
+	 */
+	public static String POSTING_CREATED = "Posting successfully created.";
+	
 	/*
 	 * Group specifc messages
 	 */
 	public static String AFFILIATION_CREATED  = "Affiliation successfully submitted.";
 	public static String AFFILIATION_DELETED  = "Affiliation successfully deleted.";
+	public static String AFFILIATION_UPDATED  = "Affiliation successfully updated.";
 	public static String CATEGORY_CREATED     = "Category successfully submitted.";
 	public static String CONTACT_CREATED      = "Primary contact successfully submitted.";
 	public static String ORGANIZATION_CREATED = "Organization successfully submitted.";
+	public static String ORGANIZATION_UPDATED = "Organization successfully updated.";
+	
+	/*
+	 * User specific messages
+	 */
+	public static String USER_UPDATED         = "User successfully updated.";
 
 	/*
 	 * Registry object specific messages
 	 */
-	public static String EXTERNAL_LINK_CREATED = "External Link successfully submitted.";
-	
+	public static String EXTERNAL_LINK_CREATED   = "External Link successfully submitted.";
+	public static String REGISTRY_OBJECT_DELETED = "Registry Object sucessfully deleted.";
+
 	/*
 	 * Top pacakge descriptions
 	 */

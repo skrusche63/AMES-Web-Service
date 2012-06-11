@@ -26,18 +26,18 @@ import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.format.json.JsonConstants;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.lcm.PartyLCM;
+import de.kp.ames.web.function.FncMessages;
 
 public class UserLCM extends PartyLCM {
+
 	/*
 	 * Response messages
 	 */
-	private static String MISSING_PARAMETERS = "Please provide valid parameters.";
-	private static String USER_UPDATED       = "User successfully updated.";
+	private static String USER_UPDATED = FncMessages.USER_UPDATED;
 
 	private static String NO_DESCRIPTION = "No description available.";
 	
@@ -52,16 +52,6 @@ public class UserLCM extends PartyLCM {
 	}
 	
 	public String submitUser(String data) throws Exception {
-
-		JSONObject jResponse = new JSONObject();
-		
-		/*
-		 * Prepare (pessimistic) response message
-		 */
-		String message = MISSING_PARAMETERS;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, false);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
 		
 		/*
 		 * Initialize transaction
@@ -77,7 +67,7 @@ public class UserLCM extends PartyLCM {
 		 * Determine user
 		 */
 		String uid = jForm.has(RIM_ID) ? jForm.getString(RIM_ID) : null;			
-		if (uid == null) return jResponse.toString();
+		if (uid == null) return transaction.getJResponse().toString();
 		
 		RegistryObjectImpl ro = getRegistryObjectById(uid);
 		if (ro == null) throw new Exception("[UserLCM] User with id <" + uid + "> not found.");
@@ -92,13 +82,9 @@ public class UserLCM extends PartyLCM {
 		saveObjects(transaction.getObjectsToSave(), false, false);
 	
 		/*
-		 * Update response message
+		 * Retrieve response message
 		 */
-		message = USER_UPDATED;
-		
-		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
-	
+		JSONObject jResponse = transaction.getJResponse(uid, USER_UPDATED);
 		return jResponse.toString();
 		
 	}

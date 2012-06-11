@@ -429,7 +429,53 @@ public class JaxrLCM extends JaxrBase {
         return (TelephoneNumberImpl)blcm.createTelephoneNumber();
 
 	}
-	
+
+	/**
+	 * A helper method to delete all associations 
+	 * assigned to a certain registry object
+	 * 
+	 * @param ro
+	 * @throws JAXRException
+	 */
+	public void deleteAssociations_All(RegistryObjectImpl ro) throws JAXRException {
+
+		/* 
+		 * The list of associations (key) that must be deleted
+		 */
+		ArrayList<Key> objectsToDelete = new ArrayList<Key>();
+
+		/* 
+		 * Determine associations actually assigned to the registry object;
+		 * at least an empty array list is returned (see RegistryObjectImpl)
+		 */
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+
+		List<AssociationImpl> associations = dqm.getAssociations_ByObject(ro);
+		if (associations.size() > 0) return;
+		
+		/*
+		 * Remove all allocated associations
+		 */
+		for (AssociationImpl association:associations) {
+			/* 
+			 * Remove association from registry object
+			 */
+			ro.removeAssociation(association);
+			
+			/*
+			 * The respective association MUST be removed
+			 */
+			objectsToDelete.add(association.getKey());
+			
+		}
+			
+		/* 
+		 * Delete the detected associations
+		 */
+		deleteObjects(objectsToDelete);
+		
+	}
+
 	/**
 	 * This method updates the existing classifications of a 
 	 * certain registry object from a list of classification 
@@ -661,44 +707,36 @@ public class JaxrLCM extends JaxrBase {
 	 * 
 	 * @param uid
 	 */
-	public void deleteRegistryObject(String uid) {
-		
-		JaxrTransaction transaction = new JaxrTransaction();
-		
-		try {
+	public void deleteRegistryObject(String uid, JaxrTransaction transaction) throws Exception {
 			
-			RegistryObjectImpl ro = getRegistryObjectById(uid);
-			if (ro == null) return;				
+		RegistryObjectImpl ro = getRegistryObjectById(uid);
+		if (ro == null) throw new Exception("[JaxrLCM] Registry Object with id <" + uid + "> does not exist.");				
+		
+		/* 
+		 * Distinguish between single and composite objects
+		 */
+		String objectType = ro.getObjectType().getKey().getId();
+		if (objectType.startsWith(REGISTRY_PACKAGE)) {
 			
 			/* 
-			 * Distinguish between single and composite objects
+			 * A composite object that requires a cascading delete; 
+			 * actually deletion of these objects is restricted to 
+			 * the system administrator
 			 */
-			String objectType = ro.getObjectType().getKey().getId();
-			if (objectType.startsWith(REGISTRY_PACKAGE)) {
-				
-				/* 
-				 * A composite object that requires a cascading delete; 
-				 * actually deletion of these objects is restricted to 
-				 * the system administrator
-				 */
-				this.deleteRegistryPackage((RegistryPackageImpl)ro, transaction);
-				
-			} else {				
-				/* 
-				 * A single object is prepared for deletion
-				 */
-				this.deleteRegistryObject(ro, transaction);
-			}
-
-			/*
-			 * Finally delete objects
-			 */
-			this.removeObjects(transaction.getObjectsToDelete());
+			this.deleteRegistryPackage((RegistryPackageImpl)ro, transaction);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {				
+			/* 
+			 * A single object is prepared for deletion
+			 */
+			this.deleteRegistryObject(ro, transaction);
 		}
-		
+
+		/*
+		 * Finally delete objects
+		 */
+		this.removeObjects(transaction.getObjectsToDelete());
+
 	}
 
 	/**
@@ -752,7 +790,7 @@ public class JaxrLCM extends JaxrBase {
 		 * links referenced by this object
 		 */
 		
-		List<AssociationImpl> associations = dqm.getAssociations_All(ro);
+		List<AssociationImpl> associations = dqm.getAssociations_ByObject(ro);
 		if (associations.size() > 0) {	
 			
 			for (AssociationImpl association:associations) {

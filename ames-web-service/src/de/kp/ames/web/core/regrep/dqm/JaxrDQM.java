@@ -77,7 +77,7 @@ public class JaxrDQM extends JaxrBase {
 	 * @return
 	 * @throws JAXRException
 	 */
-	public List<AssociationImpl> getAssociations_All(RegistryObjectImpl ro) throws JAXRException {		
+	public List<AssociationImpl> getAssociations_ByObject(RegistryObjectImpl ro) throws JAXRException {		
 
 		String sqlString = JaxrSQL.getSQLAssociations_All(ro.getId());		
 		return getAssociationsByQuery(sqlString);
@@ -350,7 +350,7 @@ public class JaxrDQM extends JaxrBase {
 	 * @param cn
 	 * @return
 	 */
-	public static String getSQLExtrinsicObjects_ByClasNode(String cn) {
+	public String getSQLExtrinsicObjects_ByClasNode(String cn) {
 		
 		String query = "SELECT eo.* FROM ExtrinsicObject eo, Classification clas WHERE clas.classifiedObject=eo.id AND clas.classificationNode='" + cn + "'";				
 		return query;
