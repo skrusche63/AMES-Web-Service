@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.mail;
+package de.kp.ames.web.function.chat;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,17 +18,17 @@ package de.kp.ames.web.function.mail;
  *
  */
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.http.RequestContext;
 
-public class MailImpl extends BusinessImpl {
+public class ChatServiceImpl extends BusinessImpl {
 
-	public MailImpl() {
+	public ChatServiceImpl() {	
 		super();
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.core.RequestContext)
 	 */
@@ -64,7 +64,7 @@ public class MailImpl extends BusinessImpl {
 	}
 
 	/**
-	 * A helper method to submit a mail message
+	 * A helper method to submit a chat message
 	 * 
 	 * @param data
 	 * @return
@@ -79,8 +79,8 @@ public class MailImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
 
-		MailLCM lcm = new MailLCM(jaxrHandle);
-		content = lcm.submitMail(data);
+		ChatLCM lcm = new ChatLCM(jaxrHandle);
+		content = lcm.submitChat(data);
 		
 		/*
 		 * Logoff
@@ -89,5 +89,5 @@ public class MailImpl extends BusinessImpl {
 		return content;
 
 	}
-
+	
 }

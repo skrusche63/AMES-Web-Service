@@ -18,19 +18,16 @@ package de.kp.ames.web.function.map;
  *
  */
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONArray;
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.function.access.wms.WmsConsumer;
+import de.kp.ames.web.http.RequestContext;
 
-public class MapImpl extends BusinessImpl {
+public class MapServiceImpl extends BusinessImpl {
 	
-	public MapImpl() {		
+	public MapServiceImpl() {		
 		super();
 	}
 	
@@ -94,18 +91,9 @@ public class MapImpl extends BusinessImpl {
 				this.sendNotImplemented(ctx);
 
 			} else {
-				/*
-				 * Additional request parameters are directly provided
-				 * by a (e.g.) SmartGwt 3.0 widget (Grid) and must be 
-				 * retrieved from the respective Http Request
-				 */
-				HttpServletRequest request = ctx.getRequest();
-				
-				String startParam = renderer.getStartParam();
-				String start = request.getParameter(startParam);
-				
-				String limitParam = renderer.getLimitParam();
-				String limit = request.getParameter(limitParam);
+
+				String start = this.method.getAttribute(FncConstants.ATTR_START);			
+				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
 
 				try {
 					/*
@@ -177,7 +165,7 @@ public class MapImpl extends BusinessImpl {
 		 * Retrieve kml representation from source
 		 */
 		MapDQM dqm = new MapDQM(jaxrHandle);
-		content =dqm.getEdges(source);
+		content = dqm.getEdges(source);
 
 		/*
 		 * Logoff
@@ -198,14 +186,14 @@ public class MapImpl extends BusinessImpl {
 		/*
 		 * Connect to WMS service defined by endpoint parameter
 		 */
-		WmsConsumer wmsConsumer = new WmsConsumer(endpoint);		
-		JSONArray jCapabilities = wmsConsumer.getCapabilitiesAsJson();
+		MapDQM dqm = new MapDQM(jaxrHandle);
+		JSONArray jArray = dqm.getLayers(endpoint);
 		
 		/*
-		 * Process result to be compliant to request SmartGwt 3.0 GUI
+		 * Render result
 		 */
 		String format = FncConstants.FNC_FORMAT_ID_Grid;
-		return render(jCapabilities, start, limit, format);
+		return render(jArray, start, limit, format);
 
 	}
 	

@@ -40,12 +40,13 @@ public class FncConstants {
 	public static String FNC_ID_Mail = FNC_ID + ":Mail";
 		
 	/*
-	 * Community Classification Nodes
+	 * Business Classification Nodes
 	 */
 	public static String FNC_ID_Affiliation    = FNC_ID + ":Affiliation";
 	public static String FNC_ID_Category       = FNC_ID + ":Category";
 	public static String FNC_ID_Contact        = FNC_ID + ":Contact";	
 	public static String FNC_ID_Community      = FNC_ID + ":Community";
+	public static String FNC_ID_Link           = FNC_ID + ":Link";
 	public static String FNC_ID_Namespace      = FNC_ID + ":Namespace";	
 	public static String FNC_ID_Responsibility = FNC_ID + ":Responsibility";
 	public static String FNC_ID_Role           = FNC_ID + ":Role";
@@ -59,6 +60,7 @@ public class FncConstants {
 	public static String FNC_FORMAT_ID_Grid = FNC_ID_Format + ":Grid";
 	public static String FNC_FORMAT_ID_Json = FNC_ID_Format + ":Json";
 	public static String FNC_FORMAT_ID_Rss  = FNC_ID_Format + ":Rss";
+	public static String FNC_FORMAT_ID_Tree = FNC_ID_Format + ":Tree";
 	
 	/*
 	 * Security Classification Nodes
@@ -77,6 +79,7 @@ public class FncConstants {
 	public static String AFFILIATION_PRE;
 	public static String CHAT_PRE;
 	public static String COMMUNITY_PRE;
+	public static String LINK_PRE;
 	public static String MAIL_PRE;
 	public static String NAMESPACE_PRE;
 	public static String POSTING_PRE;
@@ -116,9 +119,12 @@ public class FncConstants {
 	public static String ATTR_FORMAT;
 	public static String ATTR_ITEM;
 	public static String ATTR_KEYPASS;
+	public static String ATTR_LIMIT;
+	public static String ATTR_PARENT;
 	public static String ATTR_RECIPIENT;
 	public static String ATTR_SERVICE;
 	public static String ATTR_SOURCE;
+	public static String ATTR_START;
 	public static String ATTR_TARGET;
 	public static String ATTR_TYPE;
 	public static String ATTR_URI;
@@ -143,6 +149,7 @@ public class FncConstants {
 		AFFILIATION_PRE = basePrefix + ":affiliation";
 		CHAT_PRE        = basePrefix + ":chat";
 		COMMUNITY_PRE   = basePrefix + ":community";
+		LINK_PRE        = basePrefix + ":link";
 		MAIL_PRE        = basePrefix + ":mail";
 		NAMESPACE_PRE   = basePrefix + ":namespace";
 		POSTING_PRE     = basePrefix + ":posting";
@@ -158,9 +165,12 @@ public class FncConstants {
 		ATTR_FORMAT    = bundle.getString(GlobalConstants.ATTR_FORMAT);
 		ATTR_ITEM      = bundle.getString(GlobalConstants.ATTR_ITEM);
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
+		ATTR_LIMIT     = bundle.getString(GlobalConstants.ATTR_LIMIT);		
+		ATTR_PARENT    = bundle.getString(GlobalConstants.ATTR_PARENT);
 		ATTR_RECIPIENT = bundle.getString(GlobalConstants.ATTR_RECIPIENT);
 		ATTR_SERVICE   = bundle.getString(GlobalConstants.ATTR_SERVICE);
 		ATTR_SOURCE    = bundle.getString(GlobalConstants.ATTR_SOURCE);
+		ATTR_START     = bundle.getString(GlobalConstants.ATTR_START);
 		ATTR_TARGET    = bundle.getString(GlobalConstants.ATTR_TARGET);
 		ATTR_TYPE      = bundle.getString(GlobalConstants.ATTR_TYPE);
 		ATTR_URI       = bundle.getString(GlobalConstants.ATTR_URI);

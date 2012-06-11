@@ -33,7 +33,6 @@ import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
@@ -43,6 +42,7 @@ import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncSQL;
+import de.kp.ames.web.http.RequestContext;
 
 public class SecurityImpl extends BusinessImpl {
 

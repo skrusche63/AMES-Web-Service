@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.method;
+package de.kp.ames.web.http;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -20,6 +20,12 @@ package de.kp.ames.web.core.method;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
+import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.GuiFactory;
+import de.kp.ames.web.function.GuiRenderer;
+
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
  *
@@ -27,6 +33,8 @@ import java.util.HashMap;
 
 public class RequestMethod {
 
+	private HttpServletRequest request;
+	
 	private String query;
 
 	private String name;
@@ -34,14 +42,27 @@ public class RequestMethod {
 	
 	private static String ATTRIBUTE_ERROR = "[RequestMethod] Attribute Retrieval Error";
 	private static String METHOD_ERROR    = "[RequestMethod] Method Retrieval Error";
+
+	/*
+	 * Reference to the registered renderer
+	 */
+	protected GuiRenderer renderer;
 	
 	/**
 	 * @param query
 	 * @throws Exception
 	 */
-	public RequestMethod(String query) throws Exception {
+	public RequestMethod(HttpServletRequest request) throws Exception {
 
-		this.query = query;
+		/*
+		 * Register request
+		 */
+		this.request =request;
+		
+		/*
+		 * Derive query
+		 */
+		this.query = request.getQueryString(); 
 		
 		String[] tokens = query.split("&");
 		
@@ -55,7 +76,12 @@ public class RequestMethod {
 				setAttribute(tokens[i]);
 			}
 		}
-		 
+
+		/*
+		 * Initialize renderer
+		 */
+		renderer = GuiFactory.getInstance().getRenderer();
+
 	}
 	
 	/**
@@ -93,6 +119,13 @@ public class RequestMethod {
 	/**
 	 * @return
 	 */
+	public HttpServletRequest getRequest() {
+		return this.request;
+	}
+	
+	/**
+	 * @return
+	 */
 	public String getName() {
 		return this.name;
 	}
@@ -116,7 +149,33 @@ public class RequestMethod {
 	 * @return
 	 */
 	public String getAttribute(String key) {
-		if (this.attributes.containsKey(key)) return this.attributes.get(key);
+		
+		if (this.attributes.containsKey(key)) {
+			return this.attributes.get(key);
+		}
+
+		/*
+		 * There are additional request attributes, that depend on widgets
+		 * of the selected GUI framework
+		 */
+		if (key.equals(FncConstants.ATTR_LIMIT)) {
+
+			String limitParam = renderer.getLimitParam();
+			return (this.attributes.containsKey(limitParam)) ? this.attributes.get(limitParam) : null;
+
+		} else if (key.equals(FncConstants.ATTR_PARENT)) {
+
+			String parentParam = renderer.getParentParam();
+			return (this.attributes.containsKey(parentParam)) ? this.attributes.get(parentParam) : null;
+		
+		} else if (key.equals(FncConstants.ATTR_START)) {
+
+			String startParam = renderer.getStartParam();
+			return (this.attributes.containsKey(startParam)) ? this.attributes.get(startParam) : null;
+			
+		}
+		
 		return null;
+	
 	}
 }

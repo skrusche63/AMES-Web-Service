@@ -20,9 +20,9 @@ package de.kp.ames.web.function.scm;
 
 import java.io.IOException;
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.http.RequestContext;
 
 /**
  * ScmImpl supports access to an OASIS ebXML RegRep to retrieve

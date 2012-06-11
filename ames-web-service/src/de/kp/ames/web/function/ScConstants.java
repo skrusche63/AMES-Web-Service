@@ -31,8 +31,9 @@ public class ScConstants {
 	/*
 	 * Paging request parameters
 	 */
-	public static String SC_START = "_startRow";
-	public static String SC_LIMIT = "_endRow";
+	public static String SC_LIMIT  = "_endRow";
+	public static String SC_PARENT = "_parentId";
+	public static String SC_START  = "_startRow";
 
 	/*
 	 * Common response parameters

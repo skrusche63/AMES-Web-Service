@@ -1,4 +1,4 @@
-package de.kp.ames.web.core;
+package de.kp.ames.web.http;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -37,7 +37,6 @@ import org.opensaml.saml2.core.Assertion;
 
 import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
-import de.kp.ames.web.core.method.RequestMethod;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.service.Service;
 import de.kp.ames.web.core.util.BaseParam;
@@ -294,8 +293,7 @@ public class RequestDispatcher extends HttpServlet {
 	 */
 	private Service getService(HttpServletRequest request) {
 		
-		String path  = request.getRequestURI();
-		String query = request.getQueryString(); 
+		String path = request.getRequestURI();
 
 		// determine service identifier from request URI
 		int pos = path.lastIndexOf("/") + 1;
@@ -322,7 +320,7 @@ public class RequestDispatcher extends HttpServlet {
 		RequestMethod method;
 		try {
 		
-			method = new RequestMethod(query);
+			method = new RequestMethod(request);
 			service.setMethod(method);
 
 		} catch (Exception e) {
@@ -376,7 +374,7 @@ public class RequestDispatcher extends HttpServlet {
 		 * Chat Service to support the registration (submit)
 		 * of chat message via a selected chat client
 		 */
-		services.add(new BaseParam("chat", "de.kp.ames.web.function.chat.ChatImpl"));
+		services.add(new BaseParam("chat", "de.kp.ames.web.function.chat.ChatServiceImpl"));
 		
 		/*
 		 * Disclaimer Service to represent a disclaimer
@@ -390,25 +388,25 @@ public class RequestDispatcher extends HttpServlet {
 		 * of interest specific information objects including
 		 * organizations
 		 */
-		services.add(new BaseParam("group", "de.kp.ames.web.core.group.GroupImpl"));
+		services.add(new BaseParam("group", "de.kp.ames.web.core.group.GroupServiceImpl"));
 
 		/*
 		 * Mail Service to support the registration (submit)
 		 * of mail messages via a selected mail client
 		 */
-		services.add(new BaseParam("mail", "de.kp.ames.web.function.mail.MailImpl"));
+		services.add(new BaseParam("mail", "de.kp.ames.web.function.mail.MailServiceImpl"));
 
 		/*
 		 * Map Service is used to retrieve map specific
 		 * information such as layers
 		 */
-		services.add(new BaseParam("map", "de.kp.ames.web.function.map.MapImpl"));
+		services.add(new BaseParam("map", "de.kp.ames.web.function.map.MapServiceImpl"));
 
 		/*
 		 * Role service is used to retrieve role & rights
 		 * specific information
 		 */
-		services.add(new BaseParam("role", "de.kp.ames.web.function.role.RoleImpl"));
+		services.add(new BaseParam("role", "de.kp.ames.web.function.role.RoleServiceImpl"));
 
 		/*
 		 * RSS Service is used to provide actually registered
@@ -445,7 +443,7 @@ public class RequestDispatcher extends HttpServlet {
 		 * User service is used to retrieve user
 		 * specific information
 		 */
-		services.add(new BaseParam("user", "de.kp.ames.web.function.user.UserImpl"));
+		services.add(new BaseParam("user", "de.kp.ames.web.function.user.UserServiceImpl"));
 
 		/*
 		 * Core Vocabulary Service is used to retrieve all

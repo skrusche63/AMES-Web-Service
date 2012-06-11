@@ -39,6 +39,9 @@ import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.FncMessages;
+import de.kp.ames.web.function.FncParams;
+import de.kp.ames.web.function.domain.DomainLCM;
 
 public class MailLCM extends JaxrLCM {
 
@@ -178,51 +181,29 @@ public class MailLCM extends JaxrLCM {
 	 */
 	private RegistryPackageImpl createMailPackage() throws JAXRException  {
 
-		JaxrTransaction transaction = new JaxrTransaction();
-		RegistryPackageImpl rp = this.createRegistryPackage(Locale.US, "Mails");
-	
-		/* 
-		 * Identifier
-		 */
-		String uid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.MAIL_PRE);
-	
-		rp.setLid(uid);
-		rp.getKey().setId(uid);
-
-		/* 
-		 * Description
-		 */
-		rp.setDescription(createInternationalString(Locale.US, "This is the top package to manage all mails submitted to this RegRep instance."));
+		FncParams params = new FncParams();
 		
 		/*
-		 * home url
+		 * Name & description
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
-		rp.setHome(home);
-	
-		/* 
-		 * Make sure that the registry object is processed
-		 * right before any references to this object are made
-		 */
-		transaction.addObjectToSave(rp);
-
+		params.put(FncParams.K_NAME, "Mails");
+		params.put(FncParams.K_DESC, FncMessages.MAIL_DESC);
+		
 		/*
-		 * Create classification
+		 * Prefix
 		 */
-		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Mail);
-		c.setName(createInternationalString(Locale.US, "Mail Classification"));
-
-		/* 
-		 * Associate classification and mail container
-		 */
-		rp.addClassification(c);
-		transaction.addObjectToSave(c);				
-
+		params.put(FncParams.K_PRE, FncConstants.MAIL_PRE);
+		
 		/*
-		 * Save objects
+		 * Classification
 		 */
-		saveObjects(transaction.getObjectsToSave(), false, false);
-		return (RegistryPackageImpl)jaxrHandle.getDQM().getRegistryObject(uid);
+		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Mail);
+		
+		/*
+		 * Create package
+		 */
+		DomainLCM lcm = new DomainLCM(jaxrHandle);
+		return lcm.createBusinessPackage(params);
 	
 	}
 }

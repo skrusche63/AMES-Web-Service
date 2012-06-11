@@ -73,6 +73,7 @@ public class GlobalConstants {
 	public static String ATTR_ITEM      = "ames.attr.item";
 	public static String ATTR_KEYPASS 	= "ames.attr.keypass";
 	public static String ATTR_LIMIT   	= "ames.attr.limit";
+	public static String ATTR_PARENT    = "ames.attr.parent";
 	public static String ATTR_RECIPIENT = "ames.attr.recipient";
 	public static String ATTR_REQUEST 	= "ames.attr.request";
 	public static String ATTR_SERVICE 	= "ames.attr.service";

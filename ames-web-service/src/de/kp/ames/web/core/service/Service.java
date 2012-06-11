@@ -23,9 +23,9 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import de.kp.ames.web.core.RequestContext;
-import de.kp.ames.web.core.method.RequestMethod;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.http.RequestMethod;
 
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)

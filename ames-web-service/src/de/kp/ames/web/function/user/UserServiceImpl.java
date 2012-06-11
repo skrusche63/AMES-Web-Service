@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.chat;
+package de.kp.ames.web.function.user;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,14 +18,16 @@ package de.kp.ames.web.function.chat;
  *
  */
 
-import de.kp.ames.web.core.RequestContext;
+import org.json.JSONArray;
+
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.http.RequestContext;
 
-public class ChatImpl extends BusinessImpl {
+public class UserServiceImpl extends BusinessImpl {
 
-	public ChatImpl() {	
+	public UserServiceImpl() {
 		super();
 	}
 	
@@ -35,7 +37,39 @@ public class ChatImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_SUBMIT)) {
+		if (methodName.equals(FncConstants.METH_GET)) {
+			/*
+			 * Call get method
+			 */
+			String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+	
+			if (format == null) {
+				this.sendNotImplemented(ctx);
+				
+			} else {
+				/* 
+				 * Retrieve all users that are affiliated to a certain community (source)
+				 */
+				String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);
+				if (source == null) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
+
+					try {
+						String content = users(source, format);
+						sendJSONResponse(content, ctx.getResponse());
+
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+
+					}
+					
+				}
+				
+			}
+
+		} else if (methodName.equals(FncConstants.METH_SUBMIT)) {
 			/*
 			 * Call submit method
 			 */
@@ -56,15 +90,49 @@ public class ChatImpl extends BusinessImpl {
 					this.sendBadRequest(ctx, e);
 
 				}
-
+				
 			}
 			
 		}
+
+	}
+
+	/**
+	 * Retrieve all users that are affiliated to 
+	 * a certain community of interest
+	 * 
+	 * @param community
+	 * @param format
+	 * @return
+	 * @throws Exception
+	 */
+	private String users(String community, String format) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+
+		UserDQM dqm = new UserDQM(jaxrHandle);
+		JSONArray jArray = dqm.getUsers(community);
+		
+		/*
+		 * Render result
+		 */
+		content = render(jArray, format);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
 		
 	}
 
 	/**
-	 * A helper method to submit a chat message
+	 * Submit user information
 	 * 
 	 * @param data
 	 * @return
@@ -78,9 +146,9 @@ public class ChatImpl extends BusinessImpl {
 		 * Login
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
-
-		ChatLCM lcm = new ChatLCM(jaxrHandle);
-		content = lcm.submitChat(data);
+		
+		UserLCM lcm = new UserLCM(jaxrHandle);
+		content = lcm.submitUser(data);
 		
 		/*
 		 * Logoff
@@ -89,5 +157,4 @@ public class ChatImpl extends BusinessImpl {
 		return content;
 
 	}
-	
 }

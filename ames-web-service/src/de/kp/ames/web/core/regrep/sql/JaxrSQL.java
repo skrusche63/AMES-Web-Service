@@ -223,6 +223,18 @@ public class JaxrSQL {
 	 ***********************************************************************/
 
 	/**
+	 * Retrieve all registered external links
+	 * 
+	 * @return
+	 */
+	public static String getSQLExternalLinks_All() {
+
+		String query = "SELECT el.* FROM ExternalLink el";
+		return query;
+
+	}
+
+	/**
 	 * Retrieve all external links that are classified by a certain
 	 * classification node
 	 * 

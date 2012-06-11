@@ -44,6 +44,9 @@ import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.FncMessages;
+import de.kp.ames.web.function.FncParams;
+import de.kp.ames.web.function.domain.DomainLCM;
 
 public class PostingLCM extends JaxrLCM {
 
@@ -236,51 +239,29 @@ public class PostingLCM extends JaxrLCM {
 	 */
 	private RegistryPackageImpl createPostingPackage() throws JAXRException  {
 
-		JaxrTransaction transaction = new JaxrTransaction();
-		RegistryPackageImpl rp = this.createRegistryPackage(Locale.US, "Postings");
-	
-		/* 
-		 * Identifier
-		 */
-		String uid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.POSTING_PRE);
-	
-		rp.setLid(uid);
-		rp.getKey().setId(uid);
-
-		/* 
-		 * Description
-		 */
-		rp.setDescription(createInternationalString(Locale.US, "This is the top package to manage all postings submitted to this RegRep instance."));
+		FncParams params = new FncParams();
 		
 		/*
-		 * home url
+		 * Name & description
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
-		rp.setHome(home);
-	
-		/* 
-		 * Make sure that the registry object is processed
-		 * right before any references to this object are made
-		 */
-		transaction.addObjectToSave(rp);
-
+		params.put(FncParams.K_NAME, "Postings");
+		params.put(FncParams.K_DESC, FncMessages.POSTING_DESC);
+		
 		/*
-		 * Create classification
+		 * Prefix
 		 */
-		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Posting);
-		c.setName(createInternationalString(Locale.US, "Posting Classification"));
-
-		/* 
-		 * Associate classification and posting container
-		 */
-		rp.addClassification(c);
-		transaction.addObjectToSave(c);				
-
+		params.put(FncParams.K_PRE, FncConstants.POSTING_PRE);
+		
 		/*
-		 * Save objects
+		 * Classification
 		 */
-		saveObjects(transaction.getObjectsToSave(), false, false);
-		return (RegistryPackageImpl)jaxrHandle.getDQM().getRegistryObject(uid);
+		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Posting);
+		
+		/*
+		 * Create package
+		 */
+		DomainLCM lcm = new DomainLCM(jaxrHandle);
+		return lcm.createBusinessPackage(params);
 	
 	}
 	

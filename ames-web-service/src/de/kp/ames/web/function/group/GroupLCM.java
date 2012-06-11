@@ -42,22 +42,23 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
-import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
+import de.kp.ames.web.core.regrep.lcm.PartyLCM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.FncMessages;
 
-public class GroupLCM extends JaxrLCM {
+public class GroupLCM extends PartyLCM {
 
 	/*
 	 * Response messages
 	 */
-	private static String MISSING_PARAMETERS   = "Please provide valid parameters.";
+	private static String MISSING_PARAMETERS   = FncMessages.MISSING_PARAMETERS;
 	
-	private static String AFFILIATION_CREATED  = "Affiliation successfully created.";
-	private static String AFFILIATION_DELETED  = "Affiliation successfully deleted.";
-	private static String CATEGORY_CREATED     = "Category successfully assigned.";
-	private static String CONTACT_CREATED      = "Primary contact successfully created.";
-	private static String ORGANIZATION_CREATED = "Organization successfully created.";
+	private static String AFFILIATION_CREATED  = FncMessages.AFFILIATION_CREATED;
+	private static String AFFILIATION_DELETED  = FncMessages.AFFILIATION_DELETED;
+	private static String CATEGORY_CREATED     = FncMessages.CATEGORY_CREATED;
+	private static String CONTACT_CREATED      = FncMessages.CONTACT_CREATED;
+	private static String ORGANIZATION_CREATED = FncMessages.ORGANIZATION_CREATED;
 
 	/*
 	 * Predefined name for a system generated affiliation
@@ -79,29 +80,6 @@ public class GroupLCM extends JaxrLCM {
 	private static String RIM_NAME 	 = JaxrConstants.RIM_NAME;
 	private static String RIM_SOURCE = JaxrConstants.RIM_SOURCE;
 	private static String RIM_TARGET = JaxrConstants.RIM_TARGET;
-
-	/* 
-	 * Postal address
-	 */
-	private static String RIM_COUNTRY           = JaxrConstants.RIM_COUNTRY;
-	private static String RIM_STATE_OR_PROVINCE = JaxrConstants.RIM_STATE_OR_PROVINCE;
-	private static String RIM_POSTAL_CODE       = JaxrConstants.RIM_POSTAL_CODE;
-	private static String RIM_CITY              = JaxrConstants.RIM_CITY;
-	private static String RIM_STREET            = JaxrConstants.RIM_STREET;
-	private static String RIM_STREET_NUMBER     = JaxrConstants.RIM_STREET_NUMBER;
-
-	/* 
-	 * Telefone number
-	 */
-	private static String RIM_COUNTRY_CODE   	= JaxrConstants.RIM_COUNTRY_CODE;
-	private static String RIM_AREA_CODE       	= JaxrConstants.RIM_AREA_CODE;
-	private static String RIM_PHONE_NUMBER    	= JaxrConstants.RIM_PHONE_NUMBER;
-	private static String RIM_PHONE_EXTENSION 	= JaxrConstants.RIM_PHONE_EXTENSION;
-
-	/* 
-	 * Email address
-	 */
-	private static String RIM_EMAIL = JaxrConstants.RIM_EMAIL;
 
 	/*
 	 * Primary contact
@@ -652,13 +630,10 @@ public class GroupLCM extends JaxrLCM {
          * address for that Organization. An Organization SHOULD have at least one 
          * EmailAddress.
          */
-       
-        
-        String email = jData.has(RIM_EMAIL) ? jData.getString(RIM_EMAIL) : "";
       
         org.removeAllEmailAddresses();
 
-        EmailAddressImpl emailAddress = createEmailAddress(email);
+        EmailAddressImpl emailAddress = createEmailAddress(jData);
         org.addEmailAddress(emailAddress);
 
         /* 
@@ -691,55 +666,6 @@ public class GroupLCM extends JaxrLCM {
         
         return org;
 	
-	}
-
-	/**
-	 * A helper method to create a postal address from a JSON object
-	 * 
-	 * @param jPostalAddress
-	 * @return
-	 * @throws Exception
-	 */
-	private PostalAddressImpl createPostalAddress(JSONObject jPostalAddress) throws Exception  {
-
-		String country         = jPostalAddress.has(RIM_COUNTRY) ? jPostalAddress.getString(RIM_COUNTRY) : "";
-        String stateOrProvince = jPostalAddress.has(RIM_STATE_OR_PROVINCE) ? jPostalAddress.getString(RIM_STATE_OR_PROVINCE) : "";
-
-        String postalCode = jPostalAddress.has(RIM_POSTAL_CODE) ? jPostalAddress.getString(RIM_POSTAL_CODE) : "";
-        String city	      = jPostalAddress.has(RIM_CITY) ? jPostalAddress.getString(RIM_CITY) : "";
-
-        String street		= jPostalAddress.has(RIM_STREET) ? jPostalAddress.getString(RIM_STREET) : "";
-        String streetNumber = jPostalAddress.has(RIM_STREET_NUMBER) ? jPostalAddress.getString(RIM_STREET_NUMBER) : "";
-       
-        return this.createPostalAddress(streetNumber, street, city, stateOrProvince, country, postalCode);
-
-	}
-
-	/**
-	 * A helper method to create a telephone number from a JSON object
-	 * 
-	 * @param jObject
-	 * @return
-	 * @throws Exception
-	 */
-	private TelephoneNumberImpl createTelephoneNumber(JSONObject jObject) throws Exception {
-
-		TelephoneNumberImpl telephoneNumber = createTelephoneNumber();
-        
-        String countryCode = jObject.has(RIM_COUNTRY_CODE) ? jObject.getString(RIM_COUNTRY_CODE) : "";
-        telephoneNumber.setCountryCode(countryCode);
-
-        String areaCode = jObject.has(RIM_AREA_CODE) ? jObject.getString(RIM_AREA_CODE) : "";
-        telephoneNumber.setAreaCode(areaCode);
- 
-        String number = jObject.has(RIM_PHONE_NUMBER) ? jObject.getString(RIM_PHONE_NUMBER) : "";
-        telephoneNumber.setNumber(number);
-
-        String extension = jObject.has(RIM_PHONE_EXTENSION) ? jObject.getString(RIM_PHONE_EXTENSION) : "";
-        telephoneNumber.setExtension(extension);
-
-        return telephoneNumber;
-        
 	}
 
 }

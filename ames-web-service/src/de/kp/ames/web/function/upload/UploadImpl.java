@@ -25,12 +25,12 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.malware.MalwareScanner;
 import de.kp.ames.web.core.transform.cache.XslCacheManager;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.http.RequestContext;
 
 public class UploadImpl extends BusinessImpl {
 
@@ -96,27 +96,13 @@ public class UploadImpl extends BusinessImpl {
 
 								} else {
 									
-									/*
-									 * Set upload result to 'true'
-									 */
-									result = "true";
+									String fileName = FilenameUtils.getName( fileItem.getName() );
+									String mimeType = fileItem.getContentType();
 									
-									if (type.equals(FncConstants.FNC_ID_Transformator)) {
+									try {
+										result = upload(item, type, fileName, mimeType, bytes);
 										
-										/* 
-										 * This is an upload request for a transformation
-										 */
-										String filename = FilenameUtils.getName( fileItem.getName() );
-										String mimetype = fileItem.getContentType();
-										
-										/* 
-										 * "save" uploaded transformator for later processing in
-										 * the transformator cache of the transformator processor
-										 */
-										XslCacheManager.getInstance().setToCache(item, filename, mimetype, bytes);
-
-									} else {
-										Exception e = new Exception("[UploadImpl] Information type <" + type + "> is not supported");
+									} catch (Exception e) {
 										sendBadRequest(ctx, e);
 										
 									}
@@ -145,4 +131,33 @@ public class UploadImpl extends BusinessImpl {
 
 	}
 
+	/**
+	 * A helper method to process an uploaded file
+	 * 
+	 * @param item
+	 * @param type
+	 * @param fileName
+	 * @param mimeType
+	 * @param bytes
+	 * @return
+	 * @throws Exception
+	 */
+	private String upload(String item, String type, String fileName, String mimeType, byte[] bytes) throws Exception {
+		
+		if (type.equals(FncConstants.FNC_ID_Transformator)) {
+			
+			/* 
+			 * "save" uploaded transformator for later processing in
+			 * the transformator cache of the transformator processor
+			 */
+			XslCacheManager.getInstance().setToCache(item, fileName, mimeType, bytes);
+			return "true";
+
+		} else {
+			throw new Exception("[UploadImpl] Information type <" + type + "> is not supported");
+
+		}
+		
+	}
+	
 }

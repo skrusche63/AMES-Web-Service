@@ -18,18 +18,16 @@ package de.kp.ames.web.function.group;
  *
  */
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONArray;
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.http.RequestContext;
 
-public class GroupImpl extends BusinessImpl {
+public class GroupServiceImpl extends BusinessImpl {
 
-	public GroupImpl() {	
+	public GroupServiceImpl() {	
 		super();
 	}
 
@@ -87,18 +85,9 @@ public class GroupImpl extends BusinessImpl {
 			} else {
 
 				if (type.equals(FncConstants.FNC_ID_Category)) {
-					/*
-					 * Additional request parameters are directly provided
-					 * by a (e.g.) SmartGwt 3.0 widget (Grid) and must be 
-					 * retrieved from the respective Http Request
-					 */
-					HttpServletRequest request = ctx.getRequest();
-					
-					String startParam = renderer.getStartParam();
-					String start = request.getParameter(startParam);
-					
-					String limitParam = renderer.getLimitParam();
-					String limit = request.getParameter(limitParam);
+
+					String start = this.method.getAttribute(FncConstants.ATTR_START);			
+					String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
 			
 					if ((start == null) || (limit == null)) {
 						this.sendNotImplemented(ctx);
@@ -279,7 +268,7 @@ public class GroupImpl extends BusinessImpl {
 			content = lcm.deleteAffiliation(data);
 		
 		} else {
-			throw new Exception("[GroupImpl] Information type <" + type + "> is not supported");
+			throw new Exception("[GroupServiceImpl] Information type <" + type + "> is not supported");
 		
 		}
 		
@@ -349,7 +338,7 @@ public class GroupImpl extends BusinessImpl {
 			content = lcm.submitCommunity(data);
 
 		} else {
-			throw new Exception("[GroupImpl] Information type <" + type + "> is not supported");
+			throw new Exception("[GroupServiceImpl] Information type <" + type + "> is not supported");
 		
 		}
 		
@@ -360,16 +349,5 @@ public class GroupImpl extends BusinessImpl {
 		return content;
 		
 	}
-	
-	/*
-	 * Sense Maker
-	 * 
-	 * - get namespaces
-	 * 
-	 * - html
-	 * 
-	 * - load
-	 * 
-	 * 
-	 */
+
 }

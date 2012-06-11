@@ -1,4 +1,4 @@
-package de.kp.ames.web.core;
+package de.kp.ames.web.http;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;

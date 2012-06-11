@@ -18,18 +18,16 @@ package de.kp.ames.web.function.role;
  *
  */
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONArray;
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.http.RequestContext;
 
-public class RoleImpl extends BusinessImpl {
+public class RoleServiceImpl extends BusinessImpl {
 
-	public RoleImpl() {
+	public RoleServiceImpl() {
 		super();
 	}
 	
@@ -50,8 +48,34 @@ public class RoleImpl extends BusinessImpl {
 				this.sendNotImplemented(ctx);
 				
 			} else {
-				
-				if (type.equals(FncConstants.FNC_ID_Responsibility)) {
+
+				if (type.equals(FncConstants.FNC_ID_Namespace)) {
+
+					/* 
+					 * Retrives all the namespaces a certain community 
+					 * or user is responsible for
+					 */
+					String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);
+					if (source == null) {
+						this.sendNotImplemented(ctx);
+						
+					} else {
+
+						try {
+							/*
+							 * JSON response
+							 */
+							String content = namespaces(source, format);
+							sendJSONResponse(content, ctx.getResponse());
+
+						} catch (Exception e) {
+							this.sendBadRequest(ctx, e);
+
+						}
+						
+					}
+
+				} else if (type.equals(FncConstants.FNC_ID_Responsibility)) {
 					/* 
 					 * A responsibility is actually equal to a certain namespace,
 					 * as a specific community or user be responsible (source) for
@@ -62,18 +86,8 @@ public class RoleImpl extends BusinessImpl {
 						
 					} else {
 
-						/*
-						 * Additional request parameters are directly provided
-						 * by a (e.g.) SmartGwt 3.0 widget (Grid) and must be 
-						 * retrieved from the respective Http Request
-						 */
-						HttpServletRequest request = ctx.getRequest();
-						
-						String startParam = renderer.getStartParam();
-						String start = request.getParameter(startParam);
-						
-						String limitParam = renderer.getLimitParam();
-						String limit = request.getParameter(limitParam);
+						String start = this.method.getAttribute(FncConstants.ATTR_START);			
+						String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
 				
 						if ((start == null) || (limit == null)) {
 							this.sendNotImplemented(ctx);
@@ -164,6 +178,40 @@ public class RoleImpl extends BusinessImpl {
 			}
 
 		}
+		
+	}
+
+	/**
+	 * Retrieve all namespaces a certain community or user
+	 * is responsible for
+	 * 
+	 * @param source
+	 * @param format
+	 * @return
+	 * @throws Exception
+	 */
+	private String namespaces(String source, String format) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+
+		RoleDQM dqm = new RoleDQM(jaxrHandle);
+		JSONArray jArray = dqm.getNamespaces(source);
+		
+		/*
+		 * Render result
+		 */
+		content = render(jArray, format);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
 		
 	}
 

@@ -18,8 +18,8 @@ package de.kp.ames.web.function.security;
  *
  */
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.function.BusinessImpl;
+import de.kp.ames.web.http.RequestContext;
 
 public class DisclaimerImpl extends BusinessImpl {
 

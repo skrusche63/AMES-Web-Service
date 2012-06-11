@@ -22,10 +22,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.http.RequestContext;
 
 public class BulletinImpl extends BusinessImpl {
 

@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import de.kp.ames.web.core.format.json.DateCollector;
 import de.kp.ames.web.core.format.json.JsonConstants;
+import de.kp.ames.web.core.format.json.JsonProvider;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
@@ -54,6 +55,41 @@ public class RoleDQM extends JaxrDQM {
 		super(jaxrHandle);
 	}
 
+	/**
+	 * Retrieve all namespaces a certain community or user
+	 * is responsible for
+	 * 
+	 * @param responsible
+	 * @return
+	 * @throws Exception
+	 */
+	public JSONArray getNamespaces(String responsible) throws Exception {
+		
+		/*
+		 * Sort result by datetime
+		 */
+		DateCollector collector = new DateCollector();
+
+		/*
+		 * Get namespaces
+		 */
+		String sqlString = FncSQL.getSQLResponsibilities_All(responsible);
+		List<RegistryObjectImpl> namespaces = getRegistryObjectsByQuery(sqlString);
+
+		if (namespaces.size() == 0) return new JSONArray();
+		
+		for (RegistryObjectImpl namespace:namespaces) {
+			JSONObject jNamespace = JsonProvider.getRelated(jaxrHandle, namespace);
+
+			Date lastModified = getLastModified(namespace);
+			collector.put(lastModified, jNamespace);
+			
+		}
+
+		return new JSONArray(collector.values());
+
+	}
+	
 	/**
 	 * Get registered namespaces (registry packages) that 
 	 * are assigned to either an organization or user

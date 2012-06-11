@@ -104,6 +104,14 @@ public class ScRenderer implements GuiRenderer {
 	}
 	
 	/* (non-Javadoc)
+	 * @see de.kp.ames.web.function.GuiRenderer#createTree(org.json.JSONArray)
+	 */
+	public String createTree(JSONArray jArray) {
+		// TODO
+		return null;
+	}
+	
+	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#getStartParam()
 	 */
 	public String getStartParam() {
@@ -122,6 +130,13 @@ public class ScRenderer implements GuiRenderer {
 	 */
 	public String getIconParam() {
 		return ScConstants.SC_ICON;
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.function.GuiRenderer#getParentParam()
+	 */
+	public String getParentParam() {
+		return ScConstants.SC_PARENT;
 	}
 	
 	/**

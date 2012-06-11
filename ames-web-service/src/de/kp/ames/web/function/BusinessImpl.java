@@ -47,6 +47,9 @@ public class BusinessImpl extends ServiceImpl {
 		if (format.equals(FncConstants.FNC_FORMAT_ID_Grid)) {
 			return renderer.createGrid(jArray);
 			
+		} else if (format.equals(FncConstants.FNC_FORMAT_ID_Tree)) {
+			return renderer.createTree(jArray);
+			
 		} else {
 			throw new Exception("[BusinessImpl] Format <" + format + "> not supported.");
 

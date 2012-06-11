@@ -35,6 +35,7 @@ import de.kp.ames.web.core.format.kml.KmlObject;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
+import de.kp.ames.web.function.access.wms.WmsConsumer;
 
 public class MapDQM extends JaxrDQM {
 
@@ -48,6 +49,23 @@ public class MapDQM extends JaxrDQM {
 	 */
 	public MapDQM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
+	}
+	
+	/**
+	 * Retrieve WMS layers in a JSON representation
+	 * 
+	 * @param endpoint
+	 * @return
+	 * @throws Exception
+	 */
+	public JSONArray getLayers(String endpoint) throws Exception {
+		
+		/*
+		 * Connect to WMS service defined by endpoint parameter
+		 */
+		WmsConsumer wmsConsumer = new WmsConsumer(endpoint);		
+		return wmsConsumer.getCapabilitiesAsJson();
+
 	}
 	
 	/**

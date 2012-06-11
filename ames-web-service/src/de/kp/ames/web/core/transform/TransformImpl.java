@@ -21,11 +21,11 @@ package de.kp.ames.web.core.transform;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.core.util.BaseParam;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.http.RequestContext;
 
 public class TransformImpl extends ServiceImpl {
 

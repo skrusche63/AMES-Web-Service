@@ -41,5 +41,15 @@ public interface GuiRenderer {
 	 * Icon parameter
 	 */
 	public String getIconParam();
+
+	/*
+	 * Parent parameter
+	 */
+	public String getParentParam();
+	
+	/*
+	 * Build a Tree representation from a JSON Array
+	 */
+	public String createTree(JSONArray jArray);
 	
 }

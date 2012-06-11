@@ -22,8 +22,8 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import de.kp.ames.web.core.RequestContext;
 import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.http.RequestContext;
 
 public class SearchImpl extends ServiceImpl {
 
