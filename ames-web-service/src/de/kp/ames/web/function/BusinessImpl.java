@@ -45,9 +45,21 @@ public class BusinessImpl extends ServiceImpl {
 	protected String render(JSONArray jArray, String format) throws Exception {
 
 		if (format.equals(FncConstants.FNC_FORMAT_ID_Grid)) {
+			/*
+			 * Render JSONArray as a GUI
+			 */
 			return renderer.createGrid(jArray);
-			
+
+		} else if (format.equals(FncConstants.FNC_FORMAT_ID_Object)) {
+			/*
+			 * Render JSONArray as a single JSON object
+			 */
+			return renderer.createObject(jArray);
+
 		} else if (format.equals(FncConstants.FNC_FORMAT_ID_Tree)) {
+			/*
+			 * Render JSONArray as a Tree
+			 */
 			return renderer.createTree(jArray);
 			
 		} else {

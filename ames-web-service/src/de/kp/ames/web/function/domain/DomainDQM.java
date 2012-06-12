@@ -18,9 +18,11 @@ package de.kp.ames.web.function.domain;
  *
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.freebxml.omar.client.xml.registry.infomodel.ExternalLinkImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,10 +44,11 @@ public class DomainDQM extends JaxrDQM {
 	 * those attached to a certain registry package (parent)
 	 * 
 	 * @param parent
+	 * @param item
 	 * @return
 	 * @throws Exception
 	 */
-	public JSONArray getExternalLinks(String parent) throws Exception {
+	public JSONArray getExternalLinks(String parent, String item) throws Exception {
 
 		/*
 		 * Sort result by name of external link
@@ -55,10 +58,31 @@ public class DomainDQM extends JaxrDQM {
 		/*
 		 * Determine SQL statement
 		 */
-		String sqlString = (parent == null) ? JaxrSQL.getSQLExternalLinks_All() : JaxrSQL.getSQLPackageMembers(parent);
-		List<ExternalLinkImpl> links = getExternalLinksByQuery(sqlString);
+		List<ExternalLinkImpl> links = null;
 		
-		if (links.size() == 0) return new JSONArray();
+		if (item == null) {
+			/*
+			 * No specific external link instance is requested
+			 */			
+			String sqlString = (parent == null) ? JaxrSQL.getSQLExternalLinks_All() : JaxrSQL.getSQLPackageMembers(parent);
+			links = getExternalLinksByQuery(sqlString);
+		
+			if (links.size() == 0) return new JSONArray();
+
+			
+		} else {
+			/*
+			 * A specific external link is requested
+			 */
+			RegistryObjectImpl ro = getRegistryObjectById(item);
+			if (ro == null) return new JSONArray();
+			
+			links = new ArrayList<ExternalLinkImpl>();
+			ExternalLinkImpl link = (ExternalLinkImpl)ro;
+			
+			links.add(link);		
+		
+		}
 		
 		/*
 		 * Build sorted list
@@ -67,6 +91,64 @@ public class DomainDQM extends JaxrDQM {
 
 			JSONObject jLink = JsonProvider.getExternalLink(jaxrHandle, link);	
 			collector.put(jLink.getString(JaxrConstants.RIM_NAME), jLink);
+
+		}
+			
+		return new JSONArray(collector.values());
+
+	}
+	
+	/**
+	 * Retrieve registry objects either all or
+	 * those attached to a certain registry 
+	 * package (parent)
+	 * 
+	 * @param parent
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	public JSONArray getRegistryObjects(String parent, String item) throws Exception {
+
+		/*
+		 * Sort result by name of registry object
+		 */
+		StringCollector collector = new StringCollector();
+		
+		/*
+		 * Determine SQL statement
+		 */
+		List<RegistryObjectImpl> objects = null;
+		
+		if (item == null) {
+			/*
+			 * No specific registry object instance is requested
+			 */			
+			String sqlString = (parent == null) ? JaxrSQL.getSQLRegistryObjects_All() : JaxrSQL.getSQLPackageMembers(parent);
+			objects = getRegistryObjectsByQuery(sqlString);
+		
+			if (objects.size() == 0) return new JSONArray();
+
+			
+		} else {
+			/*
+			 * A specific registry object is requested
+			 */
+			RegistryObjectImpl ro = getRegistryObjectById(item);
+			if (ro == null) return new JSONArray();
+			
+			objects = new ArrayList<RegistryObjectImpl>();
+			objects.add(ro);		
+		
+		}
+		
+		/*
+		 * Build sorted list
+		 */
+		for (RegistryObjectImpl object:objects) {
+
+			JSONObject jObject = JsonProvider.getRegistryObject(jaxrHandle, object);	
+			collector.put(jObject.getString(JaxrConstants.RIM_NAME), jObject);
 
 		}
 			

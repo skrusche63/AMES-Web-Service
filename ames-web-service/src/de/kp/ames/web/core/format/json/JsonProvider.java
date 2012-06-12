@@ -37,7 +37,12 @@ public class JsonProvider {
 		// TODO
 		return null;
 	}
-	
+
+	public static JSONObject getRegistryObject(JaxrHandle jaxrHandle, RegistryObjectImpl ro) throws Exception {
+		//TODO
+		return null;
+	}
+
 	public static JSONObject getRelated(JaxrHandle jaxrHandle, RegistryObjectImpl ro) throws Exception {
 		//TODO
 		return null;

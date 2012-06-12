@@ -24,22 +24,34 @@ public class FncMessages {
 	 * Bulletin specific messages
 	 */
 	public static String POSTING_CREATED = "Posting successfully created.";
-	
+
+	/*
+	 * Communication specific messages
+	 */
+	public static String CHAT_CREATED = "Chat message successfully submitted.";
+	public static String MAIL_CREATED = "Mail message successfully submitted.";
+
 	/*
 	 * Group specifc messages
 	 */
-	public static String AFFILIATION_CREATED  = "Affiliation successfully submitted.";
-	public static String AFFILIATION_DELETED  = "Affiliation successfully deleted.";
-	public static String AFFILIATION_UPDATED  = "Affiliation successfully updated.";
-	public static String CATEGORY_CREATED     = "Category successfully submitted.";
-	public static String CONTACT_CREATED      = "Primary contact successfully submitted.";
-	public static String ORGANIZATION_CREATED = "Organization successfully submitted.";
-	public static String ORGANIZATION_UPDATED = "Organization successfully updated.";
+	public static String AFFILIATION_CREATED   = "Affiliation successfully submitted.";
+	public static String AFFILIATION_DELETED   = "Affiliation successfully deleted.";
+	public static String AFFILIATION_UPDATED   = "Affiliation successfully updated.";
+	public static String CATEGORY_CREATED      = "Category successfully submitted.";
+	public static String CONTACT_CREATED       = "Primary contact successfully submitted.";
+	public static String ORGANIZATION_CREATED  = "Organization successfully submitted.";
+	public static String ORGANIZATION_UPDATED  = "Organization successfully updated.";
+	public static String TRANSFORMATOR_CREATED = "Transformator successfully submitted.";
+	
+	/*
+	 * Registry object specific messages
+	 */
+	public static String NO_DESCRIPTION_DESC = "No description available.";
 	
 	/*
 	 * User specific messages
 	 */
-	public static String USER_UPDATED         = "User successfully updated.";
+	public static String USER_UPDATED = "User successfully updated.";
 
 	/*
 	 * Registry object specific messages
@@ -50,9 +62,10 @@ public class FncMessages {
 	/*
 	 * Top pacakge descriptions
 	 */
-	public static String CHAT_DESC    = "This is the top package to manage all submitted chat messages.";
-	public static String LINK_DESC    = "This is the top package to manage all submitted external links.";
-	public static String MAIL_DESC    = "This is the top package to manage all submitted mails.";
-	public static String POSTING_DESC = "This is the top package to manage all submitted postings.";
+	public static String CHAT_DESC          = "This is the top package to manage all submitted chat messages.";
+	public static String LINK_DESC          = "This is the top package to manage all submitted external links.";
+	public static String MAIL_DESC          = "This is the top package to manage all submitted mails.";
+	public static String POSTING_DESC       = "This is the top package to manage all submitted postings.";
+	public static String TRANSFORMATOR_DESC = "This is the top package to manage all submitted transformators.";
 	
 }

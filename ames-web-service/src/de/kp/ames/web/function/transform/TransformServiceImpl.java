@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.transform;
+package de.kp.ames.web.function.transform;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -27,9 +27,9 @@ import de.kp.ames.web.core.util.BaseParam;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
 
-public class TransformImpl extends ServiceImpl {
+public class TransformServiceImpl extends ServiceImpl {
 
-	public TransformImpl() {		
+	public TransformServiceImpl() {		
 	}
 	
 	/* (non-Javadoc)
@@ -66,6 +66,32 @@ public class TransformImpl extends ServiceImpl {
 				
 			}
 			
+		} else if (methodName.equals(FncConstants.METH_SUBMIT)) {
+			/*
+			 * An XSL transformation that is already uploaded to
+			 * the server (and managed in a temporary cache) is
+			 * registered in an OASIS ebXML RegRep
+			 */
+			String data = this.getRequestData(ctx);
+			if (data == null) {
+				this.sendNotImplemented(ctx);
+				
+			} else {
+
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = submit(data);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+				
+			}
+
 		}
 		
 	}
@@ -120,4 +146,29 @@ public class TransformImpl extends ServiceImpl {
 		return content;
 	}
 	
+	/**
+	 * Submit an XML transformation
+	 * 
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	private String submit(String data) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+
+		TransformLCM lcm = new TransformLCM(jaxrHandle);
+		content = lcm.submitTransformator(data);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+	}
 }

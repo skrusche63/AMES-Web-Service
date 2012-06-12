@@ -428,10 +428,10 @@ public class RequestDispatcher extends HttpServlet {
 		services.add(new BaseParam("search", "de.kp.ames.web.core.search.SearchImpl"));
 		
 		/*
-		 * Core Transform Service that supports the XSL
+		 * Transform Service that supports the XSL
 		 * transformation of registry objects
 		 */
-		services.add(new BaseParam("transform", "de.kp.ames.web.core.transform.TransformImpl"));
+		services.add(new BaseParam("transform", "de.kp.ames.web.function.transform.TransformServiceImpl"));
 
 		/*
 		 * Upload service that supports the upload and

@@ -104,6 +104,14 @@ public class ScRenderer implements GuiRenderer {
 	}
 	
 	/* (non-Javadoc)
+	 * @see de.kp.ames.web.function.GuiRenderer#createObject(org.json.JSONArray)
+	 */
+	public String createObject(JSONArray jArray) {
+		// TODO
+		return null;
+	}
+	
+	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#createTree(org.json.JSONArray)
 	 */
 	public String createTree(JSONArray jArray) {

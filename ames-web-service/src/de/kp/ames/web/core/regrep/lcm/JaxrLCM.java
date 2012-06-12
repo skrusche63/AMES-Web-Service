@@ -19,6 +19,8 @@ package de.kp.ames.web.core.regrep.lcm;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,6 +62,7 @@ import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 public class JaxrLCM extends JaxrBase {
 
 	private static String REGISTRY_PACKAGE = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_RegistryPackage;
+	private static String SERVICE          = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_Service;
 
 	public JaxrLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
@@ -719,11 +722,16 @@ public class JaxrLCM extends JaxrBase {
 		if (objectType.startsWith(REGISTRY_PACKAGE)) {
 			
 			/* 
-			 * A composite object that requires a cascading delete; 
-			 * actually deletion of these objects is restricted to 
-			 * the system administrator
+			 * A registry package (composite) is prepared for deletion
 			 */
 			this.deleteRegistryPackage((RegistryPackageImpl)ro, transaction);
+			
+		} else if (objectType.startsWith(SERVICE)) {
+			
+			/*
+			 * A service object (composite) is prepared for deletion
+			 */
+			this.deleteService((ServiceImpl)ro, transaction);
 			
 		} else {				
 			/* 
@@ -862,6 +870,57 @@ public class JaxrLCM extends JaxrBase {
 		
 		this.deleteRegistryObject((RegistryObjectImpl)rp, transaction);
 		
+	}
+	
+	/**
+	 * A private method to delete a Service instance
+	 * 
+	 * @param service
+	 * @param transaction
+	 * @throws Exception
+	 */
+	private void deleteService(ServiceImpl service, JaxrTransaction transaction) throws Exception {
+		
+		/* 
+		 * Determine service bindings
+		 */
+		Collection<?> bindings = service.getServiceBindings();
+		if (bindings.isEmpty() == false) {
+			
+			for (Object object:bindings) {
+				
+				ServiceBindingImpl binding = (ServiceBindingImpl) object;
+				
+				/* 
+				 * The specification links of the respective binding are determined
+				 */
+				Collection<?> specificationLinks = binding.getSpecificationLinks();
+				if (specificationLinks.isEmpty() == false) {
+				
+					/* 
+					 * Prepare specification links to be deleted
+					 */
+					Iterator<?> iterator = specificationLinks.iterator();
+					while (iterator.hasNext()) {
+						deleteRegistryObject((RegistryObjectImpl)iterator.next(), transaction);						
+					}
+
+				}
+				
+				/* 
+				 * Prepare service binding to be deleted
+				 */
+				deleteRegistryObject((RegistryObjectImpl)binding, transaction);
+				
+			}
+
+		}
+		
+		/* 
+		 * Prepare service to be deleted
+		 */
+		deleteRegistryObject((RegistryObjectImpl)service, transaction);
+
 	}
 	
 	/**

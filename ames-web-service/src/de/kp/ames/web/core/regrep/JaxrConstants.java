@@ -20,6 +20,8 @@ package de.kp.ames.web.core.regrep;
 
 public class JaxrConstants {
 
+	public static String RIM_PRE = "rim";
+	
 	/*
 	 * Basic ebRIM parameters
 	 */
@@ -44,7 +46,7 @@ public class JaxrConstants {
      */
 	public static String RIM_CATE  = "rimCategory";
 	public static String RIM_CLAS  = "rimClassification";
-	public static String RIM_ROLES = "rimRoles";
+	public static String RIM_ROLE  = "rimRole";
 
 	/* 
 	 * Person name (User)
@@ -89,6 +91,16 @@ public class JaxrConstants {
 	 */
 	public static String RIM_NAMESPACE = "rimNamespace";
 
+	/*
+	 * Service
+	 */
+	public static String RIM_SEQNO = "rimSeqNo";
+	public static String RIM_SPEC  = "rimSpecification";
+	
+	/*
+	 * Slot
+	 */
+	public static String RIM_SLOT = "rimSlot";
 	/*
 	 * Symbol representation
 	 */

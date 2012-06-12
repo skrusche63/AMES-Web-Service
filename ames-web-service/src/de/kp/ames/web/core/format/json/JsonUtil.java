@@ -61,6 +61,28 @@ public class JsonUtil {
 	}
 
 	/**
+	 * A helper method to convert a JSON (String) array
+	 * into a String array
+	 *
+	 * @param jArray
+	 * @return
+	 * @throws JSONException
+	 */
+	public static ArrayList<String> getStringArray(JSONArray jArray) throws JSONException {
+		/*
+		 * Convert JSON array into String representation
+		 */
+		ArrayList<String> array = new ArrayList<String>();
+
+		for (int i=0; i < jArray.length(); i++) {
+			array.add(jArray.getString(i));
+		}
+		
+		return array;
+
+	}
+	
+	/**
 	 * @param key
 	 * @param jObject
 	 * @return

@@ -57,10 +57,11 @@ public class FncConstants {
 	 */
 	public static String FNC_ID_Format = FNC_ID + ":Format";
 	
-	public static String FNC_FORMAT_ID_Grid = FNC_ID_Format + ":Grid";
-	public static String FNC_FORMAT_ID_Json = FNC_ID_Format + ":Json";
-	public static String FNC_FORMAT_ID_Rss  = FNC_ID_Format + ":Rss";
-	public static String FNC_FORMAT_ID_Tree = FNC_ID_Format + ":Tree";
+	public static String FNC_FORMAT_ID_Grid   = FNC_ID_Format + ":Grid";
+	public static String FNC_FORMAT_ID_Json   = FNC_ID_Format + ":Json";
+	public static String FNC_FORMAT_ID_Object = FNC_ID_Format + ":Object";
+	public static String FNC_FORMAT_ID_Rss    = FNC_ID_Format + ":Rss";
+	public static String FNC_FORMAT_ID_Tree   = FNC_ID_Format + ":Tree";
 	
 	/*
 	 * Security Classification Nodes
@@ -84,6 +85,7 @@ public class FncConstants {
 	public static String NAMESPACE_PRE;
 	public static String POSTING_PRE;
     public static String SECURITY_PRE;
+    public static String TRANSFORMATOR_PRE;
 
 	/*
 	 * Methods
@@ -146,14 +148,15 @@ public class FncConstants {
 		 */		
 		String basePrefix = bundle.getString(GlobalConstants.BASE_PRE);
 		
-		AFFILIATION_PRE = basePrefix + ":affiliation";
-		CHAT_PRE        = basePrefix + ":chat";
-		COMMUNITY_PRE   = basePrefix + ":community";
-		LINK_PRE        = basePrefix + ":link";
-		MAIL_PRE        = basePrefix + ":mail";
-		NAMESPACE_PRE   = basePrefix + ":namespace";
-		POSTING_PRE     = basePrefix + ":posting";
-		SECURITY_PRE    = basePrefix + ":security";
+		AFFILIATION_PRE   = basePrefix + ":affiliation";
+		CHAT_PRE          = basePrefix + ":chat";
+		COMMUNITY_PRE     = basePrefix + ":community";
+		LINK_PRE          = basePrefix + ":link";
+		MAIL_PRE          = basePrefix + ":mail";
+		NAMESPACE_PRE     = basePrefix + ":namespace";
+		POSTING_PRE       = basePrefix + ":posting";
+		SECURITY_PRE      = basePrefix + ":security";
+		TRANSFORMATOR_PRE = basePrefix + ":transformator";
 		
 		/*
 		 * Method attributes

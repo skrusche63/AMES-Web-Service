@@ -171,7 +171,7 @@ public class DomainServiceImpl extends BusinessImpl {
 			 * Retrieve external links
 			 */
 			DomainDQM dqm = new DomainDQM(jaxrHandle);
-			JSONArray jArray = dqm.getExternalLinks(parent);
+			JSONArray jArray = dqm.getExternalLinks(parent, item);
 			
 			/*
 			 * Render result
@@ -180,7 +180,16 @@ public class DomainServiceImpl extends BusinessImpl {
 
 		} else if (type.equals(CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_RegistryObject)) {
 
-			// TODO
+			/*
+			 * Retrieve registry objects
+			 */
+			DomainDQM dqm = new DomainDQM(jaxrHandle);
+			JSONArray jArray = dqm.getRegistryObjects(parent, item);
+			
+			/*
+			 * Render result
+			 */
+			content = render(jArray, format);
 			
 		} else {
 			throw new Exception("[DomainServiceImpl] Information type <" + type + "> is not supported");

@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.format.json.JsonConstants;
+import de.kp.ames.web.core.format.json.JsonUtil;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
@@ -52,7 +53,7 @@ public class RoleLCM extends JaxrLCM {
 
 	private static String RIM_ID        = JaxrConstants.RIM_ID;
 	private static String RIM_NAMESPACE = JaxrConstants.RIM_NAMESPACE;
-	private static String RIM_ROLES     = JaxrConstants.RIM_ROLES;
+	private static String RIM_ROLES     = JaxrConstants.RIM_ROLE;
 	
 	public RoleLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
@@ -306,16 +307,12 @@ public class RoleLCM extends JaxrLCM {
 		/*
 		 * Convert JSON roles into String representation
 		 */
-		ArrayList<String> roles = new ArrayList<String>();
-
-		for (int i=0; i < jRoles.length(); i++) {
-			roles.add(jRoles.getString(i));
-		}
+		ArrayList<String> conceptTypes = JsonUtil.getStringArray(jRoles);
 		
 		/*
 		 * Create classifications
 		 */
-		return createClassifications(roles);
+		return createClassifications(conceptTypes);
 
 	}
 

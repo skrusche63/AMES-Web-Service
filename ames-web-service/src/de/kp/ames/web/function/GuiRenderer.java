@@ -32,6 +32,16 @@ public interface GuiRenderer {
 	public String createGrid(JSONArray jArray, String start, String limit);
 	
 	/*
+	 * Build a Object representation from a JSON Array
+	 */
+	public String createObject(JSONArray jArray);
+
+	/*
+	 * Build a Tree representation from a JSON Array
+	 */
+	public String createTree(JSONArray jArray);
+	
+	/*
 	 * Paging paramters depend on registered Gui
 	 */
 	public String getStartParam();
@@ -46,10 +56,5 @@ public interface GuiRenderer {
 	 * Parent parameter
 	 */
 	public String getParentParam();
-	
-	/*
-	 * Build a Tree representation from a JSON Array
-	 */
-	public String createTree(JSONArray jArray);
 	
 }

@@ -19,29 +19,21 @@ package de.kp.ames.web.function.mail;
  */
 
 import java.util.List;
-import java.util.Locale;
-
-import javax.activation.DataHandler;
 import javax.xml.registry.JAXRException;
 
-import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
-import de.kp.ames.web.GlobalConstants;
-import de.kp.ames.web.core.format.json.JsonConstants;
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
-import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
-import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.DomainLCM;
+import de.kp.ames.web.function.domain.model.MailObject;
 
 public class MailLCM extends JaxrLCM {
 
@@ -57,16 +49,6 @@ public class MailLCM extends JaxrLCM {
 	 * @throws Exception
 	 */
 	public String submitMail(String data) throws Exception {
-		
-		/*
-		 * Initialize transaction
-		 */
-		JaxrTransaction transaction = new JaxrTransaction();
-	
-		/*
-		 * Initialize data
-		 */
-		JSONObject jForm = new JSONObject(data);
 
 		/*
 		 * Create or retrieve registry package that is 
@@ -89,86 +71,31 @@ public class MailLCM extends JaxrLCM {
 			container = list.get(0);
 
 		}
-
-		/* 
-		 * A chat message is a certain extrinsic object that holds all 
-		 * relevant and related information in a single JSON repository item
-		 */
-
-		ExtrinsicObjectImpl eo = null;
-
-		/* 
-		 * Create extrinsic object that serves as a container for
-		 * the respective mail message
-		 */
-		eo = createExtrinsicObject();
-		if (eo == null) throw new JAXRException();
-				
-		/* 
-		 * Identifier
-		 */
-		String eid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.MAIL_PRE);
-
-		eo.setLid(eid);
-		eo.getKey().setId(eid);
-
-		/*
-		 * Name & description using default locale
-		 */
-		String name = jForm.getString(JaxrConstants.RIM_NAME);				
-		eo.setName(createInternationalString(name));
-
-		String desc = jForm.getString(JaxrConstants.RIM_DESC);
-		eo.setDescription(createInternationalString(desc));
 		
-		/* 
-		 * Home url
+		/*
+		 * Initialize transaction
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
-		eo.setHome(home);
-
-		/* 
-		 * Mime type & handler
-		 */
-		String mimetype = GlobalConstants.MT_JSON;
-		eo.setMimeType(mimetype);
-				
-		byte[] bytes = data.getBytes(GlobalConstants.UTF_8);
-
-		DataHandler handler = new DataHandler(FileUtil.createByteArrayDataSource(bytes, mimetype));                	
-    	eo.setRepositoryItem(handler);				
-
-    	transaction.addObjectToSave(eo);
+		JaxrTransaction transaction = new JaxrTransaction();
 
 		/*
-		 * Create classification
+		 * Create MailObject
 		 */
-		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Chat);
-		c.setName(createInternationalString(Locale.US, "Chat Classification"));
+		MailObject mailObject = new MailObject(jaxrHandle, this);
+		RegistryObjectImpl ro = mailObject.create(data);
 
-		/* 
-		 * Associate classification and mail message
-		 */
-		eo.addClassification(c);
-		transaction.addObjectToSave(c);				
-
-		/* 
-		 * Add extrinsic object to container
-		 */
-		container.addRegistryObject(eo);
-		transaction.addObjectToSave(container);
+    	transaction.addObjectToSave(ro);
+		container.addRegistryObject(ro);
 
 		/*
 		 * Save objects	
-		 */
+		 */		
+		transaction.addObjectToSave(container);
 		saveObjects(transaction.getObjectsToSave(), false, false);
 
 		/*
-		 * Prepare response 
+		 * Get response 
 		 */
-		JSONObject jResponse = new JSONObject();
-		jResponse.put(JsonConstants.J_ID, eid);
-		
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.MAIL_CREATED);		
 		return jResponse.toString();
 		
 	}

@@ -440,9 +440,9 @@ public class JaxrDQM extends JaxrBase {
 	 * @return
 	 * @throws JAXRException 
 	 */
-	public List<RegistryObjectImpl> getRegistryObject_ByClasNode(String cn) throws JAXRException {
+	public List<RegistryObjectImpl> getRegistryObjects_ByClasNode(String cn) throws JAXRException {
 		
-		String sqlString = JaxrSQL.getSQLRegistryObject_ByClasNode(cn);
+		String sqlString = JaxrSQL.getSQLRegistryObjects_ByClasNode(cn);
     	return getRegistryObjectsByQuery(sqlString);   	
 		
 	}
@@ -457,9 +457,9 @@ public class JaxrDQM extends JaxrBase {
 	 * @return
 	 * @throws JAXRException
 	 */
-	public List<RegistryObjectImpl> getRegistryObject_ByClasNode(RegistryObjectImpl ro, String cn) throws JAXRException {
+	public List<RegistryObjectImpl> getRegistryObjects_ByClasNode(RegistryObjectImpl ro, String cn) throws JAXRException {
 
-		String sqlString = JaxrSQL.getSQLRegistryObject_ByClasNode(ro.getId(), cn);
+		String sqlString = JaxrSQL.getSQLRegistryObjects_ByClasNode(ro.getId(), cn);
     	return getRegistryObjectsByQuery(sqlString);   	
 
 	}
@@ -472,9 +472,9 @@ public class JaxrDQM extends JaxrBase {
 	 * @return
 	 * @throws JAXRException
 	 */
-	public List<RegistryObjectImpl> getRegistryObject_RelatedAll(RegistryObjectImpl ro) throws JAXRException {
+	public List<RegistryObjectImpl> getRegistryObjects_RelatedAll(RegistryObjectImpl ro) throws JAXRException {
 		
-		String sqlString = JaxrSQL.getSQLRegistryObject_RelatedAll(ro.getId());
+		String sqlString = JaxrSQL.getSQLRegistryObjects_RelatedAll(ro.getId());
     	return getRegistryObjectsByQuery(sqlString);   	
 		
 	}
@@ -487,9 +487,9 @@ public class JaxrDQM extends JaxrBase {
 	 * @return
 	 * @throws JAXRException 
 	 */
-	public List<RegistryObjectImpl> getRegistryObject_byUser(UserImpl user) throws JAXRException {
+	public List<RegistryObjectImpl> getRegistryObjects_byUser(UserImpl user) throws JAXRException {
 		
-		String sqlString = JaxrSQL.getSQLRegistryObject_byUser(user.getId());
+		String sqlString = JaxrSQL.getSQLRegistryObjects_byUser(user.getId());
 	   	return getRegistryObjectsByQuery(sqlString);   	
 	
 	}
@@ -504,9 +504,9 @@ public class JaxrDQM extends JaxrBase {
 	 * @return
 	 * @throws JAXRException 
 	 */
-	public List<RegistryObjectImpl> getRegistryObject_ByUser(UserImpl user, String cn) throws JAXRException {
+	public List<RegistryObjectImpl> getRegistryObjects_ByUser(UserImpl user, String cn) throws JAXRException {
 
-		String sqlString = JaxrSQL.getSQLRegistryObject_ByUser(user.getId(), cn);
+		String sqlString = JaxrSQL.getSQLRegistryObjects_ByUser(user.getId(), cn);
 	   	return getRegistryObjectsByQuery(sqlString);   	
 	
 	}

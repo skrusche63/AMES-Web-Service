@@ -26,6 +26,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExternalLinkImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.ServiceImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrConstants;
@@ -177,6 +178,11 @@ public class DomainLCM extends JaxrLCM {
 	}
 	
 	private RegistryPackageImpl createRegistryPackage(JaxrTransaction transction) throws Exception {
+		// TODO
+		return null;
+	}
+
+	private ServiceImpl createService(JaxrTransaction transaction) {
 		// TODO
 		return null;
 	}

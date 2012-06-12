@@ -26,10 +26,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 
 import de.kp.ames.web.core.malware.MalwareScanner;
-import de.kp.ames.web.core.transform.cache.XslCacheManager;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.transform.cache.XslCacheManager;
 import de.kp.ames.web.http.RequestContext;
 
 public class UploadImpl extends BusinessImpl {

@@ -329,13 +329,25 @@ public class JaxrSQL {
 	}
 
 	/**
+	 * Retrieve all registered registry objects
+	 * 
+	 * @return
+	 */
+	public static String getSQLRegistryObjects_All() {
+
+		String query = "SELECT ro.* FROM RegistryObject";
+    	return query;    	
+		
+	}
+	
+	/**
 	 * Retrieve all registry objects that are classified by
 	 * a certain certain classification node
 	 * 
 	 * @param cn
 	 * @return
 	 */
-	public static String getSQLRegistryObject_ByClasNode(String cn) {
+	public static String getSQLRegistryObjects_ByClasNode(String cn) {
 		
 		String query = "SELECT ro.* FROM RegistryObject ro, Classification clas WHERE clas.classifiedObject=ro.id AND clas.classificationNode='" + cn + "'";
 		return query;
@@ -351,7 +363,7 @@ public class JaxrSQL {
 	 * @param cn
 	 * @return
 	 */
-	public static String getSQLRegistryObject_ByClasNode(String id, String cn) {
+	public static String getSQLRegistryObjects_ByClasNode(String id, String cn) {
 
 		String query = "SELECT ro.* FROM RegistryObject, Classification clas ro WHERE clas.classifiedObject=ro.id AND ro.id='" + id + "'" +
     	" AND clas.classificationNode='" + cn + "'";
@@ -367,7 +379,7 @@ public class JaxrSQL {
 	 * @param source
 	 * @return
 	 */
-	public static String getSQLRegistryObject_RelatedAll(String source) {
+	public static String getSQLRegistryObjects_RelatedAll(String source) {
 		
 		String query = "SELECT DISTINCT ro.* FROM RegistryObject ro, Association a WHERE " + 
 	    " a.sourceObject='" + source + "' AND a.targetObject=ro.id";
@@ -383,7 +395,7 @@ public class JaxrSQL {
 	 * @param user
 	 * @return
 	 */
-	public static String getSQLRegistryObject_byUser(String user) {
+	public static String getSQLRegistryObjects_byUser(String user) {
 
 		StringBuffer query = new StringBuffer();
 		
@@ -403,7 +415,7 @@ public class JaxrSQL {
 	 * @param cn
 	 * @return
 	 */
-	public static String getSQLRegistryObject_ByUser(String user, String cn) {
+	public static String getSQLRegistryObjects_ByUser(String user, String cn) {
 
 		StringBuffer query = new StringBuffer();
 		
@@ -423,7 +435,7 @@ public class JaxrSQL {
 	 */
 	public static String getSQLPackageMembers(String rp) {
 		
-		String query = "SELECT ro.* FROM RegistryObject ro, RegistryPackage rp, Association a WHERE rp.id='" + rp +"'" + 
+		String query = "SELECT DISTINCT ro.* FROM RegistryObject ro, RegistryPackage rp, Association a WHERE rp.id='" + rp +"'" + 
 	    " AND a.associationType='" + HAS_MEMBER + "' AND a.sourceObject=rp.id AND a.targetObject=ro.id";
 		
 		return query;
@@ -441,7 +453,7 @@ public class JaxrSQL {
 	 */
 	public static String getSQLPackageMembers(String id, String rp) {
 		
-		String query = "SELECT ro.* FROM RegistryObject ro, RegistryPackage rp, Association a WHERE rp.id='" + rp +"'" + 
+		String query = "SELECT DISTINCT ro.* FROM RegistryObject ro, RegistryPackage rp, Association a WHERE rp.id='" + rp +"'" + 
 	    " AND a.associationType='" + HAS_MEMBER + "' AND a.sourceObject=rp.id AND a.targetObject='" + id + "'";
 		
 		return query;

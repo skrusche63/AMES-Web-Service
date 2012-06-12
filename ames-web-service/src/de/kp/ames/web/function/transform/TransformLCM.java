@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.chat;
+package de.kp.ames.web.function.transform;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -19,12 +19,16 @@ package de.kp.ames.web.function.chat;
  */
 
 import java.util.List;
+
 import javax.xml.registry.JAXRException;
 
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
+import de.kp.ames.web.core.reactor.ReactorImpl;
+import de.kp.ames.web.core.reactor.ReactorParams;
+import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
@@ -33,36 +37,36 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.DomainLCM;
-import de.kp.ames.web.function.domain.model.ChatObject;
+import de.kp.ames.web.function.domain.model.TransformatorObject;
 
-public class ChatLCM extends JaxrLCM {
-
-	public ChatLCM(JaxrHandle jaxrHandle) {
+public class TransformLCM extends JaxrLCM {
+	
+	public TransformLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
-
+	
 	/**
-	 * Register a new chat message
+	 * Submit XSL transformation
 	 * 
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	public String submitChat(String data) throws Exception {
+	public String submitTransformator(String data) throws Exception {
 
 		/*
 		 * Create or retrieve registry package that is 
-		 * responsible for managing chat message
+		 * responsible for managing transformators
 		 */
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Chat);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Transformator);
 		if (list.size() == 0) {
 			/*
 			 * Create container
 			 */
-			container = createChatPackage();
+			container = createTransformatorPackage();
 			
 		} else {
 			/*
@@ -76,55 +80,61 @@ public class ChatLCM extends JaxrLCM {
 		 * Initialize transaction
 		 */
 		JaxrTransaction transaction = new JaxrTransaction();
-
+		
 		/*
-		 * Create ChatObject
+		 * Create TransformatorObject
 		 */
-		ChatObject chatObject = new ChatObject(jaxrHandle, this);
-		RegistryObjectImpl ro = chatObject.create(data);
+		TransformatorObject transformatorObject = new TransformatorObject(jaxrHandle, this);
+		RegistryObjectImpl ro = transformatorObject.create(data);
 
-    	transaction.addObjectToSave(ro);
+		transaction.addObjectToSave(ro);
 		container.addRegistryObject(ro);
 
 		/*
-		 * Save objects	
-		 */		
+		 * Save objects
+		 */
 		transaction.addObjectToSave(container);
 		saveObjects(transaction.getObjectsToSave(), false, false);
 
 		/*
-		 * Get response 
+		 * Supply reactor
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.CHAT_CREATED);		
+		ReactorParams reactorParams = new ReactorParams(ro, FncConstants.FNC_ID_Transformator, RAction.C_INDEX_RSS);
+		ReactorImpl.onSubmit(reactorParams);
+
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.TRANSFORMATOR_CREATED);
 		return jResponse.toString();
 		
 	}
 
 	/**
-	 * A helper method to create a new chat message container
+	 * A helper method to create a new transformator container
 	 * 
 	 * @return
 	 * @throws JAXRException
 	 */
-	private RegistryPackageImpl createChatPackage() throws JAXRException  {
+	private RegistryPackageImpl createTransformatorPackage() throws JAXRException  {
 
 		FncParams params = new FncParams();
 		
 		/*
 		 * Name & description
 		 */
-		params.put(FncParams.K_NAME, "Chat Messages");
-		params.put(FncParams.K_DESC, FncMessages.CHAT_DESC);
+		params.put(FncParams.K_NAME, "Transformators");
+		params.put(FncParams.K_DESC, FncMessages.TRANSFORMATOR_DESC);
 		
 		/*
 		 * Prefix
 		 */
-		params.put(FncParams.K_PRE, FncConstants.CHAT_PRE);
+		params.put(FncParams.K_PRE, FncConstants.TRANSFORMATOR_PRE);
 		
 		/*
 		 * Classification
 		 */
-		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Chat);
+		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Transformator);
 		
 		/*
 		 * Create package
