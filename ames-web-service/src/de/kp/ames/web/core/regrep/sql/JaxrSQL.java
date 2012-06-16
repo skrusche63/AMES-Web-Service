@@ -125,7 +125,7 @@ public class JaxrSQL {
 	 * @param id
 	 * @return
 	 */
-	public static String getSQLAssociations_All(String id) {
+	public static String getSQLAssociations_ByObject(String id) {
 		
 		String query = "SELECT a.* FROM Association a WHERE a.sourceObject='" + id + "'" + 
 		" OR a.targetObject='" + id + "'";

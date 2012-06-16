@@ -19,13 +19,13 @@ package de.kp.ames.web.core.format.json;
  */
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
+import java.util.Collection;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JsonUtil {
-
 	
 	/**
 	 * A helper method to retrieve Array-based attribute 
@@ -116,6 +116,22 @@ public class JsonUtil {
 		}
 		
 		return jArray;
+		
+	}
+	
+	/**
+	 * This is a helper method to convert 
+	 * a collection of strings into a JSON
+	 * array
+	 * 
+	 * @param c
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONArray getJArray(Collection<String> c) throws Exception {
+		
+		String[] cs = (String[])c.toArray(new String[c.size()]);
+		return new JSONArray(Arrays.asList(cs));
 		
 	}
 

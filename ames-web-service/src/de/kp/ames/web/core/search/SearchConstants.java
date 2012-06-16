@@ -1,8 +1,4 @@
 package de.kp.ames.web.core.search;
-
-import de.kp.ames.web.Bundle;
-import de.kp.ames.web.GlobalConstants;
-
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -22,8 +18,33 @@ import de.kp.ames.web.GlobalConstants;
  *
  */
 
+import de.kp.ames.web.Bundle;
+import de.kp.ames.web.GlobalConstants;
+
 public class SearchConstants {
 
+	/*
+	 * JSON parameters
+	 */
+	public static String J_CARD   = "card";
+	public static String J_COUNT  = "count";
+	public static String J_DESC   = "desc";
+	public static String J_FACET  = "facet";
+	public static String J_FIELD  = "field";
+	public static String J_ID     = "id";
+	public static String J_NAME   = "name";
+	public static String J_SOURCE = "source";
+	public static String J_TERM   = "term";
+	public static String J_VALUE  = "value";
+	
+	/*
+	 * Apache Solr parameters
+	 */
+	public static String S_DESC   = "description";
+	public static String S_FACET  = "facet";
+	public static String S_ID     = "id";
+	public static String S_NAME   = "name";
+		
 	/*
 	 * Term suggest parameters
 	 */
@@ -33,14 +54,17 @@ public class SearchConstants {
 	/*
 	 * Search methods
 	 */
+	public static String METH_FACET   = "facet";
+	public static String METH_SEARCH  = "search";
 	public static String METH_SUGGEST = "suggest";
 	
 	/*
 	 * Search method attributes
 	 */
-	public static String ATTR_REQUEST;
-	public static String ATTR_START;
 	public static String ATTR_LIMIT;
+	public static String ATTR_QUERY;
+	public static String ATTR_START;
+	public static String ATTR_TYPE;
 
 	/*
 	 * initialize constants
@@ -52,9 +76,10 @@ public class SearchConstants {
 		/*
 		 * Search method attributes
 		 */
-		ATTR_REQUEST = bundle.getString(GlobalConstants.ATTR_REQUEST);
-		ATTR_START   = bundle.getString(GlobalConstants.ATTR_START);
 		ATTR_LIMIT   = bundle.getString(GlobalConstants.ATTR_LIMIT);
+		ATTR_QUERY   = bundle.getString(GlobalConstants.ATTR_QUERY);
+		ATTR_START   = bundle.getString(GlobalConstants.ATTR_START);
+		ATTR_TYPE    = bundle.getString(GlobalConstants.ATTR_TYPE);
 	
 		/*
 		 * Search parameters

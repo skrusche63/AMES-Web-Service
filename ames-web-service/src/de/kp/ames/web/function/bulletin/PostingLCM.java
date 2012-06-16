@@ -194,7 +194,7 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Supply reactor
 		 */
-		ReactorParams reactorParams = new ReactorParams(eo, FncConstants.FNC_ID_Posting, RAction.C_INDEX);
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, eo, FncConstants.FNC_ID_Posting, RAction.C_INDEX);
 		ReactorImpl.onSubmit(reactorParams);
 
 		/*

@@ -47,6 +47,27 @@ public class ServiceObject extends BusinessObject {
 		super(jaxrHandle, lcm);
 	}
 	
+	public RegistryObjectImpl submit(String data) throws Exception {
+
+		/*
+		 * Initialize data
+		 */
+		JSONObject jForm = new JSONObject(data);
+		
+		/*
+		 * Unique identifier
+		 */
+		String item = jForm.has(RIM_ID) ? jForm.getString(RIM_ID) : null;
+		if (item == null) {
+			return create(jForm);
+		
+		} else {
+			return update(jForm);
+		}
+		
+	}
+	
+	
 	/**
 	 * Create ServiceObject
 	 * 
@@ -60,6 +81,22 @@ public class ServiceObject extends BusinessObject {
 		 * Initialize data
 		 */
 		JSONObject jForm = new JSONObject(data);
+
+		/*
+		 * Create ServiceObject
+		 */
+		return create(jForm);
+
+	}
+
+	/**
+	 * Create ServiceObject from JSON representation
+	 * 
+	 * @param jForm
+	 * @return
+	 * @throws Exception
+	 */
+	private RegistryObjectImpl create(JSONObject jForm) throws Exception {
 
 		/*
 		 * Create SpecificationLink instances
@@ -143,7 +180,7 @@ public class ServiceObject extends BusinessObject {
 		return service;
 
 	}
-	
+
 	/**
 	 * Update ServiceObject
 	 * 
@@ -157,6 +194,22 @@ public class ServiceObject extends BusinessObject {
 		 * Initialize data
 		 */
 		JSONObject jForm = new JSONObject(data);
+
+		/*
+		 * Update ServiceObject
+		 */
+		return update(jForm);
+
+	}
+
+	/**
+	 * Update ServiceObject from JSON representation
+	 * 
+	 * @param jForm
+	 * @return
+	 * @throws Exception
+	 */
+	private RegistryObjectImpl update(JSONObject jForm) throws Exception {
 
 		/* 
 		 * Determine service from unique identifier
@@ -236,5 +289,5 @@ public class ServiceObject extends BusinessObject {
 		return service;
 
 	}
-	
+
 }

@@ -1,4 +1,7 @@
 package de.kp.ames.web.function;
+
+import de.kp.ames.web.core.CoreMessages;
+
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,7 +21,7 @@ package de.kp.ames.web.function;
  *
  */
 
-public class FncMessages {
+public class FncMessages extends CoreMessages {
 
 	/*
 	 * Bulletin specific messages
@@ -41,13 +44,16 @@ public class FncMessages {
 	public static String CONTACT_CREATED       = "Primary contact successfully submitted.";
 	public static String ORGANIZATION_CREATED  = "Organization successfully submitted.";
 	public static String ORGANIZATION_UPDATED  = "Organization successfully updated.";
-	public static String TRANSFORMATOR_CREATED = "Transformator successfully submitted.";
 	
 	/*
-	 * Registry object specific messages
+	 * Transformation specific messages
 	 */
-	public static String NO_DESCRIPTION_DESC = "No description available.";
-	
+	public static String EVALUATION_CREATED    = "Evaluation successfully submitted.";
+	public static String PRODUCT_CREATED       = "Product successfully submitted.";
+	public static String PRODUCTOR_CREATED     = "Productor successfully submitted.";
+	public static String REASONER_CREATED      = "Reasoner successfully submitted.";
+	public static String TRANSFORMATOR_CREATED = "Transformator successfully submitted.";
+
 	/*
 	 * User specific messages
 	 */
@@ -63,9 +69,13 @@ public class FncMessages {
 	 * Top pacakge descriptions
 	 */
 	public static String CHAT_DESC          = "This is the top package to manage all submitted chat messages.";
+	public static String EVALUATION_DESC    = "This is the top package to manage all submitted evaluations.";
 	public static String LINK_DESC          = "This is the top package to manage all submitted external links.";
 	public static String MAIL_DESC          = "This is the top package to manage all submitted mails.";
 	public static String POSTING_DESC       = "This is the top package to manage all submitted postings.";
+	public static String PRODUCT_DESC       = "This is the top package to manage all submitted products.";
+	public static String PRODUCTOR_DESC     = "This is the top package to manage all submitted productors.";
+	public static String REASONER_DESC      = "This is the top package to manage all submitted reasoners.";
 	public static String TRANSFORMATOR_DESC = "This is the top package to manage all submitted transformators.";
 	
 }

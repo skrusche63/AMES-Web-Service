@@ -52,6 +52,7 @@ public class BusinessObject {
 	protected static String RIM_PRE = JaxrConstants.RIM_PRE;
 	
 	protected static String RIM_CLAS  = JaxrConstants.RIM_CLAS;
+	protected static String RIM_DATE  = JaxrConstants.RIM_DATE;
 	protected static String RIM_DESC  = JaxrConstants.RIM_DESC;
 	protected static String RIM_ID    = JaxrConstants.RIM_ID;
 	protected static String RIM_NAME  = JaxrConstants.RIM_NAME;

@@ -454,7 +454,7 @@ public class GroupLCM extends PartyLCM {
 			/*
 			 * Index community
 			 */				
-			ReactorParams reactorParams = new ReactorParams(org, FncConstants.FNC_ID_Community, RAction.C_INDEX);
+			ReactorParams reactorParams = new ReactorParams(jaxrHandle, org, FncConstants.FNC_ID_Community, RAction.C_INDEX);
 			ReactorImpl.onSubmit(reactorParams);
 
 			/*
@@ -499,7 +499,7 @@ public class GroupLCM extends PartyLCM {
 				/*
 				 * Index community
 				 */				
-				ReactorParams reactorParams = new ReactorParams(org, FncConstants.FNC_ID_Community, RAction.C_INDEX);
+				ReactorParams reactorParams = new ReactorParams(jaxrHandle, org, FncConstants.FNC_ID_Community, RAction.C_INDEX);
 				ReactorImpl.onSubmit(reactorParams);
 
 				/*

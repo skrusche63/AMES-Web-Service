@@ -126,7 +126,7 @@ public class TransformServiceImpl extends ServiceImpl {
 			 * Logoff
 			 */
 			JaxrClient.getInstance().logoff(jaxrHandle);
-			throw new Exception("[TransformImpl] XSL Transformation of " + source + " failed.");
+			throw new Exception("[TransformServiceImpl] XSL Transformation of " + source + " failed.");
 			
 		} else {
 			
@@ -170,5 +170,6 @@ public class TransformServiceImpl extends ServiceImpl {
 		 */
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return content;
+
 	}
 }

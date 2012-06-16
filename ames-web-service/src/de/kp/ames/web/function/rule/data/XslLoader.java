@@ -1,4 +1,4 @@
-package de.kp.ames.web.core;
+package de.kp.ames.web.function.rule.data;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,13 +18,17 @@ package de.kp.ames.web.core;
  *
  */
 
-public class CoreMessages {
+import java.io.InputStream;
 
-	public static String MISSING_PARAMETERS = "Please provide valid parameters.";
+public class XslLoader {
+
+	public static InputStream load(String fileName) {
+		
+		Class<?> loader = XslLoader.class;
+		InputStream is = loader.getResourceAsStream(fileName);
+		
+		return is;
+		
+	}
 	
-	/*
-	 * Registry object specific messages
-	 */
-	public static String NO_DESCRIPTION_DESC = "No description available.";
-
 }

@@ -1,4 +1,4 @@
-package de.kp.ames.web.function;
+package de.kp.ames.web.core.render;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *

@@ -19,8 +19,10 @@ package de.kp.ames.web.core.format.json;
  */
 
 import org.freebxml.omar.client.xml.registry.infomodel.ExternalLinkImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.OrganizationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.ServiceImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
 
@@ -33,12 +35,22 @@ public class JsonProvider {
 		return null;
 	}
 
+	public static JSONObject getExtrinsicObject(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
+		// TODO
+		return null;
+	}
+
 	public static JSONObject getOrganization(JaxrHandle jaxrHandle, OrganizationImpl organization) throws Exception {
 		// TODO
 		return null;
 	}
 
 	public static JSONObject getRegistryObject(JaxrHandle jaxrHandle, RegistryObjectImpl ro) throws Exception {
+		//TODO
+		return null;
+	}
+
+	public static JSONObject getService(JaxrHandle jaxrHandle, ServiceImpl service) throws Exception {
 		//TODO
 		return null;
 	}

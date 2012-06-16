@@ -46,8 +46,12 @@ public class FncConstants {
 	public static String FNC_ID_Category       = FNC_ID + ":Category";
 	public static String FNC_ID_Contact        = FNC_ID + ":Contact";	
 	public static String FNC_ID_Community      = FNC_ID + ":Community";
+	public static String FNC_ID_Evaluation     = FNC_ID + ":Evaluation";
 	public static String FNC_ID_Link           = FNC_ID + ":Link";
 	public static String FNC_ID_Namespace      = FNC_ID + ":Namespace";	
+	public static String FNC_ID_Product        = FNC_ID + ":Product";
+	public static String FNC_ID_Productor      = FNC_ID + ":Productor";
+	public static String FNC_ID_Reasoner       = FNC_ID + ":Reasoner";
 	public static String FNC_ID_Responsibility = FNC_ID + ":Responsibility";
 	public static String FNC_ID_Role           = FNC_ID + ":Role";
 	public static String FNC_ID_User           = FNC_ID + ":User";
@@ -70,6 +74,14 @@ public class FncConstants {
 	public static String FNC_SECURITY_ID_Safe  = FNC_ID_Security + ":Safe";
 
 	/*
+	 * Symbol Classification Nodes
+	 */
+	public static String FNC_ID_Symbol = FNC_ID + ":Symbol";
+	
+	public static String FNC_SYMBOL_ID_APP6B = FNC_ID_Symbol + ":APP6-B";
+	public static String FNC_SYMBOL_ID_Icon  = FNC_ID_Symbol + ":Icon";
+	
+	/*
 	 * Transformation Classification Nodes
 	 */
 	public static String FNC_ID_Transformator =  FNC_ID + ":Transformator";
@@ -80,10 +92,14 @@ public class FncConstants {
 	public static String AFFILIATION_PRE;
 	public static String CHAT_PRE;
 	public static String COMMUNITY_PRE;
+	public static String EVALUATION_PRE;
 	public static String LINK_PRE;
 	public static String MAIL_PRE;
 	public static String NAMESPACE_PRE;
 	public static String POSTING_PRE;
+	public static String PRODUCT_PRE;
+	public static String PRODUCTOR_PRE;
+	public static String REASONER_PRE;
     public static String SECURITY_PRE;
     public static String TRANSFORMATOR_PRE;
 
@@ -96,12 +112,20 @@ public class FncConstants {
     public static String METH_APPLY     = "apply";
     public static String METH_DELETE    = "delete";
     public static String METH_EXPLORE   = "explore";
+    public static String METH_FILE      = "file";
     public static String METH_GET       = "get";
     
     // retrieve a kml representation of a certain registry 
     // package and all of its content
     public static String METH_EDGES   	= "edges";
     public static String METH_NODES   	= "nodes";
+    
+    /*
+     * Methods to either retrieve control information (keys)
+     * or references to images (symbols)
+     */
+    public static String METH_KEYS    = "keys";
+    public static String METH_SYMBOLS = "symbols";
     
     // retrieve all registered wms layers from the respective
     // geo server
@@ -131,6 +155,9 @@ public class FncConstants {
 	public static String ATTR_TYPE;
 	public static String ATTR_URI;
 
+	public static String ATTR_AFFILIATION;
+	public static String ATTR_ECHELON;
+	
 	/*
 	 * SCM Repository
 	 */
@@ -151,10 +178,14 @@ public class FncConstants {
 		AFFILIATION_PRE   = basePrefix + ":affiliation";
 		CHAT_PRE          = basePrefix + ":chat";
 		COMMUNITY_PRE     = basePrefix + ":community";
+		EVALUATION_PRE    = basePrefix + ":evaluation";
 		LINK_PRE          = basePrefix + ":link";
 		MAIL_PRE          = basePrefix + ":mail";
 		NAMESPACE_PRE     = basePrefix + ":namespace";
 		POSTING_PRE       = basePrefix + ":posting";
+		PRODUCT_PRE       = basePrefix + ":product";
+		PRODUCTOR_PRE     = basePrefix + ":productor";
+		REASONER_PRE      = basePrefix + ":reasoner";
 		SECURITY_PRE      = basePrefix + ":security";
 		TRANSFORMATOR_PRE = basePrefix + ":transformator";
 		
@@ -177,7 +208,10 @@ public class FncConstants {
 		ATTR_TARGET    = bundle.getString(GlobalConstants.ATTR_TARGET);
 		ATTR_TYPE      = bundle.getString(GlobalConstants.ATTR_TYPE);
 		ATTR_URI       = bundle.getString(GlobalConstants.ATTR_URI);
-		
+
+		ATTR_AFFILIATION = bundle.getString(GlobalConstants.ATTR_AFFILIATION);
+		ATTR_ECHELON     = bundle.getString(GlobalConstants.ATTR_ECHELON);
+
 		/*
 		 * SCM Repository
 		 */		

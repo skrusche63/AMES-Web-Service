@@ -29,10 +29,10 @@ import de.kp.ames.web.core.format.json.DateCollector;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
+import de.kp.ames.web.core.render.GuiFactory;
+import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncSQL;
-import de.kp.ames.web.function.GuiFactory;
-import de.kp.ames.web.function.GuiRenderer;
 import de.kp.ames.web.function.IconCls;
 
 public class PostingDQM extends JaxrDQM {

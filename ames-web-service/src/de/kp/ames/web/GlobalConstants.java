@@ -73,6 +73,7 @@ public class GlobalConstants {
 	public static String ATTR_ITEM      = "ames.attr.item";
 	public static String ATTR_KEYPASS 	= "ames.attr.keypass";
 	public static String ATTR_LIMIT   	= "ames.attr.limit";
+	public static String ATTR_QUERY     = "ames.attr.query";
 	public static String ATTR_PARENT    = "ames.attr.parent";
 	public static String ATTR_RECIPIENT = "ames.attr.recipient";
 	public static String ATTR_REQUEST 	= "ames.attr.request";
@@ -82,7 +83,10 @@ public class GlobalConstants {
 	public static String ATTR_TARGET    = "ames.attr.target";
 	public static String ATTR_TYPE    	= "ames.attr.type";
 	public static String ATTR_URI     	= "ames.attr.uri";
-	
+
+	public static String ATTR_AFFILIATION = "ames.attr.affiliation";
+	public static String ATTR_ECHELON     = "ames.attr.echelon";
+
 	/*
 	 * Prefixes
 	 */
@@ -113,5 +117,24 @@ public class GlobalConstants {
 	public static String MALWARE_DAEMON_HOST    = "ames.malware.daemon.host";
 	public static String MALWARE_DAEMON_PORT    = "ames.malware.daemon.port";
 	public static String MALWARE_DAEMON_TIMEOUT = "ames.malware.daemon.timeout";
+	
+	/*
+	 * Reasoning support
+	 */
+	public static String FACTBASE_BUILDER = "ames.rule.factbase.builder";
+	public static String RULEBASE_BUILDER = "ames.rule.rulebase.builder";
+
+	public static String RESULT_CONVERTER = "ames.rule.result.converter";
+
+	
+	/*
+	 * Symbol support
+	 */
+	
+	public static String SYMBOL_APP6B_FILE = "ames.app6b.file";
+	public static String SYMBOL_APP6B_URI  = "ames.app6b.uri";
+	
+	public static String SYMBOL_ICON_FILE  = "ames.icon.file";
+	public static String SYMBOL_ICON_URI   = "ames.icon.uri";
 
 }

@@ -1,4 +1,4 @@
-package de.kp.ames.web.function;
+package de.kp.ames.web.core.render;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -23,6 +23,7 @@ import java.util.Collection;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 /**
  * A helper class to render results for a SmartGwt 3.0 GUI
@@ -60,7 +61,30 @@ public class ScRenderer implements GuiRenderer {
 		
 
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.function.GuiRenderer#createGrid(org.json.JSONArray, int)
+	 */
+	public String createGrid(JSONArray jArray, long total) {
+
+		JSONObject jResponse = new JSONObject();
+		try {
+		
+			jResponse.put(ScConstants.SC_STATUS, 0);	
+			jResponse.put(ScConstants.SC_TOTALROWS, total);
+
+			jResponse.put(ScConstants.SC_DATA, jArray);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+		} finally {}
+
+		
+		return jResponse.toString();
+		
+	}
+
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#createGrid(org.json.JSONArray, java.lang.String, java.lang.String)
 	 */

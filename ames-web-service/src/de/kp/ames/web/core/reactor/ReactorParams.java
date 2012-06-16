@@ -2,6 +2,8 @@ package de.kp.ames.web.core.reactor;
 
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 
+import de.kp.ames.web.core.regrep.JaxrHandle;
+
 public class ReactorParams {
 
 	public enum RAction {
@@ -18,14 +20,37 @@ public class ReactorParams {
 	private RAction action;
 	
 	private String domain;
+	
+	/*
+	 * Reference to RegistryObject
+	 */
 	private RegistryObjectImpl ro;
 
-	public ReactorParams(RegistryObjectImpl ro, RAction action) {
-		this(ro, null, action);
+	/*
+	 * Reference to JaxrHandle
+	 */
+	private JaxrHandle jaxrHandle;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param jaxrHandle
+	 * @param ro
+	 * @param action
+	 */
+	public ReactorParams(JaxrHandle jaxrHandle, RegistryObjectImpl ro, RAction action) {
+		this(jaxrHandle, ro, null, action);
 	}
 
-	public ReactorParams(RegistryObjectImpl ro, String domain, RAction action) {
-		
+	/**
+	 * Constructor
+	 * 
+	 * @param jaxrHandle
+	 * @param ro
+	 * @param domain
+	 * @param action
+	 */
+	public ReactorParams(JaxrHandle jaxrHandle, RegistryObjectImpl ro, String domain, RAction action) {		
 		/* 
 		 * Register action
 		 */
@@ -39,7 +64,17 @@ public class ReactorParams {
 		
 	}
 	
-	public RegistryObjectImpl getRO() {
+	/**
+	 * @return
+	 */
+	public JaxrHandle getJaxrHandle() {
+		return this.jaxrHandle;
+	}
+	
+	/**
+	 * @return
+	 */
+	public RegistryObjectImpl getRegistryObject() {
 		return this.ro;
 	}
 	

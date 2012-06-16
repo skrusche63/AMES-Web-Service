@@ -27,6 +27,7 @@ public class JaxrConstants {
 	 */
 	public static String RIM_AUTHOR    = "rimAuthor";
 	public static String RIM_CODE      = "rimCode";
+	public static String RIM_DATE      = "rimDatetime";
 	public static String RIM_DESC 	   = "rimDescription";	 
 	public static String RIM_HOME 	   = "rimHome";
 	public static String RIM_ID 	   = "rimId";	
@@ -117,7 +118,9 @@ public class JaxrConstants {
 	public static String SLOT_FILE      = "File";
 	public static String SLOT_LATITUDE  = "Latitude";
 	public static String SLOT_LONGITUDE = "Longitude";
+	public static String SLOT_RULESET   = "Ruleset";
 	public static String SLOT_SEQNO     = "SeqNo";
+	public static String SLOT_SOURCE    = "Source";
 	public static String SLOT_SYMBOL    = "Symbol";
 	public static String SLOT_TRACK     = "Track";
 

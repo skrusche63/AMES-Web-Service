@@ -24,6 +24,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.http.RequestMethod;
 
@@ -70,7 +71,14 @@ public interface Service {
 	 * @throws IOException
 	 */
 	public void sendErrorResponse(String content, int errorStatus, HttpServletResponse response) throws IOException;
-	
+
+	/**
+	 * @param file
+	 * @param response
+	 * @throws IOException
+	 */
+	public void sendFileResponse(FileUtil file, HttpServletResponse response) throws IOException;
+
 	/**
 	 * @param content
 	 * @param response

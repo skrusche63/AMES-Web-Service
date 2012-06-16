@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.product;
+package de.kp.ames.web.function.rule;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -25,23 +25,18 @@ import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.util.BaseParam;
-import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.function.office.OfficeBuilder;
-import de.kp.ames.web.function.office.OfficeConverter;
-import de.kp.ames.web.function.office.OfficeFactory;
-import de.kp.ames.web.function.transform.XslProcessor;
 import de.kp.ames.web.http.RequestContext;
 
-public class ProductServiceImpl extends BusinessImpl {
+public class RuleServiceImpl extends BusinessImpl {
 
-	public ProductServiceImpl() {
+	public RuleServiceImpl() {
 		super();
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.core.RequestContext)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void processRequest(RequestContext ctx) {	
 
@@ -80,48 +75,21 @@ public class ProductServiceImpl extends BusinessImpl {
 
 			}
 
-		} else if (methodName.equals(FncConstants.METH_FILE)) {
-
-			/*
-			 * Call file method
-			 */
-			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
-			if (item == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				try {
-					/*
-					 * FileUtil response
-					 */
-					FileUtil content = file(item);
-					sendFileResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
-
 		} else if (methodName.equals(FncConstants.METH_GET)) {
 
-			/*
-			 * Call get method
-			 */
 			String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
 			String type   = this.method.getAttribute(FncConstants.ATTR_TYPE);	
-			
+
 			if ((format == null) || (type == null)) {
 				this.sendNotImplemented(ctx);
 				
 			} else {
+
 				/*
 				 * Reference to single object (Format: Object)
 				 */
 				String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
-
+				
 				/*
 				 * Format: Grid
 				 */
@@ -139,9 +107,9 @@ public class ProductServiceImpl extends BusinessImpl {
 					this.sendBadRequest(ctx, e);
 
 				}
-				
+
 			}
-			
+
 		} else if (methodName.equals(FncConstants.METH_SUBMIT)) {
 			
 			/*
@@ -172,19 +140,18 @@ public class ProductServiceImpl extends BusinessImpl {
 	}
 
 	/**
-	 * Apply productor (service) to a certain registry object (source)
+	 * Apply ruleset (service) to a certain registry object (source)
 	 * and register result in an OASIS ebXML RegRep
 	 * 
 	 * @param source
 	 * @param service
 	 * @param data
 	 * @return
-	 * @throws Exception
 	 */
 	private String apply(String source, String service, String data) throws Exception {
 		
 		String content = null;
-
+		
 		/*
 		 * Login
 		 */		
@@ -196,23 +163,20 @@ public class ProductServiceImpl extends BusinessImpl {
 		 */
 		ArrayList<BaseParam> xslParams = null;
 		
-		XslProcessor xslProcessor = new XslProcessor(jaxrHandle);
-		InputStream stream = xslProcessor.execute(source, service, xslParams);
+		RuleProcessor ruleProcessor = new RuleProcessor(jaxrHandle);
+		InputStream stream = ruleProcessor.execute(source, service, xslParams);
 		
 		if (stream == null) {
 			/*
 			 * Logoff
 			 */
 			JaxrClient.getInstance().logoff(jaxrHandle);
-			throw new Exception("[ProductServiceImpl] XSL Transformation of " + source + " failed.");
+			throw new Exception("[RuleServiceImpl] Rule-based Transformation of " + source + " failed.");
 			
 		} else {
 
-			/*
-			 * Create product
-			 */
-			ProductLCM lcm = new ProductLCM(jaxrHandle);
-			content = lcm.createProduct(data, stream);
+			RuleLCM lcm = new RuleLCM(jaxrHandle);
+			content = lcm.createEvaluation(source, service, data, stream);
 
 		}
 
@@ -223,52 +187,9 @@ public class ProductServiceImpl extends BusinessImpl {
 		return content;
 
 	}
-
-	/**
-	 * Retrieve FileUtil representation of a certain product
-	 * 
-	 * @param item
-	 * @return
-	 * @throws Exception
-	 */
-	private FileUtil file(String item) throws Exception {
-
-		FileUtil content = null;
-		
-		/*
-		 * Login
-		 */		
-		JaxrClient.getInstance().logon(jaxrHandle);
-
-		ProductDQM dqm = new ProductDQM(jaxrHandle);
-		content = dqm.getFile(item);
-		
-		/*
-		 * Retrieve office representation 
-		 * of the specific product
-		 */
-		OfficeFactory factory = new OfficeFactory(content);
-		OfficeBuilder builder = factory.getOfficeBuilder();
-		
-		content = builder.build();
-		
-		/*
-		 * Convert office representation
-		 * in Web enabled format
-		 */
-		OfficeConverter converter = factory.getOfficeConverter();
-		content = converter.convert();
-
-		/*
-		 * Logoff
-		 */
-		JaxrClient.getInstance().logoff(jaxrHandle);
-		return content;
 	
-	}
-
 	/**
-	 * Get product specific information objects
+	 * Get reasoning specific information objects
 	 * 
 	 * @param type
 	 * @param item
@@ -287,10 +208,10 @@ public class ProductServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 
-		if (type.equals(FncConstants.FNC_ID_Product)) {
+		if (type.equals(FncConstants.FNC_ID_Evaluation)) {
 			
-			ProductDQM dqm = new ProductDQM(jaxrHandle);
-			JSONArray jArray = dqm.getProducts(item);
+			RuleDQM dqm = new RuleDQM(jaxrHandle);
+			JSONArray jArray = dqm.getEvaluations(item);
 			
 			/*
 			 * Render result
@@ -302,10 +223,10 @@ public class ProductServiceImpl extends BusinessImpl {
 				content = render(jArray, start, limit, format);
 			}
 			
-		} else if (type.equals(FncConstants.FNC_ID_Productor)) {
+		} else if (type.equals(FncConstants.FNC_ID_Reasoner)) {
 
-			ProductDQM dqm = new ProductDQM(jaxrHandle);
-			JSONArray jArray = dqm.getProductors(item);
+			RuleDQM dqm = new RuleDQM(jaxrHandle);
+			JSONArray jArray = dqm.getReasoners(item);
 			
 			/*
 			 * Render result
@@ -318,7 +239,7 @@ public class ProductServiceImpl extends BusinessImpl {
 			}
 			
 		} else {
-			throw new Exception("[ProductServiceImpl] Information type <" + type + "> is not supported");
+			throw new Exception("[RuleServiceImpl] Information type <" + type + "> is not supported");
 			
 		}
 		
@@ -327,11 +248,11 @@ public class ProductServiceImpl extends BusinessImpl {
 		 */
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return content;
-		
-	}
 
+	}
+	
 	/**
-	 * Submit productor
+	 * Submit reasoner
 	 * 
 	 * @param data
 	 * @return
@@ -346,8 +267,8 @@ public class ProductServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
 
-		ProductLCM lcm = new ProductLCM(jaxrHandle);
-		content = lcm.submitProductor(data);
+		RuleLCM lcm = new RuleLCM(jaxrHandle);
+		content = lcm.submitReasoner(data);
 		
 		/*
 		 * Logoff

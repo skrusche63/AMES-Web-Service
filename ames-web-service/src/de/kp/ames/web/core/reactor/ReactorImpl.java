@@ -23,6 +23,9 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
  */
 
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
+import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.search.SolrProxy;
+import de.kp.ames.web.core.search.data.SolrEntry;
 
 /**
  * ReactorImpl supports additional functionality
@@ -34,40 +37,55 @@ import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 public class ReactorImpl implements Reactor {
 
 	/* 
-	 * The reactor actually supports ac right after a certain registry
+	 * The reactor actually supports action right after a certain registry
 	 * object has been created or updated: this is a provisioning for 
 	 * (a) the search index, and (b) the rss processor
 	 */
 	
+	/**
+	 * @param params
+	 * @throws Exception
+	 */
 	public static void onSubmit(ReactorParams params) throws Exception {
 
 		// retrieve registry object & referenced domain
 		String domain = params.getDomain();
-		RegistryObjectImpl ro = params.getRO();
+		
+		RegistryObjectImpl ro = params.getRegistryObject();
+		JaxrHandle jaxrHandle = params.getJaxrHandle();
 		
 		// retrieve action to distinguish further processing
 		RAction action = params.getAction();
 		
-		if (action.equals(RAction.C_INDEX) || action.equals(RAction.C_INDEX_RSS)) {
+		if (action.equals(RAction.C_INDEX)) {
 		
-			// TODO
-			// index reaction
-			//JSONObject jEntry = getJEntry(handle, ro, domain);
-			//new FProxy().index(jEntry.toString());
+			/*
+			 * Index registry object
+			 */
+			SolrEntry entry = new SolrEntry(jaxrHandle);
+			
+			entry.setDomain(domain);
+			entry.setRegistryObject(ro);
+			
+			SolrProxy.getInstance().createIndexEntry(entry);
 
+			return;
+			
 		}
 
 		if (action.equals(RAction.D_INDEX)) {
 			
 			/*
-			JSONArray jEntries = new JSONArray();
-			jEntries.put(ro.getId());
+			 * Remove a certain registry object from
+			 * the Apache Solr search index
+			 */
+			SolrProxy.getInstance().removeIndexEntry(ro.getId());
+
+			return;
 			
-			new FProxy().remove(jEntries.toString());
-			*/
 		}
 		
-		if (action.equals(RAction.C_RSS) || action.equals(RAction.C_INDEX_RSS)) {
+		if (action.equals(RAction.C_RSS)) {
 
 			/*
 			// rss reaction:: CAVE service
@@ -75,11 +93,51 @@ public class ReactorImpl implements Reactor {
 			*/
 			
 		}
-		
+
+		if (action.equals(RAction.C_INDEX_RSS)) {
+
+			/*
+			 * Index registry object
+			 */
+			SolrEntry entry = new SolrEntry(jaxrHandle);
+			
+			entry.setDomain(domain);
+			entry.setRegistryObject(ro);
+			
+			SolrProxy.getInstance().createIndexEntry(entry);
+
+			/*
+			// rss reaction:: CAVE service
+			XRSSProcessor.getInstance().addRegistryObject(domain, ro);
+			*/
+			
+		}
+
 	}
 	
-	public static void onDelete(ArrayList<RegistryObjectImpl> ros) {
-		// TODO
+	/**
+	 * @param ros
+	 * @throws Exception
+	 */
+	public static void onDelete(ArrayList<RegistryObjectImpl> ros) throws Exception {
+		
+		/*
+		 * Remove list of registry objects from
+		 * the Apache Solr search index and RSS
+		 */
+		SolrProxy solrProxy = SolrProxy.getInstance();
+		
+		for (RegistryObjectImpl ro:ros) {
+			/*
+			 * Remove from search index
+			 */
+			solrProxy.removeIndexEntry(ro.getId());
+			
+			// TODO
+			
+		}
+
+		return;
 	}
 
 }

@@ -754,7 +754,7 @@ public class JaxrLCM extends JaxrBase {
 	 * @param objectsToDelete
 	 * @throws JAXRException
 	 */
-	private void removeObjects(ArrayList<RegistryObjectImpl> objectsToDelete) throws JAXRException {
+	private void removeObjects(ArrayList<RegistryObjectImpl> objectsToDelete) throws Exception {
 
 		/*
 		 * Build list of keys from registry objects

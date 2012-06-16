@@ -42,7 +42,6 @@ import net.sf.saxon.TransformerFactoryImpl;
 
 import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
-import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.util.BaseParam;
@@ -72,11 +71,6 @@ public class XslProcessor {
 	 * @return
 	 */
 	public InputStream execute(String source, String service, ArrayList<BaseParam> params) {
-
-		/*
-		 * Login
-		 */		
-		JaxrClient.getInstance().logon(jaxrHandle);
 
 		try {
 

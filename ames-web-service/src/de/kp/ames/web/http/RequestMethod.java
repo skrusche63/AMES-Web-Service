@@ -22,9 +22,9 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import de.kp.ames.web.core.render.GuiFactory;
+import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.function.GuiFactory;
-import de.kp.ames.web.function.GuiRenderer;
 
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)

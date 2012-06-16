@@ -99,7 +99,7 @@ public class TransformLCM extends JaxrLCM {
 		/*
 		 * Supply reactor
 		 */
-		ReactorParams reactorParams = new ReactorParams(ro, FncConstants.FNC_ID_Transformator, RAction.C_INDEX_RSS);
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, FncConstants.FNC_ID_Transformator, RAction.C_INDEX_RSS);
 		ReactorImpl.onSubmit(reactorParams);
 
 		/*

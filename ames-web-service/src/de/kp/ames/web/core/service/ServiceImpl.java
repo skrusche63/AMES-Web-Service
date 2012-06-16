@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.http.RequestMethod;
 
@@ -126,7 +127,24 @@ public class ServiceImpl implements Service {
 		if (content == null) return;
 		sendResponse(content, GlobalConstants.MT_XML, response);
 	}
+
+	public void sendFileResponse(FileUtil file, HttpServletResponse response) throws IOException {
+
+		if (file == null) return;
+
+		// finally set http status
+		response.setStatus( HttpServletResponse.SC_OK );
 	
+		response.setContentType(file.getMimetype());
+		response.setContentLength(file.getLength());
+	
+		OutputStream os = response.getOutputStream();
+	
+		os.write(file.getFile());				
+		os.close();
+		
+	}
+
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.Service#sendImageResponse(java.awt.image.BufferedImage, javax.servlet.http.HttpServletResponse)
 	 */

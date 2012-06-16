@@ -19,6 +19,8 @@ package de.kp.ames.web.core.regrep.dqm;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.registry.BulkResponse;
@@ -35,8 +37,8 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ServiceImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.SlotImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
-
 import de.kp.ames.web.core.regrep.JaxrBase;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
@@ -79,7 +81,7 @@ public class JaxrDQM extends JaxrBase {
 	 */
 	public List<AssociationImpl> getAssociations_ByObject(RegistryObjectImpl ro) throws JAXRException {		
 
-		String sqlString = JaxrSQL.getSQLAssociations_All(ro.getId());		
+		String sqlString = JaxrSQL.getSQLAssociations_ByObject(ro.getId());		
 		return getAssociationsByQuery(sqlString);
 	
 	}
@@ -432,6 +434,38 @@ public class JaxrDQM extends JaxrBase {
 
 	}
 
+	/**
+	 * A helper method to either retrieve a certain registry object
+	 * or a list classified by a specific concept type
+	 * 
+	 * @param item
+	 * @param conceptType
+	 * @return
+	 * @throws JAXRException
+	 */
+	public List<RegistryObjectImpl> getRegistryObjects_ByClasNode(String item, String conceptType) throws JAXRException {
+		
+		List<RegistryObjectImpl> registryObjects = null;
+		if (item == null) {			
+			registryObjects = getRegistryObjects_ByClasNode(conceptType);
+
+		} else {
+
+			/*
+			 * A specific registry object is requested
+			 */
+			RegistryObjectImpl ro = getRegistryObjectById(item);
+			if (ro == null) throw new JAXRException("[JaxrDQM] RegistryObject with id <" + item + "> not found.");
+			
+			registryObjects = new ArrayList<RegistryObjectImpl>();
+			registryObjects.add(ro);		
+			
+		}
+
+		return registryObjects;
+		
+	}
+	
 	/**
 	 * Retrieve all registry objects that are classified by
 	 * a certain certain classification node
@@ -886,6 +920,52 @@ public class JaxrDQM extends JaxrBase {
 		List<UserImpl> list = new ArrayList<UserImpl>(bulkResponse.getCollection());
 		return list;
 		
+	}
+
+	/**
+	 * A helper method to retrieve slots of a RegistryObject
+	 * as a list of SlotImpl
+	 * 
+	 * @param ro
+	 * @return
+	 * @throws JAXRException
+	 */
+	public List<SlotImpl> getSlotList(RegistryObjectImpl ro) throws JAXRException {
+		
+		ArrayList<SlotImpl> slotList = new ArrayList<SlotImpl>();
+		
+		Collection<?> slots = ro.getSlots();
+		Iterator<?> iter = slots.iterator();
+		
+		while (iter.hasNext()) {
+			slotList.add((SlotImpl)iter.next());
+		}
+		
+		return slotList;
+		
+	}
+	
+	/**
+	 * A helper method to retrieve values of a Slot
+	 * as a list of Strings
+	 * 
+	 * @param slot
+	 * @return
+	 * @throws JAXRException
+	 */
+	public List<String> getValueList(SlotImpl slot) throws JAXRException {
+
+		ArrayList<String> valueList = new ArrayList<String>();
+		
+		Collection<?> values = slot.getValues();
+		Iterator<?> iter = values.iterator();
+		
+		while (iter.hasNext()) {
+			valueList.add((String)iter.next());
+		}
+		
+		return valueList;
+
 	}
 
 }
