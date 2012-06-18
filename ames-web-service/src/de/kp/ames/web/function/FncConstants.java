@@ -46,6 +46,7 @@ public class FncConstants {
 	public static String FNC_ID_Category       = FNC_ID + ":Category";
 	public static String FNC_ID_Contact        = FNC_ID + ":Contact";	
 	public static String FNC_ID_Community      = FNC_ID + ":Community";
+	public static String FNC_ID_Database       = FNC_ID + ":Database";
 	public static String FNC_ID_Evaluation     = FNC_ID + ":Evaluation";
 	public static String FNC_ID_Link           = FNC_ID + ":Link";
 	public static String FNC_ID_Namespace      = FNC_ID + ":Namespace";	

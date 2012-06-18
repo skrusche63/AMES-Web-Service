@@ -53,13 +53,14 @@ public class GlobalConstants {
 	/*
 	 * Mimetypes
 	 */
-	public static String MT_JSON = "application/json";
-	public static String MT_HTML = "text/html";
-	public static String MT_PNG  = "image/png";
-	public static String MT_RSS  = "application/rss+xml";
-	public static String MT_TEXT = "text/plain";
-	public static String MT_WMS  = "application/vnd.ogc.wms_xml";
-	public static String MT_XML  = "text/xml";
+	public static String MT_JSON      = "application/json";
+	public static String MT_HTML      = "text/html";
+	public static String MT_MULTIPART = "multipart/*";
+	public static String MT_PNG       = "image/png";
+	public static String MT_RSS       = "application/rss+xml";
+	public static String MT_TEXT      = "text/plain";
+	public static String MT_WMS       = "application/vnd.ogc.wms_xml";
+	public static String MT_XML       = "text/xml";
 	
 	/*
 	 * Method attributes
