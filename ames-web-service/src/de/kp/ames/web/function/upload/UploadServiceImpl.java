@@ -24,17 +24,18 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.json.JSONArray;
 
+import de.kp.ames.web.core.cache.CacheManager;
 import de.kp.ames.web.core.malware.MalwareScanner;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.function.transform.cache.XslCacheManager;
 import de.kp.ames.web.http.RequestContext;
 
-public class UploadImpl extends BusinessImpl {
+public class UploadServiceImpl extends BusinessImpl {
 
-	public UploadImpl() {
+	public UploadServiceImpl() {
 		super();
 	}
 
@@ -44,7 +45,13 @@ public class UploadImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_SET)) {
+		if (methodName.equals(FncConstants.METH_GET)) {
+			/*
+			 * Call get method
+			 */
+			doGetRequest(ctx);
+			
+		} else if (methodName.equals(FncConstants.METH_SET)) {
 
 			/*
 			 * The result of the upload request, returned
@@ -131,6 +138,57 @@ public class UploadImpl extends BusinessImpl {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+
+		String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+		String type   = this.method.getAttribute(FncConstants.ATTR_TYPE);	
+		
+		if ((format == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = getJSONResponse(type, format);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+
+		}
+		
+	}
+	
+	/**
+	 * A helper method to retrieve cache entries in a JSON representation
+	 * 
+	 * @param type
+	 * @param format
+	 * @return
+	 * @throws Exception
+	 */
+	private String getJSONResponse(String type, String format) throws Exception {
+
+		UploadFactory factory = new UploadFactory();
+		CacheManager manager = factory.getCacheManager(type);
+
+		JSONArray jArray = manager.getJEntries();
+		
+		/*
+		 * Render result
+		 */
+		return render(jArray, format);
+
+	}
+
 	/**
 	 * A helper method to process an uploaded file
 	 * 
@@ -144,19 +202,11 @@ public class UploadImpl extends BusinessImpl {
 	 */
 	private String upload(String item, String type, String fileName, String mimeType, byte[] bytes) throws Exception {
 		
-		if (type.equals(FncConstants.FNC_ID_Transformator)) {
-			
-			/* 
-			 * "save" uploaded transformator for later processing in
-			 * the transformator cache of the transformator processor
-			 */
-			XslCacheManager.getInstance().setToCache(item, fileName, mimeType, bytes);
-			return "true";
+		UploadFactory factory = new UploadFactory();
+		CacheManager manager = factory.getCacheManager(type);
 
-		} else {
-			throw new Exception("[UploadImpl] Information type <" + type + "> is not supported");
-
-		}
+		manager.setToCache(item, fileName, mimeType, bytes);
+		return "true";
 		
 	}
 	

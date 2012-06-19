@@ -92,7 +92,10 @@ public class OfficeFactory {
 	}
 	
 	public OfficeConverter getOfficeConverter() {
-		return null;
+		
+		OfficeConverter converter = new OfficeConverterImpl();
+		return converter;
+		
 	}
 
 	/**

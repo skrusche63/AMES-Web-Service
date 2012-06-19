@@ -95,7 +95,7 @@ public class TransformatorObject extends BusinessObject {
 		XslCacheManager cacheManager = XslCacheManager.getInstance();
 		
 		String key = jForm.getString(RIM_ID);
-		XslTransformator transformator = cacheManager.getFromCache(key);
+		XslTransformator transformator = (XslTransformator)cacheManager.getFromCache(key);
 		
 		if (transformator == null) throw new Exception("[TransformLCM] XSL Transformator with id <" + key + "> not found.");
 		

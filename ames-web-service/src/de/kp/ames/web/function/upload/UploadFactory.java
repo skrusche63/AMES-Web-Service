@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.access;
+package de.kp.ames.web.function.upload;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,12 +18,24 @@ package de.kp.ames.web.function.access;
  *
  */
 
-import de.kp.ames.web.function.BusinessImpl;
+import de.kp.ames.web.core.cache.CacheManager;
+import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.transform.cache.XslCacheManager;
 
-public class AccessImpl extends BusinessImpl {
+public class UploadFactory {
 
-	public AccessImpl() {
-		super();
+	public UploadFactory() {
 	}
 	
+	public CacheManager getCacheManager(String type) throws Exception {
+		
+		if (type.equals(FncConstants.FNC_ID_Transformator)) {
+			return XslCacheManager.getInstance();
+
+		} else {
+			throw new Exception("[UploadFactory] Information type <" + type + "> is not supported");
+
+		}
+
+	}
 }

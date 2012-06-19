@@ -24,6 +24,11 @@ import de.kp.ames.web.core.CoreMessages;
 public class FncMessages extends CoreMessages {
 
 	/*
+	 * Access specific messages
+	 */
+	public static String ACCESSOR_CREATED = "Accessor successfully created.";
+	
+	/*
 	 * Bulletin specific messages
 	 */
 	public static String POSTING_CREATED = "Posting successfully created.";
@@ -68,6 +73,7 @@ public class FncMessages extends CoreMessages {
 	/*
 	 * Top pacakge descriptions
 	 */
+	public static String ACCESSOR_DESC      = "This is the top package to manage all submitted accessors.";
 	public static String CHAT_DESC          = "This is the top package to manage all submitted chat messages.";
 	public static String EVALUATION_DESC    = "This is the top package to manage all submitted evaluations.";
 	public static String LINK_DESC          = "This is the top package to manage all submitted external links.";

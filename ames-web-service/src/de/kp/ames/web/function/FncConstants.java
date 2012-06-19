@@ -42,6 +42,7 @@ public class FncConstants {
 	/*
 	 * Business Classification Nodes
 	 */
+	public static String FNC_ID_Accessor       = FNC_ID + ":Accessor";
 	public static String FNC_ID_Affiliation    = FNC_ID + ":Affiliation";
 	public static String FNC_ID_Category       = FNC_ID + ":Category";
 	public static String FNC_ID_Contact        = FNC_ID + ":Contact";	
@@ -53,6 +54,7 @@ public class FncConstants {
 	public static String FNC_ID_Product        = FNC_ID + ":Product";
 	public static String FNC_ID_Productor      = FNC_ID + ":Productor";
 	public static String FNC_ID_Reasoner       = FNC_ID + ":Reasoner";
+	public static String FNC_ID_Remote         = FNC_ID + ":Remote";
 	public static String FNC_ID_Responsibility = FNC_ID + ":Responsibility";
 	public static String FNC_ID_Role           = FNC_ID + ":Role";
 	public static String FNC_ID_User           = FNC_ID + ":User";
@@ -61,13 +63,24 @@ public class FncConstants {
 	 * Format Classification Nodes
 	 */
 	public static String FNC_ID_Format = FNC_ID + ":Format";
+
+	public static String FNC_FORMAT_ID_File = FNC_ID_Format + ":File";
+	public static String FNC_FORMAT_ID_Html = FNC_ID_Format + ":Html";
+
+	// Classifcation Node for all JSON based response formats
+	public static String FNC_FORMAT_ID_Json = FNC_ID_Format + ":Json";
+
+	public static String FNC_FORMAT_ID_Grid   = FNC_FORMAT_ID_Json + ":Grid";
+	public static String FNC_FORMAT_ID_Object = FNC_FORMAT_ID_Json + ":Object";
+	public static String FNC_FORMAT_ID_Tree   = FNC_FORMAT_ID_Json + ":Tree";
+
+	// Classification Node for all RSS based response formats
+	public static String FNC_FORMAT_ID_Rss = FNC_ID_Format + ":Rss";
 	
-	public static String FNC_FORMAT_ID_Grid   = FNC_ID_Format + ":Grid";
-	public static String FNC_FORMAT_ID_Json   = FNC_ID_Format + ":Json";
-	public static String FNC_FORMAT_ID_Object = FNC_ID_Format + ":Object";
-	public static String FNC_FORMAT_ID_Rss    = FNC_ID_Format + ":Rss";
-	public static String FNC_FORMAT_ID_Tree   = FNC_ID_Format + ":Tree";
-	
+	public static String FNC_FORMAT_ID_Text = FNC_ID_Format + ":Text";
+	public static String FNC_FORMAT_ID_XML  = FNC_ID_Format + ":Xml";
+
+
 	/*
 	 * Security Classification Nodes
 	 */
@@ -90,6 +103,7 @@ public class FncConstants {
 	/*
 	 * Identity Prefixes
 	 */	
+	public static String ACCESSOR_PRE;
 	public static String AFFILIATION_PRE;
 	public static String CHAT_PRE;
 	public static String COMMUNITY_PRE;
@@ -176,6 +190,7 @@ public class FncConstants {
 		 */		
 		String basePrefix = bundle.getString(GlobalConstants.BASE_PRE);
 		
+		ACCESSOR_PRE      = basePrefix + ":accessor";
 		AFFILIATION_PRE   = basePrefix + ":affiliation";
 		CHAT_PRE          = basePrefix + ":chat";
 		COMMUNITY_PRE     = basePrefix + ":community";

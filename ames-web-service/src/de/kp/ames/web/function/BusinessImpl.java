@@ -1,11 +1,4 @@
 package de.kp.ames.web.function;
-
-import org.json.JSONArray;
-
-import de.kp.ames.web.core.render.GuiFactory;
-import de.kp.ames.web.core.render.GuiRenderer;
-import de.kp.ames.web.core.service.ServiceImpl;
-
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -24,6 +17,12 @@ import de.kp.ames.web.core.service.ServiceImpl;
  *	along with this software. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+import org.json.JSONArray;
+
+import de.kp.ames.web.core.render.GuiFactory;
+import de.kp.ames.web.core.render.GuiRenderer;
+import de.kp.ames.web.core.service.ServiceImpl;
 
 public class BusinessImpl extends ServiceImpl {
 

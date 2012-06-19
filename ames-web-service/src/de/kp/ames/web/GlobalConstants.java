@@ -56,6 +56,7 @@ public class GlobalConstants {
 	public static String MT_JSON      = "application/json";
 	public static String MT_HTML      = "text/html";
 	public static String MT_MULTIPART = "multipart/*";
+	public static String MT_PDF       = "application/pdf";
 	public static String MT_PNG       = "image/png";
 	public static String MT_RSS       = "application/rss+xml";
 	public static String MT_TEXT      = "text/plain";
@@ -118,6 +119,13 @@ public class GlobalConstants {
 	public static String MALWARE_DAEMON_HOST    = "ames.malware.daemon.host";
 	public static String MALWARE_DAEMON_PORT    = "ames.malware.daemon.port";
 	public static String MALWARE_DAEMON_TIMEOUT = "ames.malware.daemon.timeout";
+	
+	/*
+	 * OpenOffice.org support
+	 */
+	public static String OFFICE_PATH = "ames.office.path";
+	public static String OFFICE_HOST = "ames.office.host";
+	public static String OFFICE_PORT = "ames.office.port";
 	
 	/*
 	 * Reasoning support

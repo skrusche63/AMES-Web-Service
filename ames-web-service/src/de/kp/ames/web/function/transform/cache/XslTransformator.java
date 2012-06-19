@@ -20,9 +20,10 @@ package de.kp.ames.web.function.transform.cache;
 
 import java.io.InputStream;
 
+import de.kp.ames.web.core.cache.CacheEntry;
 import de.kp.ames.web.core.util.FileUtil;
 
-public class XslTransformator {
+public class XslTransformator implements CacheEntry{
 
 	private InputStream transformator;
 
@@ -93,7 +94,7 @@ public class XslTransformator {
 	/**
 	 * @return
 	 */
-	public InputStream getTransformator() {
+	public InputStream getInputStream() {
 		return this.transformator;
 	}
 	

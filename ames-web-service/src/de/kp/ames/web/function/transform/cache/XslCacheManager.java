@@ -26,13 +26,16 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.kp.ames.web.core.cache.CacheEntry;
+import de.kp.ames.web.core.cache.CacheManager;
+import de.kp.ames.web.core.cache.FileCache;
 import de.kp.ames.web.core.format.json.JsonConstants;
 
-public class XslCacheManager {
+public class XslCacheManager implements CacheManager {
 
 	private static XslCacheManager instance = new XslCacheManager();
 
-	private XslCache cache = null;
+	private FileCache cache = null;
 
 	public static XslCacheManager getInstance() {
 		if (instance == null) instance = new XslCacheManager();
@@ -40,7 +43,7 @@ public class XslCacheManager {
 	}
 
 	private XslCacheManager() {				
-		this.cache = new XslCache();			
+		this.cache = new FileCache();			
 	}
 
 	/**
@@ -50,14 +53,14 @@ public class XslCacheManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public JSONArray getUploaded() throws Exception {
+	public JSONArray getJEntries() throws Exception {
 	
-		JSONArray jUploaded = new JSONArray();
+		JSONArray jEntries = new JSONArray();
 		
-		List<XslTransformator> transformators = cache.getAll();
+		List<CacheEntry> transformators = cache.getAll();
 		for (int ix = 0; ix < transformators.size(); ix++) {
 
-			XslTransformator transformator = transformators.get(ix);
+			XslTransformator transformator = (XslTransformator)transformators.get(ix);
 			String key = transformator.getKey();
 
 			JSONObject jTransformator = new JSONObject();
@@ -68,11 +71,11 @@ public class XslCacheManager {
 			jTransformator.put(JsonConstants.J_DESC, "No description available.");				
 			jTransformator.put(JsonConstants.J_MIME, transformator.getMimetype());
 			
-			jUploaded.put(jUploaded.length(), jTransformator);
+			jEntries.put(jEntries.length(), jTransformator);
 
 		}
 		
-		return jUploaded;
+		return jEntries;
 		
 	}
 	
@@ -104,7 +107,7 @@ public class XslCacheManager {
 	 * @param key
 	 * @return
 	 */
-	public XslTransformator getFromCache(String key) {
+	public CacheEntry getFromCache(String key) {
 		if (cache.hasKey(key) == false) return null;
 		return cache.get(key);		
 	}

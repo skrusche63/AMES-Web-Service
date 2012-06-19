@@ -20,8 +20,10 @@ package de.kp.ames.web.function.office;
 
 import de.kp.ames.web.core.util.FileUtil;
 
-public interface OfficeBuilder {
+public interface OfficeConverter {
 
-	public FileUtil build();
+	FileUtil convert(FileUtil input);
 	
 }
+
+

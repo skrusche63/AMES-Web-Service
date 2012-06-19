@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.office;
+package de.kp.ames.web.core.cache;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,10 +18,52 @@ package de.kp.ames.web.function.office;
  *
  */
 
+import java.io.InputStream;
+
 import de.kp.ames.web.core.util.FileUtil;
 
-public interface OfficeBuilder {
+public interface CacheEntry {
 
-	public FileUtil build();
+	/**
+	 * @return
+	 */
+	public byte[] getBytes();
+
+	/**
+	 * @return
+	 */
+	public InputStream getInputStream();
 	
+	/**
+	 * @return
+	 */
+	public String getKey();
+	
+	/**
+	 * @return
+	 */
+	public String getName();
+	
+	/**
+	 * @return
+	 */
+	public String getMimetype();
+	
+	/**
+	 * @param path
+	 */
+	public void setPath(String path);
+	
+	/**
+	 * @return
+	 */
+	public String getPath();
+
+	/**
+	 * Retrieve CacheEntry in a FileUtil representation
+	 * 
+	 * @return
+	 */
+	public FileUtil asFile();
+
 }

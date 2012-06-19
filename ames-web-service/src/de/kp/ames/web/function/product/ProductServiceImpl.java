@@ -50,103 +50,37 @@ public class ProductServiceImpl extends BusinessImpl {
 			/*
 			 * Call apply method
 			 */
-			String source  = this.method.getAttribute(FncConstants.ATTR_SOURCE);
-			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);			
-
-			if ((source == null) || (service == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				String data = this.getRequestData(ctx);
-				if (data == null) {
-					this.sendNotImplemented(ctx);
-					
-				} else {
-
-					try {
-						/*
-						 * JSON response
-						 */
-						String content = apply(source, service, data);
-						sendJSONResponse(content, ctx.getResponse());
-
-					} catch (Exception e) {
-						this.sendBadRequest(ctx, e);
-
-					}
-					
-				}
-
-			}
-
-		} else if (methodName.equals(FncConstants.METH_FILE)) {
-
-			/*
-			 * Call file method
-			 */
-			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
-			if (item == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				try {
-					/*
-					 * FileUtil response
-					 */
-					FileUtil content = file(item);
-					sendFileResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
-
+			doApplyRequest(ctx);
+			
 		} else if (methodName.equals(FncConstants.METH_GET)) {
-
 			/*
 			 * Call get method
 			 */
-			String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
-			String type   = this.method.getAttribute(FncConstants.ATTR_TYPE);	
+			doGetRequest(ctx);
 			
-			if ((format == null) || (type == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				/*
-				 * Reference to single object (Format: Object)
-				 */
-				String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
-
-				/*
-				 * Format: Grid
-				 */
-				String start = this.method.getAttribute(FncConstants.ATTR_START);
-				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
-
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = get(type, item, start, limit, format);
-					sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
-			
-		} else if (methodName.equals(FncConstants.METH_SUBMIT)) {
-			
+		} else if (methodName.equals(FncConstants.METH_SUBMIT)) {			
 			/*
 			 * Call submit method
 			 */
+			doSubmitRequest(ctx);
+
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doApplyRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doApplyRequest(RequestContext ctx) {
+		
+		String source  = this.method.getAttribute(FncConstants.ATTR_SOURCE);
+		String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);			
+
+		if ((source == null) || (service == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			
 			String data = this.getRequestData(ctx);
 			if (data == null) {
 				this.sendNotImplemented(ctx);
@@ -157,7 +91,7 @@ public class ProductServiceImpl extends BusinessImpl {
 					/*
 					 * JSON response
 					 */
-					String content = submit(data);
+					String content = apply(source, service, data);
 					sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -169,6 +103,106 @@ public class ProductServiceImpl extends BusinessImpl {
 
 		}
 		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+
+		String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+		String type   = this.method.getAttribute(FncConstants.ATTR_TYPE);	
+		
+		if ((format == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			/*
+			 * This is an optional parameter that determines 
+			 * a certain registry object
+			 */
+			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
+			
+			/*
+			 * Evaluate the format parameter to determine the 
+			 * format for the http response 
+			 */
+			if (format.startsWith(FncConstants.FNC_FORMAT_ID_File)) {				
+				/*
+				 * For this request, the respective 'item' 
+				 * parameter is mandatory
+				 */
+				if (item == null) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
+					
+					try {
+						/*
+						 * FileUtil response
+						 */
+						FileUtil content = getFileResponse(item);
+						sendFileResponse(content, ctx.getResponse());
+
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+
+					}
+					
+				}
+				
+			} else if (format.startsWith(FncConstants.FNC_FORMAT_ID_Json)) {
+				/*
+				 * Optional parameters that may be used to describe
+				 * a Grid-oriented response
+				 */
+				String start = this.method.getAttribute(FncConstants.ATTR_START);
+				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
+
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = getJSONResponse(type, item, start, limit, format);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+				
+			}
+
+		}
+
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSubmitRequest(RequestContext ctx) {
+
+		String data = this.getRequestData(ctx);
+		if (data == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = submit(data);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
+
 	}
 
 	/**
@@ -231,7 +265,7 @@ public class ProductServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private FileUtil file(String item) throws Exception {
+	private FileUtil getFileResponse(String item) throws Exception {
 
 		FileUtil content = null;
 		
@@ -257,7 +291,7 @@ public class ProductServiceImpl extends BusinessImpl {
 		 * in Web enabled format
 		 */
 		OfficeConverter converter = factory.getOfficeConverter();
-		content = converter.convert();
+		content = converter.convert(content);
 
 		/*
 		 * Logoff
@@ -278,7 +312,7 @@ public class ProductServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String get(String type, String item, String start, String limit, String format) throws Exception {
+	private String getJSONResponse(String type, String item, String start, String limit, String format) throws Exception {
 
 		String content = null;
 		

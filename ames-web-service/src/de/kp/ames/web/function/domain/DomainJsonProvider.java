@@ -20,6 +20,47 @@ public class DomainJsonProvider extends JsonProvider {
 	private static String EXTRINSIC_OBJECT = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_ExtrinsicObject;
 	private static String SERVICE          = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_Service;
 
+	public static JSONObject getAccessor(JaxrHandle jaxrHandle, ServiceImpl service) throws Exception {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * A helper method to convert a list of accessors
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param accessors
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONArray getAccessors(JaxrHandle jaxrHandle, List<RegistryObjectImpl> accessors) throws Exception {
+
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+
+		/*
+		 * Sort result by name of accessor
+		 */
+		StringCollector collector = new StringCollector();
+
+		for (RegistryObjectImpl accessor:accessors) {
+			
+			String objectType = dqm.getObjectType(accessor);
+			if (objectType.equals(SERVICE) == false) continue;
+			
+			ServiceImpl service = (ServiceImpl)accessor;
+			
+			JSONObject jAccessor = getAccessor(jaxrHandle, service);	
+			collector.put(jAccessor.getString(JaxrConstants.RIM_NAME), jAccessor);
+
+			
+		}
+
+		return new JSONArray(collector.values());
+		
+	}
+
+	
 	public static JSONObject getEvaluation(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
 		// TODO
 		return null;

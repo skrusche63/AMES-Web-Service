@@ -29,7 +29,7 @@ import de.kp.ames.web.http.RequestContext;
  * remote RSS feeds in JSON or native RSS representation
  */
 
-public class RssImpl extends ServiceImpl {
+public class RssServiceImpl extends ServiceImpl {
 
 	private RssProvider provider;
 	private RssConsumer consumer;
@@ -39,7 +39,7 @@ public class RssImpl extends ServiceImpl {
 	/**
 	 * Constructor
 	 */
-	public RssImpl() {	
+	public RssServiceImpl() {	
 		consumer = new RssConsumer();
 		provider = new RssProvider();		
 	}
@@ -50,8 +50,7 @@ public class RssImpl extends ServiceImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_GET)) {
-			
+		if (methodName.equals(FncConstants.METH_GET)) {			
 			/*
 			 * Call getXXFeed method
 			 */
@@ -75,12 +74,12 @@ public class RssImpl extends ServiceImpl {
 					 */
 					if (format.equals(FncConstants.FNC_FORMAT_ID_Json)) {
 						
-						String content = getJFeed(type, uri);
+						String content = getJSONResponse(type, uri);
 						this.sendJSONResponse(content, ctx.getResponse());
 						
 					} else if (format.equals(FncConstants.FNC_FORMAT_ID_Rss)) {
 
-						String content = getRssFeed(type, uri);
+						String content = getRSSResponse(type, uri);
 						this.sendRSSResponse(content, ctx.getResponse());
 
 					}
@@ -96,6 +95,50 @@ public class RssImpl extends ServiceImpl {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+
+		String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);
+		String type   = this.method.getAttribute(FncConstants.ATTR_TYPE);
+		
+		if ((format == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			
+			try {
+				
+				/*
+				 * An optional parameter that reference an external RSS service
+				 */
+				String uri = this.method.getAttribute(FncConstants.ATTR_URI);
+				
+				/*
+				 * Distinguish between two different formats
+				 */
+				if (format.startsWith(FncConstants.FNC_FORMAT_ID_Json)) {
+					
+					String content = getJSONResponse(type, uri);
+					this.sendJSONResponse(content, ctx.getResponse());
+					
+				} else if (format.startsWith(FncConstants.FNC_FORMAT_ID_Rss)) {
+
+					String content = getRSSResponse(type, uri);
+					this.sendRSSResponse(content, ctx.getResponse());
+
+				}
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
+		
+	}
+	
 	/**
 	 * Get RSS feed in JSON representation
 	 * 
@@ -104,7 +147,7 @@ public class RssImpl extends ServiceImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	public String getJFeed(String type, String uri) throws Exception {		
+	private String getJSONResponse(String type, String uri) throws Exception {		
 
 		String content = null;
 		
@@ -186,7 +229,7 @@ public class RssImpl extends ServiceImpl {
 	 * @return
 	 * @throws Exception 
 	 */
-	public String getRssFeed(String type, String uri) throws Exception {		
+	private String getRSSResponse(String type, String uri) throws Exception {		
 
 		String content = null;
 		

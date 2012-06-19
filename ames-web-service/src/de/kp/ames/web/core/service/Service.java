@@ -36,6 +36,29 @@ import de.kp.ames.web.http.RequestMethod;
 public interface Service {
 
 	/**
+	 * The main method to process a Http request that
+	 * refers to an APPLY method
+	 * 
+	 * @param ctx
+	 */
+	public void doApplyRequest(RequestContext ctx);
+
+	/**
+	 * The main method to process a Http request that
+	 * refers to a GET method
+	 * 
+	 * @param ctx
+	 */
+	public void doGetRequest(RequestContext ctx);
+	
+	/**
+	 * The main method to process a Http request that 
+	 * refers to a SUBMIT method
+	 * @param ctx
+	 */
+	public void doSubmitRequest(RequestContext ctx);
+	
+	/**
 	 * The JaxrHandle is a temporary data structure, that
 	 * holds all connection specific information, including
 	 * the SAML v2.0 assertion of the caller's user
