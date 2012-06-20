@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.chat;
+package de.kp.ames.web.function.comm;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -34,10 +34,11 @@ import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.DomainLCM;
 import de.kp.ames.web.function.domain.model.ChatObject;
+import de.kp.ames.web.function.domain.model.MailObject;
 
-public class ChatLCM extends JaxrLCM {
+public class CommLCM extends JaxrLCM {
 
-	public ChatLCM(JaxrHandle jaxrHandle) {
+	public CommLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
 
@@ -101,6 +102,64 @@ public class ChatLCM extends JaxrLCM {
 	}
 
 	/**
+	 * Register a new mail message
+	 * 
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public String submitMail(String data) throws Exception {
+
+		/*
+		 * Create or retrieve registry package that is 
+		 * responsible for managing mail message
+		 */
+		RegistryPackageImpl container = null;		
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+		
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Mail);
+		if (list.size() == 0) {
+			/*
+			 * Create container
+			 */
+			container = createMailPackage();
+			
+		} else {
+			/*
+			 * Retrieve container
+			 */
+			container = list.get(0);
+
+		}
+		
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+
+		/*
+		 * Create MailObject
+		 */
+		MailObject mailObject = new MailObject(jaxrHandle, this);
+		RegistryObjectImpl ro = mailObject.create(data);
+
+    	transaction.addObjectToSave(ro);
+		container.addRegistryObject(ro);
+
+		/*
+		 * Save objects	
+		 */		
+		transaction.addObjectToSave(container);
+		saveObjects(transaction.getObjectsToSave(), false, false);
+
+		/*
+		 * Get response 
+		 */
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.MAIL_CREATED);		
+		return jResponse.toString();
+		
+	}
+	/**
 	 * A helper method to create a new chat message container
 	 * 
 	 * @return
@@ -134,4 +193,37 @@ public class ChatLCM extends JaxrLCM {
 	
 	}
 
+	/**
+	 * A helper method to create a new mail message container
+	 * 
+	 * @return
+	 * @throws JAXRException
+	 */
+	private RegistryPackageImpl createMailPackage() throws JAXRException  {
+
+		FncParams params = new FncParams();
+		
+		/*
+		 * Name & description
+		 */
+		params.put(FncParams.K_NAME, "Mails");
+		params.put(FncParams.K_DESC, FncMessages.MAIL_DESC);
+		
+		/*
+		 * Prefix
+		 */
+		params.put(FncParams.K_PRE, FncConstants.MAIL_PRE);
+		
+		/*
+		 * Classification
+		 */
+		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Mail);
+		
+		/*
+		 * Create package
+		 */
+		DomainLCM lcm = new DomainLCM(jaxrHandle);
+		return lcm.createBusinessPackage(params);
+	
+	}
 }

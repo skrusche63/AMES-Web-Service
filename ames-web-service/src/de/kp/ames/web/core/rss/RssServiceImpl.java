@@ -52,44 +52,9 @@ public class RssServiceImpl extends ServiceImpl {
 		String methodName = this.method.getName();
 		if (methodName.equals(FncConstants.METH_GET)) {			
 			/*
-			 * Call getXXFeed method
+			 * Call get method
 			 */
-			String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);
-			String type   = this.method.getAttribute(FncConstants.ATTR_TYPE);
-			
-			if ((format == null) || (type == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				try {
-					
-					/*
-					 * An optional parameter that reference an external RSS service
-					 */
-					String uri = this.method.getAttribute(FncConstants.ATTR_URI);
-					
-					/*
-					 * Distinguish between two different formats
-					 */
-					if (format.equals(FncConstants.FNC_FORMAT_ID_Json)) {
-						
-						String content = getJSONResponse(type, uri);
-						this.sendJSONResponse(content, ctx.getResponse());
-						
-					} else if (format.equals(FncConstants.FNC_FORMAT_ID_Rss)) {
-
-						String content = getRSSResponse(type, uri);
-						this.sendRSSResponse(content, ctx.getResponse());
-
-					}
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
+			doGetRequest(ctx);
 			
 		}
 		

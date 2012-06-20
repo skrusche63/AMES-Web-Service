@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.rss;
+package de.kp.ames.web.function.domain.model;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -17,40 +17,14 @@ package de.kp.ames.web.core.rss;
  *	along with this software. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-import java.util.List;
 
-import com.sun.syndication.feed.synd.SyndEntry;
+import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 
-public class RssProcessor {
+public class RemoteObject extends BusinessObject {
 
-	private static RssProcessor instance = new RssProcessor();
-	private RssCache cache;
-	
-	private RssProcessor() {
-		cache = new RssCache();
+	public RemoteObject(JaxrHandle jaxrHandle, JaxrLCM lcm) {
+		super(jaxrHandle, lcm);
 	}
-		
-	public static RssProcessor getInstance() {
-		if (instance == null) instance = new RssProcessor();
-		return instance;
-	}
-	
-	/**
-	 * Add syndication entry
-	 * 
-	 * @param entry
-	 */
-	public void addEntry(SyndEntry entry) {
-		cache.add(entry);
-	}
-		
-	/**
-	 * Get all syndication entries
-	 * 
-	 * @return
-	 */
-	public List<SyndEntry> getEntries() {
-		return cache.getAll();
-	}
-	
+
 }

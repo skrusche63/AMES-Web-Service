@@ -26,6 +26,7 @@ import org.apache.solr.common.SolrInputDocument;
 
 import de.kp.ames.web.core.search.SearchConstants;
 import de.kp.ames.web.core.search.data.SolrEntry;
+import de.kp.ames.web.core.search.data.SolrEntryImpl;
 
 public class IndexUtil {
 
@@ -75,8 +76,9 @@ public class IndexUtil {
 	 * @param entry
 	 * @return
 	 */
-	public static SolrInputDocument getSolrDocument(SolrEntry entry) throws Exception {
+	public static SolrInputDocument getSolrDocument(SolrEntry solrEntry) throws Exception {
 		
+		SolrEntryImpl entry = (SolrEntryImpl)solrEntry;
 		SolrInputDocument document = new SolrInputDocument();
 		
 		String id = entry.getId();

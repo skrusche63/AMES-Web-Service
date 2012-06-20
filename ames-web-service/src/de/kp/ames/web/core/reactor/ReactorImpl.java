@@ -1,8 +1,28 @@
 package de.kp.ames.web.core.reactor;
+/**
+ *	Copyright 2012 Dr. Krusche & Partner PartG
+ *
+ *	AMES-Web-Service is free software: you can redistribute it and/or 
+ *	modify it under the terms of the GNU General Public License 
+ *	as published by the Free Software Foundation, either version 3 of 
+ *	the License, or (at your option) any later version.
+ *
+ *	AMES- Web-Service is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * 
+ *  See the GNU General Public License for more details. 
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this software. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 import java.util.ArrayList;
 
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+
+import com.sun.syndication.feed.synd.SyndEntry;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -24,8 +44,11 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.rss.RssCacheManager;
+import de.kp.ames.web.core.rss.RssConverter;
+import de.kp.ames.web.core.search.IndexerImpl;
 import de.kp.ames.web.core.search.SolrProxy;
-import de.kp.ames.web.core.search.data.SolrEntry;
+import de.kp.ames.web.core.search.data.SolrEntryImpl;
 
 /**
  * ReactorImpl supports additional functionality
@@ -62,13 +85,12 @@ public class ReactorImpl implements Reactor {
 			/*
 			 * Index registry object
 			 */
-			SolrEntry entry = new SolrEntry(jaxrHandle);
+			SolrEntryImpl entry = new SolrEntryImpl(jaxrHandle);
 			
 			entry.setDomain(domain);
 			entry.setRegistryObject(ro);
 			
-			SolrProxy.getInstance().createIndexEntry(entry);
-
+			new IndexerImpl().createIndexEntry(entry);
 			return;
 			
 		}
@@ -88,9 +110,11 @@ public class ReactorImpl implements Reactor {
 		if (action.equals(RAction.C_RSS)) {
 
 			/*
-			// rss reaction:: CAVE service
-			XRSSProcessor.getInstance().addRegistryObject(domain, ro);
-			*/
+			 * Convert registry object into syndication entry
+			 * and add result to cache
+			 */
+			SyndEntry syndEntry = RssConverter.convertRegistryObject(ro, jaxrHandle, domain);
+			RssCacheManager.getInstance().addEntry(syndEntry);
 			
 		}
 
@@ -99,17 +123,19 @@ public class ReactorImpl implements Reactor {
 			/*
 			 * Index registry object
 			 */
-			SolrEntry entry = new SolrEntry(jaxrHandle);
+			SolrEntryImpl entry = new SolrEntryImpl(jaxrHandle);
 			
 			entry.setDomain(domain);
 			entry.setRegistryObject(ro);
 			
-			SolrProxy.getInstance().createIndexEntry(entry);
+			new IndexerImpl().createIndexEntry(entry);
 
 			/*
-			// rss reaction:: CAVE service
-			XRSSProcessor.getInstance().addRegistryObject(domain, ro);
-			*/
+			 * Convert registry object into syndication entry
+			 * and add result to cache
+			 */
+			SyndEntry syndEntry = RssConverter.convertRegistryObject(ro, jaxrHandle, domain);
+			RssCacheManager.getInstance().addEntry(syndEntry);
 			
 		}
 
@@ -125,15 +151,18 @@ public class ReactorImpl implements Reactor {
 		 * Remove list of registry objects from
 		 * the Apache Solr search index and RSS
 		 */
-		SolrProxy solrProxy = SolrProxy.getInstance();
+		IndexerImpl indexer = new IndexerImpl();
 		
 		for (RegistryObjectImpl ro:ros) {
 			/*
 			 * Remove from search index
 			 */
-			solrProxy.removeIndexEntry(ro.getId());
+			indexer.removeFromIndex(ro.getId());
 			
-			// TODO
+			/*
+			 * Remove from rss cache
+			 */
+			RssCacheManager.getInstance().removeEntry(ro.getId());
 			
 		}
 

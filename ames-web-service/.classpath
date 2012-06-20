@@ -29,6 +29,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ames-oojdrew"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ames-webdav"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ames-jod"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ames-office"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

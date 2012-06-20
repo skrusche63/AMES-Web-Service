@@ -371,10 +371,10 @@ public class RequestDispatcher extends HttpServlet {
 		services.add(new BaseParam("bulletin", "de.kp.ames.web.function.bulletin.BulletinImpl"));
 		
 		/*
-		 * Chat Service to support the registration (submit)
-		 * of chat message via a selected chat client
+		 * Chat & Mail Service to support the registration (submit)
+		 * of chat and mail message via a selected client
 		 */
-		services.add(new BaseParam("chat", "de.kp.ames.web.function.chat.ChatServiceImpl"));
+		services.add(new BaseParam("comm", "de.kp.ames.web.function.comm.CommServiceImpl"));
 		
 		/*
 		 * Disclaimer Service to represent a disclaimer
@@ -389,12 +389,6 @@ public class RequestDispatcher extends HttpServlet {
 		 * organizations
 		 */
 		services.add(new BaseParam("group", "de.kp.ames.web.core.group.GroupServiceImpl"));
-
-		/*
-		 * Mail Service to support the registration (submit)
-		 * of mail messages via a selected mail client
-		 */
-		services.add(new BaseParam("mail", "de.kp.ames.web.function.mail.MailServiceImpl"));
 
 		/*
 		 * Map Service is used to retrieve map specific
@@ -412,7 +406,7 @@ public class RequestDispatcher extends HttpServlet {
 		 * RSS Service is used to provide actually registered
 		 * and temporarily cached registry objects as an RSS feed
 		 */
-		services.add(new BaseParam("rss", "de.kp.ames.web.core.rss.RssImpl"));
+		services.add(new BaseParam("rss", "de.kp.ames.web.core.rss.RssServiceImpl"));
 
 		/*
 		 * Security Service is used to register additional

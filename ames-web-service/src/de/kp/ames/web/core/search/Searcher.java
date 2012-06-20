@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.symbol;
+package de.kp.ames.web.core.search;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,34 +18,37 @@ package de.kp.ames.web.function.symbol;
  *
  */
 
-import de.kp.ames.web.Bundle;
-import de.kp.ames.web.GlobalConstants;
+public interface Searcher {
 
-public class IconProcessor extends SymbolProcessor {
-
-	private static IconProcessor instance = new IconProcessor();
-	private IconProcessor() {
-		
-		/*
-		 * Initialize control information
-		 */
-		SYMBOL_PATH = Bundle.getInstance().getString(GlobalConstants.SYMBOL_ICON_FILE);
-		SYMBOL_ROOT = "GEN.X";
-
-		SYMBOL_URI = Bundle.getInstance().getString(GlobalConstants.SYMBOL_ICON_URI);
-
-		init();
-		
-	}
-	
 	/**
-	 * Singleton
+	 * Retrieve facets from Apache Solr
 	 * 
+	 * @param request
 	 * @return
+	 * @throws Exception
 	 */
-	public static IconProcessor getInstance() {
-		if (instance == null) instance = new IconProcessor();
-		return instance;
-	}
+	public String facet() throws Exception;
+
+	/**
+	 * Retrieve entries from Apache Solr search index
+	 * 
+	 * @param request
+	 * @param start
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	public String search(String request, String start, String limit) throws Exception;
+
+	/**
+	 * External search method that supports term suggestion
+	 * 
+	 * @param request
+	 * @param start
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	public String suggest(String request, String start, String limit) throws Exception;
 
 }

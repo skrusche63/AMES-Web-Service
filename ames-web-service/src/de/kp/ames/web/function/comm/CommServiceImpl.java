@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.chat;
+package de.kp.ames.web.function.comm;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -23,9 +23,9 @@ import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
 
-public class ChatServiceImpl extends BusinessImpl {
+public class CommServiceImpl extends BusinessImpl {
 
-	public ChatServiceImpl() {	
+	public CommServiceImpl() {	
 		super();
 	}
 	
@@ -39,38 +39,49 @@ public class ChatServiceImpl extends BusinessImpl {
 			/*
 			 * Call submit method
 			 */
-			String data = this.getRequestData(ctx);
-			if (data == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = submit(data);
-					sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-
-			}
+			doSubmitRequest(ctx);
 			
 		}
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSubmitRequest(RequestContext ctx) {
+
+		String data = this.getRequestData(ctx);
+		String type = this.method.getAttribute(FncConstants.ATTR_TYPE);
+		
+		if ((data == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = submit(type, data);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+
+		}
+		
+	}
+	
 	/**
-	 * A helper method to submit a chat message
+	 * A helper method to submit a chat or mail message
 	 * 
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	private String submit(String data) throws Exception {
+	private String submit(String type, String data) throws Exception {
 
 		String content = null;
 		
@@ -79,8 +90,19 @@ public class ChatServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
 
-		ChatLCM lcm = new ChatLCM(jaxrHandle);
-		content = lcm.submitChat(data);
+		if (type.equals(FncConstants.FNC_ID_Chat)) {
+			
+			CommLCM lcm = new CommLCM(jaxrHandle);
+			content = lcm.submitChat(data);
+		
+		} else if (type.equals(FncConstants.FNC_ID_Mail)) {
+
+			CommLCM lcm = new CommLCM(jaxrHandle);
+			content = lcm.submitMail(data);
+			
+		} else {
+			
+		}
 		
 		/*
 		 * Logoff

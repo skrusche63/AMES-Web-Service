@@ -22,7 +22,7 @@ import de.kp.ames.web.core.util.FileUtil;
 
 public interface OfficeConverter {
 
-	FileUtil convert(FileUtil input);
+	FileUtil convert();
 	
 }
 

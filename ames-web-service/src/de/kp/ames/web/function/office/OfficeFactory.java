@@ -93,7 +93,7 @@ public class OfficeFactory {
 	
 	public OfficeConverter getOfficeConverter() {
 		
-		OfficeConverter converter = new OfficeConverterImpl();
+		OfficeConverter converter = new OfficeConverterImpl(file);
 		return converter;
 		
 	}

@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.mail;
+package de.kp.ames.web.function.access;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -19,12 +19,16 @@ package de.kp.ames.web.function.mail;
  */
 
 import java.util.List;
+
 import javax.xml.registry.JAXRException;
 
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
+import de.kp.ames.web.core.reactor.ReactorImpl;
+import de.kp.ames.web.core.reactor.ReactorParams;
+import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
@@ -33,36 +37,36 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.DomainLCM;
-import de.kp.ames.web.function.domain.model.MailObject;
+import de.kp.ames.web.function.domain.model.AccessorObject;
 
-public class MailLCM extends JaxrLCM {
+public class AccessLCM extends JaxrLCM {
 
-	public MailLCM(JaxrHandle jaxrHandle) {
+	public AccessLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
-	
+
 	/**
-	 * Register a new mail message
+	 * Submit Accessor
 	 * 
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	public String submitMail(String data) throws Exception {
+	public String submitAccessor(String data) throws Exception {
 
 		/*
 		 * Create or retrieve registry package that is 
-		 * responsible for managing mail message
+		 * responsible for managing accessors
 		 */
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Mail);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Accessor);
 		if (list.size() == 0) {
 			/*
 			 * Create container
 			 */
-			container = createMailPackage();
+			container = createAccessorPackage();
 			
 		} else {
 			/*
@@ -78,53 +82,59 @@ public class MailLCM extends JaxrLCM {
 		JaxrTransaction transaction = new JaxrTransaction();
 
 		/*
-		 * Create MailObject
+		 * Submit AccessorObject
 		 */
-		MailObject mailObject = new MailObject(jaxrHandle, this);
-		RegistryObjectImpl ro = mailObject.create(data);
+		AccessorObject accessorObject = new AccessorObject(jaxrHandle, this);
+		RegistryObjectImpl ro = accessorObject.submit(data);
 
-    	transaction.addObjectToSave(ro);
+		transaction.addObjectToSave(ro);
 		container.addRegistryObject(ro);
 
 		/*
-		 * Save objects	
-		 */		
+		 * Save objects
+		 */
 		transaction.addObjectToSave(container);
 		saveObjects(transaction.getObjectsToSave(), false, false);
 
 		/*
-		 * Get response 
+		 * Supply reactor
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.MAIL_CREATED);		
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, FncConstants.FNC_ID_Accessor, RAction.C_INDEX_RSS);
+		ReactorImpl.onSubmit(reactorParams);
+
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.ACCESSOR_CREATED);
 		return jResponse.toString();
 		
 	}
 
 	/**
-	 * A helper method to create a new mail message container
+	 * A helper method to create a new accessor container
 	 * 
 	 * @return
 	 * @throws JAXRException
 	 */
-	private RegistryPackageImpl createMailPackage() throws JAXRException  {
+	private RegistryPackageImpl createAccessorPackage() throws JAXRException  {
 
 		FncParams params = new FncParams();
 		
 		/*
 		 * Name & description
 		 */
-		params.put(FncParams.K_NAME, "Mails");
-		params.put(FncParams.K_DESC, FncMessages.MAIL_DESC);
+		params.put(FncParams.K_NAME, "Accessors");
+		params.put(FncParams.K_DESC, FncMessages.ACCESSOR_DESC);
 		
 		/*
 		 * Prefix
 		 */
-		params.put(FncParams.K_PRE, FncConstants.MAIL_PRE);
+		params.put(FncParams.K_PRE, FncConstants.ACCESSOR_PRE);
 		
 		/*
 		 * Classification
 		 */
-		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Mail);
+		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Accessor);
 		
 		/*
 		 * Create package

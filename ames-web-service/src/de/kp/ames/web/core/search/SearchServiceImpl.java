@@ -120,7 +120,7 @@ public class SearchServiceImpl extends BusinessImpl {
 	 * @throws Exception
 	 */
 	private String facet() throws Exception {
-		return SolrProxy.getInstance().facet();
+		return new SearcherImpl().facet();
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class SearchServiceImpl extends BusinessImpl {
 	 * @throws Exception
 	 */
 	private String search(String query, String start, String limit) throws Exception {
-		return SolrProxy.getInstance().search(query, start, limit);
+		return new SearcherImpl().search(query, start, limit);
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class SearchServiceImpl extends BusinessImpl {
 	 * @throws Exception
 	 */
 	private String suggest(String query, String start, String limit) throws Exception {
-		return SolrProxy.getInstance().suggest(query, start, limit);
+		return new SearcherImpl().suggest(query, start, limit);
 	}
 	
 }

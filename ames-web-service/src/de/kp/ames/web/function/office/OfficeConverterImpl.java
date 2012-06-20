@@ -20,9 +20,10 @@ package de.kp.ames.web.function.office;
 
 import java.io.File;
 import java.io.FileInputStream;
-import de.kp.ames.jod.OOConverter;
-import de.kp.ames.jod.OOConnector;
-import de.kp.ames.jod.OOConstants;
+
+import de.kp.ames.office.OOConstants;
+import de.kp.ames.office.jod.OOConnector;
+import de.kp.ames.office.jod.OOEngine;
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.util.FileUtil;
@@ -30,8 +31,9 @@ import de.kp.ames.web.core.util.FileUtil;
 public class OfficeConverterImpl implements OfficeConverter {
 
 	protected OOConnector connector;
+	protected FileUtil input;
 	
-	public OfficeConverterImpl() {
+	public OfficeConverterImpl(FileUtil file) {
 		
 		/*
 		 * Connect to OpenOffice.org service
@@ -39,12 +41,17 @@ public class OfficeConverterImpl implements OfficeConverter {
 		connector = OOConnector.getInstance();
 		connector.connect();
 		
+		/*
+		 * Register file
+		 */
+		this.input = file;
+		
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.kp.ames.web.function.office.OfficeConverter#convert(de.kp.ames.web.core.util.FileUtil)
+	 * @see de.kp.ames.web.function.office.OfficeConverter#convert()
 	 */
-	public FileUtil convert(FileUtil input) {
+	public FileUtil convert() {
 
 		/* 
 		 * Prepare input file
@@ -55,7 +62,7 @@ public class OfficeConverterImpl implements OfficeConverter {
 
 		String filename = OOConstants.OFFICE_CACHE  + "/" + JaxrIdentity.getInstance().getUID();
 
-		OOConverter converter = new OOConverter();
+		OOEngine converter = new OOEngine();
 		boolean result = converter.convertToPdf(filename, mimetype, input.getFile());
 		
 		if (result == false) return input;

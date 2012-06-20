@@ -291,7 +291,7 @@ public class ProductServiceImpl extends BusinessImpl {
 		 * in Web enabled format
 		 */
 		OfficeConverter converter = factory.getOfficeConverter();
-		content = converter.convert(content);
+		content = converter.convert();
 
 		/*
 		 * Logoff

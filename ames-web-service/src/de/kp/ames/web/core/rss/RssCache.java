@@ -92,4 +92,42 @@ public class RssCache {
 		}
 	}
 
+	/**
+	 * Remove entry from cache referring
+	 * to a specific uri
+	 * 
+	 * @param uri
+	 */
+	public void remove(String uri) {
+		/*
+		 * Determine all cache entries
+		 */
+		List<SyndEntry> list;
+		synchronized (cache) {
+			list = new ArrayList<SyndEntry>(this.cache);
+		}
+
+		/*
+		 * Retrieve entry that matches uri
+		 */
+		SyndEntry entry = null;
+		for (SyndEntry item:list) {
+			if (uri.equals(item.getUri())) {
+				entry = item;
+				break;
+			}
+		}
+		
+		/*
+		 * Remove entry from cache
+		 */
+		if (entry != null) {
+
+			synchronized (cache) {
+				this.cache.remove(entry);
+			}
+
+		}
+		
+	}
 }

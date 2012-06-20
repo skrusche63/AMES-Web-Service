@@ -39,10 +39,10 @@ public class RssProvider {
 	private static String FEED_TITLE = GlobalConstants.FEED_TITLE;
 	private static String FEED_DESC  = GlobalConstants.FEED_DESC;
 	
-	private static RssProcessor processor;
+	private static RssCacheManager processor;
 	
 	public RssProvider() {
-		processor = RssProcessor.getInstance();
+		processor = RssCacheManager.getInstance();
 	}
 	
 	public String getFeed() {
