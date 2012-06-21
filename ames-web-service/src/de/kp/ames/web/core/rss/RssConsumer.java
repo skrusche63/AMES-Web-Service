@@ -44,7 +44,8 @@ import com.sun.syndication.io.SyndFeedOutput;
  * RSS based webservice.
  * 
  * The response is RSS 2.0 XML, which is converted into 
- * a SyndFeed object and returned to the caller to parse as needed.
+ * a SyndFeed object and returned to the caller to parse 
+ * as needed.
  */
 
 public class RssConsumer {

@@ -281,7 +281,7 @@ public class ProductServiceImpl extends BusinessImpl {
 		 * Retrieve office representation 
 		 * of the specific product
 		 */
-		OfficeFactory factory = new OfficeFactory(content);
+		OfficeFactory factory = new OfficeFactory(jaxrHandle, content);
 		OfficeBuilder builder = factory.getOfficeBuilder();
 		
 		content = builder.build();

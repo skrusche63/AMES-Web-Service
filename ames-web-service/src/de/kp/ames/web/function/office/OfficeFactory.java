@@ -27,6 +27,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.util.FileUtil;
 
 public class OfficeFactory {
@@ -40,14 +41,16 @@ public class OfficeFactory {
 	private static String ODT_NS = "urn:de:kp:xsd:odt:1.0";
 
 	private FileUtil file;
+	private JaxrHandle jaxrHandle;
 	
 	/**
 	 * Constructor
 	 * 
 	 * @param file
 	 */
-	public OfficeFactory(FileUtil file) {
+	public OfficeFactory(JaxrHandle jaxrHandle, FileUtil file) {
 		this.file = file;
+		this.jaxrHandle = jaxrHandle;
 	}
 	
 	/**
@@ -68,17 +71,17 @@ public class OfficeFactory {
 			
 			if (namespace.equals(ODP_NS)) {
 				
-				builder = new OdpBuilder(file);
+				builder = new OdpBuilder(jaxrHandle, file);
 				break;
 				
 			} else if (namespace.equals(ODS_NS)) {
 				
-				builder = new OdsBuilder(file);
+				builder = new OdsBuilder(jaxrHandle, file);
 				break;
 				
 			} else if (namespace.equals(ODT_NS)) {
 				
-				builder = new OdtBuilder(file);
+				builder = new OdtBuilder(jaxrHandle, file);
 				break;
 				
 			} else {
