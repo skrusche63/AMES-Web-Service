@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.format.json;
+package de.kp.ames.web.core.domain;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,22 +18,17 @@ package de.kp.ames.web.core.format.json;
  *
  */
 
-public class JsonConstants {
+import de.kp.ames.web.core.regrep.JaxrHandle;
 
-	public static String J_AFFILIATE = "affiliate";
-	public static String J_CHECK     = "checked";
-	public static String J_DESC      = "desc";
-	public static String J_END  	 = "end";
-	public static String J_GROUP     = "group";
-	public static String J_ID  		 = "id";
-	public static String J_KEY       = "key";
-	public static String J_LAT  	 = "lat";
-	public static String J_LON  	 = "lon";
-	public static String J_MIME      = "mimetype";
-	public static String J_NAME 	 = "name";
-	public static String J_START 	 = "start";
+public class JsonService extends JsonRegistryObject {
 
-	public static String J_SUCCESS   = "success";
-	public static String J_MESSAGE   = "message";
+	/**
+	 * Constructor
+	 * 
+	 * @param jaxrHandle
+	 */
+	public JsonService(JaxrHandle jaxrHandle) {
+		super(jaxrHandle);
+	}
 
 }

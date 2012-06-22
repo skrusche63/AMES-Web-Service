@@ -68,30 +68,41 @@ public class TransformServiceImpl extends ServiceImpl {
 			
 		} else if (methodName.equals(FncConstants.METH_SUBMIT)) {
 			/*
-			 * An XSL transformation that is already uploaded to
-			 * the server (and managed in a temporary cache) is
-			 * registered in an OASIS ebXML RegRep
+			 * Call submit method
 			 */
-			String data = this.getRequestData(ctx);
-			if (data == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
+			doSubmitRequest(ctx);
+			
+		}
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSubmitRequest(RequestContext ctx) {
+		/*
+		 * An XSL transformation that is already uploaded to
+		 * the server (and managed in a temporary cache) is
+		 * registered in an OASIS ebXML RegRep
+		 */
+		String data = this.getRequestData(ctx);
+		if (data == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
 
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = submit(data);
-					sendJSONResponse(content, ctx.getResponse());
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = submit(data);
+				sendJSONResponse(content, ctx.getResponse());
 
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
 
-				}
-				
 			}
-
+			
 		}
 		
 	}

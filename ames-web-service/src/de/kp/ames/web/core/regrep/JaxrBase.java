@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import javax.activation.DataHandler;
@@ -852,6 +853,29 @@ public class JaxrBase {
 		}
 		
 		return clone.isEmpty();
+	}
+
+	/**
+	 * A helper method to retrieve slots of a RegistryObject
+	 * as a list of SlotImpl
+	 * 
+	 * @param ro
+	 * @return
+	 * @throws JAXRException
+	 */
+	public List<SlotImpl> getSlotList(RegistryObjectImpl ro) throws JAXRException {
+		
+		ArrayList<SlotImpl> slotList = new ArrayList<SlotImpl>();
+		
+		Collection<?> slots = ro.getSlots();
+		Iterator<?> iter = slots.iterator();
+		
+		while (iter.hasNext()) {
+			slotList.add((SlotImpl)iter.next());
+		}
+		
+		return slotList;
+		
 	}
 
 	/**

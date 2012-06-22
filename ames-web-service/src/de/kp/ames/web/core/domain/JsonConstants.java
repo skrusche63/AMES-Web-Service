@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.format.json;
+package de.kp.ames.web.core.domain;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,32 +18,22 @@ package de.kp.ames.web.core.format.json;
  *
  */
 
-import org.json.JSONObject;
+public class JsonConstants {
 
-import de.kp.ames.web.core.regrep.JaxrTransaction;
+	public static String J_AFFILIATE = "affiliate";
+	public static String J_CHECK     = "checked";
+	public static String J_DESC      = "desc";
+	public static String J_END  	 = "end";
+	public static String J_GROUP     = "group";
+	public static String J_ID  		 = "id";
+	public static String J_KEY       = "key";
+	public static String J_LAT  	 = "lat";
+	public static String J_LON  	 = "lon";
+	public static String J_MIME      = "mimetype";
+	public static String J_NAME 	 = "name";
+	public static String J_START 	 = "start";
 
-/**
- * This class is part of the JSON layer on top of
- * the JAXR layer
- * 
- * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
- *
- */
-
-public class JsonTransaction extends JaxrTransaction {
-
-	private JSONObject jObject;
-
-	public JsonTransaction(JSONObject jObject) {
-		this.jObject = jObject;
-	}
-		
-	public JSONObject getjObject() {
-		return jObject;
-	}
-
-	public void setjObject(JSONObject jObject) {
-		this.jObject = jObject;
-	}
+	public static String J_SUCCESS   = "success";
+	public static String J_MESSAGE   = "message";
 
 }

@@ -31,9 +31,9 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.format.json.DateCollector;
-import de.kp.ames.web.core.format.json.JsonConstants;
-import de.kp.ames.web.core.format.json.JsonProvider;
+import de.kp.ames.web.core.domain.JsonConstants;
+import de.kp.ames.web.core.domain.JsonProvider;
+import de.kp.ames.web.core.json.DateCollector;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;

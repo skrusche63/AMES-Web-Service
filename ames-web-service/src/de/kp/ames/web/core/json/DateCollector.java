@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.format.json;
+package de.kp.ames.web.core.json;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -20,6 +20,7 @@ package de.kp.ames.web.core.format.json;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,22 +28,23 @@ import java.util.TreeMap;
 import org.json.JSONObject;
 
 /**
- * A utility class to sort and collect JSON objects by String,
- * i.e. especially by name; this class is mainly used to provide
- * sorted results to be returned as a service response
+ * A utility class to sort and collect JSON objects by Date;
+ * this class is mainly used to provide sorted results to be 
+ * returned as a service response
  * 
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
  */
 
-public class StringCollector {
+public class DateCollector {
 
-	private Map<String, ArrayList<JSONObject>> collector;
+	private Map<Date, ArrayList<JSONObject>> collector;
 
-	public StringCollector() {
+	public DateCollector() {
 
-		collector = new TreeMap<String, ArrayList<JSONObject>>(new Comparator<String>(){
-			public int compare(String name1, String name2) {
-				return name1.compareTo(name2);
+		collector = new TreeMap<Date, ArrayList<JSONObject>>(new Comparator<Date>(){
+			public int compare(Date date1, Date date2) {				
+				// this is a descending sorting of two dates
+				return (-1) * date1.compareTo(date2);				
 			}
 		});
 	
@@ -50,15 +52,15 @@ public class StringCollector {
 	
 	/**
 	 * A helper method to add a JSON object and its 
-	 * assigned name to this sorter and collector
+	 * assigned date to this sorter and collector
 	 * 
-	 * @param name
+	 * @param date
 	 * @param jObject
 	 */
-	public void put(String name, JSONObject jObject) {
+	public void put(Date date, JSONObject jObject) {
 		
-		if (!collector.containsKey(name)) collector.put(name, new ArrayList<JSONObject>());
-		collector.get(name).add(jObject);
+		if (!collector.containsKey(date)) collector.put(date, new ArrayList<JSONObject>());
+		collector.get(date).add(jObject);
 		
 	}
 	
@@ -79,5 +81,5 @@ public class StringCollector {
 		return values;
 
 	}
-	
+
 }

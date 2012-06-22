@@ -32,8 +32,8 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.format.json.JsonConstants;
-import de.kp.ames.web.core.format.json.JsonUtil;
+import de.kp.ames.web.core.domain.JsonConstants;
+import de.kp.ames.web.core.json.JsonUtil;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;

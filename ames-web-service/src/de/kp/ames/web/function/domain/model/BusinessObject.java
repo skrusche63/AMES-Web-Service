@@ -29,7 +29,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.SlotImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.format.json.JsonUtil;
+import de.kp.ames.web.core.json.JsonUtil;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
@@ -97,17 +97,14 @@ public class BusinessObject {
 		while (keys.hasNext()) {
 
 			String key = keys.next();
-			if (key.startsWith(RIM_PRE)) {
-				
-				String name  = key.substring(RIM_PRE.length());
-				String value = jSlots.getString(key);
-				
-				/*
-				 * Create slot
-				 */
-				SlotImpl slot = lcm.createSlot(name, value, JaxrConstants.SLOT_TYPE);
-				slots.add(slot);
-			}
+			String value = jSlots.getString(key);
+			
+			/*
+			 * Create slot
+			 */
+			SlotImpl slot = lcm.createSlot(key, value, JaxrConstants.SLOT_TYPE);
+			slots.add(slot);
+
 		}
 
 		return slots;
@@ -134,25 +131,20 @@ public class BusinessObject {
 		while (keys.hasNext()) {
 
 			String key = keys.next();
-			if (key.startsWith(RIM_PRE)) {
+			String value = jSlots.getString(key);
 
-				String name  = key.substring(RIM_PRE.length());
-				String value = jSlots.getString(key);
-
-				SlotImpl slot = (SlotImpl)ro.getSlot(name);
-				if (slot == null) {
-					
-					slot = lcm.createSlot(name, value, JaxrConstants.SLOT_TYPE);
-					slots.add(slot);
-					
-				} else {
-					
-					Collection<String> values = new ArrayList<String>();
-					values.add(value);
-
-					slot.setValues(values);
+			SlotImpl slot = (SlotImpl)ro.getSlot(key);
+			if (slot == null) {
 				
-				}
+				slot = lcm.createSlot(key, value, JaxrConstants.SLOT_TYPE);
+				slots.add(slot);
+				
+			} else {
+				
+				Collection<String> values = new ArrayList<String>();
+				values.add(value);
+
+				slot.setValues(values);
 
 			}
 			

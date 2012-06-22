@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.format.json;
+package de.kp.ames.web.core.json;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -27,37 +27,38 @@ import java.util.TreeMap;
 import org.json.JSONObject;
 
 /**
- * A utility class to sort and collect JSON objects by Number;
- * this class is mainly used to provide sorted results to be 
- * returned as a service response
+ * A utility class to sort and collect JSON objects by String,
+ * i.e. especially by name; this class is mainly used to provide
+ * sorted results to be returned as a service response
  * 
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
  */
-public class DoubleCollector {
 
-	private Map<Double, ArrayList<JSONObject>> collector;
+public class StringCollector {
 
-	public DoubleCollector() {
+	private Map<String, ArrayList<JSONObject>> collector;
 
-		collector = new TreeMap<Double, ArrayList<JSONObject>>(new Comparator<Double>(){
-			public int compare(Double double1, Double double2) {
-				return double1.compareTo(double2);
+	public StringCollector() {
+
+		collector = new TreeMap<String, ArrayList<JSONObject>>(new Comparator<String>(){
+			public int compare(String name1, String name2) {
+				return name1.compareTo(name2);
 			}
 		});
-
+	
 	}
-		
+	
 	/**
 	 * A helper method to add a JSON object and its 
-	 * assigned number to this sorter and collector
+	 * assigned name to this sorter and collector
 	 * 
-	 * @param number
+	 * @param name
 	 * @param jObject
 	 */
-	public void put(Double number, JSONObject jObject) {
+	public void put(String name, JSONObject jObject) {
 		
-		if (!collector.containsKey(number)) collector.put(number, new ArrayList<JSONObject>());
-		collector.get(number).add(jObject);
+		if (!collector.containsKey(name)) collector.put(name, new ArrayList<JSONObject>());
+		collector.get(name).add(jObject);
 		
 	}
 	
@@ -78,5 +79,5 @@ public class DoubleCollector {
 		return values;
 
 	}
-
+	
 }

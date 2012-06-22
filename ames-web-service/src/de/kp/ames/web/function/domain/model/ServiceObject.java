@@ -166,7 +166,7 @@ public class ServiceObject extends BusinessObject {
 		/* 
 		 * Create slots
 		 */
-		JSONObject jSlots = jForm.has(RIM_SLOT) ? jForm.getJSONObject(RIM_SLOT) : null;
+		JSONObject jSlots = jForm.has(RIM_SLOT) ? new JSONObject(jForm.getString(RIM_SLOT)) : null;
 		if (jSlots != null) {
 
 			List<SlotImpl> slots = createSlots(jSlots);
@@ -275,7 +275,7 @@ public class ServiceObject extends BusinessObject {
 		/* 
 		 * Update slots
 		 */
-		JSONObject jSlots = jForm.has(RIM_SLOT) ? jForm.getJSONObject(RIM_SLOT) : null;
+		JSONObject jSlots = jForm.has(RIM_SLOT) ? new JSONObject(jForm.getString(RIM_SLOT)) : null;
 		if (jSlots != null) {
 
 			List<SlotImpl> slots = updateSlots(service, jSlots);

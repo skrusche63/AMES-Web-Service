@@ -32,7 +32,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.format.json.JsonUtil;
+import de.kp.ames.web.core.json.JsonUtil;
 import de.kp.ames.web.core.reactor.ReactorImpl;
 import de.kp.ames.web.core.reactor.ReactorParams;
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;

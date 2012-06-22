@@ -20,6 +20,14 @@ package de.kp.ames.web.core.regrep;
 
 public class JaxrConstants {
 
+	/*
+	 * Registry guest
+	 */
+	public static String REGISTRY_GUEST = "urn:oasis:names:tc:ebxml-regrep:RegistryGuest";
+
+	/*
+	 * ebRIM prefix
+	 */
 	public static String RIM_PRE = "rim";
 	
 	/*
@@ -29,11 +37,13 @@ public class JaxrConstants {
 	public static String RIM_CODE      = "rimCode";
 	public static String RIM_DATE      = "rimDatetime";
 	public static String RIM_DESC 	   = "rimDescription";	 
+	public static String RIM_EVENT     = "rimEvent";
 	public static String RIM_HOME 	   = "rimHome";
 	public static String RIM_ID 	   = "rimId";	
 	public static String RIM_LID 	   = "rimLid";	
 	public static String RIM_MIME      = "rimMimeType";
 	public static String RIM_NAME 	   = "rimName";
+	public static String RIM_OWNER     = "rimOwner";
 	public static String RIM_SOURCE    = "rimSourceObject";
 	public static String RIM_STATUS    = "rimStatus";
 	public static String RIM_TARGET    = "rimTargetObject";
@@ -55,10 +65,13 @@ public class JaxrConstants {
     public static String RIM_FIRST_NAME  = "rimFirstName";
     public static String RIM_MIDDLE_NAME = "rimMiddleName";
     public static String RIM_LAST_NAME   = "rimLastName";
+    public static String RIM_USER_NAME   = "rimUserName";
 
 	/* 
 	 * Postal address (Organization & User)
 	 */
+    public static String RIM_ADDRESS           = "rimAddress";
+    
     public static String RIM_CITY              = "rimCity";
     public static String RIM_COUNTRY           = "rimCountry";
     public static String RIM_POSTAL_CODE       = "rimPostalCode";
@@ -69,6 +82,8 @@ public class JaxrConstants {
 	/* 
 	 * Telefone number (Organization & User)
 	 */
+    public static String RIM_PHONE           = "rimPhone";
+    
     public static String RIM_AREA_CODE       = "rimAreaCode";
     public static String RIM_COUNTRY_CODE    = "rimCountryCode";
     public static String RIM_PHONE_NUMBER    = "rimPhoneNumber";
@@ -83,6 +98,7 @@ public class JaxrConstants {
 	 * Primary contact (Organization)
 	 */
     public static String RIM_CONTACT	   = "rimContact";
+    
 	public static String RIM_CONTACT_NAME  = "rimContactName";
 	public static String RIM_CONTACT_EMAIL = "rimContactEmail";
 	public static String RIM_CONTACT_PHONE = "rimContactPhone";
@@ -102,6 +118,7 @@ public class JaxrConstants {
 	 * Slot
 	 */
 	public static String RIM_SLOT = "rimSlot";
+
 	/*
 	 * Symbol representation
 	 */

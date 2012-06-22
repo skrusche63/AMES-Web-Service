@@ -21,7 +21,7 @@ package de.kp.ames.web.function.symbol;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.format.json.StringCollector;
+import de.kp.ames.web.core.json.StringCollector;
 
 public class SymbolDQM {
 

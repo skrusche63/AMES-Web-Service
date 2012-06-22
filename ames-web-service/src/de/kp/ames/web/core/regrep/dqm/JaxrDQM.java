@@ -921,29 +921,6 @@ public class JaxrDQM extends JaxrBase {
 		return list;
 		
 	}
-
-	/**
-	 * A helper method to retrieve slots of a RegistryObject
-	 * as a list of SlotImpl
-	 * 
-	 * @param ro
-	 * @return
-	 * @throws JAXRException
-	 */
-	public List<SlotImpl> getSlotList(RegistryObjectImpl ro) throws JAXRException {
-		
-		ArrayList<SlotImpl> slotList = new ArrayList<SlotImpl>();
-		
-		Collection<?> slots = ro.getSlots();
-		Iterator<?> iter = slots.iterator();
-		
-		while (iter.hasNext()) {
-			slotList.add((SlotImpl)iter.next());
-		}
-		
-		return slotList;
-		
-	}
 	
 	/**
 	 * A helper method to retrieve values of a Slot

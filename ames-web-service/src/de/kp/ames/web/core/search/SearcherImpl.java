@@ -33,7 +33,7 @@ import org.apache.solr.common.util.NamedList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.format.json.StringCollector;
+import de.kp.ames.web.core.json.StringCollector;
 import de.kp.ames.web.core.render.GuiFactory;
 import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.function.FncMessages;
