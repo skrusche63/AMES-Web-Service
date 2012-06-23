@@ -1,7 +1,4 @@
 package de.kp.ames.web.function;
-
-import de.kp.ames.web.core.CoreMessages;
-
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -21,6 +18,8 @@ import de.kp.ames.web.core.CoreMessages;
  *
  */
 
+import de.kp.ames.web.core.CoreMessages;
+
 public class FncMessages extends CoreMessages {
 
 	/*
@@ -39,6 +38,12 @@ public class FncMessages extends CoreMessages {
 	public static String CHAT_CREATED = "Chat message successfully submitted.";
 	public static String MAIL_CREATED = "Mail message successfully submitted.";
 
+	/*
+	 * DMS specific messages
+	 */
+	public static String DOCUMENT_CREATED = "Document successfully submitted.";
+	public static String IMAGE_CREATED    = "Image successfully submitted.";
+	
 	/*
 	 * Group specifc messages
 	 */
@@ -75,7 +80,9 @@ public class FncMessages extends CoreMessages {
 	 */
 	public static String ACCESSOR_DESC      = "This is the top package to manage all submitted accessors.";
 	public static String CHAT_DESC          = "This is the top package to manage all submitted chat messages.";
+	public static String DOCUMENT_DESC      = "This is the top package to manage all submitted documents.";
 	public static String EVALUATION_DESC    = "This is the top package to manage all submitted evaluations.";
+	public static String IMAGE_DESC         = "This is the top package to manage all submitted images.";
 	public static String LINK_DESC          = "This is the top package to manage all submitted external links.";
 	public static String MAIL_DESC          = "This is the top package to manage all submitted mails.";
 	public static String POSTING_DESC       = "This is the top package to manage all submitted postings.";

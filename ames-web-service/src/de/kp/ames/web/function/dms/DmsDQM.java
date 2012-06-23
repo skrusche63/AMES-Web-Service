@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.transform;
+package de.kp.ames.web.function.dms;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -28,35 +28,59 @@ import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.domain.DomainJsonProvider;
 
-public class TransformDQM extends JaxrDQM {
+public class DmsDQM extends JaxrDQM {
 
 	/**
 	 * Constructor
 	 * 
 	 * @param jaxrHandle
 	 */
-	public TransformDQM(JaxrHandle jaxrHandle) {
+	public DmsDQM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
-	
+
 	/**
-	 * Get either single transformator or all
-	 * registered productors
+	 * Get either single documents or all
+	 * registered documents
 	 * 
 	 * @param item
 	 * @return
 	 * @throws Exception
 	 */
-	public JSONArray getTransformators(String item) throws Exception {
+	public JSONArray getDocuments(String item) throws Exception {
 
 		/*
-		 * Determine transformators
+		 * Determine documents
 		 */		
-		List<RegistryObjectImpl> productors = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Transformator);
+		List<RegistryObjectImpl> documents = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Document);
 
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getTransformators(jaxrHandle, productors);
+		return DomainJsonProvider.getDocuments(jaxrHandle, documents);
+		
 	}
+
+	/**
+	 * Get either single images or all
+	 * registered images
+	 * 
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	public JSONArray getImages(String item) throws Exception {
+
+		/*
+		 * Determine images
+		 */		
+		List<RegistryObjectImpl> images = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Image);
+
+		/*
+		 * Build JSON representation
+		 */
+		return DomainJsonProvider.getImages(jaxrHandle, images);
+		
+	}
+
 }

@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.transform;
+package de.kp.ames.web.function.dms;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,61 +18,29 @@ package de.kp.ames.web.function.transform;
  *
  */
 
-import java.io.InputStream;
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
-import de.kp.ames.web.core.util.BaseParam;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
 
-public class TransformServiceImpl extends BusinessImpl {
+public class DmsServiceImpl extends BusinessImpl {
 
 	/**
 	 * Constructor
 	 */
-	public TransformServiceImpl() {		
+	public DmsServiceImpl() {
 		super();
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.core.RequestContext)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_APPLY)) {
-			/*
-			 * Call apply method
-			 */
-			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);			
-
-			String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);
-			String target = this.method.getAttribute(FncConstants.ATTR_TARGET);
-
-			if ((source == null) || (target == null) || (service == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-
-				try {
-					/*
-					 * In case of a successful transformation
-					 */
-					String content = apply(source, target, service);
-					sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
-		
-		} else if (methodName.equals(FncConstants.METH_GET)) {
+		if (methodName.equals(FncConstants.METH_GET)) {
 			/*
 			 * Call get method
 			 */
@@ -87,7 +55,7 @@ public class TransformServiceImpl extends BusinessImpl {
 		}
 		
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
 	 */
@@ -127,22 +95,20 @@ public class TransformServiceImpl extends BusinessImpl {
 				}
 				
 			}
-
+			
 		}
-
+		
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doSubmitRequest(RequestContext ctx) {
-		/*
-		 * An XSL transformation that is already uploaded to
-		 * the server (and managed in a temporary cache) is
-		 * registered in an OASIS ebXML RegRep
-		 */
+
 		String data = this.getRequestData(ctx);
-		if (data == null) {
+		String type = this.method.getAttribute(FncConstants.ATTR_TYPE);	
+		
+		if ((data == null) || (type == null)) {
 			this.sendNotImplemented(ctx);
 			
 		} else {
@@ -151,7 +117,7 @@ public class TransformServiceImpl extends BusinessImpl {
 				/*
 				 * JSON response
 				 */
-				String content = submit(data);
+				String content = submit(type, data);
 				sendJSONResponse(content, ctx.getResponse());
 
 			} catch (Exception e) {
@@ -162,59 +128,9 @@ public class TransformServiceImpl extends BusinessImpl {
 		}
 		
 	}
-	
-	/**
-	 * @param source
-	 * @param target
-	 * @param service
-	 * @return
-	 * @throws Exception 
-	 */
-	private String apply(String source, String target, String service) throws Exception {
-
-		String content = null;
-		
-		/*
-		 * Login
-		 */		
-		JaxrClient.getInstance().logon(jaxrHandle);
-
-		/*
-		 * Retrieve transformed stream from source and respective
-		 * service; actually no params are necessary
-		 */
-		ArrayList<BaseParam> xslParams = null;
-		
-		XslProcessor xslProcessor = new XslProcessor(jaxrHandle);
-		InputStream stream = xslProcessor.execute(source, service, xslParams);
-		
-		if (stream == null) {
-			/*
-			 * Logoff
-			 */
-			JaxrClient.getInstance().logoff(jaxrHandle);
-			throw new Exception("[TransformServiceImpl] XSL Transformation of " + source + " failed.");
-			
-		} else {
-			
-			/*
-			 * Add transformation result as repository item to
-			 * the referenced target object
-			 */
-			XslConsumer xslConsumer = new XslConsumer(jaxrHandle);
-			content = xslConsumer.setRepositoryItem(target, stream);
-			
-		}
-		
-		/*
-		 * Logoff
-		 */
-		JaxrClient.getInstance().logoff(jaxrHandle);
-		return content;
-	}
 
 	/**
-	 * Get transformation specific information objects
+	 * Get DMS specific information objects
 	 * 
 	 * @param type
 	 * @param item
@@ -233,10 +149,25 @@ public class TransformServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 			
-		if (type.equals(FncConstants.FNC_ID_Transformator)) {
+		if (type.equals(FncConstants.FNC_ID_Document)) {
 
-			TransformDQM dqm = new TransformDQM(jaxrHandle);
-			JSONArray jArray = dqm.getTransformators(item);
+			DmsDQM dqm = new DmsDQM(jaxrHandle);
+			JSONArray jArray = dqm.getDocuments(item);
+			
+			/*
+			 * Render result
+			 */
+			if ((start == null) || (limit == null)) {
+				content = render(jArray, format);
+
+			} else {
+				content = render(jArray, start, limit, format);
+			}
+			
+		} else if (type.equals(FncConstants.FNC_ID_Image)) {
+
+			DmsDQM dqm = new DmsDQM(jaxrHandle);
+			JSONArray jArray = dqm.getImages(item);
 			
 			/*
 			 * Render result
@@ -262,13 +193,15 @@ public class TransformServiceImpl extends BusinessImpl {
 	}
 
 	/**
-	 * Submit an XML transformation
+	 * A helper method to either submit a
+	 * document or image
 	 * 
+	 * @param type
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	private String submit(String data) throws Exception {
+	private String submit(String type, String data) throws Exception {
 
 		String content = null;
 		
@@ -277,8 +210,17 @@ public class TransformServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
 
-		TransformLCM lcm = new TransformLCM(jaxrHandle);
-		content = lcm.submitTransformator(data);
+		if (type.equals(FncConstants.FNC_ID_Document)) {
+
+			DmsLCM lcm = new DmsLCM(jaxrHandle);
+			content = lcm.submitDocument(data);
+			
+		} else if (type.equals(FncConstants.FNC_ID_Image)) {
+
+			DmsLCM lcm = new DmsLCM(jaxrHandle);
+			content = lcm.submitImage(data);
+
+		}
 		
 		/*
 		 * Logoff
@@ -287,4 +229,5 @@ public class TransformServiceImpl extends BusinessImpl {
 		return content;
 
 	}
+
 }

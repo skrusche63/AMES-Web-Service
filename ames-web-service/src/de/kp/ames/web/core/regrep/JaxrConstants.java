@@ -113,7 +113,13 @@ public class JaxrConstants {
 	 */
 	public static String RIM_SEQNO = "rimSeqNo";
 	public static String RIM_SPEC  = "rimSpecification";
-	
+
+	/*
+	 * Evaluation
+	 */
+	public static String RIM_BASE     = "rimBase";
+	public static String RIM_REASONER = "rimReasoner";
+
 	/*
 	 * Slot
 	 */
@@ -132,13 +138,25 @@ public class JaxrConstants {
 	/*
 	 * Slot Names
 	 */
+	public static String SLOT_ALIAS     = "Alias";
+	public static String SLOT_COLOR     = "Color";
+	public static String SLOT_DATABASE  = "Database";
+	public static String SLOT_DRIVER    = "Driver";
+	public static String SLOT_ENDPOINT  = "Endpoint";
 	public static String SLOT_FILE      = "File";
 	public static String SLOT_LATITUDE  = "Latitude";
 	public static String SLOT_LONGITUDE = "Longitude";
+	public static String SLOT_KEYPASS   = "Keypass";
+	public static String SLOT_MARKUP    = "Markup";
+	public static String SLOT_PROTOCOL  = "Protocol";
 	public static String SLOT_RULESET   = "Ruleset";
 	public static String SLOT_SEQNO     = "SeqNo";
 	public static String SLOT_SOURCE    = "Source";
 	public static String SLOT_SYMBOL    = "Symbol";
+	public static String SLOT_SQL       = "SQL";
 	public static String SLOT_TRACK     = "Track";
-
+	// Cartesic coordinates
+	public static String SLOT_X         = "X";
+	public static String SLOT_Y         = "Y";
+	
 }

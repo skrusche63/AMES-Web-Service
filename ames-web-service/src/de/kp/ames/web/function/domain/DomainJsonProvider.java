@@ -1,4 +1,22 @@
 package de.kp.ames.web.function.domain;
+/**
+ *	Copyright 2012 Dr. Krusche & Partner PartG
+ *
+ *	AMES-Web-Service is free software: you can redistribute it and/or 
+ *	modify it under the terms of the GNU General Public License 
+ *	as published by the Free Software Foundation, either version 3 of 
+ *	the License, or (at your option) any later version.
+ *
+ *	AMES- Web-Service is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * 
+ *  See the GNU General Public License for more details. 
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this software. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 import java.util.List;
 
@@ -10,19 +28,41 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.domain.JsonProvider;
+import de.kp.ames.web.core.json.DateCollector;
 import de.kp.ames.web.core.json.StringCollector;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
+import de.kp.ames.web.function.domain.model.JsonAccessor;
+import de.kp.ames.web.function.domain.model.JsonDocument;
+import de.kp.ames.web.function.domain.model.JsonEvaluation;
+import de.kp.ames.web.function.domain.model.JsonImage;
+import de.kp.ames.web.function.domain.model.JsonProduct;
+import de.kp.ames.web.function.domain.model.JsonProductor;
+import de.kp.ames.web.function.domain.model.JsonReasoner;
+import de.kp.ames.web.function.domain.model.JsonTransformator;
 
 public class DomainJsonProvider extends JsonProvider {
 
 	private static String EXTRINSIC_OBJECT = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_ExtrinsicObject;
 	private static String SERVICE          = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_Service;
 
+	/**
+	 * A helper method to convert an AccessorObject
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
 	public static JSONObject getAccessor(JaxrHandle jaxrHandle, ServiceImpl service) throws Exception {
-		// TODO
-		return null;
+
+		JsonAccessor jAccessor = new JsonAccessor(jaxrHandle);
+		jAccessor.set(service);
+
+		return jAccessor.get();
+		
 	}
 
 	/**
@@ -60,10 +100,74 @@ public class DomainJsonProvider extends JsonProvider {
 		
 	}
 
+	/**
+	 * A helper method to convert a DocumentObject
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param extrinsicObject
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONObject getDocument(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
+
+		JsonDocument jDocument = new JsonDocument(jaxrHandle);
+		jDocument.set(extrinsicObject);
+
+		return jDocument.get();
+		
+	}
+
+	/**
+	 * A helper method to convert a list of documents
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param documents
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONArray getDocuments(JaxrHandle jaxrHandle, List<RegistryObjectImpl> documents) throws Exception {
 	
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+
+		/*
+		 * Sort result by datetime of document
+		 */
+		DateCollector collector = new DateCollector();
+
+		for (RegistryObjectImpl document:documents) {
+
+			String objectType = dqm.getObjectType(document);
+			if (objectType.equals(EXTRINSIC_OBJECT) == false) continue;
+			
+			ExtrinsicObjectImpl extrinsicObject = (ExtrinsicObjectImpl)document;
+
+			JSONObject jDocument = getDocument(jaxrHandle, extrinsicObject);	
+			collector.put(dqm.getLastModified(extrinsicObject), jDocument);
+		
+		}
+		
+		return new JSONArray(collector.values());
+
+	}
+
+	/**
+	 * A helper method to convert an EvaluationObject
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param extrinsicObject
+	 * @return
+	 * @throws Exception
+	 */
 	public static JSONObject getEvaluation(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
-		// TODO
-		return null;
+
+		JsonEvaluation jEvaluation = new JsonEvaluation(jaxrHandle);
+		jEvaluation.set(extrinsicObject);
+
+		return jEvaluation.get();
+		
 	}
 
 	/**
@@ -101,9 +205,74 @@ public class DomainJsonProvider extends JsonProvider {
 
 	}
 
+	/**
+	 * A helper method to convert an ImageObject
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param extrinsicObject
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONObject getImage(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
+
+		JsonImage jImage = new JsonImage(jaxrHandle);
+		jImage.set(extrinsicObject);
+
+		return jImage.get();
+		
+	}
+
+	/**
+	 * A helper method to convert a list of images
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param images
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONArray getImages(JaxrHandle jaxrHandle, List<RegistryObjectImpl> images) throws Exception {
+	
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+
+		/*
+		 * Sort result by datetime of image
+		 */
+		DateCollector collector = new DateCollector();
+
+		for (RegistryObjectImpl image:images) {
+
+			String objectType = dqm.getObjectType(image);
+			if (objectType.equals(EXTRINSIC_OBJECT) == false) continue;
+			
+			ExtrinsicObjectImpl extrinsicObject = (ExtrinsicObjectImpl)image;
+
+			JSONObject jImage = getImage(jaxrHandle, extrinsicObject);	
+			collector.put(dqm.getLastModified(extrinsicObject), jImage);
+		
+		}
+		
+		return new JSONArray(collector.values());
+
+	}
+
+	/**
+	 * A helper method to convert a ProductObject
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param extrinsicObject
+	 * @return
+	 * @throws Exception
+	 */
 	public static JSONObject getProduct(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
-		// TODO
-		return null;
+
+		JsonProduct jProduct = new JsonProduct(jaxrHandle);
+		jProduct.set(extrinsicObject);
+
+		return jProduct.get();
+		
 	}
 	
 	/**
@@ -141,9 +310,21 @@ public class DomainJsonProvider extends JsonProvider {
 
 	}
 	
+	/**
+	 * A helper method to convert a ProductorObject
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
 	public static JSONObject getProductor(JaxrHandle jaxrHandle, ServiceImpl service) throws Exception {
-		// TODO
-		return null;
+
+		JsonProductor jProductor = new JsonProductor(jaxrHandle);
+		jProductor.set(service);
+
+		return jProductor.get();
 	}
 
 	/**
@@ -181,9 +362,22 @@ public class DomainJsonProvider extends JsonProvider {
 
 	}
 	
+	/**
+	 * A helper method to convert a ReasonerObject
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
 	public static JSONObject getReasoner(JaxrHandle jaxrHandle, ServiceImpl service) throws Exception {
-		// TODO
-		return null;
+
+		JsonReasoner jReasoner = new JsonReasoner(jaxrHandle);
+		jReasoner.set(service);
+
+		return jReasoner.get();
+
 	}
 	
 	/**
@@ -212,6 +406,58 @@ public class DomainJsonProvider extends JsonProvider {
 			ServiceImpl service = (ServiceImpl)reasoner;
 			
 			JSONObject jService = getReasoner(jaxrHandle, service);	
+			collector.put(jService.getString(JaxrConstants.RIM_NAME), jService);
+
+			
+		}
+
+		return new JSONArray(collector.values());
+		
+	}
+
+	/**
+	 * A helper method to convert a TransformatorObject
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param eo
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONObject getTransformator(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
+
+		JsonTransformator jTransformator = new JsonTransformator(jaxrHandle);
+		jTransformator.set(extrinsicObject);
+
+		return jTransformator.get();
+	}
+
+	/**
+	 * A helper method to convert a list of transformators
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param transformators
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONArray getTransformators(JaxrHandle jaxrHandle, List<RegistryObjectImpl> transformators) throws Exception {
+
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+		
+		/*
+		 * Sort result by name of transformator
+		 */
+		StringCollector collector = new StringCollector();
+		
+		for (RegistryObjectImpl transformator:transformators) {
+			
+			String objectType = dqm.getObjectType(transformator);
+			if (objectType.equals(EXTRINSIC_OBJECT) == false) continue;
+			
+			ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl)transformator;
+			
+			JSONObject jService = getTransformator(jaxrHandle, eo);	
 			collector.put(jService.getString(JaxrConstants.RIM_NAME), jService);
 
 			

@@ -20,6 +20,8 @@ package de.kp.ames.web.function.upload;
 
 import de.kp.ames.web.core.cache.CacheManager;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.dms.cache.DocumentCacheManager;
+import de.kp.ames.web.function.dms.cache.ImageCacheManager;
 import de.kp.ames.web.function.transform.cache.XslCacheManager;
 
 public class UploadFactory {
@@ -28,8 +30,14 @@ public class UploadFactory {
 	}
 	
 	public CacheManager getCacheManager(String type) throws Exception {
-		
-		if (type.equals(FncConstants.FNC_ID_Transformator)) {
+
+		if (type.equals(FncConstants.FNC_ID_Document)) {
+			return DocumentCacheManager.getInstance();
+			
+		} else if (type.equals(FncConstants.FNC_ID_Image)) {
+			return ImageCacheManager.getInstance();
+			
+		} else if (type.equals(FncConstants.FNC_ID_Transformator)) {
 			return XslCacheManager.getInstance();
 
 		} else {

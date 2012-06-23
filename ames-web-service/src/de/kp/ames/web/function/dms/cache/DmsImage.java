@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.transform.cache;
+package de.kp.ames.web.function.dms.cache;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,126 +18,130 @@ package de.kp.ames.web.function.transform.cache;
  *
  */
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 
 import de.kp.ames.web.core.cache.CacheEntry;
 import de.kp.ames.web.core.util.FileUtil;
 
-public class XslTransformator implements CacheEntry {
+public class DmsImage implements CacheEntry {
 
-	private InputStream transformator;
-
+	private BufferedImage image;
+	
 	private String key;
 	private String name;
 	private String mimetype;
 
 	/* 
-	 * A cached transformator may also be stored as a tempfile
+	 * A cached image may also be stored as a tempfile
 	 */
 	private String path;
-	
-	private byte[] bytes;
-	
+
 	/**
 	 * Constructor
 	 * 
-	 * @param transformator
+	 * @param image
 	 */
-	public XslTransformator(InputStream transformator) {
-		this.transformator = transformator;
+	public DmsImage(BufferedImage image) {
+		this.image = image;
 	}
-
+	
 	/**
 	 * Constructor
 	 * 
 	 * @param key
 	 * @param name
 	 * @param mimetype
-	 * @param bytes
+	 * @param image
 	 */
-	public XslTransformator(String key, String name, String mimetype, byte[]bytes) {
+	public DmsImage(String key, String name, String mimetype, BufferedImage image) {
 		
 		this.key      = key;
 		this.name     = name;
 		this.mimetype = mimetype;
 		
-		this.bytes = bytes;
+		this.image = image;
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param key
-	 * @param name
-	 * @param mimetype
-	 * @param transformator
-	 */
-	public XslTransformator(String key, String name, String mimetype, InputStream transformator) {
-		
-		this.key      = key;
-		this.name     = name;
-		this.mimetype = mimetype;
-		
-		this.transformator = transformator;
-	}
-
-	/**
-	 * @return
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getBytes()
 	 */
 	public byte[] getBytes() {
 
-		if (this.bytes == null) this.bytes = FileUtil.getByteArrayFromInputStream(transformator);
-		return this.bytes;
-	
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(this.image, "png", baos);
+
+			return baos.toByteArray();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+		return null;
+		
 	}
 
-	/**
-	 * @return
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getInputStream()
 	 */
 	public InputStream getInputStream() {
-		return this.transformator;
+		return null;
 	}
-	
-	/**
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getKey()
 	 */
 	public String getKey() {
-		return this.key;		
+		return this.key;
 	}
-	
-	/**
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getName()
 	 */
 	public String getName() {
 		return this.name;
 	}
-	
-	/**
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getMimetype()
 	 */
 	public String getMimetype() {
 		return this.mimetype;
 	}
-	
-	/**
-	 * @param path
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#setPath(java.lang.String)
 	 */
 	public void setPath(String path) {
-		this.path = path;
+		this.path = path;		
 	}
-	
-	/**
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getPath()
 	 */
 	public String getPath() {
 		return this.path;
 	}
 
-	/**
-	 * @return
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#asFile()
 	 */
 	public FileUtil asFile() {
 		return new FileUtil(getBytes(), getMimetype());
+	}
+	
+	/**
+	 * Retrieve a buffered image
+	 * 
+	 * @return
+	 */
+	public BufferedImage getImage() {	
+		return this.image;			
 	}
 
 }

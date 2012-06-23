@@ -18,10 +18,6 @@ package de.kp.ames.web.core.graphics;
  *
  */
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
@@ -61,7 +57,7 @@ public class GraphicsImpl extends ServiceImpl {
 					 * PNG response
 					 */
 					InputStream stream = ctx.getContext().getResourceAsStream("/WEB-INF/resources/" + image);
-					BufferedImage reflection = createReflection(ImageIO.read(stream));
+					BufferedImage reflection = GraphicsUtil.createReflection(ImageIO.read(stream));
 
 					sendImageResponse(reflection, ctx.getResponse());
 
@@ -74,65 +70,6 @@ public class GraphicsImpl extends ServiceImpl {
 			
 		}
 		
-	}
-
-	/**
-	 * @param image
-	 * @return
-	 * @throws Exception
-	 */
-	private BufferedImage createReflection(BufferedImage image) throws Exception {
-		
-		double hfact = 0.5;
-		
-		/* 
-		 * Dimension of original image (e.g. 96 x 96)
-		 */
-		int width  = image.getWidth(null);
-		int height = image.getHeight(null);
-		
-		/* 
-		 * Result is the final image including the reflection
-		 */
-		BufferedImage result = new BufferedImage(width, new Double(height*(1 + hfact)).intValue(), BufferedImage.TYPE_INT_ARGB);		
-		Graphics2D g = result.createGraphics();
-
-		/* 
-		 * Paint original image onto graphics
-		 */
-		g.drawImage(image, 0, 0, null);
-		
-		/* 
-		 * Paint mirrored image
-		 */
-		g.scale(1.0, -1.0);
-		g.drawImage(image, 0, -image.getHeight() * 2, null);
-		g.scale(1.0, -1.0);
-		
-		/* 
-		 * Move to mirror's origin
-		 */
-		g.translate(0, image.getHeight());
-		
-		/* 
-		 * Create gradient mask
-		 */
-		GradientPaint mask = new GradientPaint(0, 0, new Color(1f, 1f, 1f, 0.5f), 0, image.getHeight() / 2, new Color(1f, 1f, 1f, 0f));
-		g.setPaint(mask);
-
-	    /* 
-	     * Set alpha composite
-	     */
-		g.setComposite(AlphaComposite.DstIn);
-			
-		/* 
-		 * Paint the mask
-		 */
-		g.fillRect(0, 0, image.getWidth(), image.getHeight());
-		g.dispose();
-		
-		return result;
-
 	}
 
 }

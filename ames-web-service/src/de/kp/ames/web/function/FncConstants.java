@@ -48,7 +48,9 @@ public class FncConstants {
 	public static String FNC_ID_Contact        = FNC_ID + ":Contact";	
 	public static String FNC_ID_Community      = FNC_ID + ":Community";
 	public static String FNC_ID_Database       = FNC_ID + ":Database";
+	public static String FNC_ID_Document       = FNC_ID + ":Document";
 	public static String FNC_ID_Evaluation     = FNC_ID + ":Evaluation";
+	public static String FNC_ID_Image          = FNC_ID + ":Image";
 	public static String FNC_ID_Link           = FNC_ID + ":Link";
 	public static String FNC_ID_Namespace      = FNC_ID + ":Namespace";	
 	public static String FNC_ID_Product        = FNC_ID + ":Product";
@@ -107,7 +109,9 @@ public class FncConstants {
 	public static String AFFILIATION_PRE;
 	public static String CHAT_PRE;
 	public static String COMMUNITY_PRE;
+	public static String DOCUMENT_PRE;
 	public static String EVALUATION_PRE;
+	public static String IMAGE_PRE;
 	public static String LINK_PRE;
 	public static String MAIL_PRE;
 	public static String NAMESPACE_PRE;
@@ -194,7 +198,9 @@ public class FncConstants {
 		AFFILIATION_PRE   = basePrefix + ":affiliation";
 		CHAT_PRE          = basePrefix + ":chat";
 		COMMUNITY_PRE     = basePrefix + ":community";
+		DOCUMENT_PRE      = basePrefix + ":document";
 		EVALUATION_PRE    = basePrefix + ":evaluation";
+		IMAGE_PRE         = basePrefix + ":image";
 		LINK_PRE          = basePrefix + ":link";
 		MAIL_PRE          = basePrefix + ":mail";
 		NAMESPACE_PRE     = basePrefix + ":namespace";

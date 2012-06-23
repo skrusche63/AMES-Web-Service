@@ -18,18 +18,27 @@ package de.kp.ames.web.function.domain.model;
  *
  */
 
+import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 
-public class AccessorObject extends ServiceObject {
-	/**
-	 * Constructor
-	 * 
-	 * @param jaxrHandle
-	 * @param lcm
-	 */
-	public AccessorObject(JaxrHandle jaxrHandle, JaxrLCM lcm) {
+public class ImageObject extends BusinessObject {
+
+	public ImageObject(JaxrHandle jaxrHandle, JaxrLCM lcm) {
 		super(jaxrHandle, lcm);
+	}
+
+	/**
+	 * Create RegistryObject representation of ImageObject
+	 * 
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public RegistryObjectImpl create(String data) throws Exception {
+		// TODO
+		return null;
 	}
 
 }

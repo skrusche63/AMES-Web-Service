@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.transform.cache;
+package de.kp.ames.web.function.dms.cache;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -26,15 +26,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class XslCache {
+import de.kp.ames.web.core.cache.CacheEntry;
 
-	private Map<String, XslTransformator> cache = Collections.synchronizedMap(new LinkedHashMap<String, XslTransformator>());
+public class DocumentCache {
+
+	private Map<String, DmsDocument> cache = Collections.synchronizedMap(new LinkedHashMap<String, DmsDocument>());
 	private int MAX_CACHE_SIZE;
 	
 	/**
 	 * Constructor
 	 */
-	public XslCache() {
+	public DocumentCache() {
 		
 		/* 
 		 * Obtain the memory cache size
@@ -47,7 +49,6 @@ public class XslCache {
 		} catch(Exception e) {
 			MAX_CACHE_SIZE = 500;
 		}
-
 	}
 	
 	/**
@@ -61,9 +62,9 @@ public class XslCache {
 	 * @param key
 	 * @return
 	 */
-	public XslTransformator get(String key) {
+	public DmsDocument get(String key) {
 
-		XslTransformator retval = null;
+		DmsDocument retval = null;
 		
 		synchronized (cache) {
 			if (this.cache.containsKey(key)) {
@@ -83,18 +84,18 @@ public class XslCache {
 	/**
 	 * @return
 	 */
-	public List<XslTransformator> getAll() {
+	public List<CacheEntry> getAll() {
 
-		List<XslTransformator> list;
+		List<CacheEntry> list;
 
 		synchronized (cache) {
-			list = new LinkedList<XslTransformator>(this.cache.values());
+			list = new LinkedList<CacheEntry>(this.cache.values());
 		}
-		
+				
 		/* 
 		 * Relative position of the objects remains the same since
-		 * all objects are read. Therefore no need to update the positions
-		 * in the linked hash map 
+		 * all objects are read. Therefore no need to update the 
+		 * positions in the linked hash map 
 		 */
 		
 		return list;
@@ -113,18 +114,19 @@ public class XslCache {
 		return keys;
 		
 	}
-
+	
 	/**
 	 * @param key
 	 * @return
 	 */
 	public boolean hasKey(String key) {
-		
+
 		boolean retval = false;
+		
 		synchronized (cache) {
 			retval = this.cache.containsKey(key);
 		}
-	
+		
 		return retval;
 	
 	}
@@ -133,7 +135,7 @@ public class XslCache {
 	 * @param key
 	 * @param value
 	 */
-	public void put(String key, XslTransformator value) {
+	public void put(String key, DmsDocument value) {
 
 		if (!hasKey(key)) {
 

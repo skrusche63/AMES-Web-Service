@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.transform.cache;
+package de.kp.ames.web.function.dms.cache;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -23,28 +23,28 @@ import java.io.InputStream;
 import de.kp.ames.web.core.cache.CacheEntry;
 import de.kp.ames.web.core.util.FileUtil;
 
-public class XslTransformator implements CacheEntry {
+public class DmsDocument implements CacheEntry {
 
-	private InputStream transformator;
+	private InputStream document;
 
 	private String key;
 	private String name;
 	private String mimetype;
 
 	/* 
-	 * A cached transformator may also be stored as a tempfile
+	 * A cached document may also be stored as a tempfile
 	 */
 	private String path;
 	
 	private byte[] bytes;
-	
+
 	/**
 	 * Constructor
 	 * 
-	 * @param transformator
+	 * @param document
 	 */
-	public XslTransformator(InputStream transformator) {
-		this.transformator = transformator;
+	public DmsDocument(InputStream document) {
+		this.document = document;
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class XslTransformator implements CacheEntry {
 	 * @param mimetype
 	 * @param bytes
 	 */
-	public XslTransformator(String key, String name, String mimetype, byte[]bytes) {
+	public DmsDocument(String key, String name, String mimetype, byte[]bytes) {
 		
 		this.key      = key;
 		this.name     = name;
@@ -65,76 +65,74 @@ public class XslTransformator implements CacheEntry {
 	}
 
 	/**
-	 * Constructor
-	 * 
 	 * @param key
 	 * @param name
 	 * @param mimetype
-	 * @param transformator
+	 * @param document
 	 */
-	public XslTransformator(String key, String name, String mimetype, InputStream transformator) {
+	public DmsDocument(String key, String name, String mimetype, InputStream document) {
 		
 		this.key      = key;
 		this.name     = name;
 		this.mimetype = mimetype;
 		
-		this.transformator = transformator;
+		this.document = document;
 	}
 
-	/**
-	 * @return
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getBytes()
 	 */
 	public byte[] getBytes() {
 
-		if (this.bytes == null) this.bytes = FileUtil.getByteArrayFromInputStream(transformator);
+		if (this.bytes == null) this.bytes = FileUtil.getByteArrayFromInputStream(document);
 		return this.bytes;
 	
 	}
 
-	/**
-	 * @return
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getInputStream()
 	 */
 	public InputStream getInputStream() {
-		return this.transformator;
+		return this.document;
 	}
-	
-	/**
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getKey()
 	 */
 	public String getKey() {
 		return this.key;		
 	}
-	
-	/**
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getName()
 	 */
 	public String getName() {
 		return this.name;
 	}
-	
-	/**
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getMimetype()
 	 */
 	public String getMimetype() {
 		return this.mimetype;
 	}
-	
-	/**
-	 * @param path
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#setPath(java.lang.String)
 	 */
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
-	/**
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#getPath()
 	 */
 	public String getPath() {
 		return this.path;
 	}
 
-	/**
-	 * @return
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.cache.CacheEntry#asFile()
 	 */
 	public FileUtil asFile() {
 		return new FileUtil(getBytes(), getMimetype());
