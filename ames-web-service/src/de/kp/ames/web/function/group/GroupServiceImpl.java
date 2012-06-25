@@ -77,7 +77,7 @@ public class GroupServiceImpl extends BusinessImpl {
 			/*
 			 * Call get method
 			 */
-			String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+			String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
 			String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
 
 			if ((format == null) || (type == null)) {
@@ -153,16 +153,16 @@ public class GroupServiceImpl extends BusinessImpl {
 				} else {
 
 					/* 
-					 * 'source' is an optional parameter that refers to an already
+					 * 'item' is an optional parameter that refers to an already
 					 * existing registry object referenced by this submission
 					 */
-					String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);	
+					String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);	
 					
 					try {
 						/*
 						 * JSON response
 						 */
-						String content = submit(type, source, data);
+						String content = submit(type, item, data);
 						sendJSONResponse(content, ctx.getResponse());
 
 					} catch (Exception e) {

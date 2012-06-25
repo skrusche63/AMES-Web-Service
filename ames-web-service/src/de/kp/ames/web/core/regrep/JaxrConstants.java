@@ -148,6 +148,7 @@ public class JaxrConstants {
 	public static String SLOT_LONGITUDE = "Longitude";
 	public static String SLOT_KEYPASS   = "Keypass";
 	public static String SLOT_MARKUP    = "Markup";
+	public static String SLOT_PORT      = "Port";
 	public static String SLOT_PROTOCOL  = "Protocol";
 	public static String SLOT_RULESET   = "Ruleset";
 	public static String SLOT_SEQNO     = "SeqNo";

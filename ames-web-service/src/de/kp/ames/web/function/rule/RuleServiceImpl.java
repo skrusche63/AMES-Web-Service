@@ -46,7 +46,7 @@ public class RuleServiceImpl extends BusinessImpl {
 			/*
 			 * Call apply method
 			 */
-			String source  = this.method.getAttribute(FncConstants.ATTR_SOURCE);
+			String source  = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
 			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);			
 
 			if ((source == null) || (service == null)) {
@@ -78,7 +78,7 @@ public class RuleServiceImpl extends BusinessImpl {
 
 		} else if (methodName.equals(MethodConstants.METH_GET)) {
 
-			String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+			String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
 			String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 
 			if ((format == null) || (type == null)) {

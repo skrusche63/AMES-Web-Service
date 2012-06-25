@@ -70,7 +70,6 @@ public class GlobalConstants {
 	public static String ATTR_ALIAS   	= "ames.attr.alias";
 	public static String ATTR_COMMUNITY = "ames.attr.community";
 	public static String ATTR_ENDPOINT  = "ames.attr.endpoint";
-	public static String ATTR_FORMAT    = "ames.attr.format";
 	public static String ATTR_IMAGE     = "ames.attr.image";
 	public static String ATTR_KEYPASS 	= "ames.attr.keypass";
 	public static String ATTR_LIMIT   	= "ames.attr.limit";
@@ -79,7 +78,6 @@ public class GlobalConstants {
 	public static String ATTR_RECIPIENT = "ames.attr.recipient";
 	public static String ATTR_REQUEST 	= "ames.attr.request";
 	public static String ATTR_SERVICE 	= "ames.attr.service";
-	public static String ATTR_SOURCE 	= "ames.attr.source";
 	public static String ATTR_START   	= "ames.attr.start";
 	public static String ATTR_TARGET    = "ames.attr.target";
 	public static String ATTR_URI     	= "ames.attr.uri";

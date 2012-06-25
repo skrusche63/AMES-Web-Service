@@ -42,7 +42,7 @@ public class RoleServiceImpl extends BusinessImpl {
 			/*
 			 * Call get method
 			 */
-			String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+			String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
 			String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
 
 			if ((format == null) || (type == null)) {
@@ -56,7 +56,7 @@ public class RoleServiceImpl extends BusinessImpl {
 					 * Retrives all the namespaces a certain community 
 					 * or user is responsible for
 					 */
-					String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);
+					String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
 					if (source == null) {
 						this.sendNotImplemented(ctx);
 						
@@ -81,7 +81,7 @@ public class RoleServiceImpl extends BusinessImpl {
 					 * A responsibility is actually equal to a certain namespace,
 					 * as a specific community or user be responsible (source) for
 					 */
-					String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);
+					String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
 					if (source == null) {
 						this.sendNotImplemented(ctx);
 						

@@ -30,7 +30,6 @@ import de.kp.ames.web.core.cache.CacheManager;
 import de.kp.ames.web.core.malware.MalwareScanner;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -144,7 +143,7 @@ public class UploadServiceImpl extends BusinessImpl {
 	 */
 	public void doGetRequest(RequestContext ctx) {
 
-		String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
 		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 		
 		if ((format == null) || (type == null)) {

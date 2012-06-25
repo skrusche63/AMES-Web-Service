@@ -41,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.GlobalConstants;
+import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.util.FileUtil;
 
 public class ImapConsumer {
@@ -53,8 +54,97 @@ public class ImapConsumer {
 	 */
 	private Store store;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param jAccessor
+	 */
+	public ImapConsumer(JSONObject jAccessor) {
+		
+		try {
+			
+			/*
+			 * Access parameters
+			 */
+			String host = jAccessor.getString(JaxrConstants.SLOT_ENDPOINT);
+			String port = jAccessor.getString(JaxrConstants.SLOT_PORT);
+			
+			/*
+			 * Credentials
+			 */
+			String alias   = jAccessor.getString(JaxrConstants.SLOT_ALIAS);
+			String keypass = jAccessor.getString(JaxrConstants.SLOT_KEYPASS);
+
+			
+			/*
+			 * Authenticator & Session
+			 */
+			Session session = createSession(host, port, alias, keypass);
+			store = session.getStore(ImapConstants.DEFAULT_PROTOCOL_VALUE); 
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+	}
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param host
+	 * @param port
+	 * @param alias
+	 * @param keypass
+	 */
 	public ImapConsumer(String host, String port, final String alias, final String keypass) {
 		
+		/*
+		 * Authenticator & Session
+		 */
+		Session session = createSession(host, port, alias, keypass);
+	
+		try {
+			store = session.getStore(ImapConstants.DEFAULT_PROTOCOL_VALUE); 
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+
+	}
+	
+	/**
+	 * @param host
+	 * @param port
+	 * @param alias
+	 * @param keypass
+	 * @return
+	 */
+	private Session createSession(String host, String port, final String alias, final String keypass) {
+
+		Properties props = setProperties(host, port);
+		
+		/*
+		 * Authenticator & Session
+		 */
+		Session session = Session.getInstance(props, new Authenticator() { 
+	          @Override protected PasswordAuthentication getPasswordAuthentication() { 
+	            return new PasswordAuthentication(alias, keypass); 
+	          } 
+		});
+		
+		return session;
+		
+	}
+	
+	/**
+	 * @param host
+	 * @param port
+	 * @return
+	 */
+	private Properties setProperties(String host, String port) {
+
 		Properties props = new Properties();
 		
 		/*
@@ -72,24 +162,9 @@ public class ImapConsumer {
 		 * Protocol
 		 */
 		props.put(ImapConstants.IMAP_PROTOCOL, ImapConstants.DEFAULT_PROTOCOL_VALUE);
-		
-		/*
-		 * Authenticator & Session
-		 */
-		Session session = Session.getInstance(props, new Authenticator() { 
-	          @Override protected PasswordAuthentication getPasswordAuthentication() { 
-	            return new PasswordAuthentication(alias, keypass ); 
-	          } 
-		});
-	
-		try {
-			store = session.getStore(ImapConstants.DEFAULT_PROTOCOL_VALUE); 
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-		}
 
+		return props;
+		
 	}
 	
 	/**

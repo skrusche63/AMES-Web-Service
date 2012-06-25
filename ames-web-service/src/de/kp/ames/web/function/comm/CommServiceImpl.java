@@ -18,10 +18,13 @@ package de.kp.ames.web.function.comm;
  *
  */
 
+import org.json.JSONArray;
+
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class CommServiceImpl extends BusinessImpl {
@@ -36,7 +39,13 @@ public class CommServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(MethodConstants.METH_SUBMIT)) {
+		if (methodName.equals(MethodConstants.METH_GET)) {
+			/*
+			 * Call get method
+			 */
+			doGetRequest(ctx);
+			
+		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {
 			/*
 			 * Call submit method
 			 */
@@ -46,6 +55,52 @@ public class CommServiceImpl extends BusinessImpl {
 		
 	}
 
+	public void doGetRequest(RequestContext ctx) {
+	
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+		
+		if ((format == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			/*
+			 * This is an optional parameter that determines 
+			 * a certain registry object
+			 */
+			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+			
+			/*
+			 * Evaluate the format parameter to determine the 
+			 * format for the http response 
+			 */
+				
+			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
+				/*
+				 * Optional parameters that may be used to describe
+				 * a Grid-oriented response
+				 */
+				String start = this.method.getAttribute(FncConstants.ATTR_START);
+				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
+
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = getJSONResponse(type, item, start, limit, format);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+				
+			}
+
+		}
+
+	}
+	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
 	 */
@@ -74,7 +129,59 @@ public class CommServiceImpl extends BusinessImpl {
 		}
 		
 	}
-	
+
+	private String getJSONResponse(String type, String item, String start, String limit, String format) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+
+		if (type.equals(FncConstants.FNC_ID_Chat)) {
+
+			CommDQM dqm = new CommDQM(jaxrHandle);
+			JSONArray jArray = dqm.getChatMessages(item);
+			
+			/*
+			 * Render result
+			 */
+			if ((start == null) || (limit == null)) {
+				content = render(jArray, format);
+
+			} else {
+				content = render(jArray, start, limit, format);
+			}
+		
+		} else if (type.equals(FncConstants.FNC_ID_Mail)) {
+
+			CommDQM dqm = new CommDQM(jaxrHandle);
+			JSONArray jArray = dqm.getMailMessages(item);
+			
+			/*
+			 * Render result
+			 */
+			if ((start == null) || (limit == null)) {
+				content = render(jArray, format);
+
+			} else {
+				content = render(jArray, start, limit, format);
+			}
+			
+		} else {
+			throw new Exception("[CommServiceImpl] Information type <" + type + "> is not supported");
+			
+		}
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+		
+	}
+
 	/**
 	 * A helper method to submit a chat or mail message
 	 * 

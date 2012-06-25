@@ -40,7 +40,7 @@ public class MapServiceImpl extends BusinessImpl {
 			/*
 			 * Call nodes method
 			 */
-			String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);			
+			String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);			
 			if (source == null) {
 				this.sendNotImplemented(ctx);
 
@@ -64,7 +64,7 @@ public class MapServiceImpl extends BusinessImpl {
 			/*
 			 * Call edges method
 			 */
-			String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);			
+			String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);			
 			if (source == null) {
 				this.sendNotImplemented(ctx);
 

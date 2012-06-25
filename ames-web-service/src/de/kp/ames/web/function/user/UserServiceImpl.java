@@ -22,7 +22,6 @@ import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -42,7 +41,7 @@ public class UserServiceImpl extends BusinessImpl {
 			/*
 			 * Call get method
 			 */
-			String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+			String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
 	
 			if (format == null) {
 				this.sendNotImplemented(ctx);
@@ -51,7 +50,7 @@ public class UserServiceImpl extends BusinessImpl {
 				/* 
 				 * Retrieve all users that are affiliated to a certain community (source)
 				 */
-				String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);
+				String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
 				if (source == null) {
 					this.sendNotImplemented(ctx);
 					

@@ -21,7 +21,9 @@ package de.kp.ames.web.function.access;
 import java.util.List;
 
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.ServiceImpl;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
@@ -34,6 +36,25 @@ public class AccessDQM extends JaxrDQM {
 		super(jaxrHandle);
 	}
 
+	/**
+	 * Retrieve single accessor 
+	 * 
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	public JSONObject getAccessor(String item) throws Exception {
+		
+		/*
+		 * Determine accessor
+		 */
+		ServiceImpl accessor = (ServiceImpl)getRegistryObjectById(item);
+		if (accessor == null) throw new Exception("[AccessDQM] Accessor with id <" + item + "> does not exist.");
+		
+		return DomainJsonProvider.getAccessor(jaxrHandle, accessor);
+		
+	}
+	
 	/**
 	 * Get either single accessor or all
 	 * registered accessors
@@ -52,7 +73,7 @@ public class AccessDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getProductors(jaxrHandle, accessors);
+		return DomainJsonProvider.getAccessors(jaxrHandle, accessors);
 
 	}
 

@@ -101,13 +101,11 @@ public class FncConstants {
 	public static String ATTR_AFFILIATE;
 	public static String ATTR_COMMUNITY;
 	public static String ATTR_ENDPOINT;
-	public static String ATTR_FORMAT;
 	public static String ATTR_KEYPASS;
 	public static String ATTR_LIMIT;
 	public static String ATTR_PARENT;
 	public static String ATTR_RECIPIENT;
 	public static String ATTR_SERVICE;
-	public static String ATTR_SOURCE;
 	public static String ATTR_START;
 	public static String ATTR_TARGET;
 	public static String ATTR_URI;
@@ -156,13 +154,11 @@ public class FncConstants {
 		ATTR_AFFILIATE = bundle.getString(GlobalConstants.ATTR_AFFILIATE);
 		ATTR_COMMUNITY = bundle.getString(GlobalConstants.ATTR_COMMUNITY);
 		ATTR_ENDPOINT  = bundle.getString(GlobalConstants.ATTR_ENDPOINT);
-		ATTR_FORMAT    = bundle.getString(GlobalConstants.ATTR_FORMAT);
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
 		ATTR_LIMIT     = bundle.getString(GlobalConstants.ATTR_LIMIT);		
 		ATTR_PARENT    = bundle.getString(GlobalConstants.ATTR_PARENT);
 		ATTR_RECIPIENT = bundle.getString(GlobalConstants.ATTR_RECIPIENT);
 		ATTR_SERVICE   = bundle.getString(GlobalConstants.ATTR_SERVICE);
-		ATTR_SOURCE    = bundle.getString(GlobalConstants.ATTR_SOURCE);
 		ATTR_START     = bundle.getString(GlobalConstants.ATTR_START);
 		ATTR_TARGET    = bundle.getString(GlobalConstants.ATTR_TARGET);
 		ATTR_URI       = bundle.getString(GlobalConstants.ATTR_URI);

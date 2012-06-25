@@ -67,7 +67,7 @@ public class RssServiceImpl extends ServiceImpl {
 	 */
 	public void doGetRequest(RequestContext ctx) {
 
-		String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);
 		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);
 		
 		if ((format == null) || (type == null)) {

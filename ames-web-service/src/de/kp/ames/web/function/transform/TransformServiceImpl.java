@@ -52,7 +52,7 @@ public class TransformServiceImpl extends BusinessImpl {
 			 */
 			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);			
 
-			String source = this.method.getAttribute(FncConstants.ATTR_SOURCE);
+			String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
 			String target = this.method.getAttribute(FncConstants.ATTR_TARGET);
 
 			if ((source == null) || (target == null) || (service == null)) {
@@ -95,7 +95,7 @@ public class TransformServiceImpl extends BusinessImpl {
 	 */
 	public void doGetRequest(RequestContext ctx) {
 
-		String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
 		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 		
 		if ((format == null) || (type == null)) {

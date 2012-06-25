@@ -19,10 +19,13 @@ package de.kp.ames.web.function.access;
  */
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
+import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.access.imap.ImapConsumer;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
@@ -60,7 +63,7 @@ public class AccessServiceImpl extends BusinessImpl {
 	 */
 	public void doGetRequest(RequestContext ctx) {
 
-		String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
 		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 		
 		if ((format == null) || (type == null)) {
@@ -79,8 +82,23 @@ public class AccessServiceImpl extends BusinessImpl {
 			 * format for the http response 
 			 */
 			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_File)) {
+
+				String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+				if (source == null) {
+					this.sendNotImplemented(ctx);
 				
-				// TODO
+				} else {
+					
+					try {
+						FileUtil file = getFileResponse(type, item, source);
+						sendFileResponse(file, ctx.getResponse());
+	
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+	
+					}
+					
+				}
 				
 			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 				/*
@@ -104,6 +122,43 @@ public class AccessServiceImpl extends BusinessImpl {
 		}
 
 	}	
+	
+	/**
+	 * Retrieve a file from an external data source
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 */
+	private FileUtil getFileResponse(String type, String item, String source) throws Exception {
+
+		FileUtil file = null;
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+
+		AccessDQM dqm = new AccessDQM(jaxrHandle);
+		JSONObject jAccessor = dqm.getAccessor(item);
+		
+		if (type.equals(FncConstants.FNC_ID_Mail)) {
+			
+			/*
+			 * Retrieve a certain mail attachment
+			 * from an external IMAP server
+			 */
+			ImapConsumer consumer = new ImapConsumer(jAccessor);
+			file = consumer.getAttachment(Integer.parseInt(source));
+			
+		}
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return file;
+
+	}
 	
 	/**
 	 * Retrieve access specific information objects either

@@ -34,9 +34,11 @@ import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.function.domain.model.JsonAccessor;
+import de.kp.ames.web.function.domain.model.JsonChat;
 import de.kp.ames.web.function.domain.model.JsonDocument;
 import de.kp.ames.web.function.domain.model.JsonEvaluation;
 import de.kp.ames.web.function.domain.model.JsonImage;
+import de.kp.ames.web.function.domain.model.JsonMail;
 import de.kp.ames.web.function.domain.model.JsonProduct;
 import de.kp.ames.web.function.domain.model.JsonProductor;
 import de.kp.ames.web.function.domain.model.JsonReasoner;
@@ -98,6 +100,58 @@ public class DomainJsonProvider extends JsonProvider {
 
 		return new JSONArray(collector.values());
 		
+	}
+
+	/**
+	 * A helper method to convert a Chat Message
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param extrinsicObject
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONObject getChatMessage(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
+
+		JsonChat jMessage = new JsonChat(jaxrHandle);
+		jMessage.set(extrinsicObject);
+
+		return jMessage.get();
+		
+	}
+
+	/**
+	 * A helper method to convert a list of chat
+	 * messages into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param messages
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONArray getChatMessages(JaxrHandle jaxrHandle, List<RegistryObjectImpl> messages) throws Exception {
+		
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+
+		/*
+		 * Sort result by datetime of message
+		 */
+		DateCollector collector = new DateCollector();
+
+		for (RegistryObjectImpl message:messages) {
+
+			String objectType = dqm.getObjectType(message);
+			if (objectType.equals(EXTRINSIC_OBJECT) == false) continue;
+			
+			ExtrinsicObjectImpl extrinsicObject = (ExtrinsicObjectImpl)message;
+
+			JSONObject jChat = getChatMessage(jaxrHandle, extrinsicObject);	
+			collector.put(dqm.getLastModified(extrinsicObject), jChat);
+		
+		}
+		
+		return new JSONArray(collector.values());
+
 	}
 
 	/**
@@ -257,6 +311,57 @@ public class DomainJsonProvider extends JsonProvider {
 
 	}
 
+	/**
+	 * A helper method to convert a Mail Message
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param extrinsicObject
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONObject getMailMessage(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
+
+		JsonMail jMessage = new JsonMail(jaxrHandle);
+		jMessage.set(extrinsicObject);
+
+		return jMessage.get();
+		
+	}
+
+	/**
+	 * A helper method to convert a list of mail
+	 * messages into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param messages
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONArray getMailMessages(JaxrHandle jaxrHandle, List<RegistryObjectImpl> messages) throws Exception {
+		
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+
+		/*
+		 * Sort result by datetime of message
+		 */
+		DateCollector collector = new DateCollector();
+
+		for (RegistryObjectImpl message:messages) {
+
+			String objectType = dqm.getObjectType(message);
+			if (objectType.equals(EXTRINSIC_OBJECT) == false) continue;
+			
+			ExtrinsicObjectImpl extrinsicObject = (ExtrinsicObjectImpl)message;
+
+			JSONObject jMail = getMailMessage(jaxrHandle, extrinsicObject);	
+			collector.put(dqm.getLastModified(extrinsicObject), jMail);
+		
+		}
+		
+		return new JSONArray(collector.values());
+
+	}
 	/**
 	 * A helper method to convert a ProductObject
 	 * into a JSON representation
