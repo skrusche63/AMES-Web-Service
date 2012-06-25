@@ -43,6 +43,8 @@ public interface Service {
 	 */
 	public void doApplyRequest(RequestContext ctx);
 
+	public void doDownloadRequest(RequestContext ctx);
+	
 	/**
 	 * The main method to process a Http request that
 	 * refers to a GET method

@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import de.kp.ames.web.core.render.GuiFactory;
 import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.shared.FormatConstants;
 
 public class BusinessImpl extends ServiceImpl {
 
@@ -45,19 +46,19 @@ public class BusinessImpl extends ServiceImpl {
 	 */
 	protected String render(JSONArray jArray, String format) throws Exception {
 
-		if (format.equals(FncConstants.FNC_FORMAT_ID_Grid)) {
+		if (format.equals(FormatConstants.FNC_FORMAT_ID_Grid)) {
 			/*
 			 * Render JSONArray as a GUI
 			 */
 			return renderer.createGrid(jArray);
 
-		} else if (format.equals(FncConstants.FNC_FORMAT_ID_Object)) {
+		} else if (format.equals(FormatConstants.FNC_FORMAT_ID_Object)) {
 			/*
 			 * Render JSONArray as a single JSON object
 			 */
 			return renderer.createObject(jArray);
 
-		} else if (format.equals(FncConstants.FNC_FORMAT_ID_Tree)) {
+		} else if (format.equals(FormatConstants.FNC_FORMAT_ID_Tree)) {
 			/*
 			 * Render JSONArray as a Tree
 			 */
@@ -82,7 +83,7 @@ public class BusinessImpl extends ServiceImpl {
 	 */
 	protected String render(JSONArray jArray, String start, String limit, String format) throws Exception {
 
-		if (format.equals(FncConstants.FNC_FORMAT_ID_Grid)) {
+		if (format.equals(FormatConstants.FNC_FORMAT_ID_Grid)) {
 			return renderer.createGrid(jArray, start, limit);
 			
 		} else {

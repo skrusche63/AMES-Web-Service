@@ -18,12 +18,20 @@ package de.kp.ames.web.function.dms;
  *
  */
 
+import java.awt.image.BufferedImage;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
+import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.office.OfficeConverter;
+import de.kp.ames.web.function.office.OfficeFactory;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class DmsServiceImpl extends BusinessImpl {
@@ -41,7 +49,13 @@ public class DmsServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(MethodConstants.METH_GET)) {
+		if (methodName.equals(MethodConstants.METH_DOWNLOAD)) {
+			/*
+			 * Call download method
+			 */
+			doDownloadRequest(ctx);
+			
+		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
 			 */
@@ -58,6 +72,36 @@ public class DmsServiceImpl extends BusinessImpl {
 	}
 
 	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDownloadRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDownloadRequest(RequestContext ctx) {
+		/*
+		 * This is an optional parameter that determines 
+		 * a certain registry object
+		 */
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+		try {
+			/*
+			 * File response
+			 */
+			FileUtil file = getFileResponse(item);			
+
+			HttpServletResponse response = ctx.getResponse();
+			response.setHeader("Content-disposition", "attachment; filename=" + file.getFilename());
+			
+			sendFileResponse(file, response);			
+			
+		} catch (Exception e) {
+			this.sendBadRequest(ctx, e);
+			
+		}
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doGetRequest(RequestContext ctx) {
@@ -73,9 +117,45 @@ public class DmsServiceImpl extends BusinessImpl {
 			 * This is an optional parameter that determines 
 			 * a certain registry object
 			 */
-			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
+			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 
-			if (format.startsWith(FncConstants.FNC_FORMAT_ID_Json)) {
+			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_File)) {
+
+				try {
+					/*
+					 * File response
+					 */
+					FileUtil file = getFileResponse(item);
+
+					/*
+					 * Retrieve file in PDF format
+					 */
+					OfficeFactory factory = new OfficeFactory(jaxrHandle, file);
+					OfficeConverter converter = factory.getOfficeConverter();
+					
+					file = converter.convert();
+					sendFileResponse(file, ctx.getResponse());
+					
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+					
+				}
+								
+			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Image)) {
+
+				try {
+					/*
+					 * Image response
+					 */
+					BufferedImage image = getImageResponse(item);
+					sendImageResponse(image, ctx.getResponse());
+					
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+					
+				}
+				
+			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 				/*
 				 * Optional parameters that may be used to describe
 				 * a Grid-oriented response
@@ -131,6 +211,60 @@ public class DmsServiceImpl extends BusinessImpl {
 	}
 
 	/**
+	 * Get a single file
+	 * 
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private FileUtil getFileResponse(String item) throws Exception {
+
+		FileUtil file = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+
+		DmsDQM dqm = new DmsDQM(jaxrHandle);
+		file = dqm.getDocument(item);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return file;
+	
+	}
+	
+	/**
+	 * Get a single image
+	 * 
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private BufferedImage getImageResponse(String item) throws Exception {
+
+		BufferedImage image = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+
+		DmsDQM dqm = new DmsDQM(jaxrHandle);
+		image = dqm.getImage(item);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return image;
+
+	}
+
+	/**
 	 * Get DMS specific information objects
 	 * 
 	 * @param type
@@ -181,7 +315,7 @@ public class DmsServiceImpl extends BusinessImpl {
 			}
 			
 		} else {
-			throw new Exception("[TransformServiceImpl] Information type <" + type + "> is not supported");
+			throw new Exception("[DmsServiceImpl] Information type <" + type + "> is not supported");
 			
 		}
 		

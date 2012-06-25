@@ -28,6 +28,7 @@ import de.kp.ames.web.core.util.BaseParam;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class TransformServiceImpl extends BusinessImpl {
@@ -105,9 +106,9 @@ public class TransformServiceImpl extends BusinessImpl {
 			 * This is an optional parameter that determines 
 			 * a certain registry object
 			 */
-			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
+			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 
-			if (format.startsWith(FncConstants.FNC_FORMAT_ID_Json)) {
+			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 				/*
 				 * Optional parameters that may be used to describe
 				 * a Grid-oriented response

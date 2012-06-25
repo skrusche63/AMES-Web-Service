@@ -62,27 +62,6 @@ public class FncConstants {
 	public static String FNC_ID_User           = FNC_ID + ":User";
 	
 	/*
-	 * Format Classification Nodes
-	 */
-	public static String FNC_ID_Format = FNC_ID + ":Format";
-
-	public static String FNC_FORMAT_ID_File = FNC_ID_Format + ":File";
-	public static String FNC_FORMAT_ID_Html = FNC_ID_Format + ":Html";
-
-	// Classifcation Node for all JSON based response formats
-	public static String FNC_FORMAT_ID_Json = FNC_ID_Format + ":Json";
-
-	public static String FNC_FORMAT_ID_Grid   = FNC_FORMAT_ID_Json + ":Grid";
-	public static String FNC_FORMAT_ID_Object = FNC_FORMAT_ID_Json + ":Object";
-	public static String FNC_FORMAT_ID_Tree   = FNC_FORMAT_ID_Json + ":Tree";
-
-	// Classification Node for all RSS based response formats
-	public static String FNC_FORMAT_ID_Rss = FNC_ID_Format + ":Rss";
-	
-	public static String FNC_FORMAT_ID_Text = FNC_ID_Format + ":Text";
-	public static String FNC_FORMAT_ID_XML  = FNC_ID_Format + ":Xml";
-
-	/*
 	 * Symbol Classification Nodes
 	 */
 	public static String FNC_ID_Symbol = FNC_ID + ":Symbol";
@@ -123,7 +102,6 @@ public class FncConstants {
 	public static String ATTR_COMMUNITY;
 	public static String ATTR_ENDPOINT;
 	public static String ATTR_FORMAT;
-	public static String ATTR_ITEM;
 	public static String ATTR_KEYPASS;
 	public static String ATTR_LIMIT;
 	public static String ATTR_PARENT;
@@ -179,7 +157,6 @@ public class FncConstants {
 		ATTR_COMMUNITY = bundle.getString(GlobalConstants.ATTR_COMMUNITY);
 		ATTR_ENDPOINT  = bundle.getString(GlobalConstants.ATTR_ENDPOINT);
 		ATTR_FORMAT    = bundle.getString(GlobalConstants.ATTR_FORMAT);
-		ATTR_ITEM      = bundle.getString(GlobalConstants.ATTR_ITEM);
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
 		ATTR_LIMIT     = bundle.getString(GlobalConstants.ATTR_LIMIT);		
 		ATTR_PARENT    = bundle.getString(GlobalConstants.ATTR_PARENT);

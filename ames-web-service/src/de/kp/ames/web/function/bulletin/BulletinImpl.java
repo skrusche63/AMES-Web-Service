@@ -26,6 +26,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class BulletinImpl extends BusinessImpl {
@@ -153,7 +154,7 @@ public class BulletinImpl extends BusinessImpl {
 		/*
 		 * Render result
 		 */
-		String format = FncConstants.FNC_FORMAT_ID_Grid;
+		String format = FormatConstants.FNC_FORMAT_ID_Grid;
 		content = render(jArray, start, limit, format);
 		
 		/*

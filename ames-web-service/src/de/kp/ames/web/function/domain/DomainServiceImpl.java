@@ -44,7 +44,7 @@ public class DomainServiceImpl extends BusinessImpl {
 			/*
 			 * Call delete method
 			 */
-			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
+			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 
 			if ((item == null) || (type == null)) {
@@ -82,7 +82,7 @@ public class DomainServiceImpl extends BusinessImpl {
 				/*
 				 * Optional reference to existing registry object
 				 */
-				String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
+				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 				
 				/*
 				 * Reference to registry package that manages registry objects

@@ -89,7 +89,7 @@ public class RuleServiceImpl extends BusinessImpl {
 				/*
 				 * Reference to single object (Format: Object)
 				 */
-				String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
+				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 				
 				/*
 				 * Format: Grid

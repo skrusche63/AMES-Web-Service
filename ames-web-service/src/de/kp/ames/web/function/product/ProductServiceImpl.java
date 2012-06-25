@@ -21,6 +21,8 @@ package de.kp.ames.web.function.product;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
@@ -33,6 +35,7 @@ import de.kp.ames.web.function.office.OfficeConverter;
 import de.kp.ames.web.function.office.OfficeFactory;
 import de.kp.ames.web.function.transform.XslProcessor;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class ProductServiceImpl extends BusinessImpl {
@@ -52,7 +55,13 @@ public class ProductServiceImpl extends BusinessImpl {
 			 * Call apply method
 			 */
 			doApplyRequest(ctx);
-			
+
+		} else if (methodName.equals(MethodConstants.METH_DOWNLOAD)) {
+			/*
+			 * Call download method
+			 */
+			doDownloadRequest(ctx);
+
 		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
@@ -107,6 +116,32 @@ public class ProductServiceImpl extends BusinessImpl {
 	}
 	
 	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDownloadRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDownloadRequest(RequestContext ctx) {
+		/*
+		 * This is an optional parameter that determines 
+		 * a certain registry object
+		 */
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+		try {
+			/*
+			 * File response
+			 */
+			FileUtil file = getFileResponse(item);			
+
+			HttpServletResponse response = ctx.getResponse();
+			response.setHeader("Content-disposition", "attachment; filename=" + file.getFilename());
+			
+			sendFileResponse(file, response);			
+			
+		} catch (Exception e) {
+			this.sendBadRequest(ctx, e);
+			
+		}
+		
+	}	
+	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doGetRequest(RequestContext ctx) {
@@ -122,13 +157,13 @@ public class ProductServiceImpl extends BusinessImpl {
 			 * This is an optional parameter that determines 
 			 * a certain registry object
 			 */
-			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);
+			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 			
 			/*
 			 * Evaluate the format parameter to determine the 
 			 * format for the http response 
 			 */
-			if (format.startsWith(FncConstants.FNC_FORMAT_ID_File)) {				
+			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_File)) {				
 				/*
 				 * For this request, the respective 'item' 
 				 * parameter is mandatory
@@ -152,7 +187,7 @@ public class ProductServiceImpl extends BusinessImpl {
 					
 				}
 				
-			} else if (format.startsWith(FncConstants.FNC_FORMAT_ID_Json)) {
+			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 				/*
 				 * Optional parameters that may be used to describe
 				 * a Grid-oriented response

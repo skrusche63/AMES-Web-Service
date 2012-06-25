@@ -18,14 +18,26 @@ package de.kp.ames.web.function.dms;
  *
  */
 
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.activation.DataHandler;
+import javax.imageio.ImageIO;
+
+import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONArray;
 
+import de.kp.ames.web.core.graphics.GraphicsUtil;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
+import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.dms.cache.DmsDocument;
+import de.kp.ames.web.function.dms.cache.DmsImage;
+import de.kp.ames.web.function.dms.cache.DocumentCacheManager;
+import de.kp.ames.web.function.dms.cache.ImageCacheManager;
 import de.kp.ames.web.function.domain.DomainJsonProvider;
 
 public class DmsDQM extends JaxrDQM {
@@ -83,4 +95,69 @@ public class DmsDQM extends JaxrDQM {
 		
 	}
 
+	/**
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	public BufferedImage getImage(String item) throws Exception {
+		
+		ImageCacheManager cacheManager = ImageCacheManager.getInstance();
+		DmsImage cacheEntry = (DmsImage)cacheManager.getFromCache(item);
+		
+		BufferedImage image = null;
+		if (cacheEntry == null) {
+
+	  		ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl) getRegistryObjectById(item);
+			if (eo == null) throw new Exception("[DmsDQM] An image with id <" + item + "> does not exist.");
+
+			String mimetype = eo.getMimeType();
+			if ((mimetype == null) || mimetype.startsWith("image") == false) {
+		
+				DataHandler handler = eo.getRepositoryItem();
+				image = ImageIO.read(handler.getInputStream());
+				
+			}
+			
+		} else {
+			
+			image = cacheEntry.getImage();
+			
+		}
+		
+		return GraphicsUtil.createSource(image);
+
+	}
+	
+	/**
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	public FileUtil getDocument(String item) throws Exception {
+		
+		DocumentCacheManager cacheManager = DocumentCacheManager.getInstance();
+		DmsDocument cacheEntry = (DmsDocument)cacheManager.getFromCache(item);
+
+		FileUtil file = null;
+		if (cacheEntry == null) {
+			
+	  		ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl) getRegistryObjectById(item);
+			if (eo == null) throw new Exception("[DmsDQM] A document with id <" + item + "> does not exist.");
+
+			String mimetype = eo.getMimeType();
+			
+			DataHandler handler = eo.getRepositoryItem();
+			InputStream stream = handler.getInputStream();
+			
+			file = new FileUtil(stream, mimetype);
+
+		} else {			
+			file = cacheEntry.asFile();
+			
+		}
+		
+		return file;
+	}
+	
 }

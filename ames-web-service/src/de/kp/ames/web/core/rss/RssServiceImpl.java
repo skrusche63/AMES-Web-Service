@@ -23,6 +23,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 /**
@@ -84,12 +85,12 @@ public class RssServiceImpl extends ServiceImpl {
 				/*
 				 * Distinguish between two different formats
 				 */
-				if (format.startsWith(FncConstants.FNC_FORMAT_ID_Json)) {
+				if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 					
 					String content = getJSONResponse(type, uri);
 					this.sendJSONResponse(content, ctx.getResponse());
 					
-				} else if (format.startsWith(FncConstants.FNC_FORMAT_ID_Rss)) {
+				} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Rss)) {
 
 					String content = getRSSResponse(type, uri);
 					this.sendRSSResponse(content, ctx.getResponse());

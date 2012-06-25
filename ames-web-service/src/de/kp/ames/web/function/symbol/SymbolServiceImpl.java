@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class SymbolServiceImpl extends BusinessImpl {
@@ -67,7 +68,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 		} else if (method.equals(MethodConstants.METH_SYMBOLS)) {
 
 			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
-			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);	
+			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);	
 
 			if (type == null) {
 				this.sendNotImplemented(ctx);
@@ -116,7 +117,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 			/*
 			 * Render result
 			 */
-			String format = FncConstants.FNC_FORMAT_ID_Tree;
+			String format = FormatConstants.FNC_FORMAT_ID_Tree;
 			content = render(jArray, format);
 			
 		} else if (type.equals(FncConstants.FNC_SYMBOL_ID_Icon)) {
@@ -127,7 +128,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 			/*
 			 * Render result
 			 */
-			String format = FncConstants.FNC_FORMAT_ID_Tree;
+			String format = FormatConstants.FNC_FORMAT_ID_Tree;
 			content = render(jArray, format);
 			
 		}
@@ -158,7 +159,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 			/*
 			 * Render result
 			 */
-			String format = FncConstants.FNC_FORMAT_ID_Grid;
+			String format = FormatConstants.FNC_FORMAT_ID_Grid;
 			content = render(jArray, format);
 			
 		} else if (type.equals(FncConstants.FNC_SYMBOL_ID_Icon)) {
@@ -169,7 +170,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 			/*
 			 * Render result
 			 */
-			String format = FncConstants.FNC_FORMAT_ID_Grid;
+			String format = FormatConstants.FNC_FORMAT_ID_Grid;
 			content = render(jArray, format);
 			
 		}
