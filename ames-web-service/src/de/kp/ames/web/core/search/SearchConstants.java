@@ -20,6 +20,7 @@ package de.kp.ames.web.core.search;
 
 import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class SearchConstants {
 
@@ -79,7 +80,7 @@ public class SearchConstants {
 		ATTR_LIMIT   = bundle.getString(GlobalConstants.ATTR_LIMIT);
 		ATTR_QUERY   = bundle.getString(GlobalConstants.ATTR_QUERY);
 		ATTR_START   = bundle.getString(GlobalConstants.ATTR_START);
-		ATTR_TYPE    = bundle.getString(GlobalConstants.ATTR_TYPE);
+		ATTR_TYPE    = MethodConstants.ATTR_TYPE;
 	
 		/*
 		 * Search parameters

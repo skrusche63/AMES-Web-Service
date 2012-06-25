@@ -32,6 +32,7 @@ import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class UploadServiceImpl extends BusinessImpl {
 
@@ -45,13 +46,13 @@ public class UploadServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_GET)) {
+		if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
 			 */
 			doGetRequest(ctx);
 			
-		} else if (methodName.equals(FncConstants.METH_SET)) {
+		} else if (methodName.equals(MethodConstants.METH_SET)) {
 
 			/*
 			 * The result of the upload request, returned
@@ -97,7 +98,7 @@ public class UploadServiceImpl extends BusinessImpl {
 							} else {
 
 								String item = this.method.getAttribute(FncConstants.ATTR_ITEM);		
-								String type = this.method.getAttribute(FncConstants.ATTR_TYPE);			
+								String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
 								if ((item == null) || (type == null)) {
 									this.sendNotImplemented(ctx);
 
@@ -144,7 +145,7 @@ public class UploadServiceImpl extends BusinessImpl {
 	public void doGetRequest(RequestContext ctx) {
 
 		String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
-		String type   = this.method.getAttribute(FncConstants.ATTR_TYPE);	
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 		
 		if ((format == null) || (type == null)) {
 			this.sendNotImplemented(ctx);

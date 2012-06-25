@@ -26,8 +26,8 @@ import javax.imageio.ImageIO;
 import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.service.ServiceImpl;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class GraphicsImpl extends ServiceImpl {
 
@@ -40,7 +40,7 @@ public class GraphicsImpl extends ServiceImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_GET)) {
+		if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
 			 */			

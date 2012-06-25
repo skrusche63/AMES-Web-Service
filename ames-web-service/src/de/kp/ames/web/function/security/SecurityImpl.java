@@ -43,6 +43,8 @@ import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncSQL;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class SecurityImpl extends BusinessImpl {
 
@@ -59,7 +61,7 @@ public class SecurityImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_GET)) {
+		if (methodName.equals(MethodConstants.METH_GET)) {
 			
 			/*
 			 * Call getCreds method
@@ -71,7 +73,7 @@ public class SecurityImpl extends BusinessImpl {
 			} else {
 				
 				try {
-					String content = get(service);
+					String content = getCredentials(service);
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -81,7 +83,7 @@ public class SecurityImpl extends BusinessImpl {
 				
 			}
 
-		} else if (methodName.equals(FncConstants.METH_SET)) {
+		} else if (methodName.equals(MethodConstants.METH_SET)) {
 
 			/*
 			 * Call setCreds method
@@ -124,7 +126,7 @@ public class SecurityImpl extends BusinessImpl {
 				
 			}
 			
-		} else if (methodName.equals(FncConstants.METH_REGISTER)) {
+		} else if (methodName.equals(MethodConstants.METH_REGISTER)) {
 
 			/*
 			 * Call register method
@@ -146,6 +148,52 @@ public class SecurityImpl extends BusinessImpl {
 
 				}
 
+			}
+
+		}
+
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+		
+		if (type == null) {
+			this.sendNotImplemented(ctx);
+
+		} else {
+			
+			if (type.equals(ClassificationConstants.FNC_SECURITY_ID_App)) {
+			
+				/*
+				 * Get apps description for the callers user
+				 */
+				
+			} else if (type.equals(ClassificationConstants.FNC_SECURITY_ID_Safe)) {
+
+				/*
+				 * Get credentials for a certain service
+				 */
+				String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);
+				if (service == null) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
+					
+					try {
+						String content = getCredentials(service);
+						this.sendJSONResponse(content, ctx.getResponse());
+
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+
+					}
+					
+				}
+				
 			}
 
 		}
@@ -207,7 +255,7 @@ public class SecurityImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String get(String service) throws Exception {
+	private String getCredentials(String service) throws Exception {
 		
 		/*
 		 * Retrieve caller's unique identifier
@@ -417,7 +465,7 @@ public class SecurityImpl extends BusinessImpl {
 		/*
 		 * Create classification
 		 */
-		ClassificationImpl c = lcm.createClassification(FncConstants.FNC_SECURITY_ID_Safe);
+		ClassificationImpl c = lcm.createClassification(ClassificationConstants.FNC_SECURITY_ID_Safe);
 		c.setName(lcm.createInternationalString("Security Classification"));
 
 		/* 

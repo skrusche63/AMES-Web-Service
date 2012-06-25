@@ -26,6 +26,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class BulletinImpl extends BusinessImpl {
 
@@ -39,7 +40,7 @@ public class BulletinImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_GET)) {
+		if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
 			 */
@@ -83,11 +84,11 @@ public class BulletinImpl extends BusinessImpl {
 
 			}
 
-		} else if (methodName.equals(FncConstants.METH_SUBMIT)) {
+		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {
 			/*
 			 * Call submit method
 			 */
-			String type = this.method.getAttribute(FncConstants.ATTR_TYPE);			
+			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
 			if (type == null) {
 				this.sendNotImplemented(ctx);
 				

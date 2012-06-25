@@ -74,6 +74,14 @@ public class ServiceImpl implements Service {
 	}
 	
 	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.Service#doSetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSetRequest(RequestContext ctx) {
+		// This method must be overridden by derived
+		// Service classes		
+	}
+	
+	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.Service#doSubmitRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doSubmitRequest(RequestContext ctx) {

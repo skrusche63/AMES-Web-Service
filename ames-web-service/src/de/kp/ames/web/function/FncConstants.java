@@ -82,13 +82,6 @@ public class FncConstants {
 	public static String FNC_FORMAT_ID_Text = FNC_ID_Format + ":Text";
 	public static String FNC_FORMAT_ID_XML  = FNC_ID_Format + ":Xml";
 
-
-	/*
-	 * Security Classification Nodes
-	 */
-	public static String FNC_ID_Security = FNC_ID + ":Security";	
-	public static String FNC_SECURITY_ID_Safe  = FNC_ID_Security + ":Safe";
-
 	/*
 	 * Symbol Classification Nodes
 	 */
@@ -121,38 +114,6 @@ public class FncConstants {
 	public static String REASONER_PRE;
     public static String SECURITY_PRE;
     public static String TRANSFORMATOR_PRE;
-
-	/*
-	 * Methods
-	 */
-    
-    // appy a certain set of xsl stylesheets to a specific
-    // registry object
-    public static String METH_APPLY     = "apply";
-    public static String METH_DELETE    = "delete";
-    public static String METH_EXPLORE   = "explore";
-    public static String METH_FILE      = "file";
-    public static String METH_GET       = "get";
-    
-    // retrieve a kml representation of a certain registry 
-    // package and all of its content
-    public static String METH_EDGES   	= "edges";
-    public static String METH_NODES   	= "nodes";
-    
-    /*
-     * Methods to either retrieve control information (keys)
-     * or references to images (symbols)
-     */
-    public static String METH_KEYS    = "keys";
-    public static String METH_SYMBOLS = "symbols";
-    
-    // retrieve all registered wms layers from the respective
-    // geo server
-    public static String METH_LAYERS    = "layers";
-    public static String METH_MODULE    = "module";
-	public static String METH_REGISTER  = "register";
-	public static String METH_SET       = "set";
-	public static String METH_SUBMIT    = "submit";
 	
 	/*
 	 * Method attributes
@@ -171,7 +132,6 @@ public class FncConstants {
 	public static String ATTR_SOURCE;
 	public static String ATTR_START;
 	public static String ATTR_TARGET;
-	public static String ATTR_TYPE;
 	public static String ATTR_URI;
 
 	public static String ATTR_AFFILIATION;
@@ -228,7 +188,6 @@ public class FncConstants {
 		ATTR_SOURCE    = bundle.getString(GlobalConstants.ATTR_SOURCE);
 		ATTR_START     = bundle.getString(GlobalConstants.ATTR_START);
 		ATTR_TARGET    = bundle.getString(GlobalConstants.ATTR_TARGET);
-		ATTR_TYPE      = bundle.getString(GlobalConstants.ATTR_TYPE);
 		ATTR_URI       = bundle.getString(GlobalConstants.ATTR_URI);
 
 		ATTR_AFFILIATION = bundle.getString(GlobalConstants.ATTR_AFFILIATION);

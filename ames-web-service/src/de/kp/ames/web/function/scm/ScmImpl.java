@@ -23,6 +23,7 @@ import java.io.IOException;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.MethodConstants;
 
 /**
  * ScmImpl supports access to an OASIS ebXML RegRep to retrieve
@@ -43,7 +44,7 @@ public class ScmImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_EXPLORE)) {
+		if (methodName.equals(MethodConstants.METH_EXPLORE)) {
 
 			/*
 			 * Call explore method
@@ -65,7 +66,7 @@ public class ScmImpl extends BusinessImpl {
 				
 			}
 
-		} else if (methodName.equals(FncConstants.METH_MODULE)) {
+		} else if (methodName.equals(MethodConstants.METH_MODULE)) {
 
 			/*
 			 * Call module method

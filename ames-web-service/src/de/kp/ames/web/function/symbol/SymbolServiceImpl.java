@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class SymbolServiceImpl extends BusinessImpl {
 
@@ -35,12 +36,12 @@ public class SymbolServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_KEYS)) {
+		if (methodName.equals(MethodConstants.METH_KEYS)) {
 
 			/*
 			 * Call keys method
 			 */
-			String type = this.method.getAttribute(FncConstants.ATTR_TYPE);	
+			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 
 			if (type == null) {
 				this.sendNotImplemented(ctx);
@@ -63,9 +64,9 @@ public class SymbolServiceImpl extends BusinessImpl {
 
 			}
 			
-		} else if (method.equals(FncConstants.METH_SYMBOLS)) {
+		} else if (method.equals(MethodConstants.METH_SYMBOLS)) {
 
-			String type = this.method.getAttribute(FncConstants.ATTR_TYPE);	
+			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 			String item = this.method.getAttribute(FncConstants.ATTR_ITEM);	
 
 			if (type == null) {

@@ -33,6 +33,7 @@ import de.kp.ames.web.function.office.OfficeConverter;
 import de.kp.ames.web.function.office.OfficeFactory;
 import de.kp.ames.web.function.transform.XslProcessor;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class ProductServiceImpl extends BusinessImpl {
 
@@ -46,19 +47,19 @@ public class ProductServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_APPLY)) {
+		if (methodName.equals(MethodConstants.METH_APPLY)) {
 			/*
 			 * Call apply method
 			 */
 			doApplyRequest(ctx);
 			
-		} else if (methodName.equals(FncConstants.METH_GET)) {
+		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
 			 */
 			doGetRequest(ctx);
 			
-		} else if (methodName.equals(FncConstants.METH_SUBMIT)) {			
+		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {			
 			/*
 			 * Call submit method
 			 */
@@ -111,7 +112,7 @@ public class ProductServiceImpl extends BusinessImpl {
 	public void doGetRequest(RequestContext ctx) {
 
 		String format = this.method.getAttribute(FncConstants.ATTR_FORMAT);	
-		String type   = this.method.getAttribute(FncConstants.ATTR_TYPE);	
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 		
 		if ((format == null) || (type == null)) {
 			this.sendNotImplemented(ctx);

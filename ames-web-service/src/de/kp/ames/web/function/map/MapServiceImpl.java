@@ -24,6 +24,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class MapServiceImpl extends BusinessImpl {
 	
@@ -34,7 +35,7 @@ public class MapServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(FncConstants.METH_NODES)) {
+		if (methodName.equals(MethodConstants.METH_NODES)) {
 			/*
 			 * Call nodes method
 			 */
@@ -58,7 +59,7 @@ public class MapServiceImpl extends BusinessImpl {
 				
 			}
 
-		} else if (methodName.equals(FncConstants.METH_EDGES)) {
+		} else if (methodName.equals(MethodConstants.METH_EDGES)) {
 			/*
 			 * Call edges method
 			 */
@@ -82,7 +83,7 @@ public class MapServiceImpl extends BusinessImpl {
 				
 			}
 
-		} else if (methodName.equals(FncConstants.METH_LAYERS)) {
+		} else if (methodName.equals(MethodConstants.METH_LAYERS)) {
 			/*
 			 * Call layers method
 			 */

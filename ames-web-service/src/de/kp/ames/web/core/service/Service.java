@@ -52,6 +52,14 @@ public interface Service {
 	public void doGetRequest(RequestContext ctx);
 	
 	/**
+	 * The main method to process a Http request that
+	 * refers to a SET method
+	 * 
+	 * @param ctx
+	 */
+	public void doSetRequest(RequestContext ctx);
+	
+	/**
 	 * The main method to process a Http request that 
 	 * refers to a SUBMIT method
 	 * @param ctx
