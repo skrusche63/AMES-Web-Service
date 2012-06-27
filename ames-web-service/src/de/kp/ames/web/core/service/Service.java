@@ -43,8 +43,22 @@ public interface Service {
 	 */
 	public void doApplyRequest(RequestContext ctx);
 
+	/**
+	 * The main method to process a Http request that
+	 * refers to a DOWNLOAD method
+	 * 
+	 * @param ctx
+	 */
 	public void doDownloadRequest(RequestContext ctx);
-	
+
+	/**
+	 * The main method to process a Http request that
+	 * refers to an EXTRACT method
+	 * 
+	 * @param ctx
+	 */
+	public void doExtractRequest(RequestContext ctx);
+
 	/**
 	 * The main method to process a Http request that
 	 * refers to a GET method

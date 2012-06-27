@@ -19,6 +19,7 @@ package de.kp.ames.web.function.dms;
  */
 
 import java.awt.image.BufferedImage;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,6 +29,8 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.dms.extract.ExtractFactory;
+import de.kp.ames.web.function.dms.extract.Extractor;
 import de.kp.ames.web.function.office.OfficeConverter;
 import de.kp.ames.web.function.office.OfficeFactory;
 import de.kp.ames.web.http.RequestContext;
@@ -55,7 +58,13 @@ public class DmsServiceImpl extends BusinessImpl {
 			 * Call download method
 			 */
 			doDownloadRequest(ctx);
-			
+
+		} else if (methodName.equals(MethodConstants.METH_EXTRACT)) {
+			/*
+			 * Call extract method
+			 */
+			doExtractRequest(ctx);
+
 		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
@@ -97,6 +106,44 @@ public class DmsServiceImpl extends BusinessImpl {
 			
 		}
 		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doExtractRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doExtractRequest(RequestContext ctx) {
+
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+		if (item == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+
+				FileUtil file = getFileResponse(item);
+
+				/*
+				 * Retrieve terms from file
+				 */
+				String mimeType = file.getMimetype();
+				
+				ExtractFactory factory = new ExtractFactory();
+				Extractor extractor = factory.getExtractor(mimeType);
+				
+				Set<String> terms = extractor.extract(file.getInputStream());
+				JSONArray jArray = new JSONArray(terms);
+				
+				String content = jArray.toString();
+				sendJSONResponse(content, ctx.getResponse());
+				
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+				
+			}
+
+		}
+
 	}
 	
 	/* (non-Javadoc)

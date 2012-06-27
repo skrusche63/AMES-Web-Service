@@ -31,5 +31,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ames-webdav"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ames-office"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ames-web-shared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ames-nlp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

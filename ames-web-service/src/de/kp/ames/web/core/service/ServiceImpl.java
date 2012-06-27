@@ -72,7 +72,15 @@ public class ServiceImpl implements Service {
 		// This method must be overridden by derived
 		// Service classes		
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.Service#doExtractRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doExtractRequest(RequestContext ctx) {
+		// This method must be overridden by derived
+		// Service classes		
+	}
+
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.Service#doGetRequest(de.kp.ames.web.http.RequestContext)
 	 */
