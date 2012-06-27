@@ -28,6 +28,7 @@ import de.kp.ames.web.core.util.BaseParam;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -235,7 +236,7 @@ public class TransformServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 			
-		if (type.equals(FncConstants.FNC_ID_Transformator)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Transformator)) {
 
 			TransformDQM dqm = new TransformDQM(jaxrHandle);
 			JSONArray jArray = dqm.getTransformators(item);

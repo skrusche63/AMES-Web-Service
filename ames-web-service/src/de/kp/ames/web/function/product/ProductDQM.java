@@ -31,8 +31,8 @@ import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.util.FileUtil;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class ProductDQM extends JaxrDQM {
 
@@ -96,7 +96,7 @@ public class ProductDQM extends JaxrDQM {
 		/*
 		 * Determine products
 		 */
-		List<RegistryObjectImpl> products = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Product);
+		List<RegistryObjectImpl> products = getRegistryObjects_ByClasNode(item, ClassificationConstants.FNC_ID_Product);
 
 		/*
 		 * Build JSON representation
@@ -118,7 +118,7 @@ public class ProductDQM extends JaxrDQM {
 		/*
 		 * Determine productors
 		 */		
-		List<RegistryObjectImpl> productors = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Productor);
+		List<RegistryObjectImpl> productors = getRegistryObjects_ByClasNode(item, ClassificationConstants.FNC_ID_Productor);
 
 		/*
 		 * Build JSON representation

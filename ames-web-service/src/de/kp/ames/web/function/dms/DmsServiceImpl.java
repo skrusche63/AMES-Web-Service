@@ -31,6 +31,7 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.office.OfficeConverter;
 import de.kp.ames.web.function.office.OfficeFactory;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -284,7 +285,7 @@ public class DmsServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 			
-		if (type.equals(FncConstants.FNC_ID_Document)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Document)) {
 
 			DmsDQM dqm = new DmsDQM(jaxrHandle);
 			JSONArray jArray = dqm.getDocuments(item);
@@ -299,7 +300,7 @@ public class DmsServiceImpl extends BusinessImpl {
 				content = render(jArray, start, limit, format);
 			}
 			
-		} else if (type.equals(FncConstants.FNC_ID_Image)) {
+		} else if (type.equals(ClassificationConstants.FNC_ID_Image)) {
 
 			DmsDQM dqm = new DmsDQM(jaxrHandle);
 			JSONArray jArray = dqm.getImages(item);
@@ -345,12 +346,12 @@ public class DmsServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
 
-		if (type.equals(FncConstants.FNC_ID_Document)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Document)) {
 
 			DmsLCM lcm = new DmsLCM(jaxrHandle);
 			content = lcm.submitDocument(data);
 			
-		} else if (type.equals(FncConstants.FNC_ID_Image)) {
+		} else if (type.equals(ClassificationConstants.FNC_ID_Image)) {
 
 			DmsLCM lcm = new DmsLCM(jaxrHandle);
 			content = lcm.submitImage(data);

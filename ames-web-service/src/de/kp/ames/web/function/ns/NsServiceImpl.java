@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.comm;
+package de.kp.ames.web.function.ns;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -24,13 +24,11 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
-import de.kp.ames.web.shared.ClassificationConstants;
-import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
-public class CommServiceImpl extends BusinessImpl {
+public class NsServiceImpl extends BusinessImpl {
 
-	public CommServiceImpl() {	
+	public NsServiceImpl() {
 		super();
 	}
 	
@@ -45,7 +43,7 @@ public class CommServiceImpl extends BusinessImpl {
 			 * Call get method
 			 */
 			doGetRequest(ctx);
-			
+
 		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {
 			/*
 			 * Call submit method
@@ -56,12 +54,13 @@ public class CommServiceImpl extends BusinessImpl {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
 	public void doGetRequest(RequestContext ctx) {
-	
-		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
-		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
-		
-		if ((format == null) || (type == null)) {
+
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);			
+		if (format == null) {
 			this.sendNotImplemented(ctx);
 			
 		} else {
@@ -70,47 +69,46 @@ public class CommServiceImpl extends BusinessImpl {
 			 * a certain registry object
 			 */
 			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
-			
+
 			/*
-			 * Evaluate the format parameter to determine the 
-			 * format for the http response 
+			 * This is an optional parameter that determines 
+			 * a certain registry package as parent
 			 */
-				
-			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
+			String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);
+
+			/*
+			 * Optional parameters that may be used to describe
+			 * a Grid-oriented response
+			 */
+			String start = this.method.getAttribute(FncConstants.ATTR_START);
+			String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
+
+			try {
 				/*
-				 * Optional parameters that may be used to describe
-				 * a Grid-oriented response
+				 * JSON response
 				 */
-				String start = this.method.getAttribute(FncConstants.ATTR_START);
-				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
+				String content = getJSONResponse(item, parent, start, limit, format);
+				sendJSONResponse(content, ctx.getResponse());
 
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = getJSONResponse(type, item, start, limit, format);
-					sendJSONResponse(content, ctx.getResponse());
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
 
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
 			}
 
 		}
 
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doSubmitRequest(RequestContext ctx) {
-
+			
+		/*
+		 * Submit request requires data
+		 */
 		String data = this.getRequestData(ctx);
-		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);
-		
-		if ((data == null) || (type == null)) {
+		if (data == null) {
 			this.sendNotImplemented(ctx);
 			
 		} else {
@@ -119,7 +117,7 @@ public class CommServiceImpl extends BusinessImpl {
 				/*
 				 * JSON response
 				 */
-				String content = submit(type, data);
+				String content = submit(data);
 				sendJSONResponse(content, ctx.getResponse());
 
 			} catch (Exception e) {
@@ -131,7 +129,16 @@ public class CommServiceImpl extends BusinessImpl {
 		
 	}
 
-	private String getJSONResponse(String type, String item, String start, String limit, String format) throws Exception {
+	/**
+	 * @param item
+	 * @param parent
+	 * @param start
+	 * @param limit
+	 * @param format
+	 * @return
+	 * @throws Exception
+	 */
+	private String getJSONResponse(String item, String parent, String start, String limit, String format) throws Exception {
 
 		String content = null;
 		
@@ -139,40 +146,18 @@ public class CommServiceImpl extends BusinessImpl {
 		 * Login
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
-
-		if (type.equals(ClassificationConstants.FNC_ID_Chat)) {
-
-			CommDQM dqm = new CommDQM(jaxrHandle);
-			JSONArray jArray = dqm.getChatMessages(item);
 			
-			/*
-			 * Render result
-			 */
-			if ((start == null) || (limit == null)) {
-				content = render(jArray, format);
-
-			} else {
-				content = render(jArray, start, limit, format);
-			}
+		NsDQM dqm = new NsDQM(jaxrHandle);
+		JSONArray jArray = dqm.getNamespaces(item, parent);
 		
-		} else if (type.equals(ClassificationConstants.FNC_ID_Mail)) {
+		/*
+		 * Render result
+		 */
+		if ((start == null) || (limit == null)) {
+			content = render(jArray, format);
 
-			CommDQM dqm = new CommDQM(jaxrHandle);
-			JSONArray jArray = dqm.getMailMessages(item);
-			
-			/*
-			 * Render result
-			 */
-			if ((start == null) || (limit == null)) {
-				content = render(jArray, format);
-
-			} else {
-				content = render(jArray, start, limit, format);
-			}
-			
 		} else {
-			throw new Exception("[CommServiceImpl] Information type <" + type + "> is not supported");
-			
+			content = render(jArray, start, limit, format);
 		}
 		
 		/*
@@ -184,41 +169,28 @@ public class CommServiceImpl extends BusinessImpl {
 	}
 
 	/**
-	 * A helper method to submit a chat or mail message
-	 * 
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	private String submit(String type, String data) throws Exception {
+	private String submit(String data) throws Exception {
 
 		String content = null;
 		
 		/*
 		 * Login
 		 */		
-		JaxrClient.getInstance().logon(jaxrHandle);
+		JaxrClient.getInstance().logon(jaxrHandle);		
 
-		if (type.equals(ClassificationConstants.FNC_ID_Chat)) {
-			
-			CommLCM lcm = new CommLCM(jaxrHandle);
-			content = lcm.submitChat(data);
-		
-		} else if (type.equals(ClassificationConstants.FNC_ID_Mail)) {
-
-			CommLCM lcm = new CommLCM(jaxrHandle);
-			content = lcm.submitMail(data);
-			
-		} else {
-			
-		}
+		NsLCM lcm = new NsLCM(jaxrHandle);
+		content = lcm.submitNamespace(data);
 		
 		/*
 		 * Logoff
 		 */
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return content;
-
+		
 	}
-	
+
 }

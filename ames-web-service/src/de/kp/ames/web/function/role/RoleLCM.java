@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.xml.registry.JAXRException;
 import javax.xml.registry.infomodel.Key;
 
 import org.freebxml.omar.client.xml.registry.infomodel.AssociationImpl;
@@ -36,12 +35,11 @@ import de.kp.ames.web.core.domain.JsonConstants;
 import de.kp.ames.web.core.json.JsonUtil;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
-import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
-import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class RoleLCM extends JaxrLCM {
 	/*
@@ -98,26 +96,15 @@ public class RoleLCM extends JaxrLCM {
 		if (responsible == null) new Exception("[RoleLCM] Responsible with id <" + uid + "> not found.");
 
 		/*
-		 * Create or retrieve registry package that is 
-		 * responsible for managing namespaces
+		 * Responsibility is registered within namespace container
 		 */
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Namespace);
-		if (list.size() == 0) {
-			/*
-			 * Create container
-			 */
-			container = createNamespacePackage();
-			
-		} else {
-			/*
-			 * Retrieve container
-			 */
-			container = list.get(0);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Namespace);
+		if (list.size() == 0) new Exception("[RoleLCM] Namespace container does not exist.");
 
-		}
+		container = list.get(0);
 
 		/*
 		 * Build responsibilities
@@ -350,62 +337,6 @@ public class RoleLCM extends JaxrLCM {
 		
 		return associations;
 		
-	}
-
-	/**
-	 * A helper method to create a new namespace container
-	 * 
-	 * @return
-	 * @throws JAXRException
-	 */
-	private RegistryPackageImpl createNamespacePackage() throws JAXRException  {
-
-		JaxrTransaction transaction = new JaxrTransaction();
-		RegistryPackageImpl rp = this.createRegistryPackage(Locale.US, "Namespaces");
-	
-		/* 
-		 * Identifier
-		 */
-		String uid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.NAMESPACE_PRE);
-	
-		rp.setLid(uid);
-		rp.getKey().setId(uid);
-
-		/* 
-		 * Description
-		 */
-		rp.setDescription(createInternationalString(Locale.US, "This is the top package to manage all namespaces submitted to this RegRep instance."));
-		
-		/*
-		 * Home url
-		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
-		rp.setHome(home);
-	
-		/* 
-		 * Make sure that the registry object is processed
-		 * right before any references to this object are made
-		 */
-		transaction.addObjectToSave(rp);
-
-		/*
-		 * Create classification
-		 */
-		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Namespace);
-		c.setName(createInternationalString(Locale.US, "Namespace Classification"));
-
-		/* 
-		 * Associate classification and namespace container
-		 */
-		rp.addClassification(c);
-		transaction.addObjectToSave(c);				
-
-		/*
-		 * Save objects
-		 */
-		saveObjects(transaction.getObjectsToSave(), false, false);
-		return (RegistryPackageImpl)jaxrHandle.getDQM().getRegistryObject(uid);
-	
 	}
 
 }

@@ -32,8 +32,8 @@ import org.json.JSONObject;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.util.FileUtil;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class CommDQM extends JaxrDQM {
 
@@ -60,7 +60,7 @@ public class CommDQM extends JaxrDQM {
 			/*
 			 * Determine chat messages (metadata)
 			 */
-			List<RegistryObjectImpl> messages = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Chat);
+			List<RegistryObjectImpl> messages = getRegistryObjects_ByClasNode(item, ClassificationConstants.FNC_ID_Chat);
 	
 			/*
 			 * Build JSON representation
@@ -100,7 +100,7 @@ public class CommDQM extends JaxrDQM {
 			/*
 			 * Determine mail messages (metadata)
 			 */
-			List<RegistryObjectImpl> messages = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Mail);
+			List<RegistryObjectImpl> messages = getRegistryObjects_ByClasNode(item, ClassificationConstants.FNC_ID_Mail);
 	
 			/*
 			 * Build JSON representation

@@ -45,6 +45,7 @@ import de.kp.ames.web.core.regrep.lcm.PartyLCM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class GroupLCM extends PartyLCM {
 
@@ -317,7 +318,7 @@ public class GroupLCM extends PartyLCM {
 		 * a namespace board or namespace group
 		 */
 
-		String prefix = FncConstants.FNC_ID_Community;
+		String prefix = ClassificationConstants.FNC_ID_Community;
 		deleteClassifications_Prefix(ro, prefix);
 
 		/*
@@ -454,7 +455,7 @@ public class GroupLCM extends PartyLCM {
 			/*
 			 * Index community
 			 */				
-			ReactorParams reactorParams = new ReactorParams(jaxrHandle, org, FncConstants.FNC_ID_Community, RAction.C_INDEX);
+			ReactorParams reactorParams = new ReactorParams(jaxrHandle, org, ClassificationConstants.FNC_ID_Community, RAction.C_INDEX);
 			ReactorImpl.onSubmit(reactorParams);
 
 			/*
@@ -499,7 +500,7 @@ public class GroupLCM extends PartyLCM {
 				/*
 				 * Index community
 				 */				
-				ReactorParams reactorParams = new ReactorParams(jaxrHandle, org, FncConstants.FNC_ID_Community, RAction.C_INDEX);
+				ReactorParams reactorParams = new ReactorParams(jaxrHandle, org, ClassificationConstants.FNC_ID_Community, RAction.C_INDEX);
 				ReactorImpl.onSubmit(reactorParams);
 
 				/*

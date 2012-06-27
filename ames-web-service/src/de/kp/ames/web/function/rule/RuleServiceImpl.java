@@ -28,6 +28,7 @@ import de.kp.ames.web.core.util.BaseParam;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class RuleServiceImpl extends BusinessImpl {
@@ -209,7 +210,7 @@ public class RuleServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 
-		if (type.equals(FncConstants.FNC_ID_Evaluation)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Evaluation)) {
 			
 			RuleDQM dqm = new RuleDQM(jaxrHandle);
 			JSONArray jArray = dqm.getEvaluations(item);
@@ -224,7 +225,7 @@ public class RuleServiceImpl extends BusinessImpl {
 				content = render(jArray, start, limit, format);
 			}
 			
-		} else if (type.equals(FncConstants.FNC_ID_Reasoner)) {
+		} else if (type.equals(ClassificationConstants.FNC_ID_Reasoner)) {
 
 			RuleDQM dqm = new RuleDQM(jaxrHandle);
 			JSONArray jArray = dqm.getReasoners(item);

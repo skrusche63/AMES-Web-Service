@@ -40,6 +40,7 @@ import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.DomainLCM;
 import de.kp.ames.web.function.domain.model.EvaluationObject;
 import de.kp.ames.web.function.domain.model.ReasonerObject;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class RuleLCM extends JaxrLCM {
 
@@ -66,7 +67,7 @@ public class RuleLCM extends JaxrLCM {
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Evaluation);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Evaluation);
 		if (list.size() == 0) {
 			/*
 			 * Create container
@@ -111,7 +112,7 @@ public class RuleLCM extends JaxrLCM {
 		/*
 		 * Supply reactor
 		 */
-		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, FncConstants.FNC_ID_Evaluation, RAction.C_INDEX_RSS);
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Evaluation, RAction.C_INDEX_RSS);
 		ReactorImpl.onSubmit(reactorParams);
 
 		/*
@@ -138,7 +139,7 @@ public class RuleLCM extends JaxrLCM {
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Reasoner);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Reasoner);
 		if (list.size() == 0) {
 			/*
 			 * Create container
@@ -176,7 +177,7 @@ public class RuleLCM extends JaxrLCM {
 		/*
 		 * Supply reactor
 		 */
-		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, FncConstants.FNC_ID_Productor, RAction.C_INDEX_RSS);
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Productor, RAction.C_INDEX_RSS);
 		ReactorImpl.onSubmit(reactorParams);
 
 		/*
@@ -210,7 +211,7 @@ public class RuleLCM extends JaxrLCM {
 		/*
 		 * Classification
 		 */
-		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Evaluation);
+		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Evaluation);
 		
 		/*
 		 * Create package
@@ -244,7 +245,7 @@ public class RuleLCM extends JaxrLCM {
 		/*
 		 * Classification
 		 */
-		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Reasoner);
+		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Reasoner);
 		
 		/*
 		 * Create package

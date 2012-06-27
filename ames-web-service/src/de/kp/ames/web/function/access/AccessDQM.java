@@ -27,8 +27,8 @@ import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class AccessDQM extends JaxrDQM {
 
@@ -68,7 +68,7 @@ public class AccessDQM extends JaxrDQM {
 		/*
 		 * Determine accessors
 		 */		
-		List<RegistryObjectImpl> accessors = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Accessor);
+		List<RegistryObjectImpl> accessors = getRegistryObjects_ByClasNode(item, ClassificationConstants.FNC_ID_Accessor);
 
 		/*
 		 * Build JSON representation

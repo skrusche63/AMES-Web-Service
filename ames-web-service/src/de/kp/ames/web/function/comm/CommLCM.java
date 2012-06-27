@@ -35,6 +35,7 @@ import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.DomainLCM;
 import de.kp.ames.web.function.domain.model.ChatObject;
 import de.kp.ames.web.function.domain.model.MailObject;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class CommLCM extends JaxrLCM {
 
@@ -58,7 +59,7 @@ public class CommLCM extends JaxrLCM {
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Chat);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Chat);
 		if (list.size() == 0) {
 			/*
 			 * Create container
@@ -117,7 +118,7 @@ public class CommLCM extends JaxrLCM {
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Mail);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Mail);
 		if (list.size() == 0) {
 			/*
 			 * Create container
@@ -183,7 +184,7 @@ public class CommLCM extends JaxrLCM {
 		/*
 		 * Classification
 		 */
-		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Chat);
+		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Chat);
 		
 		/*
 		 * Create package
@@ -217,7 +218,7 @@ public class CommLCM extends JaxrLCM {
 		/*
 		 * Classification
 		 */
-		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Mail);
+		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Mail);
 		
 		/*
 		 * Create package

@@ -31,7 +31,7 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.core.vocab.VocabDQM;
-import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class GroupDQM extends JaxrDQM {
 	
@@ -54,7 +54,7 @@ public class GroupDQM extends JaxrDQM {
 	public JSONArray getCategories() throws Exception {
 
 		VocabDQM vocab = new VocabDQM(jaxrHandle);
-		return vocab.getConceptsByParent(FncConstants.FNC_ID_Community);
+		return vocab.getConceptsByParent(ClassificationConstants.FNC_ID_Community);
 	
 	}
 

@@ -25,8 +25,11 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.access.dav.DavConsumer;
 import de.kp.ames.web.function.access.imap.ImapConsumer;
+import de.kp.ames.web.function.access.jdbc.JdbcConsumer;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -141,7 +144,7 @@ public class AccessServiceImpl extends BusinessImpl {
 		AccessDQM dqm = new AccessDQM(jaxrHandle);
 		JSONObject jAccessor = dqm.getAccessor(item);
 		
-		if (type.equals(FncConstants.FNC_ID_Mail)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Mail)) {
 			
 			/*
 			 * Retrieve a certain mail attachment
@@ -149,6 +152,14 @@ public class AccessServiceImpl extends BusinessImpl {
 			 */
 			ImapConsumer consumer = new ImapConsumer(jAccessor);
 			file = consumer.getAttachment(Integer.parseInt(source));
+			
+		} else if (type.equals(ClassificationConstants.FNC_ID_WebDav)) {
+			
+			/*
+			 * Retrieve a certain file from a WebDAV server
+			 */
+			DavConsumer consumer = new DavConsumer(jAccessor);
+			file = consumer.getFile();
 			
 		}
 		
@@ -181,7 +192,7 @@ public class AccessServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 
-		if (type.equals(FncConstants.FNC_ID_Accessor)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Accessor)) {
 
 			/*
 			 * This is a predefined request to retrieve
@@ -190,6 +201,65 @@ public class AccessServiceImpl extends BusinessImpl {
 			 */
 			AccessDQM dqm = new AccessDQM(jaxrHandle);
 			JSONArray jArray = dqm.getAccessors(item);
+			
+			/*
+			 * Render result
+			 */
+			if ((start == null) || (limit == null)) {
+				content = render(jArray, format);
+	
+			} else {
+				content = render(jArray, start, limit, format);
+			}
+
+		} else if (type.equals(ClassificationConstants.FNC_ID_Database)) {
+
+			AccessDQM dqm = new AccessDQM(jaxrHandle);
+			JSONObject jAccessor = dqm.getAccessor(item);
+
+			/*
+			 * Retrieve a certain database context
+			 * from an external database server
+			 */
+			JdbcConsumer consumer = new JdbcConsumer(jAccessor);
+			JSONObject jResult = consumer.getJRecords();
+			
+			content = jResult.toString();
+			consumer.close();			
+
+		} else if (type.equals(ClassificationConstants.FNC_ID_Mail)) {
+
+			AccessDQM dqm = new AccessDQM(jaxrHandle);
+			JSONObject jAccessor = dqm.getAccessor(item);
+
+			/*
+			 * Retrieve a list of mails from a 
+			 * certain IMAP server
+			 */
+			ImapConsumer consumer = new ImapConsumer(jAccessor);
+			JSONArray jArray = consumer.getJMessages();
+			
+			/*
+			 * Render result
+			 */
+			if ((start == null) || (limit == null)) {
+				content = render(jArray, format);
+	
+			} else {
+				content = render(jArray, start, limit, format);
+			}
+			
+		} else if (type.equals(ClassificationConstants.FNC_ID_WebDav)) {
+
+			AccessDQM dqm = new AccessDQM(jaxrHandle);
+			JSONObject jAccessor = dqm.getAccessor(item);
+
+			/*
+			 * Retrieve resources (folder descriptions) from
+			 * a certain WebDAV server
+			 */
+			DavConsumer consumer = new DavConsumer(jAccessor);
+			JSONArray jArray = consumer.getResources();
 			
 			/*
 			 * Render result

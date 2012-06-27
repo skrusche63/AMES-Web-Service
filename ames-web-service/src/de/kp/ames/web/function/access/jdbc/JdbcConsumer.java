@@ -9,13 +9,49 @@ import java.sql.Statement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.kp.ames.web.core.regrep.JaxrConstants;
+
 public class JdbcConsumer {
 
+	private String sqlString;
+	
 	/*
 	 * Reference to database connection
 	 */
 	private JdbcConnection connection;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param jAccessor
+	 */
+	public JdbcConsumer(JSONObject jAccessor) {
+
+		try {
+
+			/* 
+			 * Database access parameters
+			 */
+			String name   = jAccessor.getString(JaxrConstants.SLOT_DATABASE);
+			String driver = jAccessor.getString(JaxrConstants.SLOT_DRIVER);
+			String url    = jAccessor.getString(JaxrConstants.SLOT_ENDPOINT);
+			
+			/* 
+			 * User credentials
+			 */
+			String alias   = jAccessor.getString(JaxrConstants.SLOT_ALIAS);
+			String keypass = jAccessor.getString(JaxrConstants.SLOT_KEYPASS);
+
+			sqlString = jAccessor.getString(JaxrConstants.SLOT_SQL);
+
+			connection = new JdbcConnection();
+			connection.connect(name, driver, url, alias, keypass);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	/**
 	 * Constructor
@@ -67,7 +103,14 @@ public class JdbcConsumer {
 		return false;
 
 	}
-		
+	
+	/**
+	 * @return
+	 */
+	public JSONObject getJRecords() {
+		return getJRecords(sqlString);
+	}
+	
 	/**
 	 * This method executes a certain SQL query statement against
 	 * a remote database and transforms the results into a JSON

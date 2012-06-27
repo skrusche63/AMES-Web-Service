@@ -35,15 +35,15 @@ public class FncSQL {
 	private static String SAFE = ClassificationConstants.FNC_SECURITY_ID_Safe;
 
 	/*
-	 * This is the classification of a certain namespace
+	 * This is the classification of a certain namespace folder
 	 */
-	private static String NAMESPACE = FncConstants.FNC_ID_Namespace;
+	private static String FOLDER = ClassificationConstants.FNC_ID_Folder;
 	
 	/*
 	 * This is the classification of a posting associated with the bulletin
 	 * board functionality
 	 */
-	private static String POSTING = FncConstants.FNC_ID_Posting;
+	private static String POSTING = ClassificationConstants.FNC_ID_Posting;
 
 	/*
 	 * Association classification nodes
@@ -90,7 +90,7 @@ public class FncSQL {
 			 * must be retrieved
 			 */
 			query = "SELECT DISTINCT rp.* FROM RegistryPackage rp, Classification clas" + 
-			" WHERE clas.classifiedObject=rp.id AND clas.classificationNode='" + NAMESPACE + "'";
+			" WHERE clas.classifiedObject=rp.id AND clas.classificationNode='" + FOLDER + "'";
 			
 		} else {
 			/* 

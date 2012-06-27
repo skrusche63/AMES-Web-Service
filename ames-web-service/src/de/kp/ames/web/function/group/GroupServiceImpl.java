@@ -24,6 +24,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class GroupServiceImpl extends BusinessImpl {
@@ -85,7 +86,7 @@ public class GroupServiceImpl extends BusinessImpl {
 				
 			} else {
 
-				if (type.equals(FncConstants.FNC_ID_Category)) {
+				if (type.equals(ClassificationConstants.FNC_ID_Category)) {
 
 					String start = this.method.getAttribute(FncConstants.ATTR_START);			
 					String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
@@ -111,7 +112,7 @@ public class GroupServiceImpl extends BusinessImpl {
 						
 					}
 					
-				} else if (type.equals(FncConstants.FNC_ID_Community)) {
+				} else if (type.equals(ClassificationConstants.FNC_ID_Community)) {
 					
 					/*
 					 * Retrieve communities of interest, either
@@ -263,7 +264,7 @@ public class GroupServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 		
-		if (type.equals(FncConstants.FNC_ID_Affiliation)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Affiliation)) {
 
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
 			content = lcm.deleteAffiliation(data);
@@ -300,7 +301,7 @@ public class GroupServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 		
-		if (type.equals(FncConstants.FNC_ID_Affiliation)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Affiliation)) {
 
 			/* 
 			 * An affiliation is a specific association between a certain user
@@ -311,7 +312,7 @@ public class GroupServiceImpl extends BusinessImpl {
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
 			content = lcm.submitAffiliation(source, data);
 
-		} else if (type.equals(FncConstants.FNC_ID_Category)) {
+		} else if (type.equals(ClassificationConstants.FNC_ID_Category)) {
 
 			/* 
 			 * A 'category' is a specific classification for a community of
@@ -322,7 +323,7 @@ public class GroupServiceImpl extends BusinessImpl {
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
 			content = lcm.submitCategory(data);
 
-		} else if (type.equals(FncConstants.FNC_ID_Contact)) {
+		} else if (type.equals(ClassificationConstants.FNC_ID_Contact)) {
 
 			/* 
 			 * This is a request to assign a certain primary contact
@@ -333,7 +334,7 @@ public class GroupServiceImpl extends BusinessImpl {
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
 			content = lcm.submitContact(source, data);
 
-		} else if (type.equals(FncConstants.FNC_ID_Community)) {
+		} else if (type.equals(ClassificationConstants.FNC_ID_Community)) {
 			
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
 			content = lcm.submitCommunity(data);

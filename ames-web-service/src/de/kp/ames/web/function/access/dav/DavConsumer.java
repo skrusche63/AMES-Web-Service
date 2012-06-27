@@ -19,17 +19,58 @@ package de.kp.ames.web.function.access.dav;
  */
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
+import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.webdav.WebDAVClient;
 import de.kp.ames.webdav.WebDAVFile;
 
 public class DavConsumer {
 
+	/*
+	 * Reference to WebDAV Client
+	 */
+	private WebDAVClient client;
+	
+	/*
+	 * Access parameter
+	 */
+	private String uri;
+	private String mimetype;
+	
 	/**
 	 * Constructor
 	 */
 	public DavConsumer() {
+	}
+	
+	/**
+	 * @param jAccessor
+	 */
+	public DavConsumer(JSONObject jAccessor) {
+		
+		try {
+			
+			/*
+			 * Access parameters
+			 */
+			uri = jAccessor.getString(JaxrConstants.SLOT_URI);
+			if (jAccessor.has(JaxrConstants.SLOT_MIMETYPE)) mimetype = jAccessor.getString(JaxrConstants.SLOT_MIMETYPE);
+
+			/*
+			 * Credentials
+			 */
+			String alias   = jAccessor.getString(JaxrConstants.SLOT_ALIAS);
+			String keypass = jAccessor.getString(JaxrConstants.SLOT_KEYPASS);
+
+			client = new WebDAVClient(alias, keypass, uri);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
 	}
 	
 	/**
@@ -41,11 +82,8 @@ public class DavConsumer {
 	 * @param uri
 	 * @return
 	 */
-	public JSONArray getResources(String alias, String keypass, String uri) {
-		
-		WebDAVClient client = new WebDAVClient(alias, keypass, uri);
-		return client.getResources();
-		
+	public JSONArray getResources() {
+		return client.getResources();		
 	}
 	
 	/**
@@ -58,9 +96,8 @@ public class DavConsumer {
 	 * @param mimetype
 	 * @return
 	 */
-	public FileUtil getFile(String alias, String keypass, String uri, String mimetype) {
+	public FileUtil getFile() {
 
-		WebDAVClient client = new WebDAVClient(alias, keypass, uri);
 		WebDAVFile webDavFile = client.getFile();
 		
 		/*

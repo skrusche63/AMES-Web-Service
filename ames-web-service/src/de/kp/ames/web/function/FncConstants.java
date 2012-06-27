@@ -22,57 +22,6 @@ import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
 
 public class FncConstants {
-
-	/* 
-	 * Common Classification Node
-	 */
-	public static String FNC_ID = "urn:oasis:names:tc:ebxml-regrep:FNC";
-
-	/*
-	 * Bulletin Classification Nodes
-	 */
-	public static String FNC_ID_Posting = FNC_ID + ":Posting";
-	
-	/*
-	 * Communication Classification Nodes
-	 */
-	public static String FNC_ID_Chat = FNC_ID + ":Chat";
-	public static String FNC_ID_Mail = FNC_ID + ":Mail";
-		
-	/*
-	 * Business Classification Nodes
-	 */
-	public static String FNC_ID_Accessor       = FNC_ID + ":Accessor";
-	public static String FNC_ID_Affiliation    = FNC_ID + ":Affiliation";
-	public static String FNC_ID_Category       = FNC_ID + ":Category";
-	public static String FNC_ID_Contact        = FNC_ID + ":Contact";	
-	public static String FNC_ID_Community      = FNC_ID + ":Community";
-	public static String FNC_ID_Database       = FNC_ID + ":Database";
-	public static String FNC_ID_Document       = FNC_ID + ":Document";
-	public static String FNC_ID_Evaluation     = FNC_ID + ":Evaluation";
-	public static String FNC_ID_Image          = FNC_ID + ":Image";
-	public static String FNC_ID_Link           = FNC_ID + ":Link";
-	public static String FNC_ID_Namespace      = FNC_ID + ":Namespace";	
-	public static String FNC_ID_Product        = FNC_ID + ":Product";
-	public static String FNC_ID_Productor      = FNC_ID + ":Productor";
-	public static String FNC_ID_Reasoner       = FNC_ID + ":Reasoner";
-	public static String FNC_ID_Remote         = FNC_ID + ":Remote";
-	public static String FNC_ID_Responsibility = FNC_ID + ":Responsibility";
-	public static String FNC_ID_Role           = FNC_ID + ":Role";
-	public static String FNC_ID_User           = FNC_ID + ":User";
-	
-	/*
-	 * Symbol Classification Nodes
-	 */
-	public static String FNC_ID_Symbol = FNC_ID + ":Symbol";
-	
-	public static String FNC_SYMBOL_ID_APP6B = FNC_ID_Symbol + ":APP6-B";
-	public static String FNC_SYMBOL_ID_Icon  = FNC_ID_Symbol + ":Icon";
-	
-	/*
-	 * Transformation Classification Nodes
-	 */
-	public static String FNC_ID_Transformator =  FNC_ID + ":Transformator";
 	
 	/*
 	 * Identity Prefixes
@@ -103,7 +52,6 @@ public class FncConstants {
 	public static String ATTR_ENDPOINT;
 	public static String ATTR_KEYPASS;
 	public static String ATTR_LIMIT;
-	public static String ATTR_PARENT;
 	public static String ATTR_RECIPIENT;
 	public static String ATTR_SERVICE;
 	public static String ATTR_START;
@@ -156,7 +104,6 @@ public class FncConstants {
 		ATTR_ENDPOINT  = bundle.getString(GlobalConstants.ATTR_ENDPOINT);
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
 		ATTR_LIMIT     = bundle.getString(GlobalConstants.ATTR_LIMIT);		
-		ATTR_PARENT    = bundle.getString(GlobalConstants.ATTR_PARENT);
 		ATTR_RECIPIENT = bundle.getString(GlobalConstants.ATTR_RECIPIENT);
 		ATTR_SERVICE   = bundle.getString(GlobalConstants.ATTR_SERVICE);
 		ATTR_START     = bundle.getString(GlobalConstants.ATTR_START);

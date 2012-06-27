@@ -24,6 +24,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class RoleServiceImpl extends BusinessImpl {
@@ -42,122 +43,39 @@ public class RoleServiceImpl extends BusinessImpl {
 			/*
 			 * Call get method
 			 */
-			String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
-			String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
-
-			if ((format == null) || (type == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-
-				if (type.equals(FncConstants.FNC_ID_Namespace)) {
-
-					/* 
-					 * Retrives all the namespaces a certain community 
-					 * or user is responsible for
-					 */
-					String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
-					if (source == null) {
-						this.sendNotImplemented(ctx);
-						
-					} else {
-
-						try {
-							/*
-							 * JSON response
-							 */
-							String content = namespaces(source, format);
-							sendJSONResponse(content, ctx.getResponse());
-
-						} catch (Exception e) {
-							this.sendBadRequest(ctx, e);
-
-						}
-						
-					}
-
-				} else if (type.equals(FncConstants.FNC_ID_Responsibility)) {
-					/* 
-					 * A responsibility is actually equal to a certain namespace,
-					 * as a specific community or user be responsible (source) for
-					 */
-					String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
-					if (source == null) {
-						this.sendNotImplemented(ctx);
-						
-					} else {
-
-						String start = this.method.getAttribute(FncConstants.ATTR_START);			
-						String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
-				
-						if ((start == null) || (limit == null)) {
-							this.sendNotImplemented(ctx);
-							
-						} else {
-	
-							try {
-								/*
-								 * JSON response
-								 */
-								String content = responsibilities(source, start, limit, format);
-								sendJSONResponse(content, ctx.getResponse());
-
-							} catch (Exception e) {
-								this.sendBadRequest(ctx, e);
-	
-							}
-						
-						}
-					
-					}
-				
-				} else if (type.equals(FncConstants.FNC_ID_Role)) {
-					/* 
-					 * Retrieves all roles that are actually registered 
-					 * to classify a certain community or affiliate
-					 */
-
-					String affiliate = this.method.getAttribute(FncConstants.ATTR_AFFILIATE);
-					String community = this.method.getAttribute(FncConstants.ATTR_COMMUNITY);
-					
-					if ((affiliate == null) || (community == null)) {
-						this.sendNotImplemented(ctx);
-						
-					} else {
-
-						try {
-							/*
-							 * JSON response
-							 */
-							String content = roles(affiliate, community, format);
-							sendJSONResponse(content, ctx.getResponse());
-
-						} catch (Exception e) {
-							this.sendBadRequest(ctx, e);
-
-						}
-						
-					}
-
-				}
-
-			}
+			doGetRequest(ctx);
 
 		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {
 			/*
 			 * Call submit method
 			 */
-			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
-			if (type == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				/*
-				 * Submit request requires data
+			doSubmitRequest(ctx);
+			
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+		
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+
+		if ((format == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			if (type.equals(ClassificationConstants.FNC_ID_Namespace)) {
+
+				/* 
+				 * Retrieves all the namespaces a certain community 
+				 * or user is responsible for
 				 */
-				String data = this.getRequestData(ctx);
-				if (data == null) {
+				String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+				if (source == null) {
 					this.sendNotImplemented(ctx);
 					
 				} else {
@@ -166,22 +84,123 @@ public class RoleServiceImpl extends BusinessImpl {
 						/*
 						 * JSON response
 						 */
-						String content = submit(type, data);
+						String content = namespaces(source, format);
 						sendJSONResponse(content, ctx.getResponse());
 
 					} catch (Exception e) {
 						this.sendBadRequest(ctx, e);
 
 					}
-
+					
 				}
+
+			} else if (type.equals(ClassificationConstants.FNC_ID_Responsibility)) {
+				/* 
+				 * A responsibility is actually equal to a certain namespace,
+				 * as a specific community or user be responsible (source) for
+				 */
+				String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+				if (source == null) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
+
+					String start = this.method.getAttribute(FncConstants.ATTR_START);			
+					String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
+			
+					if ((start == null) || (limit == null)) {
+						this.sendNotImplemented(ctx);
+						
+					} else {
+
+						try {
+							/*
+							 * JSON response
+							 */
+							String content = responsibilities(source, start, limit, format);
+							sendJSONResponse(content, ctx.getResponse());
+
+						} catch (Exception e) {
+							this.sendBadRequest(ctx, e);
+
+						}
+					
+					}
 				
+				}
+			
+			} else if (type.equals(ClassificationConstants.FNC_ID_Role)) {
+				/* 
+				 * Retrieves all roles that are actually registered 
+				 * to classify a certain community or affiliate
+				 */
+
+				String affiliate = this.method.getAttribute(FncConstants.ATTR_AFFILIATE);
+				String community = this.method.getAttribute(FncConstants.ATTR_COMMUNITY);
+				
+				if ((affiliate == null) || (community == null)) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
+
+					try {
+						/*
+						 * JSON response
+						 */
+						String content = roles(affiliate, community, format);
+						sendJSONResponse(content, ctx.getResponse());
+
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+
+					}
+					
+				}
+
 			}
 
 		}
 		
 	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSubmitRequest(RequestContext ctx) {
 
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+		if (type == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			
+			/*
+			 * Submit request requires data
+			 */
+			String data = this.getRequestData(ctx);
+			if (data == null) {
+				this.sendNotImplemented(ctx);
+				
+			} else {
+
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = submit(type, data);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+
+			}
+			
+		}
+		
+	}
+	
 	/**
 	 * Retrieve all namespaces a certain community or user
 	 * is responsible for
@@ -297,7 +316,7 @@ public class RoleServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 		
-		if (type.equals(FncConstants.FNC_ID_Responsibility)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Responsibility)) {
 
 			/* 
 			 * This request either modifies or sets the responsibility 
@@ -307,7 +326,7 @@ public class RoleServiceImpl extends BusinessImpl {
 			RoleLCM lcm = new RoleLCM(jaxrHandle);
 			content = lcm.submitResponsibility(data);
 
-		} else if (type.equals(FncConstants.FNC_ID_Role)) {
+		} else if (type.equals(ClassificationConstants.FNC_ID_Role)) {
 			
 			/* 
 			 * this request either modifies or sets the roles

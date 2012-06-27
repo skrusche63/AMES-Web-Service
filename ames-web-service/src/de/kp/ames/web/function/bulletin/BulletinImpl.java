@@ -26,6 +26,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -104,7 +105,7 @@ public class BulletinImpl extends BusinessImpl {
 					
 				} else {
 					
-					if (type.equals(FncConstants.FNC_ID_Posting)) {
+					if (type.equals(ClassificationConstants.FNC_ID_Posting)) {
 						
 						String recipient = this.method.getAttribute(FncConstants.ATTR_RECIPIENT);
 						if (recipient == null) {

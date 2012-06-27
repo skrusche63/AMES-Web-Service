@@ -549,6 +549,21 @@ public class JaxrDQM extends JaxrBase {
 	 * Retrieve all registry objects that are members of
 	 * a certain registry package
 	 * 
+	 * @param pid
+	 * @return
+	 * @throws JAXRException
+	 */
+	public List<RegistryObjectImpl> getPackageMembers(String pid) throws JAXRException {
+		
+		String sqlString = JaxrSQL.getSQLPackageMembers(pid);
+	   	return getRegistryObjectsByQuery(sqlString);   	
+		
+	}
+	
+	/**
+	 * Retrieve all registry objects that are members of
+	 * a certain registry package
+	 * 
 	 * @param rp
 	 * @return
 	 * @throws JAXRException 

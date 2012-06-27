@@ -39,8 +39,8 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.core.vocab.VocabDQM;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncSQL;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class RoleDQM extends JaxrDQM {
 
@@ -166,7 +166,7 @@ public class RoleDQM extends JaxrDQM {
 		 * Retrieve all roles actually registered
 		 */
 		VocabDQM vocab = new VocabDQM(jaxrHandle);
-		JSONArray jConcepts = vocab.getConceptsByParent(FncConstants.FNC_ID_Role);
+		JSONArray jConcepts = vocab.getConceptsByParent(ClassificationConstants.FNC_ID_Role);
 
 		/*
 		 * Retrieve affiliation that refers to affiliate & community

@@ -23,7 +23,6 @@ import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -88,7 +87,7 @@ public class DomainServiceImpl extends BusinessImpl {
 				 * Reference to registry package that manages registry objects
 				 * of a certain type
 				 */
-				String parent = this.method.getAttribute(FncConstants.ATTR_PARENT);	
+				String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);	
 
 				try {
 					/*
@@ -118,7 +117,7 @@ public class DomainServiceImpl extends BusinessImpl {
 				 * Reference to registry package that manages registry objects
 				 * of a certain type
 				 */
-				String parent = this.method.getAttribute(FncConstants.ATTR_PARENT);	
+				String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);	
 				String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 				
 				if ((parent == null) || (type == null)) {

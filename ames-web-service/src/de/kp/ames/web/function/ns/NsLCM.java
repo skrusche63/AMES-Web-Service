@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.access;
+package de.kp.ames.web.function.ns;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -37,37 +37,42 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.DomainLCM;
-import de.kp.ames.web.function.domain.model.AccessorObject;
+import de.kp.ames.web.function.domain.model.NamespaceObject;
 import de.kp.ames.web.shared.ClassificationConstants;
 
-public class AccessLCM extends JaxrLCM {
+public class NsLCM extends JaxrLCM {
 
-	public AccessLCM(JaxrHandle jaxrHandle) {
+	/**
+	 * Constructor
+	 * 
+	 * @param jaxrHandle
+	 */
+	public NsLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
 
 	/**
-	 * Submit Accessor
+	 * Submit a certain namespace 
 	 * 
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	public String submitAccessor(String data) throws Exception {
+	public String submitNamespace(String data) throws Exception {
 
 		/*
 		 * Create or retrieve registry package that is 
-		 * responsible for managing accessors
+		 * responsible for managing productors
 		 */
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Accessor);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Namespace);
 		if (list.size() == 0) {
 			/*
 			 * Create container
 			 */
-			container = createAccessorPackage();
+			container = createNamespacePackage();
 			
 		} else {
 			/*
@@ -83,10 +88,10 @@ public class AccessLCM extends JaxrLCM {
 		JaxrTransaction transaction = new JaxrTransaction();
 
 		/*
-		 * Submit AccessorObject
+		 * Submit NamespaceObject
 		 */
-		AccessorObject accessorObject = new AccessorObject(jaxrHandle, this);
-		RegistryObjectImpl ro = accessorObject.submit(data);
+		NamespaceObject namespaceObject = new NamespaceObject(jaxrHandle, this);
+		RegistryObjectImpl ro = namespaceObject.submit(data);
 
 		transaction.addObjectToSave(ro);
 		container.addRegistryObject(ro);
@@ -100,42 +105,42 @@ public class AccessLCM extends JaxrLCM {
 		/*
 		 * Supply reactor
 		 */
-		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Accessor, RAction.C_INDEX_RSS);
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Folder, RAction.C_INDEX_RSS);
 		ReactorImpl.onSubmit(reactorParams);
 
 		/*
 		 * Retrieve response
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.ACCESSOR_CREATED);
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.FOLDER_CREATED);
 		return jResponse.toString();
 		
 	}
 
 	/**
-	 * A helper method to create a new accessor container
+	 * A helper method to create a new namespace container
 	 * 
 	 * @return
 	 * @throws JAXRException
 	 */
-	private RegistryPackageImpl createAccessorPackage() throws JAXRException  {
+	private RegistryPackageImpl createNamespacePackage() throws JAXRException  {
 
 		FncParams params = new FncParams();
 		
 		/*
 		 * Name & description
 		 */
-		params.put(FncParams.K_NAME, "Accessors");
-		params.put(FncParams.K_DESC, FncMessages.ACCESSOR_DESC);
+		params.put(FncParams.K_NAME, "Namespaces");
+		params.put(FncParams.K_DESC, FncMessages.NAMESPACE_DESC);
 		
 		/*
 		 * Prefix
 		 */
-		params.put(FncParams.K_PRE, FncConstants.ACCESSOR_PRE);
+		params.put(FncParams.K_PRE, FncConstants.NAMESPACE_PRE);
 		
 		/*
 		 * Classification
 		 */
-		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Accessor);
+		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Namespace);
 		
 		/*
 		 * Create package
@@ -144,4 +149,5 @@ public class AccessLCM extends JaxrLCM {
 		return lcm.createBusinessPackage(params);
 	
 	}
+
 }

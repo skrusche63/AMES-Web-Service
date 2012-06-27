@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -49,7 +50,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 
 			} else {
 
-				String parent = this.method.getAttribute(FncConstants.ATTR_PARENT);
+				String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);
 
 				try {
 					/*
@@ -109,7 +110,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 		
 		String content = null;
 		
-		if (type.equals(FncConstants.FNC_SYMBOL_ID_APP6B)) {
+		if (type.equals(ClassificationConstants.FNC_SYMBOL_ID_APP6B)) {
 			
 			SymbolDQM dqm = new SymbolDQM();
 			JSONArray jArray = dqm.getAPP6bKeys(parent);
@@ -120,7 +121,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 			String format = FormatConstants.FNC_FORMAT_ID_Tree;
 			content = render(jArray, format);
 			
-		} else if (type.equals(FncConstants.FNC_SYMBOL_ID_Icon)) {
+		} else if (type.equals(ClassificationConstants.FNC_SYMBOL_ID_Icon)) {
 
 			SymbolDQM dqm = new SymbolDQM();
 			JSONArray jArray = dqm.getIconKeys(parent);
@@ -151,7 +152,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 		
 		String content = null;
 
-		if (type.equals(FncConstants.FNC_SYMBOL_ID_APP6B)) {
+		if (type.equals(ClassificationConstants.FNC_SYMBOL_ID_APP6B)) {
 
 			SymbolDQM dqm = new SymbolDQM();
 			JSONArray jArray = dqm.getAPP6bSymbols(item, affiliation, echelon);
@@ -162,7 +163,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 			String format = FormatConstants.FNC_FORMAT_ID_Grid;
 			content = render(jArray, format);
 			
-		} else if (type.equals(FncConstants.FNC_SYMBOL_ID_Icon)) {
+		} else if (type.equals(ClassificationConstants.FNC_SYMBOL_ID_Icon)) {
 
 			SymbolDQM dqm = new SymbolDQM();
 			JSONArray jArray = dqm.getIconSymbols(item);

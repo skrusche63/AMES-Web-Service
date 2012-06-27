@@ -33,12 +33,12 @@ import de.kp.ames.web.core.graphics.GraphicsUtil;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.util.FileUtil;
-import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.dms.cache.DmsDocument;
 import de.kp.ames.web.function.dms.cache.DmsImage;
 import de.kp.ames.web.function.dms.cache.DocumentCacheManager;
 import de.kp.ames.web.function.dms.cache.ImageCacheManager;
 import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class DmsDQM extends JaxrDQM {
 
@@ -64,7 +64,7 @@ public class DmsDQM extends JaxrDQM {
 		/*
 		 * Determine documents
 		 */		
-		List<RegistryObjectImpl> documents = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Document);
+		List<RegistryObjectImpl> documents = getRegistryObjects_ByClasNode(item, ClassificationConstants.FNC_ID_Document);
 
 		/*
 		 * Build JSON representation
@@ -86,7 +86,7 @@ public class DmsDQM extends JaxrDQM {
 		/*
 		 * Determine images
 		 */		
-		List<RegistryObjectImpl> images = getRegistryObjects_ByClasNode(item, FncConstants.FNC_ID_Image);
+		List<RegistryObjectImpl> images = getRegistryObjects_ByClasNode(item, ClassificationConstants.FNC_ID_Image);
 
 		/*
 		 * Build JSON representation

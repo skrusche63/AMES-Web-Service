@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ServiceImpl;
 import org.freebxml.omar.common.CanonicalSchemes;
 import org.json.JSONArray;
@@ -47,6 +48,7 @@ import de.kp.ames.web.function.domain.model.JsonTransformator;
 public class DomainJsonProvider extends JsonProvider {
 
 	private static String EXTRINSIC_OBJECT = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_ExtrinsicObject;
+	private static String REGISTRY_PACKAGE = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_RegistryPackage;
 	private static String SERVICE          = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_Service;
 
 	/**
@@ -362,6 +364,55 @@ public class DomainJsonProvider extends JsonProvider {
 		return new JSONArray(collector.values());
 
 	}
+
+	/**
+	 * A helper method to convert a namespace
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param registryPackage
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONObject getNamespace(JaxrHandle jaxrHandle, RegistryPackageImpl registryPackage) throws Exception {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * A helper method to convert a list of namespaces
+	 * into a JSON representation
+	 * 
+	 * @param jaxrHandle
+	 * @param namespaces
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONArray getNamespaces(JaxrHandle jaxrHandle, List<RegistryObjectImpl> namespaces) throws Exception {
+
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+
+		/*
+		 * Sort result by name of namespace
+		 */
+		StringCollector collector = new StringCollector();
+
+		for (RegistryObjectImpl namespace:namespaces) {
+			
+			String objectType = dqm.getObjectType(namespace);
+			if (objectType.equals(REGISTRY_PACKAGE) == false) continue;
+			
+			RegistryPackageImpl folder = (RegistryPackageImpl)namespace;
+			
+			JSONObject jFolder = getNamespace(jaxrHandle, folder);	
+			collector.put(jFolder.getString(JaxrConstants.RIM_NAME), jFolder);
+			
+		}
+
+		return new JSONArray(collector.values());
+	}
+
+	
 	/**
 	 * A helper method to convert a ProductObject
 	 * into a JSON representation

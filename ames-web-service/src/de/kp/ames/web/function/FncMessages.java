@@ -56,6 +56,11 @@ public class FncMessages extends CoreMessages {
 	public static String ORGANIZATION_UPDATED  = "Organization successfully updated.";
 	
 	/*
+	 * Namespace specific messages
+	 */
+	public static String FOLDER_CREATED = "Namespace folder successfully submitted.";
+	
+	/*
 	 * Transformation specific messages
 	 */
 	public static String EVALUATION_CREATED    = "Evaluation successfully submitted.";
@@ -85,6 +90,7 @@ public class FncMessages extends CoreMessages {
 	public static String IMAGE_DESC         = "This is the top package to manage all submitted images.";
 	public static String LINK_DESC          = "This is the top package to manage all submitted external links.";
 	public static String MAIL_DESC          = "This is the top package to manage all submitted mails.";
+	public static String NAMESPACE_DESC     = "This is the top package to manage all submitted namespaces.";
 	public static String POSTING_DESC       = "This is the top package to manage all submitted postings.";
 	public static String PRODUCT_DESC       = "This is the top package to manage all submitted products.";
 	public static String PRODUCTOR_DESC     = "This is the top package to manage all submitted productors.";

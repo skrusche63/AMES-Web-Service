@@ -38,6 +38,7 @@ import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.DomainLCM;
 import de.kp.ames.web.function.domain.model.TransformatorObject;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class TransformLCM extends JaxrLCM {
 	
@@ -61,7 +62,7 @@ public class TransformLCM extends JaxrLCM {
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Transformator);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Transformator);
 		if (list.size() == 0) {
 			/*
 			 * Create container
@@ -99,7 +100,7 @@ public class TransformLCM extends JaxrLCM {
 		/*
 		 * Supply reactor
 		 */
-		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, FncConstants.FNC_ID_Transformator, RAction.C_INDEX_RSS);
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Transformator, RAction.C_INDEX_RSS);
 		ReactorImpl.onSubmit(reactorParams);
 
 		/*
@@ -134,7 +135,7 @@ public class TransformLCM extends JaxrLCM {
 		/*
 		 * Classification
 		 */
-		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Transformator);
+		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Transformator);
 		
 		/*
 		 * Create package

@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import de.kp.ames.web.core.render.GuiFactory;
 import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.shared.MethodConstants;
 
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
@@ -163,7 +164,7 @@ public class RequestMethod {
 			String limitParam = renderer.getLimitParam();
 			return (this.attributes.containsKey(limitParam)) ? this.attributes.get(limitParam) : null;
 
-		} else if (key.equals(FncConstants.ATTR_PARENT)) {
+		} else if (key.equals(MethodConstants.ATTR_PARENT)) {
 
 			String parentParam = renderer.getParentParam();
 			return (this.attributes.containsKey(parentParam)) ? this.attributes.get(parentParam) : null;

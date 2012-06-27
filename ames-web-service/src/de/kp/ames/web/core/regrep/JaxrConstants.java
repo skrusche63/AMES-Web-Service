@@ -148,6 +148,7 @@ public class JaxrConstants {
 	public static String SLOT_LONGITUDE = "Longitude";
 	public static String SLOT_KEYPASS   = "Keypass";
 	public static String SLOT_MARKUP    = "Markup";
+	public static String SLOT_MIMETYPE  = "Mimetype";
 	public static String SLOT_PORT      = "Port";
 	public static String SLOT_PROTOCOL  = "Protocol";
 	public static String SLOT_RULESET   = "Ruleset";
@@ -156,6 +157,8 @@ public class JaxrConstants {
 	public static String SLOT_SYMBOL    = "Symbol";
 	public static String SLOT_SQL       = "SQL";
 	public static String SLOT_TRACK     = "Track";
+	public static String SLOT_URI       = "Uri";
+	
 	// Cartesic coordinates
 	public static String SLOT_X         = "X";
 	public static String SLOT_Y         = "Y";

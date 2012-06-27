@@ -21,7 +21,7 @@ package de.kp.ames.web.function.access.jdbc;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class DriverRegistry {
 
@@ -45,7 +45,7 @@ public class DriverRegistry {
 	/* 
 	 * An external representation of drivers
 	 */
-	public static String FNC_DRIVER = FncConstants.FNC_ID_Database + ":Driver";
+	public static String FNC_DRIVER = ClassificationConstants.FNC_ID_Database + ":Driver";
 
 	public static String FNC_DB2        = FNC_DRIVER + ":DB2";
 	public static String FNC_DERBY      = FNC_DRIVER + ":DERBY";

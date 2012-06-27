@@ -34,6 +34,7 @@ import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class EvaluationObject extends BusinessObject {
 
@@ -117,7 +118,7 @@ public class EvaluationObject extends BusinessObject {
 		/*
 		 * Classifications
 		 */
-		ClassificationImpl classification = lcm.createClassification(FncConstants.FNC_ID_Evaluation);
+		ClassificationImpl classification = lcm.createClassification(ClassificationConstants.FNC_ID_Evaluation);
 		eo.addClassification(classification);
 		
 		/*

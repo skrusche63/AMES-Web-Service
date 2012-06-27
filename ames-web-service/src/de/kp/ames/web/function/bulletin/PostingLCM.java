@@ -46,6 +46,7 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.DomainLCM;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class PostingLCM extends JaxrLCM {
 
@@ -80,7 +81,7 @@ public class PostingLCM extends JaxrLCM {
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(FncConstants.FNC_ID_Posting);
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Posting);
 		if (list.size() == 0) {
 			/*
 			 * Create container
@@ -147,7 +148,7 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Create classification
 		 */
-		ClassificationImpl c = createClassification(FncConstants.FNC_ID_Posting);
+		ClassificationImpl c = createClassification(ClassificationConstants.FNC_ID_Posting);
 		c.setName(createInternationalString(Locale.US, "Posting Classification"));
 
 		/* 
@@ -194,7 +195,7 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Supply reactor
 		 */
-		ReactorParams reactorParams = new ReactorParams(jaxrHandle, eo, FncConstants.FNC_ID_Posting, RAction.C_INDEX);
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, eo, ClassificationConstants.FNC_ID_Posting, RAction.C_INDEX);
 		ReactorImpl.onSubmit(reactorParams);
 
 		/*
@@ -250,7 +251,7 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Classification
 		 */
-		params.put(FncParams.K_CLAS, FncConstants.FNC_ID_Posting);
+		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Posting);
 		
 		/*
 		 * Create package

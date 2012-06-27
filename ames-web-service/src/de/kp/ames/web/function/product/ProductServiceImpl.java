@@ -35,6 +35,7 @@ import de.kp.ames.web.function.office.OfficeConverter;
 import de.kp.ames.web.function.office.OfficeFactory;
 import de.kp.ames.web.function.transform.XslProcessor;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -140,7 +141,8 @@ public class ProductServiceImpl extends BusinessImpl {
 			
 		}
 		
-	}	
+	}
+	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
 	 */
@@ -357,7 +359,7 @@ public class ProductServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);		
 
-		if (type.equals(FncConstants.FNC_ID_Product)) {
+		if (type.equals(ClassificationConstants.FNC_ID_Product)) {
 			
 			ProductDQM dqm = new ProductDQM(jaxrHandle);
 			JSONArray jArray = dqm.getProducts(item);
@@ -372,7 +374,7 @@ public class ProductServiceImpl extends BusinessImpl {
 				content = render(jArray, start, limit, format);
 			}
 			
-		} else if (type.equals(FncConstants.FNC_ID_Productor)) {
+		} else if (type.equals(ClassificationConstants.FNC_ID_Productor)) {
 
 			ProductDQM dqm = new ProductDQM(jaxrHandle);
 			JSONArray jArray = dqm.getProductors(item);
