@@ -44,7 +44,7 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
  *
  */
-public class JsonRegistryObject extends JsonRegistryEntry {
+public class JsonRegistryObject extends JsonRegistryEntry implements IJsonRegistryObject {
 	
 	/**
 	 * Constructor requires JaxrHandle

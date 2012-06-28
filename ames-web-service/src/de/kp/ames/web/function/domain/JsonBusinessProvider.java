@@ -18,6 +18,7 @@ package de.kp.ames.web.function.domain;
  *
  */
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
@@ -29,27 +30,51 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.domain.JsonCoreProvider;
+import de.kp.ames.web.core.domain.model.IJsonRegistryObject;
 import de.kp.ames.web.core.json.DateCollector;
 import de.kp.ames.web.core.json.StringCollector;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
-import de.kp.ames.web.function.domain.model.JsonAccessor;
-import de.kp.ames.web.function.domain.model.JsonChat;
-import de.kp.ames.web.function.domain.model.JsonDocument;
-import de.kp.ames.web.function.domain.model.JsonEvaluation;
-import de.kp.ames.web.function.domain.model.JsonImage;
-import de.kp.ames.web.function.domain.model.JsonMail;
-import de.kp.ames.web.function.domain.model.JsonProduct;
-import de.kp.ames.web.function.domain.model.JsonProductor;
-import de.kp.ames.web.function.domain.model.JsonReasoner;
-import de.kp.ames.web.function.domain.model.JsonTransformator;
 
 public class JsonBusinessProvider extends JsonCoreProvider {
 
 	private static String EXTRINSIC_OBJECT = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_ExtrinsicObject;
 	private static String REGISTRY_PACKAGE = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_RegistryPackage;
 	private static String SERVICE          = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_Service;
+
+	/**
+	 * A helper method to retrieve a JSON representation
+	 * of a Business Object from the respective object name
+	 * 
+	 * @param jaxrHandle
+	 * @param service
+	 * @param objectName
+	 * @return
+	 */
+	public static JSONObject getBusinessObject(JaxrHandle jaxrHandle, RegistryObjectImpl registryObject, String objectName) throws Exception {
+
+		IJsonRegistryObject jsonRegistryObject = createJsonObjectForName(jaxrHandle, objectName);
+		jsonRegistryObject.set(registryObject);
+
+		return jsonRegistryObject.get();
+
+	}
+
+	/**
+	 * @param jaxrHandle
+	 * @param objectName
+	 * @return
+	 */
+	private static IJsonRegistryObject createJsonObjectForName(JaxrHandle jaxrHandle, String objectName) throws Exception {
+
+		Class<?> clazz = Class.forName(objectName);
+		Constructor<?> constructor = clazz.getConstructor(JaxrHandle.class);
+		
+		Object instance = constructor.newInstance(jaxrHandle);
+		return (IJsonRegistryObject)instance;
+		
+	}
 
 	/**
 	 * A helper method to convert an AccessorObject
@@ -61,12 +86,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getAccessor(JaxrHandle jaxrHandle, ServiceImpl service) throws Exception {
-
-		JsonAccessor jAccessor = new JsonAccessor(jaxrHandle);
-		jAccessor.set(service);
-
-		return jAccessor.get();
-		
+		return getBusinessObject(jaxrHandle, service, "JsonAccessor");
 	}
 
 	/**
@@ -114,12 +134,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getChatMessage(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
-
-		JsonChat jMessage = new JsonChat(jaxrHandle);
-		jMessage.set(extrinsicObject);
-
-		return jMessage.get();
-		
+		return getBusinessObject(jaxrHandle, extrinsicObject, "JsonChat");
 	}
 
 	/**
@@ -166,12 +181,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getDocument(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
-
-		JsonDocument jDocument = new JsonDocument(jaxrHandle);
-		jDocument.set(extrinsicObject);
-
-		return jDocument.get();
-		
+		return getBusinessObject(jaxrHandle, extrinsicObject, "JsonDocument");
 	}
 
 	/**
@@ -218,12 +228,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getEvaluation(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
-
-		JsonEvaluation jEvaluation = new JsonEvaluation(jaxrHandle);
-		jEvaluation.set(extrinsicObject);
-
-		return jEvaluation.get();
-		
+		return getBusinessObject(jaxrHandle, extrinsicObject, "JsonEvaluation");
 	}
 
 	/**
@@ -271,12 +276,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getImage(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
-
-		JsonImage jImage = new JsonImage(jaxrHandle);
-		jImage.set(extrinsicObject);
-
-		return jImage.get();
-		
+		return getBusinessObject(jaxrHandle, extrinsicObject, "JsonImage");
 	}
 
 	/**
@@ -323,12 +323,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getMailMessage(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
-
-		JsonMail jMessage = new JsonMail(jaxrHandle);
-		jMessage.set(extrinsicObject);
-
-		return jMessage.get();
-		
+		return getBusinessObject(jaxrHandle, extrinsicObject, "JsonMail");
 	}
 
 	/**
@@ -375,8 +370,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getNamespace(JaxrHandle jaxrHandle, RegistryPackageImpl registryPackage) throws Exception {
-		// TODO
-		return null;
+		return getBusinessObject(jaxrHandle, registryPackage, "JsonNamespace");
 	}
 
 	/**
@@ -423,12 +417,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getProduct(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
-
-		JsonProduct jProduct = new JsonProduct(jaxrHandle);
-		jProduct.set(extrinsicObject);
-
-		return jProduct.get();
-		
+		return getBusinessObject(jaxrHandle, extrinsicObject, "JsonProduct");
 	}
 	
 	/**
@@ -476,11 +465,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getProductor(JaxrHandle jaxrHandle, ServiceImpl service) throws Exception {
-
-		JsonProductor jProductor = new JsonProductor(jaxrHandle);
-		jProductor.set(service);
-
-		return jProductor.get();
+		return getBusinessObject(jaxrHandle, service, "JsonProductor");
 	}
 
 	/**
@@ -528,12 +513,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getReasoner(JaxrHandle jaxrHandle, ServiceImpl service) throws Exception {
-
-		JsonReasoner jReasoner = new JsonReasoner(jaxrHandle);
-		jReasoner.set(service);
-
-		return jReasoner.get();
-
+		return getBusinessObject(jaxrHandle, service, "JsonReasoner");
 	}
 	
 	/**
@@ -581,11 +561,7 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 * @throws Exception
 	 */
 	public static JSONObject getTransformator(JaxrHandle jaxrHandle, ExtrinsicObjectImpl extrinsicObject) throws Exception {
-
-		JsonTransformator jTransformator = new JsonTransformator(jaxrHandle);
-		jTransformator.set(extrinsicObject);
-
-		return jTransformator.get();
+		return getBusinessObject(jaxrHandle, extrinsicObject, "JsonTransformator");
 	}
 
 	/**
@@ -613,8 +589,8 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 			
 			ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl)transformator;
 			
-			JSONObject jService = getTransformator(jaxrHandle, eo);	
-			collector.put(jService.getString(JaxrConstants.RIM_NAME), jService);
+			JSONObject jTransformator = getTransformator(jaxrHandle, eo);	
+			collector.put(jTransformator.getString(JaxrConstants.RIM_NAME), jTransformator);
 
 			
 		}

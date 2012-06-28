@@ -18,10 +18,25 @@ package de.kp.ames.web.function.domain.model;
  *
  */
 
+import java.util.List;
+
+import javax.activation.DataHandler;
+import javax.xml.registry.JAXRException;
+
+import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
+import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.FncMessages;
+import de.kp.ames.web.function.dms.cache.DmsImage;
+import de.kp.ames.web.function.dms.cache.ImageCacheManager;
 
 public class ImageObject extends BusinessObject {
 
@@ -36,9 +51,82 @@ public class ImageObject extends BusinessObject {
 	 * @return
 	 * @throws Exception
 	 */
-	public RegistryObjectImpl create(String data) throws Exception {
-		// TODO
-		return null;
+	public RegistryObjectImpl create(JSONObject jForm) throws Exception {
+
+		/* 
+		 * Create extrinsic object that serves as a wrapper 
+		 * for the respective image
+		 */
+		// 
+		ExtrinsicObjectImpl eo = jaxrLCM.createExtrinsicObject();
+		if (eo == null) throw new JAXRException("[ImageObject] Creation of ExtrinsicObject failed.");
+		
+		/* 
+		 * Identifier
+		 */
+		String eid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.IMAGE_PRE);
+
+		eo.setLid(eid);
+		eo.getKey().setId(eid);
+
+		/* 
+		 * Home url
+		 */
+		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		eo.setHome(home);
+
+		/* 
+		 * The document is actually transient and managed by the image cache
+		 */
+		
+		ImageCacheManager cacheManager = ImageCacheManager.getInstance();
+		
+		String key = jForm.getString(RIM_ID);
+		DmsImage image = (DmsImage)cacheManager.getFromCache(key);
+		
+		if (image == null) throw new Exception("[ImageObject] Image with id <" + key + "> not found.");
+		
+		/*
+		 * Name & description
+		 */
+		String name = jForm.has(RIM_NAME) ? jForm.getString(RIM_NAME) : null;
+		String desc = jForm.has(RIM_DESC) ? jForm.getString(RIM_DESC) : null;
+
+		name = (name == null) ? image.getName() : name;
+		
+		int pos = name.lastIndexOf(".");
+		if (pos != -1) name = name.substring(0,pos);
+		
+		eo.setName(jaxrLCM.createInternationalString(name));
+		
+		desc = (desc == null) ? FncMessages.NO_DESCRIPTION_DESC : desc;
+		eo.setDescription(jaxrLCM.createInternationalString(desc));
+
+		/*
+		 * Classifications
+		 */
+		JSONArray jClases = jForm.has(RIM_CLAS) ? new JSONArray(jForm.getString(RIM_CLAS)) : null;
+		if (jClases != null) {
+			
+			List<ClassificationImpl> classifications = createClassifications(jClases);			
+			/*
+			 * Set composed object
+			 */
+			eo.addClassifications(classifications);
+			
+		}
+
+		/*
+		 * Mimetype & repository item
+		 */
+		String mimetype = image.getMimetype();				
+		DataHandler handler = new DataHandler(FileUtil.createByteArrayDataSource(image.getBytes(), mimetype));                	
+
+		eo.setMimeType(mimetype);
+		eo.setRepositoryItem(handler);				
+
+		return eo;
+		
 	}
 
 }
