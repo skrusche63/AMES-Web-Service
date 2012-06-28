@@ -26,6 +26,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
+import de.kp.ames.web.core.domain.DomainLCM;
 import de.kp.ames.web.core.reactor.ReactorImpl;
 import de.kp.ames.web.core.reactor.ReactorParams;
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
@@ -36,7 +37,6 @@ import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
-import de.kp.ames.web.function.domain.DomainLCM;
 import de.kp.ames.web.function.domain.model.DocumentObject;
 import de.kp.ames.web.function.domain.model.ImageObject;
 import de.kp.ames.web.shared.ClassificationConstants;
@@ -79,10 +79,10 @@ public class DmsLCM extends JaxrLCM {
 		 * Create DocumentObject
 		 */
 		DocumentObject documentObject = new DocumentObject(jaxrHandle, this);
-		RegistryObjectImpl ro = documentObject.create(data);
+		RegistryObjectImpl ro = documentObject.submit(data);
 
 		transaction.addObjectToSave(ro);		
-		container.addRegistryObject(ro);
+		if (documentObject.isCreated()) container.addRegistryObject(ro);
 
 		/*
 		 * Save objects
@@ -136,10 +136,10 @@ public class DmsLCM extends JaxrLCM {
 		 * Create ImageObject
 		 */
 		ImageObject imageObject = new ImageObject(jaxrHandle, this);
-		RegistryObjectImpl ro = imageObject.create(data);
+		RegistryObjectImpl ro = imageObject.submit(data);
 
 		transaction.addObjectToSave(ro);		
-		container.addRegistryObject(ro);
+		if (imageObject.isCreated()) container.addRegistryObject(ro);
 
 		/*
 		 * Save objects

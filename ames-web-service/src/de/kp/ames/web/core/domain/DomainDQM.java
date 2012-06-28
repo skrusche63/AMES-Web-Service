@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.domain;
+package de.kp.ames.web.core.domain;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -26,7 +26,6 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.domain.JsonProvider;
 import de.kp.ames.web.core.json.StringCollector;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
@@ -89,7 +88,7 @@ public class DomainDQM extends JaxrDQM {
 		 */
 		for (ExternalLinkImpl link:links) {
 
-			JSONObject jLink = JsonProvider.getExternalLink(jaxrHandle, link);	
+			JSONObject jLink = JsonCoreProvider.getExternalLink(jaxrHandle, link);	
 			collector.put(jLink.getString(JaxrConstants.RIM_NAME), jLink);
 
 		}
@@ -147,7 +146,7 @@ public class DomainDQM extends JaxrDQM {
 		 */
 		for (RegistryObjectImpl object:objects) {
 
-			JSONObject jObject = JsonProvider.getRegistryObject(jaxrHandle, object);	
+			JSONObject jObject = JsonCoreProvider.getRegistryObject(jaxrHandle, object);	
 			collector.put(jObject.getString(JaxrConstants.RIM_NAME), jObject);
 
 		}

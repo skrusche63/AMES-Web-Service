@@ -20,6 +20,8 @@ package de.kp.ames.web.core.regrep;
 
 import java.security.SecureRandom;
 
+import de.kp.ames.web.shared.ClassificationConstants;
+
 /**
  * JaxrIdentity is an identity generator for unique
  * identifiers to be assigned to registry objects
@@ -62,9 +64,12 @@ public class JaxrIdentity {
 		return prefix + ":" + newUID();		
 	}
 	
+	/**
+	 * @param fileName
+	 * @return
+	 */
 	public String getXslUID(String fileName) {
-		// TODO
-		return null;
+		return ClassificationConstants.FNC_ID_Transformator + ":" + fileName;
 	}
 	
    /**

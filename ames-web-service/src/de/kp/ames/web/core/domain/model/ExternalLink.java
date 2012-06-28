@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.domain;
+package de.kp.ames.web.core.domain.model;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -19,16 +19,14 @@ package de.kp.ames.web.core.domain;
  */
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 
-public class JsonService extends JsonRegistryObject {
+public class ExternalLink extends CoreObject {
 
-	/**
-	 * Constructor
-	 * 
-	 * @param jaxrHandle
-	 */
-	public JsonService(JaxrHandle jaxrHandle) {
-		super(jaxrHandle);
+	public ExternalLink(JaxrHandle jaxrHandle, JaxrLCM jaxrLCM) {
+		super(jaxrHandle, jaxrLCM);
 	}
 
+	// TODO
+	
 }

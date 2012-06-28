@@ -44,10 +44,10 @@ public class TransformatorObject extends BusinessObject {
 	 * Constructor
 	 * 
 	 * @param handle
-	 * @param lcm
+	 * @param jaxrLCM
 	 */
-	public TransformatorObject(JaxrHandle handle, JaxrLCM lcm) {
-		super(handle, lcm);
+	public TransformatorObject(JaxrHandle handle, JaxrLCM jaxrLCM) {
+		super(handle, jaxrLCM);
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public class TransformatorObject extends BusinessObject {
 		 * for the respective transformator
 		 */
 		// 
-		ExtrinsicObjectImpl eo = lcm.createExtrinsicObject();
+		ExtrinsicObjectImpl eo = jaxrLCM.createExtrinsicObject();
 		if (eo == null) throw new JAXRException("[TransformatorObject] Creation of ExtrinsicObject failed.");
 		
 		/* 
@@ -110,10 +110,10 @@ public class TransformatorObject extends BusinessObject {
 		int pos = name.lastIndexOf(".");
 		if (pos != -1) name = name.substring(0,pos);
 		
-		eo.setName(lcm.createInternationalString(name));
+		eo.setName(jaxrLCM.createInternationalString(name));
 		
 		desc = (desc == null) ? FncMessages.NO_DESCRIPTION_DESC : desc;
-		eo.setDescription(lcm.createInternationalString(desc));
+		eo.setDescription(jaxrLCM.createInternationalString(desc));
 
 		/*
 		 * Classifications

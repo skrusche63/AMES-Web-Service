@@ -39,8 +39,8 @@ import de.kp.ames.web.shared.ClassificationConstants;
 
 public class ChatObject extends BusinessObject {
 
-	public ChatObject(JaxrHandle jaxrHandle, JaxrLCM lcm) {
-		super(jaxrHandle, lcm);
+	public ChatObject(JaxrHandle jaxrHandle, JaxrLCM jaxrLCM) {
+		super(jaxrHandle, jaxrLCM);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class ChatObject extends BusinessObject {
 		 * Create extrinsic object that serves as a wrapper for
 		 * the respective chat message
 		 */
-		eo = lcm.createExtrinsicObject();
+		eo = jaxrLCM.createExtrinsicObject();
 		if (eo == null) throw new JAXRException("[ChatObject] Creation of ExtrinsicObject failed.");
 				
 		/* 
@@ -83,10 +83,10 @@ public class ChatObject extends BusinessObject {
 		 * Name & description using default locale
 		 */
 		String name = jForm.getString(JaxrConstants.RIM_NAME);				
-		eo.setName(lcm.createInternationalString(name));
+		eo.setName(jaxrLCM.createInternationalString(name));
 
 		String desc = jForm.getString(JaxrConstants.RIM_DESC);
-		eo.setDescription(lcm.createInternationalString(desc));
+		eo.setDescription(jaxrLCM.createInternationalString(desc));
 		
 		/* 
 		 * Home url
@@ -108,14 +108,19 @@ public class ChatObject extends BusinessObject {
 		/*
 		 * Create classification
 		 */
-		ClassificationImpl c = lcm.createClassification(ClassificationConstants.FNC_ID_Chat);
-		c.setName(lcm.createInternationalString(Locale.US, "Chat Classification"));
+		ClassificationImpl c = jaxrLCM.createClassification(ClassificationConstants.FNC_ID_Chat);
+		c.setName(jaxrLCM.createInternationalString(Locale.US, "Chat Classification"));
 
 		/* 
 		 * Associate classification and chat message
 		 */
 		eo.addClassification(c);
-		
+
+		/*
+		 * Indicate as created
+		 */
+		this.created = true;
+
 		return eo;
 
 	}

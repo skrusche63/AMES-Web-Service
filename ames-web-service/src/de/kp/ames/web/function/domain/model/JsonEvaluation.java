@@ -28,7 +28,7 @@ import org.freebxml.omar.common.CanonicalSchemes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.domain.JsonExtrinsicObject;
+import de.kp.ames.web.core.domain.model.JsonExtrinsicObject;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 

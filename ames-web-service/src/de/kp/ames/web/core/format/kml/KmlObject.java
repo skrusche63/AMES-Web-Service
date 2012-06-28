@@ -21,6 +21,7 @@ package de.kp.ames.web.core.format.kml;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,6 +36,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.SlotImpl;
 import org.freebxml.omar.common.CanonicalSchemes;
 
@@ -43,9 +45,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import de.kp.ames.web.core.format.StringOutputStream;
-import de.kp.ames.web.core.regrep.JaxrBase;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 
 /**
  * This class is part of the KML layer on top of
@@ -105,9 +107,9 @@ public class KmlObject {
 	private JaxrHandle jaxrHandle;
 	
 	/*
-	 * Reference to Jaxr Base Functionality
+	 * Reference to Jaxr DQM Functionality
 	 */
-	private JaxrBase jaxrBase;
+	private JaxrDQM jaxrDQM;
 
 	/**
 	 * Constructor requires JaxrHandle
@@ -121,9 +123,9 @@ public class KmlObject {
 		this.jaxrHandle = jaxrHandle;
 		
 		/*
-		 * Build accessor to Jaxr base functionality
+		 * Build accessor to Jaxr DQM functionality
 		 */
-		this.jaxrBase = new JaxrBase(jaxrHandle);		
+		this.jaxrDQM = new JaxrDQM(jaxrHandle);		
 	}
 	
 	/**
@@ -200,6 +202,21 @@ public class KmlObject {
 		
 		if (kmlDoc == null) return;
 
+		/*
+		 * Create KML entry from Registry Object
+		 */
+		createKmlEntry(ro);
+
+	}
+	
+	/**
+	 * Create KML entry from Registry Object
+	 * 
+	 * @param ro
+	 * @throws Exception
+	 */
+	private void createKmlEntry(RegistryObjectImpl ro) throws Exception {
+
 		/* 
 		 * Make sure that a certain placemark is not created twice
 		 */
@@ -208,7 +225,7 @@ public class KmlObject {
 		/*
 		 * Associations are not supported
 		 */
-		String objectType = jaxrBase.getObjectType(ro);
+		String objectType = jaxrDQM.getObjectType(ro);
 		if (objectType.equals(ASSOCIATION)) return;
 
 		/*
@@ -225,7 +242,10 @@ public class KmlObject {
 
 		if (objectType.equals(REGISTRY_PACKAGE)) {
 
-			// TODO
+			List<RegistryObjectImpl> members = jaxrDQM.getPackageMembers((RegistryPackageImpl)ro);
+			for (RegistryObjectImpl member:members) {
+				createKmlEntry(member);
+			}
 			
 		}
 
@@ -344,7 +364,7 @@ public class KmlObject {
 		
     	Element nameElem = kmlDoc.createElementNS(KML_NS, KML_PRE + ":" + NAME_TAG);
 
-		String name = jaxrBase.getName(ro);
+		String name = jaxrDQM.getName(ro);
 		nameElem.setTextContent(name);
 		
 		return nameElem;
@@ -362,7 +382,7 @@ public class KmlObject {
 		
     	Element descElem = kmlDoc.createElementNS(KML_NS, KML_PRE + ":" + DESCRIPTION_TAG);
 
-		String description = jaxrBase.getDescription(ro);
+		String description = jaxrDQM.getDescription(ro);
 		descElem.setTextContent(description);
 		
 		return descElem;
@@ -472,7 +492,7 @@ public class KmlObject {
 		/* 
 		 * type 
 		 */
-		extendedDataElem.appendChild(createDataElem(TYPE_TAG, jaxrBase.getObjectType(ro)));
+		extendedDataElem.appendChild(createDataElem(TYPE_TAG, jaxrDQM.getObjectType(ro)));
 
 		/* 
 		 * track

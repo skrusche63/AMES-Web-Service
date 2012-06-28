@@ -38,8 +38,8 @@ import de.kp.ames.web.shared.ClassificationConstants;
 
 public class EvaluationObject extends BusinessObject {
 
-	public EvaluationObject(JaxrHandle jaxrHandle, JaxrLCM lcm) {
-		super(jaxrHandle, lcm);
+	public EvaluationObject(JaxrHandle jaxrHandle, JaxrLCM jaxrLCM) {
+		super(jaxrHandle, jaxrLCM);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class EvaluationObject extends BusinessObject {
 		 * for the respective evaluation
 		 */
 		// 
-		ExtrinsicObjectImpl eo = lcm.createExtrinsicObject();
+		ExtrinsicObjectImpl eo = jaxrLCM.createExtrinsicObject();
 		if (eo == null) throw new JAXRException("[EvaluationObject] Creation of ExtrinsicObject failed.");
 
 		/* 
@@ -90,8 +90,8 @@ public class EvaluationObject extends BusinessObject {
 		String dtime = jForm.getString(RIM_DATE);
 		name = name.trim() + ", " + dtime.trim();
 
-		eo.setName(lcm.createInternationalString(name));
-		eo.setDescription(lcm.createInternationalString(desc));
+		eo.setName(jaxrLCM.createInternationalString(name));
+		eo.setDescription(jaxrLCM.createInternationalString(desc));
 		
 		/*
 		 * Associations
@@ -100,25 +100,25 @@ public class EvaluationObject extends BusinessObject {
 		/*
 		 * Build directed graph between evaluation and its source
 		 */
-		RegistryObjectImpl sourceObject = lcm.getRegistryObjectById(source);
+		RegistryObjectImpl sourceObject = jaxrLCM.getRegistryObjectById(source);
 		if (sourceObject == null) throw new JAXRException("[EvaluationObject] RegistryObject with id <." + source + "> does not exist.");
 		
-		AssociationImpl sourceAssociation = lcm.createAssociation_RelatedTo(sourceObject);
+		AssociationImpl sourceAssociation = jaxrLCM.createAssociation_RelatedTo(sourceObject);
 		eo.addAssociation(sourceAssociation);
 
 		/*
 		 * Build directed graph between evaluation and its reasoner
 		 */
-		RegistryObjectImpl reasonerObject = lcm.getRegistryObjectById(reasoner);
+		RegistryObjectImpl reasonerObject = jaxrLCM.getRegistryObjectById(reasoner);
 		if (reasonerObject == null) throw new JAXRException("[EvaluationObject] RegistryObject with id <." + reasoner + "> does not exist.");
 		
-		AssociationImpl reasonerAssociation = lcm.createAssociation_RelatedTo(reasonerObject);
+		AssociationImpl reasonerAssociation = jaxrLCM.createAssociation_RelatedTo(reasonerObject);
 		eo.addAssociation(reasonerAssociation);
 
 		/*
 		 * Classifications
 		 */
-		ClassificationImpl classification = lcm.createClassification(ClassificationConstants.FNC_ID_Evaluation);
+		ClassificationImpl classification = jaxrLCM.createClassification(ClassificationConstants.FNC_ID_Evaluation);
 		eo.addClassification(classification);
 		
 		/*
@@ -131,6 +131,11 @@ public class EvaluationObject extends BusinessObject {
 
 		DataHandler handler = new DataHandler(FileUtil.createByteArrayDataSource(bytes, mimetype));                	
     	eo.setRepositoryItem(handler);				
+
+    	/*
+		 * Indicate as created
+		 */
+		this.created = true;
 
 		return eo;
 

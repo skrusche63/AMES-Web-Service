@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.domain;
+package de.kp.ames.web.core.domain.model;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *

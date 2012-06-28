@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.domain;
+package de.kp.ames.web.core.domain.model;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -22,7 +22,6 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import javax.xml.registry.JAXRException;
@@ -31,7 +30,6 @@ import org.freebxml.omar.client.xml.registry.infomodel.AuditableEventImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ConceptImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.SlotImpl;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -198,38 +196,6 @@ public class JsonRegistryObject extends JsonRegistryEntry {
 		return jArray;
 		
 	}
-
-    /**
-     * A helper method to retrieve the slots of a
-     * certain registry object as a JSONObject
-     * 
-     * @param ro
-     * @return
-     * @throws JAXRException
-     * @throws JSONException
-     */
-    private JSONObject getSlots(RegistryObjectImpl ro) throws JAXRException, JSONException {
-
-    	JSONObject jSlot = new JSONObject();
-    	
-    	List<SlotImpl> slots = jaxrBase.getSlotList(ro);
-    	for (SlotImpl slot:slots) {
-
-			String name = slot.getName();				
-			
-			/*
-			 * A single slot value is supported
-			 */
-			Object[] values = slot.getValues().toArray();
-			String value = (values.length > 0) ? (String)values[0] : "";
-
-			jSlot.put(name, value);
-			
-    	}
-    	
-    	return jSlot;
-    	
-    }
 
 }
 

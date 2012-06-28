@@ -24,7 +24,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.domain.JsonProvider;
+import de.kp.ames.web.core.domain.JsonCoreProvider;
 import de.kp.ames.web.core.json.StringCollector;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
@@ -63,7 +63,7 @@ public class UserDQM extends JaxrDQM {
 		 */
 		for (UserImpl user:users) {
 
-			JSONObject jUser = JsonProvider.getUser(jaxrHandle, user);	
+			JSONObject jUser = JsonCoreProvider.getUser(jaxrHandle, user);	
 			collector.put(jUser.getString(JaxrConstants.RIM_NAME), jUser);
 
 		}

@@ -25,7 +25,7 @@ import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
-import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.function.domain.JsonBusinessProvider;
 import de.kp.ames.web.shared.ClassificationConstants;
 
 public class TransformDQM extends JaxrDQM {
@@ -57,6 +57,6 @@ public class TransformDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getTransformators(jaxrHandle, productors);
+		return JsonBusinessProvider.getTransformators(jaxrHandle, productors);
 	}
 }

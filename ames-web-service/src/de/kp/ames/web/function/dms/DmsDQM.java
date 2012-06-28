@@ -37,7 +37,7 @@ import de.kp.ames.web.function.dms.cache.DmsDocument;
 import de.kp.ames.web.function.dms.cache.DmsImage;
 import de.kp.ames.web.function.dms.cache.DocumentCacheManager;
 import de.kp.ames.web.function.dms.cache.ImageCacheManager;
-import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.function.domain.JsonBusinessProvider;
 import de.kp.ames.web.shared.ClassificationConstants;
 
 public class DmsDQM extends JaxrDQM {
@@ -69,7 +69,7 @@ public class DmsDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getDocuments(jaxrHandle, documents);
+		return JsonBusinessProvider.getDocuments(jaxrHandle, documents);
 		
 	}
 
@@ -91,7 +91,7 @@ public class DmsDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getImages(jaxrHandle, images);
+		return JsonBusinessProvider.getImages(jaxrHandle, images);
 		
 	}
 

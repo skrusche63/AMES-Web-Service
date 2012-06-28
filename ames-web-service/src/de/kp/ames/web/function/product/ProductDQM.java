@@ -31,7 +31,7 @@ import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.util.FileUtil;
-import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.function.domain.JsonBusinessProvider;
 import de.kp.ames.web.shared.ClassificationConstants;
 
 public class ProductDQM extends JaxrDQM {
@@ -101,7 +101,7 @@ public class ProductDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getProducts(jaxrHandle, products);
+		return JsonBusinessProvider.getProducts(jaxrHandle, products);
 		
 	}
 	
@@ -123,7 +123,7 @@ public class ProductDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getProductors(jaxrHandle, productors);
+		return JsonBusinessProvider.getProductors(jaxrHandle, productors);
 
 	}
 

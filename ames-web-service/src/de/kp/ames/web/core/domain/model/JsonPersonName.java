@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.domain;
+package de.kp.ames.web.core.domain.model;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -20,54 +20,50 @@ package de.kp.ames.web.core.domain;
 
 import javax.xml.registry.JAXRException;
 
-import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.PersonNameImpl;
 import org.json.JSONException;
 
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 
-public class JsonTelephoneNumber extends JsonRegistryEntry {
+public class JsonPersonName extends JsonRegistryEntry {
 
 	/**
 	 * Constructor
 	 * 
 	 * @param jaxrHandle
 	 */
-	public JsonTelephoneNumber(JaxrHandle jaxrHandle) {
+	public JsonPersonName(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
 
 	/**
-	 * Convert TelephoneNUmber into JSON object
+	 * Convert PersonName into JSON object
      *
-	 * @param telephoneNumber
+	 * @param personName
 	 * @throws JAXRException
 	 * @throws JSONException
 	 */
-	public void set(TelephoneNumberImpl telephoneNumber) throws JAXRException, JSONException {
+	public void set(PersonNameImpl personName) throws JAXRException, JSONException {
 
-		/*
-		 * Country code
-		 */
-		String countryCode = telephoneNumber.getCountryCode();
-		put(JaxrConstants.RIM_COUNTRY_CODE, countryCode);
-		
-		/*
-		 * Area code
-		 */
-		String areaCode = telephoneNumber.getAreaCode();
-		put(JaxrConstants.RIM_AREA_CODE, areaCode);
+	   	/* 
+	   	 * Convert first name
+	   	 */
+	   	String firstName = personName.getFirstName();
+	   	put(JaxrConstants.RIM_FIRST_NAME, firstName);
 
-		/*
-		 * Phone number
-		 */
-		String phoneNumber = telephoneNumber.getNumber();
-		put(JaxrConstants.RIM_PHONE_NUMBER, phoneNumber);
+	   	/* 
+	   	 * Convert middle name
+	   	 */
+	   	String middleName = personName.getMiddleName();
+	   	put(JaxrConstants.RIM_MIDDLE_NAME, middleName);
 
-		String extension = telephoneNumber.getExtension();
-		put(JaxrConstants.RIM_PHONE_EXTENSION, extension);
-
+	   	/* 
+	   	 * Convert last name
+	   	 */
+	   	String lastName = personName.getLastName();
+	   	put(JaxrConstants.RIM_LAST_NAME, lastName);
+ 
 	}
-
 
 }

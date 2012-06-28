@@ -41,32 +41,11 @@ public class ServiceObject extends BusinessObject {
 	 * Constructor
 	 * 
 	 * @param jaxrHandle
-	 * @param lcm
+	 * @param jaxrLCM
 	 */
-	public ServiceObject(JaxrHandle jaxrHandle, JaxrLCM lcm) {
-		super(jaxrHandle, lcm);
+	public ServiceObject(JaxrHandle jaxrHandle, JaxrLCM jaxrLCM) {
+		super(jaxrHandle, jaxrLCM);
 	}
-	
-	public RegistryObjectImpl submit(String data) throws Exception {
-
-		/*
-		 * Initialize data
-		 */
-		JSONObject jForm = new JSONObject(data);
-		
-		/*
-		 * Unique identifier
-		 */
-		String item = jForm.has(RIM_ID) ? jForm.getString(RIM_ID) : null;
-		if (item == null) {
-			return create(jForm);
-		
-		} else {
-			return update(jForm);
-		}
-		
-	}
-	
 	
 	/**
 	 * Create ServiceObject
@@ -96,7 +75,7 @@ public class ServiceObject extends BusinessObject {
 	 * @return
 	 * @throws Exception
 	 */
-	private RegistryObjectImpl create(JSONObject jForm) throws Exception {
+	public RegistryObjectImpl create(JSONObject jForm) throws Exception {
 
 		/*
 		 * Create SpecificationLink instances
@@ -111,16 +90,16 @@ public class ServiceObject extends BusinessObject {
 			String uid   = jSpecification.getString(RIM_ID);
 			String seqNo = jSpecification.getString(RIM_SEQNO);
 
-			RegistryObjectImpl ro = lcm.getRegistryObjectById(uid);
+			RegistryObjectImpl ro = jaxrLCM.getRegistryObjectById(uid);
 			if (ro == null) throw new Exception("[ServiceObject] RegistryObject with id <" + uid + "> does not exist.");
 			
 			/* 
 			 * Create a new specification link
 			 */
-			SpecificationLinkImpl specificationLink = lcm.createSpecificationLink();
+			SpecificationLinkImpl specificationLink = jaxrLCM.createSpecificationLink();
 			if (specificationLink == null) throw new Exception("[ServiceObject] Creation of SpecificationLink failed.");
 
-			SlotImpl slot = lcm.createSlot(JaxrConstants.SLOT_SEQNO, seqNo, JaxrConstants.SLOT_TYPE);
+			SlotImpl slot = jaxrLCM.createSlot(JaxrConstants.SLOT_SEQNO, seqNo, JaxrConstants.SLOT_TYPE);
 			specificationLink.addSlot(slot);
 			
 			specificationLink.setSpecificationObject(ro);			
@@ -134,7 +113,7 @@ public class ServiceObject extends BusinessObject {
 		ServiceBindingImpl serviceBinding = null;
 		if (specificationLinks.isEmpty() == false) {
 
-			serviceBinding = lcm.createServiceBinding();	
+			serviceBinding = jaxrLCM.createServiceBinding();	
 			serviceBinding.addSpecificationLinks(specificationLinks);
 		
 		}
@@ -142,9 +121,9 @@ public class ServiceObject extends BusinessObject {
 		/* 
 		 * Create Service instance
 		 */		
-		ServiceImpl service = lcm.createService(jForm.getString(RIM_NAME));
+		ServiceImpl service = jaxrLCM.createService(jForm.getString(RIM_NAME));
 		
-		if (jForm.has(RIM_DESC)) service.setDescription(lcm.createInternationalString(jForm.getString(RIM_DESC)));				
+		if (jForm.has(RIM_DESC)) service.setDescription(jaxrLCM.createInternationalString(jForm.getString(RIM_DESC)));				
 		service.setHome(jaxrHandle.getEndpoint().replace("/soap", ""));
 
 		if (serviceBinding != null) service.addServiceBinding(serviceBinding);
@@ -177,6 +156,11 @@ public class ServiceObject extends BusinessObject {
 		
 		}
 			
+		/*
+		 * Indicate as created
+		 */
+		this.created = true;
+		
 		return service;
 
 	}
@@ -209,14 +193,14 @@ public class ServiceObject extends BusinessObject {
 	 * @return
 	 * @throws Exception
 	 */
-	private RegistryObjectImpl update(JSONObject jForm) throws Exception {
+	public RegistryObjectImpl update(JSONObject jForm) throws Exception {
 
 		/* 
 		 * Determine service from unique identifier
 		 */
 		String sid = jForm.getString(RIM_ID);
 		
-		ServiceImpl service = (ServiceImpl)lcm.getRegistryObjectById(sid);
+		ServiceImpl service = (ServiceImpl)jaxrLCM.getRegistryObjectById(sid);
 		if (service == null) throw new Exception("[ServiceObject] RegistryObject with id <" + sid + "> does not exist.");
 
 		/* 
@@ -238,16 +222,16 @@ public class ServiceObject extends BusinessObject {
 			String uid   = jSpecification.getString(RIM_ID);
 			String seqNo = jSpecification.getString(RIM_SEQNO);
 
-			RegistryObjectImpl ro = lcm.getRegistryObjectById(uid);
+			RegistryObjectImpl ro = jaxrLCM.getRegistryObjectById(uid);
 			if (ro == null) throw new Exception("[ServiceObject] RegistryObject with id <" + uid + "> does not exist.");
 			
 			/* 
 			 * Create a new specification link
 			 */
-			SpecificationLinkImpl specificationLink = lcm.createSpecificationLink();
+			SpecificationLinkImpl specificationLink = jaxrLCM.createSpecificationLink();
 			if (specificationLink == null) throw new Exception("[ServiceObject] Creation of SpecificationLink failed.");
 
-			SlotImpl slot = lcm.createSlot(JaxrConstants.SLOT_SEQNO, seqNo, JaxrConstants.SLOT_TYPE);
+			SlotImpl slot = jaxrLCM.createSlot(JaxrConstants.SLOT_SEQNO, seqNo, JaxrConstants.SLOT_TYPE);
 			specificationLink.addSlot(slot);
 			
 			specificationLink.setSpecificationObject(ro);			
@@ -261,7 +245,7 @@ public class ServiceObject extends BusinessObject {
 		ServiceBindingImpl serviceBinding = null;
 		if (specificationLinks.isEmpty() == false) {
 
-			serviceBinding = lcm.createServiceBinding();	
+			serviceBinding = jaxrLCM.createServiceBinding();	
 			serviceBinding.addSpecificationLinks(specificationLinks);
 		
 		}
@@ -269,8 +253,8 @@ public class ServiceObject extends BusinessObject {
 		/* 
 		 * Name & description
 		 */
-		if (jForm.has(RIM_NAME)) service.setName(lcm.createInternationalString(jForm.getString(RIM_NAME)));
-		if (jForm.has(RIM_DESC)) service.setDescription(lcm.createInternationalString(jForm.getString(RIM_DESC)));				
+		if (jForm.has(RIM_NAME)) service.setName(jaxrLCM.createInternationalString(jForm.getString(RIM_NAME)));
+		if (jForm.has(RIM_DESC)) service.setDescription(jaxrLCM.createInternationalString(jForm.getString(RIM_DESC)));				
 
 		/* 
 		 * Update slots
@@ -285,6 +269,11 @@ public class ServiceObject extends BusinessObject {
 			service.addSlots(slots);
 		
 		}
+
+		/*
+		 * Indicate as updated
+		 */
+		this.created = false;
 
 		return service;
 

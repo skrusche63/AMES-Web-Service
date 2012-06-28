@@ -32,7 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.domain.JsonConstants;
-import de.kp.ames.web.core.domain.JsonProvider;
+import de.kp.ames.web.core.domain.JsonCoreProvider;
 import de.kp.ames.web.core.json.DateCollector;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
@@ -79,7 +79,7 @@ public class RoleDQM extends JaxrDQM {
 		if (namespaces.size() == 0) return new JSONArray();
 		
 		for (RegistryObjectImpl namespace:namespaces) {
-			JSONObject jNamespace = JsonProvider.getRelated(jaxrHandle, namespace);
+			JSONObject jNamespace = JsonCoreProvider.getRefObject(jaxrHandle, namespace);
 
 			Date lastModified = getLastModified(namespace);
 			collector.put(lastModified, jNamespace);

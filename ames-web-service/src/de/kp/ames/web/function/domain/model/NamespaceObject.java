@@ -31,10 +31,10 @@ public class NamespaceObject extends BusinessObject {
 	 * Constructor
 	 * 
 	 * @param jaxrHandle
-	 * @param lcm
+	 * @param jaxrLCM
 	 */
-	public NamespaceObject(JaxrHandle jaxrHandle, JaxrLCM lcm) {
-		super(jaxrHandle, lcm);
+	public NamespaceObject(JaxrHandle jaxrHandle, JaxrLCM jaxrLCM) {
+		super(jaxrHandle, jaxrLCM);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class NamespaceObject extends BusinessObject {
 	 * @return
 	 * @throws Exception
 	 */
-	private RegistryObjectImpl create(JSONObject jForm) throws Exception {
+	public RegistryObjectImpl create(JSONObject jForm) throws Exception {
 		// TODO
 		return null;
 	}
@@ -125,14 +125,14 @@ public class NamespaceObject extends BusinessObject {
 	 * @return
 	 * @throws Exception
 	 */
-	private RegistryObjectImpl update(JSONObject jForm) throws Exception {
+	public RegistryObjectImpl update(JSONObject jForm) throws Exception {
 
 		/* 
 		 * Determine service from unique identifier
 		 */
 		String nid = jForm.getString(RIM_ID);
 		
-		RegistryPackageImpl folder = (RegistryPackageImpl)lcm.getRegistryObjectById(nid);
+		RegistryPackageImpl folder = (RegistryPackageImpl)jaxrLCM.getRegistryObjectById(nid);
 		if (folder == null) throw new Exception("[NamespaceObject] RegistryObject with id <" + nid + "> does not exist.");
 	
 		// TODO

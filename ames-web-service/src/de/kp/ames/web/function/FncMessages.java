@@ -75,10 +75,10 @@ public class FncMessages extends CoreMessages {
 	public static String USER_UPDATED = "User successfully updated.";
 
 	/*
-	 * Registry object specific messages
+	 * Core object specific messages
 	 */
-	public static String EXTERNAL_LINK_CREATED   = "External Link successfully submitted.";
-	public static String REGISTRY_OBJECT_DELETED = "Registry Object sucessfully deleted.";
+	public static String CORE_OBJECT_CREATED = "Core Object successfully submitted.";
+	public static String CORE_OBJECT_DELETED = "Core Object sucessfully deleted.";
 
 	/*
 	 * Top pacakge descriptions

@@ -152,6 +152,30 @@ public class JaxrSQL {
 
 	/************************************************************************
 	 * 
+	 * CALLER     CALLER     CALLER     CALLER     CALLER     CALLER 
+	 * 
+	 ***********************************************************************/
+
+	/**
+	 * Retrieve all registry objects that are affected by the
+	 * caller's user by providing a classification node
+	 * 
+	 * @param cn
+	 * @return
+	 */
+	public static String getSQLCallerObject_ByClasNode(String cn) {
+
+		StringBuffer sb = new StringBuffer();
+			
+		sb.append("SELECT DISTINCT ro.* from RegistryObject ro, AffectedObject ao, AuditableEvent ae, Classification clas WHERE ae.user_ = $currentUser");
+		sb.append(" AND ao.id=ro.id AND ao.eventId=ae.id AND clas.classifiedObject=ro.id AND clas.classificationNode='" + cn + "'");
+		
+		return sb.toString(); 
+		
+	}
+	
+	/************************************************************************
+	 * 
 	 * CLASSIFICATIONS     CLASSIFICATIONS     CLASSIFICATIONS 
 	 * 
 	 ***********************************************************************/
@@ -719,4 +743,41 @@ public class JaxrSQL {
 
 	}
 
+	/**
+	 * Retrieve all registry objects that are affected
+	 * by a certain user
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public static String getSQLUserObjects(String user) {
+
+		StringBuffer query = new StringBuffer();
+		
+		query.append("SELECT DISTINCT ro.* from RegistryObject ro, AffectedObject ao, AuditableEvent ae WHERE ae.user_ = '" + user + "'");
+		query.append(" AND ao.id=ro.id AND ao.eventId=ae.id");
+		
+		return query.toString(); 
+	
+	}
+
+	/**
+	 * Retrieve all registry objects that are affected
+	 * by a certain user and classified by a specific
+	 * classification node
+	 * 
+	 * @param user
+	 * @param cn
+	 * @return
+	 */
+	public static String getSQLUserObjects_ByClasNode(String user, String cn) {
+
+		StringBuffer query = new StringBuffer();
+		
+		query.append("SELECT DISTINCT ro.* from RegistryObject ro, AffectedObject ao, AuditableEvent ae, Classification clas WHERE ae.user_ = '" + user + "'");
+		query.append(" AND ao.id=ro.id AND ao.eventId=ae.id AND clas.classifiedObject=ro.id AND clas.classificationNode='" + cn + "'");
+		
+		return query.toString(); 
+	
+	}
 }

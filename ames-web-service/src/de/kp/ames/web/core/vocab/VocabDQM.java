@@ -54,7 +54,7 @@ public class VocabDQM extends JaxrDQM {
 		
 		StringCollector collector = new StringCollector();
 		
-		List<ConceptImpl> concepts =getClassificationNodes_ByParent(conceptType);
+		List<ConceptImpl> concepts = getClassificationNodes_ByParent(conceptType);
 		if (concepts == null) return new JSONArray();
 		
 		for (ConceptImpl concept:concepts) {

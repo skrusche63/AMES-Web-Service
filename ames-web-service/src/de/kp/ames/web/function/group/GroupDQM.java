@@ -24,7 +24,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.OrganizationImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.domain.JsonProvider;
+import de.kp.ames.web.core.domain.JsonCoreProvider;
 import de.kp.ames.web.core.json.StringCollector;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
@@ -84,7 +84,7 @@ public class GroupDQM extends JaxrDQM {
 		 */
 		for (OrganizationImpl organization:organizations) {
 
-			JSONObject jOrganization = JsonProvider.getOrganization(jaxrHandle, organization);	
+			JSONObject jOrganization = JsonCoreProvider.getOrganization(jaxrHandle, organization);	
 			collector.put(jOrganization.getString(JaxrConstants.RIM_NAME), jOrganization);
 
 		}

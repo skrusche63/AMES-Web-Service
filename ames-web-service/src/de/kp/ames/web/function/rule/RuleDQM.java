@@ -24,7 +24,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONArray;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
-import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.function.domain.JsonBusinessProvider;
 import de.kp.ames.web.shared.ClassificationConstants;
 
 public class RuleDQM extends JaxrDQM {
@@ -52,7 +52,7 @@ public class RuleDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getEvaluations(jaxrHandle, evaluations);
+		return JsonBusinessProvider.getEvaluations(jaxrHandle, evaluations);
 
 	}
 
@@ -74,7 +74,7 @@ public class RuleDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getReasoners(jaxrHandle, reasoners);
+		return JsonBusinessProvider.getReasoners(jaxrHandle, reasoners);
 	
 	}
 

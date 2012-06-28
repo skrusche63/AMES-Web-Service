@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.domain;
+package de.kp.ames.web.core.domain;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,31 +18,29 @@ package de.kp.ames.web.function.domain;
  *
  */
 
+import java.lang.reflect.Constructor;
 import java.util.Locale;
 
 import javax.xml.registry.JAXRException;
 
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.ExternalLinkImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.ServiceImpl;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.regrep.JaxrConstants;
+import de.kp.ames.web.core.domain.model.ICoreObject;
+import de.kp.ames.web.core.reactor.ReactorImpl;
+import de.kp.ames.web.core.reactor.ReactorParams;
+import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
+import de.kp.ames.web.shared.ClassificationConstants;
 
 public class DomainLCM extends JaxrLCM {
-
-	/*
-	 * Registry object
-	 */
-	private static String RIM_ID = JaxrConstants.RIM_ID;
 	
 	public DomainLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
@@ -70,7 +68,7 @@ public class DomainLCM extends JaxrLCM {
 		/*
 		 * Retrieve response
 		 */
-		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.REGISTRY_OBJECT_DELETED);
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.CORE_OBJECT_DELETED);
 		return jResponse.toString();
 		
 	}
@@ -84,58 +82,29 @@ public class DomainLCM extends JaxrLCM {
 	 * @throws Exception
 	 */
 	public String submitExternalLink(String parent, String data) throws Exception {
-			
+		
 		/*
 		 * Initialize transaction
 		 */
 		JaxrTransaction transaction = new JaxrTransaction();
-		transaction.setData(data);
 
 		/*
-		 * Retrieve parent package
+		 * Submit ExternalLink
 		 */
-		RegistryPackageImpl container = (RegistryPackageImpl)getRegistryObjectById(parent);
-		if (container == null) throw new Exception("[DomainLCM] Containing registry package for id <" + parent + "> does not exist.");
+		RegistryObjectImpl ro = submitCoreObject(parent, data, "ExternalLink", transaction);
 
 		/*
-		 * Determine whether registry object exists
+		 * Supply reactor
 		 */
-		RegistryObjectImpl ro = getObject(transaction);
-		if (ro == null) {
-			/*
-			 * create request (note, that the created
-			 * object is added to the transaction within
-			 * the subsequent method call
-			 */
-			ro = createExternalLink(transaction);
-
-			/*
-			 * Allocate external link to container
-			 */
-			container.addRegistryObject(ro);
-			transaction.addObjectToSave(container);
-			
-		} else {
-			/*
-			 * update request (it is expected that the
-			 * respective object is already attached to
-			 * a top registry package)
-			 */
-			ro = updateExternalLink((ExternalLinkImpl)ro, transaction);
-
-		}
-
-		/*
-		 * Save objects	
-		 */
-		saveObjects(transaction.getObjectsToSave(), false, false);
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Link, RAction.C_INDEX_RSS);
+		ReactorImpl.onSubmit(reactorParams);
 		
 		/*
 		 * Get response
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.EXTERNAL_LINK_CREATED);
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.CORE_OBJECT_CREATED);
 		return jResponse.toString();
-
+		
 	}
 
 	/**
@@ -147,54 +116,103 @@ public class DomainLCM extends JaxrLCM {
 	 * @throws Exception
 	 */
 	public String submitRegistryPackage(String parent, String data) throws Exception {
-		// TODO
-		return null;
+		
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+
+		/*
+		 * Submit ExternalLink
+		 */
+		RegistryObjectImpl ro = submitCoreObject(parent, data, "RegistryPackage", transaction);
+
+		/*
+		 * Supply reactor
+		 */
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Package, RAction.C_INDEX_RSS);
+		ReactorImpl.onSubmit(reactorParams);
+		
+		/*
+		 * Get response
+		 */
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.CORE_OBJECT_CREATED);
+		return jResponse.toString();
+
 	}
-	
+
 	/**
-	 * A helper method to determine whether a referenced
-	 * registry object exists or not
-	 * 
-	 * @param jForm
+	 * @param uid
 	 * @return
 	 * @throws Exception
 	 */
-	private RegistryObjectImpl getObject(JaxrTransaction transaction) throws Exception {
-		
+	public RegistryPackageImpl getContainer(String uid) throws Exception {
 		/*
-		 * Determine unique identifier from JSON Object
+		 * Retrieve parent package
 		 */
-		JSONObject jForm = transaction.getData();
-		if (jForm.has(RIM_ID) == false) return null;
+		RegistryPackageImpl container = (RegistryPackageImpl)getRegistryObjectById(uid);
+		if (container == null) throw new Exception("[DomainLCM] Containing registry package for id <" + uid + "> does not exist.");
 
-		String uid = jForm.getString(RIM_ID);
-		return getRegistryObjectById(uid);
+		return container;
 		
 	}
 	
-	private ExternalLinkImpl createExternalLink(JaxrTransaction transaction) throws Exception {
-		// TODO
+	private ICoreObject createObjectForName(String objectName) {
+
+		try {
+
+			Class<?> clazz = Class.forName(objectName);
+			Constructor<?> constructor = clazz.getConstructor(JaxrHandle.class, JaxrLCM.class);
+			
+			Object instance = constructor.newInstance(jaxrHandle, this);
+			return (ICoreObject)instance;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		
+		} finally {}
+		
 		return null;
+		
 	}
 	
-	private RegistryPackageImpl createRegistryPackage(JaxrTransaction transction) throws Exception {
-		// TODO
-		return null;
-	}
+	/**
+	 * A helper method to submit a selected CoreObject
+	 * by object name
+	 * 
+	 * @param parent
+	 * @param data
+	 * @param objectName
+	 * @return
+	 * @throws Exception
+	 */
+	private RegistryObjectImpl submitCoreObject(String parent, String data, String objectName, JaxrTransaction transaction) throws Exception {
 
-	private ServiceImpl createService(JaxrTransaction transaction) {
-		// TODO
-		return null;
-	}
-	
-	private ExternalLinkImpl updateExternalLink(ExternalLinkImpl el, JaxrTransaction transaction) throws Exception {
-		// TODO
-		return null;
-	}
+		/*
+		 * Retrieve parent package
+		 */
+		RegistryPackageImpl container = getContainer(parent);
 
-	private RegistryPackageImpl updateRegistryPackage(RegistryPackageImpl rp, JaxrTransaction transaction) throws Exception {
-		// TODO
-		return null;
+		/*
+		 * Submit CoreObject
+		 */
+		ICoreObject coreObject = createObjectForName(objectName);
+		RegistryObjectImpl ro = coreObject.submit(data);
+
+		transaction.addObjectToSave(ro);
+		if (coreObject.isCreated()) container.addRegistryObject(ro);
+
+		/*
+		 * Save objects
+		 */
+		transaction.addObjectToSave(container);
+		saveObjects(transaction.getObjectsToSave(), false, false);
+
+		/*
+		 * Return registry object
+		 */
+		return ro;
+		
 	}
 
 	/**

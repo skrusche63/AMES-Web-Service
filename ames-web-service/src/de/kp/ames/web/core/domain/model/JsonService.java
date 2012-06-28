@@ -1,4 +1,4 @@
-package de.kp.ames.web.function.domain.model;
+package de.kp.ames.web.core.domain.model;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -18,12 +18,16 @@ package de.kp.ames.web.function.domain.model;
  *
  */
 
-import de.kp.ames.web.core.domain.model.JsonExtrinsicObject;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 
-public class JsonChat extends JsonExtrinsicObject {
+public class JsonService extends JsonRegistryObject {
 
-	public JsonChat(JaxrHandle jaxrHandle) {
+	/**
+	 * Constructor
+	 * 
+	 * @param jaxrHandle
+	 */
+	public JsonService(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
 

@@ -27,7 +27,7 @@ import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
-import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.function.domain.JsonBusinessProvider;
 import de.kp.ames.web.shared.ClassificationConstants;
 
 public class AccessDQM extends JaxrDQM {
@@ -51,7 +51,7 @@ public class AccessDQM extends JaxrDQM {
 		ServiceImpl accessor = (ServiceImpl)getRegistryObjectById(item);
 		if (accessor == null) throw new Exception("[AccessDQM] Accessor with id <" + item + "> does not exist.");
 		
-		return DomainJsonProvider.getAccessor(jaxrHandle, accessor);
+		return JsonBusinessProvider.getAccessor(jaxrHandle, accessor);
 		
 	}
 	
@@ -73,7 +73,7 @@ public class AccessDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getAccessors(jaxrHandle, accessors);
+		return JsonBusinessProvider.getAccessors(jaxrHandle, accessors);
 
 	}
 

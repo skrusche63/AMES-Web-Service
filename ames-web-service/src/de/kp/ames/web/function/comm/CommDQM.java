@@ -32,7 +32,7 @@ import org.json.JSONObject;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.util.FileUtil;
-import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.function.domain.JsonBusinessProvider;
 import de.kp.ames.web.shared.ClassificationConstants;
 
 public class CommDQM extends JaxrDQM {
@@ -65,7 +65,7 @@ public class CommDQM extends JaxrDQM {
 			/*
 			 * Build JSON representation
 			 */
-			return DomainJsonProvider.getChatMessages(jaxrHandle, messages);
+			return JsonBusinessProvider.getChatMessages(jaxrHandle, messages);
 			
 		} else {
 			/*
@@ -105,7 +105,7 @@ public class CommDQM extends JaxrDQM {
 			/*
 			 * Build JSON representation
 			 */
-			return DomainJsonProvider.getMailMessages(jaxrHandle, messages);
+			return JsonBusinessProvider.getMailMessages(jaxrHandle, messages);
 			
 		} else {
 			/*

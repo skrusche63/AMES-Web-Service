@@ -32,6 +32,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.GlobalConstants;
+import de.kp.ames.web.core.domain.DomainLCM;
 import de.kp.ames.web.core.reactor.ReactorParams;
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 import de.kp.ames.web.core.reactor.ReactorImpl;
@@ -45,7 +46,6 @@ import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
-import de.kp.ames.web.function.domain.DomainLCM;
 import de.kp.ames.web.shared.ClassificationConstants;
 
 public class PostingLCM extends JaxrLCM {

@@ -1,4 +1,4 @@
-package de.kp.ames.web.core.domain;
+package de.kp.ames.web.core.domain.model;
 /**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
@@ -22,26 +22,26 @@ import java.util.Locale;
 
 import javax.xml.registry.JAXRException;
 
-import org.freebxml.omar.client.xml.registry.infomodel.AssociationImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONException;
 
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 
-public class JsonAssociation extends JsonRegistryObject {
+public class JsonExtrinsicObject extends JsonRegistryObject {
 
-    /**
-     * Constructor
-     * 
-     * @param jaxrHandle
-     */
-    public JsonAssociation(JaxrHandle jaxrHandle) {
+	/**
+	 * Constructor
+	 * 
+	 * @param jaxrHandle
+	 */
+	public JsonExtrinsicObject(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
 
 	/**
-     * Convert association into JSON object
+     * Convert extrinsic object into JSON object
      * 
      * @param ro
      * @param locale
@@ -58,22 +58,16 @@ public class JsonAssociation extends JsonRegistryObject {
     	super.set(ro, locale);
     	
     	/*
-    	 * Convert association specific information
+    	 * Convert extrinsic object specific information
     	 */
-    	AssociationImpl as = (AssociationImpl)ro;
+    	ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl)ro;
     	
     	/*
-    	 * Source object
+    	 * Mimetype
     	 */
-    	String soid = as.getSourceObject().getKey().getId();
-    	put(JaxrConstants.RIM_SOURCE, soid);
-    	
-    	/*
-    	 * Target object
-    	 */
-    	String toid = as.getTargetObject().getKey().getId();
-    	put(JaxrConstants.RIM_TARGET, toid);
-    	
+		String mimeType = eo.getMimeType();    		
+		put(JaxrConstants.RIM_MIME, mimeType);
+   	
     }
 
 }

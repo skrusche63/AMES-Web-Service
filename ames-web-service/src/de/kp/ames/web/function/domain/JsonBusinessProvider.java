@@ -28,7 +28,7 @@ import org.freebxml.omar.common.CanonicalSchemes;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.domain.JsonProvider;
+import de.kp.ames.web.core.domain.JsonCoreProvider;
 import de.kp.ames.web.core.json.DateCollector;
 import de.kp.ames.web.core.json.StringCollector;
 import de.kp.ames.web.core.regrep.JaxrConstants;
@@ -45,7 +45,7 @@ import de.kp.ames.web.function.domain.model.JsonProductor;
 import de.kp.ames.web.function.domain.model.JsonReasoner;
 import de.kp.ames.web.function.domain.model.JsonTransformator;
 
-public class DomainJsonProvider extends JsonProvider {
+public class JsonBusinessProvider extends JsonCoreProvider {
 
 	private static String EXTRINSIC_OBJECT = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_ExtrinsicObject;
 	private static String REGISTRY_PACKAGE = CanonicalSchemes.CANONICAL_OBJECT_TYPE_ID_RegistryPackage;

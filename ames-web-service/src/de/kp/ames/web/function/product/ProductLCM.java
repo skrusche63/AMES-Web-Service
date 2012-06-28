@@ -27,6 +27,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
+import de.kp.ames.web.core.domain.DomainLCM;
 import de.kp.ames.web.core.reactor.ReactorImpl;
 import de.kp.ames.web.core.reactor.ReactorParams;
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
@@ -37,7 +38,6 @@ import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
-import de.kp.ames.web.function.domain.DomainLCM;
 import de.kp.ames.web.function.domain.model.ProductObject;
 import de.kp.ames.web.function.domain.model.ProductorObject;
 import de.kp.ames.web.shared.ClassificationConstants;
@@ -161,7 +161,7 @@ public class ProductLCM extends JaxrLCM {
 		RegistryObjectImpl ro = productorObject.submit(data);
 
 		transaction.addObjectToSave(ro);
-		container.addRegistryObject(ro);
+		if (productorObject.isCreated()) container.addRegistryObject(ro);
 
 		/*
 		 * Save objects

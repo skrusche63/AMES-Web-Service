@@ -28,7 +28,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONArray;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
-import de.kp.ames.web.function.domain.DomainJsonProvider;
+import de.kp.ames.web.function.domain.JsonBusinessProvider;
 import de.kp.ames.web.shared.ClassificationConstants;
 
 public class NsDQM extends JaxrDQM {
@@ -81,7 +81,7 @@ public class NsDQM extends JaxrDQM {
 		/*
 		 * Build JSON representation
 		 */
-		return DomainJsonProvider.getNamespaces(jaxrHandle, folders);
+		return JsonBusinessProvider.getNamespaces(jaxrHandle, folders);
 		
 	}
 

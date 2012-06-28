@@ -38,8 +38,8 @@ import de.kp.ames.web.shared.ClassificationConstants;
 
 public class ProductObject extends BusinessObject {
 	
-	public ProductObject(JaxrHandle jaxrHandle, JaxrLCM lcm) {
-		super(jaxrHandle, lcm);
+	public ProductObject(JaxrHandle jaxrHandle, JaxrLCM jaxrLCM) {
+		super(jaxrHandle, jaxrLCM);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class ProductObject extends BusinessObject {
 		 * for the respective product
 		 */
 		// 
-		ExtrinsicObjectImpl eo = lcm.createExtrinsicObject();
+		ExtrinsicObjectImpl eo = jaxrLCM.createExtrinsicObject();
 		if (eo == null) throw new JAXRException("[ProductObject] Creation of ExtrinsicObject failed.");
 
 		/* 
@@ -88,13 +88,13 @@ public class ProductObject extends BusinessObject {
 		String dtime = jForm.getString(RIM_DATE);
 		name = name.trim() + ", " + dtime.trim();
 
-		eo.setName(lcm.createInternationalString(name));
-		eo.setDescription(lcm.createInternationalString(desc));
+		eo.setName(jaxrLCM.createInternationalString(name));
+		eo.setDescription(jaxrLCM.createInternationalString(desc));
 
 		/*
 		 * Classifications
 		 */
-		ClassificationImpl classification = lcm.createClassification(ClassificationConstants.FNC_ID_Product);
+		ClassificationImpl classification = jaxrLCM.createClassification(ClassificationConstants.FNC_ID_Product);
 		eo.addClassification(classification);
 		
 		/*
@@ -107,6 +107,11 @@ public class ProductObject extends BusinessObject {
 
 		DataHandler handler = new DataHandler(FileUtil.createByteArrayDataSource(bytes, mimetype));                	
     	eo.setRepositoryItem(handler);				
+
+    	/*
+		 * Indicate as created
+		 */
+		this.created = true;
 
 		return eo;
 		
