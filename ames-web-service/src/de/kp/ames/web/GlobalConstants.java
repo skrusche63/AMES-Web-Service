@@ -74,11 +74,8 @@ public class GlobalConstants {
 	public static String ATTR_KEYPASS 	= "ames.attr.keypass";
 	public static String ATTR_LIMIT   	= "ames.attr.limit";
 	public static String ATTR_QUERY     = "ames.attr.query";
-	public static String ATTR_RECIPIENT = "ames.attr.recipient";
 	public static String ATTR_REQUEST 	= "ames.attr.request";
-	public static String ATTR_SERVICE 	= "ames.attr.service";
 	public static String ATTR_START   	= "ames.attr.start";
-	public static String ATTR_TARGET    = "ames.attr.target";
 	public static String ATTR_URI     	= "ames.attr.uri";
 
 	public static String ATTR_AFFILIATION = "ames.attr.affiliation";

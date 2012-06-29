@@ -43,127 +43,91 @@ public class GroupServiceImpl extends BusinessImpl {
 			/*
 			 * Call delete method
 			 */
-			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
-			if (type == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				/*
-				 * Delete request requires data
-				 */
-				String data = this.getRequestData(ctx);
-				if (data == null) {
-					this.sendNotImplemented(ctx);
-					
-				} else {
-					
-					try {
-						/*
-						 * JSON response
-						 */
-						String content = delete(type, data);
-						sendJSONResponse(content, ctx.getResponse());
-
-					} catch (Exception e) {
-						this.sendBadRequest(ctx, e);
-
-					}
-					
-				}
-				
-			}
+			doDeleteRequest(ctx);
 
 		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
 			 */
-			String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
-			String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
-
-			if ((format == null) || (type == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-
-				if (type.equals(ClassificationConstants.FNC_ID_Category)) {
-
-					String start = this.method.getAttribute(FncConstants.ATTR_START);			
-					String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
+			doGetRequest(ctx);
 			
-					if ((start == null) || (limit == null)) {
-						this.sendNotImplemented(ctx);
-						
-					} else {
-
-						/* 
-						 * Retrieve all categories that are actually registered 
-						 * to classify a certain community of interest
-						 */
-
-						try {
-							String content = categories(start, limit, format);
-							sendJSONResponse(content, ctx.getResponse());
-
-						} catch (Exception e) {
-							this.sendBadRequest(ctx, e);
-
-						}
-						
-					}
-					
-				} else if (type.equals(ClassificationConstants.FNC_ID_Community)) {
-					
-					/*
-					 * Retrieve communities of interest, either
-					 * all registered ones or those, that refer
-					 * to a certain affiliate
-					 */
-					String affiliate = this.method.getAttribute(FncConstants.ATTR_AFFILIATE);
-					
-					try {
-						String content = communities(affiliate, format);
-						sendJSONResponse(content, ctx.getResponse());
-
-					} catch (Exception e) {
-						this.sendBadRequest(ctx, e);
-
-					}
-
-				}
-				
-			}
-
 		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {
 			/*
 			 * Call submit method
 			 */
-			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
-			if (type == null) {
+			doSubmitRequest(ctx);
+			
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDeleteRequest(RequestContext ctx) {
+		
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+		if (type == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			
+			/*
+			 * Delete request requires data
+			 */
+			String data = this.getRequestData(ctx);
+			if (data == null) {
 				this.sendNotImplemented(ctx);
 				
 			} else {
 				
-				/*
-				 * Submit request requires data
-				 */
-				String data = this.getRequestData(ctx);
-				if (data == null) {
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = delete(type, data);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+				
+			}
+			
+		}		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+
+		if ((format == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			if (type.equals(ClassificationConstants.FNC_ID_Category)) {
+
+				String start = this.method.getAttribute(FncConstants.ATTR_START);			
+				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
+		
+				if ((start == null) || (limit == null)) {
 					this.sendNotImplemented(ctx);
 					
 				} else {
 
 					/* 
-					 * 'item' is an optional parameter that refers to an already
-					 * existing registry object referenced by this submission
+					 * Retrieve all categories that are actually registered 
+					 * to classify a certain community of interest
 					 */
-					String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);	
-					
+
 					try {
-						/*
-						 * JSON response
-						 */
-						String content = submit(type, item, data);
+						String content = categories(start, limit, format);
 						sendJSONResponse(content, ctx.getResponse());
 
 					} catch (Exception e) {
@@ -173,10 +137,71 @@ public class GroupServiceImpl extends BusinessImpl {
 					
 				}
 				
+			} else if (type.equals(ClassificationConstants.FNC_ID_Community)) {
+				
+				/*
+				 * Retrieve communities of interest, either
+				 * all registered ones or those, that refer
+				 * to a certain affiliate (source)
+				 */
+				String affiliate = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+				
+				try {
+					String content = communities(affiliate, format);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+
 			}
 			
 		}
 		
+	}
+		
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSubmitRequest(RequestContext ctx) {
+		
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+		if (type == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			
+			/*
+			 * Submit request requires data
+			 */
+			String data = this.getRequestData(ctx);
+			if (data == null) {
+				this.sendNotImplemented(ctx);
+				
+			} else {
+
+				/* 
+				 * 'item' is an optional parameter that refers to an already
+				 * existing registry object referenced by this submission
+				 */
+				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);	
+				
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = submit(type, item, data);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+				
+			}
+			
+		}		
 	}
 
 	/**
@@ -212,7 +237,7 @@ public class GroupServiceImpl extends BusinessImpl {
 		return content;
 		
 	}
-
+	
 	/**
 	 * Retrieve registered communities 
 	 * 

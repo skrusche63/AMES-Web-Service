@@ -32,7 +32,9 @@ import org.json.JSONObject;
 import de.kp.ames.web.core.json.JsonUtil;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
+import de.kp.ames.web.function.FncConstants;
 
 public class CoreObject implements ICoreObject {
 
@@ -63,6 +65,7 @@ public class CoreObject implements ICoreObject {
 	protected static String RIM_ID    = JaxrConstants.RIM_ID;
 	protected static String RIM_NAME  = JaxrConstants.RIM_NAME;
 	protected static String RIM_SLOT  = JaxrConstants.RIM_SLOT;
+	protected static String RIM_URI   = JaxrConstants.RIM_URI;
 
 	public CoreObject(JaxrHandle jaxrHandle, JaxrLCM jaxrLCM) {
 	
@@ -128,6 +131,111 @@ public class CoreObject implements ICoreObject {
 	}
 
 	/**
+	 * Create metadata for a certain registry object
+	 * 
+	 * @param registryObject
+	 * @param jForm
+	 * @param prefix
+	 * @throws Exception
+	 */
+	public void createMetadata(RegistryObjectImpl registryObject, JSONObject jForm, String prefix) throws Exception {
+
+		/* 
+		 * Identifier
+		 */
+		String oid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.CORE_PRE);
+
+		registryObject.setLid(oid);
+		registryObject.getKey().setId(oid);
+
+		/* 
+		 * Home url
+		 */
+		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		registryObject.setHome(home);
+
+		/*
+		 * Description
+		 */
+		String desc = jForm.getString(RIM_DESC);
+		registryObject.setDescription(jaxrLCM.createInternationalString(desc));
+
+		/*
+		 * Classifications
+		 */
+		JSONArray jClases = jForm.has(RIM_CLAS) ? new JSONArray(jForm.getString(RIM_CLAS)) : null;
+		if (jClases != null) {
+			
+			List<ClassificationImpl> classifications = createClassifications(jClases);			
+			/*
+			 * Set composed object
+			 */
+			registryObject.addClassifications(classifications);
+			
+		}
+		
+		/* 
+		 * Slots
+		 */
+		JSONObject jSlots = jForm.has(RIM_SLOT) ? new JSONObject(jForm.getString(RIM_SLOT)) : null;
+		if (jSlots != null) {
+
+			List<SlotImpl> slots = createSlots(jSlots);
+			/*
+			 * Set composed object
+			 */
+			registryObject.addSlots(slots);
+		
+		}
+
+	}
+
+	/**
+	 * Update metadata for a certain registry object
+	 * 
+	 * @param registryObject
+	 * @param jForm
+	 * @throws Exception
+	 */
+	public void updateMetadata(RegistryObjectImpl registryObject, JSONObject jForm) throws Exception {
+		
+		/* 
+		 * Name & description
+		 */
+		if (jForm.has(RIM_NAME)) registryObject.setName(jaxrLCM.createInternationalString(jForm.getString(RIM_NAME)));
+		if (jForm.has(RIM_DESC)) registryObject.setDescription(jaxrLCM.createInternationalString(jForm.getString(RIM_DESC)));				
+
+		/*
+		 * Classifications
+		 */
+		JSONArray jClases = jForm.has(RIM_CLAS) ? new JSONArray(jForm.getString(RIM_CLAS)) : null;
+		if (jClases != null) {
+			
+			List<ClassificationImpl> classifications = updateClassifications(registryObject, jClases);			
+			/*
+			 * Set composed object
+			 */
+			registryObject.addClassifications(classifications);
+			
+		}
+
+		/* 
+		 * Update slots
+		 */
+		JSONObject jSlots = jForm.has(RIM_SLOT) ? new JSONObject(jForm.getString(RIM_SLOT)) : null;
+		if (jSlots != null) {
+
+			List<SlotImpl> slots = updateSlots(registryObject, jSlots);
+			/*
+			 * Set composed object
+			 */
+			registryObject.addSlots(slots);
+		
+		}
+		
+	}
+	
+	/**
 	 * @return
 	 */
 	public boolean isCreated() {
@@ -148,6 +256,21 @@ public class CoreObject implements ICoreObject {
 		
 	}
 
+	/**
+	 * Update classifications from a JSONArray
+	 * 
+	 * @param registryObject
+	 * @param jClases
+	 * @return
+	 * @throws Exception
+	 */
+	protected List<ClassificationImpl> updateClassifications(RegistryObjectImpl registryObject, JSONArray jClases) throws Exception {
+
+		ArrayList<String> conceptTypes = JsonUtil.getStringArray(jClases);
+		return jaxrLCM.updateClassifications(registryObject, conceptTypes);
+	
+	}
+	
 	/**
 	 * Create slots from JSONObject
 	 * 
@@ -181,12 +304,12 @@ public class CoreObject implements ICoreObject {
 	/**
 	 * Update slots for existing RegistryObject from JSONObject
 	 * 
-	 * @param ro
+	 * @param registryObject
 	 * @param jSlots
 	 * @return
 	 * @throws Exception
 	 */
-	public List<SlotImpl> updateSlots(RegistryObjectImpl ro, JSONObject jSlots) throws Exception {
+	public List<SlotImpl> updateSlots(RegistryObjectImpl registryObject, JSONObject jSlots) throws Exception {
 
 		/*
 		 * Reference to slots that MUST be created
@@ -200,7 +323,7 @@ public class CoreObject implements ICoreObject {
 			String key = keys.next();
 			String value = jSlots.getString(key);
 
-			SlotImpl slot = (SlotImpl)ro.getSlot(key);
+			SlotImpl slot = (SlotImpl)registryObject.getSlot(key);
 			if (slot == null) {
 				
 				slot = jaxrLCM.createSlot(key, value, JaxrConstants.SLOT_TYPE);

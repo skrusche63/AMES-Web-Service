@@ -66,7 +66,7 @@ public class SecurityImpl extends BusinessImpl {
 			/*
 			 * Call getCreds method
 			 */
-			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);
+			String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);
 			if (service == null) {
 				this.sendNotImplemented(ctx);
 				
@@ -88,7 +88,7 @@ public class SecurityImpl extends BusinessImpl {
 			/*
 			 * Call setCreds method
 			 */
-			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);
+			String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);
 
 			/* 
 			 * Retrieve credentials from POST request
@@ -177,7 +177,7 @@ public class SecurityImpl extends BusinessImpl {
 				/*
 				 * Get credentials for a certain service
 				 */
-				String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);
+				String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);
 				if (service == null) {
 					this.sendNotImplemented(ctx);
 					

@@ -41,49 +41,39 @@ public class UserServiceImpl extends BusinessImpl {
 			/*
 			 * Call get method
 			 */
-			String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
-	
-			if (format == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				/* 
-				 * Retrieve all users that are affiliated to a certain community (source)
-				 */
-				String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
-				if (source == null) {
-					this.sendNotImplemented(ctx);
-					
-				} else {
-
-					try {
-						String content = users(source, format);
-						sendJSONResponse(content, ctx.getResponse());
-
-					} catch (Exception e) {
-						this.sendBadRequest(ctx, e);
-
-					}
-					
-				}
-				
-			}
-
+			doGetRequest(ctx);
+			
 		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {
 			/*
 			 * Call submit method
 			 */
-			String data = this.getRequestData(ctx);
-			if (data == null) {
+			doSubmitRequest(ctx);
+			
+		}
+
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
+		if (format == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			/* 
+			 * Retrieve all users that are affiliated to a certain community (source)
+			 */
+			String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+			if (source == null) {
 				this.sendNotImplemented(ctx);
 				
 			} else {
 
 				try {
-					/*
-					 * JSON response
-					 */
-					String content = submit(data);
+					String content = users(source, format);
 					sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -94,9 +84,36 @@ public class UserServiceImpl extends BusinessImpl {
 			}
 			
 		}
-
+		
 	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSubmitRequest(RequestContext ctx) {
 
+		String data = this.getRequestData(ctx);
+		if (data == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = submit(data);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
+		
+	}
+	
 	/**
 	 * Retrieve all users that are affiliated to 
 	 * a certain community of interest

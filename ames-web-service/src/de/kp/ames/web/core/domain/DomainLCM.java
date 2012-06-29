@@ -157,6 +157,10 @@ public class DomainLCM extends JaxrLCM {
 		
 	}
 	
+	/**
+	 * @param objectName
+	 * @return
+	 */
 	private ICoreObject createObjectForName(String objectName) {
 
 		try {

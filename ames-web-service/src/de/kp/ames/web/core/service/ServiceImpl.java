@@ -66,6 +66,14 @@ public class ServiceImpl implements Service {
 	}
 
 	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.Service#doDeleteRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDeleteRequest(RequestContext ctx) {
+		// This method must be overridden by derived
+		// Service classes		
+	}
+
+	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.Service#doDownloadRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doDownloadRequest(RequestContext ctx) {

@@ -125,6 +125,11 @@ public class ImageObject extends BusinessObject {
 		eo.setMimeType(mimetype);
 		eo.setRepositoryItem(handler);				
 
+		/*
+		 * Indicate as created
+		 */
+		this.created = true;
+
 		return eo;
 		
 	}

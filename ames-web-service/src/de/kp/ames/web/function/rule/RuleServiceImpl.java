@@ -47,76 +47,37 @@ public class RuleServiceImpl extends BusinessImpl {
 			/*
 			 * Call apply method
 			 */
-			String source  = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
-			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);			
-
-			if ((source == null) || (service == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				String data = this.getRequestData(ctx);
-				if (data == null) {
-					this.sendNotImplemented(ctx);
-					
-				} else {
-
-					try {
-						/*
-						 * JSON response
-						 */
-						String content = apply(source, service, data);
-						sendJSONResponse(content, ctx.getResponse());
-
-					} catch (Exception e) {
-						this.sendBadRequest(ctx, e);
-
-					}
-					
-				}
-
-			}
+			doApplyRequest(ctx);
 
 		} else if (methodName.equals(MethodConstants.METH_GET)) {
+			/*
+			 * Call get method
+			 */
+			doGetRequest(ctx);
 
-			String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
-			String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
-
-			if ((format == null) || (type == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-
-				/*
-				 * Reference to single object (Format: Object)
-				 */
-				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
-				
-				/*
-				 * Format: Grid
-				 */
-				String start = this.method.getAttribute(FncConstants.ATTR_START);
-				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
-
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = get(type, item, start, limit, format);
-					sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-
-			}
-
-		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {
-			
+		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {			
 			/*
 			 * Call submit method
 			 */
+			doSubmitRequest(ctx);
+			
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doApplyRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doApplyRequest(RequestContext ctx) {
+
+		String source  = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+		String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);			
+
+		if ((source == null) || (service == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			
 			String data = this.getRequestData(ctx);
 			if (data == null) {
 				this.sendNotImplemented(ctx);
@@ -127,7 +88,7 @@ public class RuleServiceImpl extends BusinessImpl {
 					/*
 					 * JSON response
 					 */
-					String content = submit(data);
+					String content = apply(source, service, data);
 					sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -140,7 +101,74 @@ public class RuleServiceImpl extends BusinessImpl {
 		}
 		
 	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
 
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+
+		if ((format == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			/*
+			 * Reference to single object (Format: Object)
+			 */
+			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+			
+			/*
+			 * Format: Grid
+			 */
+			String start = this.method.getAttribute(FncConstants.ATTR_START);
+			String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = getJSONResponse(type, item, start, limit, format);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+
+		}
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSubmitRequest(RequestContext ctx) {
+
+		String data = this.getRequestData(ctx);
+		if (data == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = submit(data);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
+		
+	}
+	
 	/**
 	 * Apply ruleset (service) to a certain registry object (source)
 	 * and register result in an OASIS ebXML RegRep
@@ -201,7 +229,7 @@ public class RuleServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String get(String type, String item, String start, String limit, String format) throws Exception {
+	private String getJSONResponse(String type, String item, String start, String limit, String format) throws Exception {
 
 		String content = null;
 		

@@ -45,6 +45,14 @@ public interface Service {
 
 	/**
 	 * The main method to process a Http request that
+	 * refers to a DELETE method
+	 * 
+	 * @param ctx
+	 */
+	public void doDeleteRequest(RequestContext ctx);
+
+	/**
+	 * The main method to process a Http request that
 	 * refers to a DOWNLOAD method
 	 * 
 	 * @param ctx

@@ -85,7 +85,7 @@ public class ProductServiceImpl extends BusinessImpl {
 	public void doApplyRequest(RequestContext ctx) {
 		
 		String source  = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
-		String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);			
+		String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);			
 
 		if ((source == null) || (service == null)) {
 			this.sendNotImplemented(ctx);

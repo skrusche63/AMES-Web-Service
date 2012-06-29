@@ -62,7 +62,7 @@ public class NsLCM extends JaxrLCM {
 
 		/*
 		 * Create or retrieve registry package that is 
-		 * responsible for managing productors
+		 * responsible for managing namespaces
 		 */
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);

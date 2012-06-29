@@ -51,30 +51,8 @@ public class TransformServiceImpl extends BusinessImpl {
 			/*
 			 * Call apply method
 			 */
-			String service = this.method.getAttribute(FncConstants.ATTR_SERVICE);			
-
-			String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
-			String target = this.method.getAttribute(FncConstants.ATTR_TARGET);
-
-			if ((source == null) || (target == null) || (service == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-
-				try {
-					/*
-					 * In case of a successful transformation
-					 */
-					String content = apply(source, target, service);
-					sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
-		
+			doApplyRequest(ctx);
+			
 		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
@@ -86,6 +64,37 @@ public class TransformServiceImpl extends BusinessImpl {
 			 * Call submit method
 			 */
 			doSubmitRequest(ctx);
+			
+		}
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doApplyRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doApplyRequest(RequestContext ctx) {
+
+		String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);			
+
+		String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+		String target = this.method.getAttribute(MethodConstants.ATTR_TARGET);
+
+		if ((source == null) || (target == null) || (service == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * In case of a successful transformation
+				 */
+				String content = apply(source, target, service);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
 			
 		}
 		

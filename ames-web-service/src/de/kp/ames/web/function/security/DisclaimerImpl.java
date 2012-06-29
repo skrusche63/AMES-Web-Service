@@ -20,6 +20,7 @@ package de.kp.ames.web.function.security;
 
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class DisclaimerImpl extends BusinessImpl {
 
@@ -34,7 +35,23 @@ public class DisclaimerImpl extends BusinessImpl {
 	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.core.RequestContext)
 	 */
 	public void processRequest(RequestContext ctx) {	
+
+		String methodName = this.method.getName();
+		if (methodName.equals(MethodConstants.METH_GET)) {
+			/*
+			 * Call get method
+			 */
+			doGetRequest(ctx);
 		
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+		// TODO
 	}
 
 }

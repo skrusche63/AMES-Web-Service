@@ -30,10 +30,11 @@ public class FncConstants {
 	public static String AFFILIATION_PRE;
 	public static String CHAT_PRE;
 	public static String COMMUNITY_PRE;
+	public static String CORE_PRE;
 	public static String DOCUMENT_PRE;
 	public static String EVALUATION_PRE;
+	public static String FOLDER_PRE;
 	public static String IMAGE_PRE;
-	public static String LINK_PRE;
 	public static String MAIL_PRE;
 	public static String NAMESPACE_PRE;
 	public static String POSTING_PRE;
@@ -52,10 +53,7 @@ public class FncConstants {
 	public static String ATTR_ENDPOINT;
 	public static String ATTR_KEYPASS;
 	public static String ATTR_LIMIT;
-	public static String ATTR_RECIPIENT;
-	public static String ATTR_SERVICE;
 	public static String ATTR_START;
-	public static String ATTR_TARGET;
 	public static String ATTR_URI;
 
 	public static String ATTR_AFFILIATION;
@@ -82,10 +80,11 @@ public class FncConstants {
 		AFFILIATION_PRE   = basePrefix + ":affiliation";
 		CHAT_PRE          = basePrefix + ":chat";
 		COMMUNITY_PRE     = basePrefix + ":community";
+		CORE_PRE          = basePrefix + ":core";
 		DOCUMENT_PRE      = basePrefix + ":document";
 		EVALUATION_PRE    = basePrefix + ":evaluation";
+		FOLDER_PRE        = basePrefix + ":folder";
 		IMAGE_PRE         = basePrefix + ":image";
-		LINK_PRE          = basePrefix + ":link";
 		MAIL_PRE          = basePrefix + ":mail";
 		NAMESPACE_PRE     = basePrefix + ":namespace";
 		POSTING_PRE       = basePrefix + ":posting";
@@ -104,10 +103,7 @@ public class FncConstants {
 		ATTR_ENDPOINT  = bundle.getString(GlobalConstants.ATTR_ENDPOINT);
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
 		ATTR_LIMIT     = bundle.getString(GlobalConstants.ATTR_LIMIT);		
-		ATTR_RECIPIENT = bundle.getString(GlobalConstants.ATTR_RECIPIENT);
-		ATTR_SERVICE   = bundle.getString(GlobalConstants.ATTR_SERVICE);
 		ATTR_START     = bundle.getString(GlobalConstants.ATTR_START);
-		ATTR_TARGET    = bundle.getString(GlobalConstants.ATTR_TARGET);
 		ATTR_URI       = bundle.getString(GlobalConstants.ATTR_URI);
 
 		ATTR_AFFILIATION = bundle.getString(GlobalConstants.ATTR_AFFILIATION);

@@ -135,8 +135,8 @@ public class RoleServiceImpl extends BusinessImpl {
 				 * to classify a certain community or affiliate
 				 */
 
-				String affiliate = this.method.getAttribute(FncConstants.ATTR_AFFILIATE);
-				String community = this.method.getAttribute(FncConstants.ATTR_COMMUNITY);
+				String affiliate = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+				String community = this.method.getAttribute(MethodConstants.ATTR_TARGET);
 				
 				if ((affiliate == null) || (community == null)) {
 					this.sendNotImplemented(ctx);

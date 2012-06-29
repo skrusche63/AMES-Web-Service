@@ -18,8 +18,6 @@ package de.kp.ames.web.function.bulletin;
  *
  */
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
@@ -46,101 +44,106 @@ public class BulletinImpl extends BusinessImpl {
 			/*
 			 * Call get method
 			 */
-
-			String recipient = this.method.getAttribute("recipient");
-			if (recipient == null) {
-				this.sendNotImplemented(ctx);
-
-			} else {
-				/*
-				 * Additional request parameters are directly provided
-				 * by a (e.g.) SmartGwt 3.0 widget (Grid) and must be 
-				 * retrieved from the respective Http Request
-				 */
-				HttpServletRequest request = ctx.getRequest();
-				
-				String startParam = renderer.getStartParam();
-				String start = request.getParameter(startParam);
-				
-				String limitParam = renderer.getLimitParam();
-				String limit = request.getParameter(limitParam);
-		
-				if ((start == null) || (limit == null)) {
-					this.sendNotImplemented(ctx);
-					
-				} else {
-
-					try {
-						/*
-						 * JSON response
-						 */
-						String content = get(recipient, start, limit);
-						sendJSONResponse(content, ctx.getResponse());
-
-					} catch (Exception e) {
-						this.sendBadRequest(ctx, e);
-
-					}
-					
-				}
-
-			}
-
+			doGetRequest(ctx);
+			
 		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {
 			/*
 			 * Call submit method
 			 */
-			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
-			if (type == null) {
+			doSubmitRequest(ctx);
+
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+
+		String recipient = this.method.getAttribute(MethodConstants.ATTR_TARGET);
+		if (recipient == null) {
+			this.sendNotImplemented(ctx);
+
+		} else {
+
+			String start = this.method.getAttribute(FncConstants.ATTR_START);
+			String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
+	
+			if ((start == null) || (limit == null)) {
 				this.sendNotImplemented(ctx);
 				
 			} else {
-				
-				/*
-				 * Submit request requires data
-				 */
-				String data = this.getRequestData(ctx);
-				if (data == null) {
-					this.sendNotImplemented(ctx);
-					
-				} else {
-					
-					if (type.equals(ClassificationConstants.FNC_ID_Posting)) {
-						
-						String recipient = this.method.getAttribute(FncConstants.ATTR_RECIPIENT);
-						if (recipient == null) {
-							this.sendNotImplemented(ctx);
-						
-						} else {
-							
-							try {
-								String content = submit(recipient, data);
-								sendJSONResponse(content, ctx.getResponse());
 
-							} catch (Exception e) {
-								this.sendBadRequest(ctx, e);
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = getJSONResponse(recipient, start, limit);
+					sendJSONResponse(content, ctx.getResponse());
 
-							}
-						}
-					}
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
 				}
 				
 			}
 
 		}
+		
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSubmitRequest(RequestContext ctx) {
+
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+		if (type == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			
+			/*
+			 * Submit request requires data
+			 */
+			String data = this.getRequestData(ctx);
+			if (data == null) {
+				this.sendNotImplemented(ctx);
+				
+			} else {
+				
+				if (type.equals(ClassificationConstants.FNC_ID_Posting)) {
+					
+					String recipient = this.method.getAttribute(MethodConstants.ATTR_TARGET);
+					if (recipient == null) {
+						this.sendNotImplemented(ctx);
+					
+					} else {
+						
+						try {
+							String content = submit(recipient, data);
+							sendJSONResponse(content, ctx.getResponse());
+
+						} catch (Exception e) {
+							this.sendBadRequest(ctx, e);
+
+						}
+					}
+				}
+			}
+			
+		}
+		
+	}
+
 	/**
-	 * A helper method to retrieve all postings registered
-	 * for a certain recipient
-	 * 
 	 * @param recipient
 	 * @param start
 	 * @param limit
 	 * @return
 	 * @throws Exception
 	 */
-	private String get(String recipient, String start, String limit) throws Exception {
+	private String getJSONResponse(String recipient, String start, String limit) throws Exception {
 
 		String content = null;
 		
