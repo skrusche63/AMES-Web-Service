@@ -39,112 +39,136 @@ public class DomainServiceImpl extends BusinessImpl {
 
 		String methodName = this.method.getName();
 		if (methodName.equals(MethodConstants.METH_DELETE)) {
-
 			/*
 			 * Call delete method
 			 */
-			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
-			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
-
-			if ((item == null) || (type == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = delete(type, item);
-					sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
+			doDeleteRequest(ctx);
 			
 		} else if (methodName.equals(MethodConstants.METH_GET)) {
-
 			/*
 			 * Call get method
 			 */
-			String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
-			String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
-			
-			if ((format == null) || (type == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				/*
-				 * Optional reference to existing registry object
-				 */
-				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
-				
-				/*
-				 * Reference to registry package that manages registry objects
-				 * of a certain type
-				 */
-				String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);	
-
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = get(type, item, parent, format);
-					sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-
-			}
-			
+			doGetRequest(ctx);
 
 		} else if (methodName.equals(MethodConstants.METH_SUBMIT)) {
 			/*
-			 * Submit request requires data
+			 * Call submit method
 			 */
-			String data = this.getRequestData(ctx);
-			if (data == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
+			doSubmitRequest(ctx);
+			
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDeleteRequest(RequestContext ctx) {
+
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+
+		if ((item == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
 				/*
-				 * Reference to registry package that manages registry objects
-				 * of a certain type
+				 * JSON response
 				 */
-				String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);	
-				String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
-				
-				if ((parent == null) || (type == null)) {
-					this.sendNotImplemented(ctx);
-					
-				} else {
-					
-					try {
-						/*
-						 * JSON response
-						 */
-						String content = submit(type, parent, data);
-						sendJSONResponse(content, ctx.getResponse());
+				String content = delete(type, item);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
+		
+	}
 	
-					} catch (Exception e) {
-						this.sendBadRequest(ctx, e);
-	
-					}
-					
-				}
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
+
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+		
+		if ((format == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			
+			/*
+			 * Optional reference to existing registry object
+			 */
+			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+			
+			/*
+			 * Reference to registry package that manages registry objects
+			 * of a certain type
+			 */
+			String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);	
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = getJSONResponse(type, item, parent, format);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
 
 			}
 
 		}
 		
 	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSubmitRequest(RequestContext ctx) {
 
+		String data = this.getRequestData(ctx);
+		if (data == null) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			/*
+			 * Reference to registry package that manages registry objects
+			 * of a certain type
+			 */
+			String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);	
+			String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+			
+			if ((parent == null) || (type == null)) {
+				this.sendNotImplemented(ctx);
+				
+			} else {
+				
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = submit(type, parent, data);
+					sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
+				
+			}
+
+		}
+		
+	}
+	
 	/**
 	 * A helper method to retrieve RegistryObject instances
 	 * of a certain type and in a specific format
@@ -156,7 +180,7 @@ public class DomainServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String get(String type, String item, String parent, String format) throws Exception {
+	private String getJSONResponse(String type, String item, String parent, String format) throws Exception {
 
 		String content = null;
 		

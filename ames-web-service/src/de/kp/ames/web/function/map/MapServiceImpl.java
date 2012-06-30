@@ -24,6 +24,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
@@ -33,56 +34,17 @@ public class MapServiceImpl extends BusinessImpl {
 		super();
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#processRequest(de.kp.ames.web.http.RequestContext)
+	 */
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(MethodConstants.METH_NODES)) {
+		if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
-			 * Call nodes method
+			 * Call get method
 			 */
-			String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);			
-			if (source == null) {
-				this.sendNotImplemented(ctx);
-
-			} else {
-
-				try {
-					/*
-					 * Kml response
-					 */
-					String content = nodes(source);
-					sendXMLResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
-
-		} else if (methodName.equals(MethodConstants.METH_EDGES)) {
-			/*
-			 * Call edges method
-			 */
-			String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);			
-			if (source == null) {
-				this.sendNotImplemented(ctx);
-
-			} else {
-
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = edges(source);
-					sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
+			doGetRequest(ctx);
 
 		} else if (methodName.equals(MethodConstants.METH_LAYERS)) {
 			/*
@@ -114,67 +76,78 @@ public class MapServiceImpl extends BusinessImpl {
 		}
 	}
 
-	/**
-	 * This method retrieves a kml representation of a certain registry package; 
-	 * the kml however only contains the nodes of the respective package, 
-	 * the according edges are retrieved by another method
-	 * 
-	 * @param source
-	 * @return
-	 * @throws Exception 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
 	 */
-	private String nodes(String source) throws Exception {
+	public void doGetRequest(RequestContext ctx) {
 
-		String content = null;
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+		String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);			
 		
-		/*
-		 * Login
-		 */		
-		JaxrClient.getInstance().logon(jaxrHandle);
-		
-		/*
-		 * Retrieve kml representation from source
-		 */
-		MapDQM dqm = new MapDQM(jaxrHandle);
-		content =dqm.getNodes(source);
+		if ((type == null) || (source == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+			
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = getJSONResponse(type, source);
+				sendJSONResponse(content, ctx.getResponse());
 
-		/*
-		 * Logoff
-		 */
-		JaxrClient.getInstance().logoff(jaxrHandle);
-		return content;
-	
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
+
 	}
 
 	/**
-	 * This method retrieves a kml representation of all associations
-	 * that are members of a specific registry package
-	 * 
+	 * @param type
 	 * @param source
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	private String edges(String source) throws Exception {
+	private String getJSONResponse(String type, String source) throws Exception {
 
 		String content = null;
 		
 		/*
 		 * Login
 		 */		
-		JaxrClient.getInstance().logon(jaxrHandle);
-		
-		/*
-		 * Retrieve kml representation from source
-		 */
-		MapDQM dqm = new MapDQM(jaxrHandle);
-		content = dqm.getEdges(source);
+		JaxrClient.getInstance().logon(jaxrHandle);		
+			
+		if (type.equals(ClassificationConstants.FNC_ID_Edge)) {			
+			/*
+			 * This method retrieves a kml representation of all associations
+			 * that are members of a specific registry package
+			 */
+			MapDQM dqm = new MapDQM(jaxrHandle);
+			content = dqm.getEdges(source);
 
+		} else if (type.equals(ClassificationConstants.FNC_ID_Node)) {
+			/*
+			 * This method retrieves a kml representation of a certain registry package; 
+			 * the kml however only contains the nodes of the respective package, 
+			 * the according edges are retrieved by another method
+			 */
+			MapDQM dqm = new MapDQM(jaxrHandle);
+			content =dqm.getNodes(source);
+
+		} else {
+			throw new Exception("[MapServiceImpl] Information type <" + type + "> is not supported");
+			
+		}
+		
 		/*
 		 * Logoff
 		 */
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return content;
-	
+		
 	}
 
 	/**

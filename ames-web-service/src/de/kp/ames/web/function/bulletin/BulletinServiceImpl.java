@@ -28,9 +28,9 @@ import de.kp.ames.web.shared.ClassificationConstants;
 import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
-public class BulletinImpl extends BusinessImpl {
+public class BulletinServiceImpl extends BusinessImpl {
 
-	public BulletinImpl() {
+	public BulletinServiceImpl() {
 		super();
 	}
 	

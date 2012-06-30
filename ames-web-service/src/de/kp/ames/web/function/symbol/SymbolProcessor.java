@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.shared.JsonConstants;
 
 public class SymbolProcessor {
 
@@ -37,12 +38,12 @@ public class SymbolProcessor {
 	protected Boolean initialized = false;
 	protected double SCALE_128 = 6.4;
 
-	public static String J_CHILDREN = "children";
-	public static String J_ID       = "id";
-	public static String J_NAME     = "name";
-	public static String J_SYMB     = "symb";
-	public static String J_SYMBOL   = "symbol";
-	public static String J_URL      = "url";
+	public static String J_CHILDREN = JsonConstants.J_CHILDREN;
+	public static String J_ID       = JsonConstants.J_ID;
+	public static String J_NAME     = JsonConstants.J_NAME;
+	public static String J_SYMB     = JsonConstants.J_SYMB;
+	public static String J_SYMBOL   = JsonConstants.J_SYMBOL;
+	public static String J_URL      = JsonConstants.J_URL;
 	
 	/**
 	 * A helper method to initialize reference
