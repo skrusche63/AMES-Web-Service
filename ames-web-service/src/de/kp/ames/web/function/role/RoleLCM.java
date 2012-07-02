@@ -31,7 +31,6 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.domain.JsonConstants;
 import de.kp.ames.web.core.json.JsonUtil;
 import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
@@ -40,6 +39,7 @@ import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.JsonConstants;
 
 public class RoleLCM extends JaxrLCM {
 	/*
