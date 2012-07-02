@@ -52,7 +52,13 @@ public class TransformServiceImpl extends BusinessImpl {
 			 * Call apply method
 			 */
 			doApplyRequest(ctx);
-			
+
+		} else if (methodName.equals(MethodConstants.METH_DELETE)) {
+			/*
+			 * Call get method
+			 */
+			doDeleteRequest(ctx);
+
 		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
@@ -98,6 +104,13 @@ public class TransformServiceImpl extends BusinessImpl {
 			
 		}
 		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDeleteRequest(RequestContext ctx) {
+		// TODO
 	}
 	
 	/* (non-Javadoc)

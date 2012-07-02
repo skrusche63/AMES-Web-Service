@@ -293,7 +293,11 @@ public class GroupServiceImpl extends BusinessImpl {
 
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
 			content = lcm.deleteAffiliation(data);
-		
+
+		} else if (type.equals(ClassificationConstants.FNC_ID_Community)) {
+
+			// TODO
+			
 		} else {
 			throw new Exception("[GroupServiceImpl] Information type <" + type + "> is not supported");
 		

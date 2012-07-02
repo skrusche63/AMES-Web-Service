@@ -35,6 +35,9 @@ import de.kp.ames.web.shared.MethodConstants;
 
 public class UploadServiceImpl extends BusinessImpl {
 
+	/**
+	 * Constructor
+	 */
 	public UploadServiceImpl() {
 		super();
 	}
@@ -45,7 +48,13 @@ public class UploadServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(MethodConstants.METH_GET)) {
+		if (methodName.equals(MethodConstants.METH_DELETE)) {
+			/*
+			 * Call delete method
+			 */
+			doDeleteRequest(ctx);
+			
+		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
 			 */
@@ -138,6 +147,13 @@ public class UploadServiceImpl extends BusinessImpl {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDeleteRequest(RequestContext ctx) {
+		// TODO	
+	}
+	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
 	 */

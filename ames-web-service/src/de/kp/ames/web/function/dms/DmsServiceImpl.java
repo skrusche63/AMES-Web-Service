@@ -53,7 +53,13 @@ public class DmsServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(MethodConstants.METH_DOWNLOAD)) {
+		if (methodName.equals(MethodConstants.METH_DELETE)) {
+			/*
+			 * Call delete method
+			 */
+			doDeleteRequest(ctx);
+			
+		} else if (methodName.equals(MethodConstants.METH_DOWNLOAD)) {
 			/*
 			 * Call download method
 			 */
@@ -81,6 +87,13 @@ public class DmsServiceImpl extends BusinessImpl {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDeleteRequest(RequestContext ctx) {
+		// TODO
+	}
+	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doDownloadRequest(de.kp.ames.web.http.RequestContext)
 	 */

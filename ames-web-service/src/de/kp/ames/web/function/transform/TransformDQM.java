@@ -58,5 +58,6 @@ public class TransformDQM extends JaxrDQM {
 		 * Build JSON representation
 		 */
 		return JsonBusinessProvider.getTransformators(jaxrHandle, productors);
+		
 	}
 }

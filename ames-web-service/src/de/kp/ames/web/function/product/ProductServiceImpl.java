@@ -57,6 +57,12 @@ public class ProductServiceImpl extends BusinessImpl {
 			 */
 			doApplyRequest(ctx);
 
+		} else if (methodName.equals(MethodConstants.METH_DELETE)) {
+			/*
+			 * Call delete method
+			 */
+			doDeleteRequest(ctx);
+
 		} else if (methodName.equals(MethodConstants.METH_DOWNLOAD)) {
 			/*
 			 * Call download method
@@ -114,6 +120,13 @@ public class ProductServiceImpl extends BusinessImpl {
 
 		}
 		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDeleteRequest(RequestContext ctx) {
+		// TODO
 	}
 	
 	/* (non-Javadoc)
