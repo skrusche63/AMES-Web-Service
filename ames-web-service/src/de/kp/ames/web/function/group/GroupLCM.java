@@ -36,7 +36,6 @@ import de.kp.ames.web.core.json.JsonUtil;
 import de.kp.ames.web.core.reactor.ReactorImpl;
 import de.kp.ames.web.core.reactor.ReactorParams;
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
@@ -46,6 +45,7 @@ import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class GroupLCM extends PartyLCM {
 
@@ -89,7 +89,7 @@ public class GroupLCM extends PartyLCM {
 	/*
 	 * Symbol
 	 */
-	private static String RIM_SYMBOL = JaxrConstants.RIM_SYMBOL;
+	private static String SLOT_SYMBOL = JaxrConstants.SLOT_SYMBOL;
 	
 	public GroupLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
@@ -588,7 +588,7 @@ public class GroupLCM extends PartyLCM {
          * predefined slot
          */
 
-        String symbol = jData.has(RIM_SYMBOL) ? jData.getString(RIM_SYMBOL) : null;
+        String symbol = jData.has(SLOT_SYMBOL) ? jData.getString(SLOT_SYMBOL) : null;
         if (symbol != null) {
         	
     		SlotImpl slot = createSlot(JaxrConstants.SLOT_SYMBOL, symbol, JaxrConstants.SLOT_TYPE);

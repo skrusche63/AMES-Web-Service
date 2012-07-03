@@ -34,8 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.shared.JaxrConstants;
 
 /**
  * This class is part of the JSON layer on top of

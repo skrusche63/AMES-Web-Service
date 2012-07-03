@@ -31,9 +31,9 @@ import org.freebxml.omar.client.xml.registry.infomodel.SpecificationLinkImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class ServiceObject extends BusinessObject {
 

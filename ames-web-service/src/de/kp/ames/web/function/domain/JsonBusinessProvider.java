@@ -33,9 +33,9 @@ import de.kp.ames.web.core.domain.JsonCoreProvider;
 import de.kp.ames.web.core.domain.model.IJsonRegistryObject;
 import de.kp.ames.web.core.json.DateCollector;
 import de.kp.ames.web.core.json.StringCollector;
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class JsonBusinessProvider extends JsonCoreProvider {
 

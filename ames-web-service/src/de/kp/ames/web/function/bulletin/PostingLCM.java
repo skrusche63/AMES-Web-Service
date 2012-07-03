@@ -36,7 +36,6 @@ import de.kp.ames.web.core.domain.DomainLCM;
 import de.kp.ames.web.core.reactor.ReactorParams;
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 import de.kp.ames.web.core.reactor.ReactorImpl;
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
@@ -47,6 +46,7 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class PostingLCM extends JaxrLCM {
 

@@ -31,8 +31,8 @@ import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONException;
 
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class JsonOrganization extends JsonRegistryObject {
 

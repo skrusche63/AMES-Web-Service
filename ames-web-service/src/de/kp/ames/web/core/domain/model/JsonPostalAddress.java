@@ -23,8 +23,8 @@ import javax.xml.registry.JAXRException;
 import org.freebxml.omar.client.xml.registry.infomodel.PostalAddressImpl;
 import org.json.JSONException;
 
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class JsonPostalAddress extends JsonRegistryEntry {
 

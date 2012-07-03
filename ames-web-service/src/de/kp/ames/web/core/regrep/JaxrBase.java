@@ -51,6 +51,7 @@ import org.freebxml.omar.common.BindingUtility;
 import org.freebxml.omar.common.IterativeQueryParams;
 
 import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.shared.JaxrConstants;
 
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)

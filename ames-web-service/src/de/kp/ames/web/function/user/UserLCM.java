@@ -26,11 +26,12 @@ import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.regrep.JaxrConstants;
+
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.lcm.PartyLCM;
 import de.kp.ames.web.function.FncMessages;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class UserLCM extends PartyLCM {
 

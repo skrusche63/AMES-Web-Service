@@ -17,6 +17,7 @@ package de.kp.ames.web.core.rss;
  *	along with this software. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,9 +37,9 @@ import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 
 import de.kp.ames.web.GlobalConstants;
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class RssConverter {
 

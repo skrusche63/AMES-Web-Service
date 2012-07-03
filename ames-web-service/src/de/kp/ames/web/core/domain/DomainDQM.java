@@ -27,10 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.json.StringCollector;
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class DomainDQM extends JaxrDQM {
 

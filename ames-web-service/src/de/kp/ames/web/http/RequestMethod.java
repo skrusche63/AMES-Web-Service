@@ -19,6 +19,7 @@ package de.kp.ames.web.http;
  */
 
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -179,4 +180,29 @@ public class RequestMethod {
 		return null;
 	
 	}
+	
+	/**
+	 * @return
+	 */
+	public String toQuery() {
+		
+		StringBuffer sb = new StringBuffer();
+		
+		/* 
+		 * Add method
+		 */
+		sb.append("?method=" + this.name);
+		
+		/* 
+		 * Add attributes
+		 */
+		Set<String> keys = this.attributes.keySet();
+		for (String key:keys) {
+			sb.append("&" + key + "=" + this.attributes.get(key));
+		}
+		
+		return sb.toString();
+
+	}
+
 }

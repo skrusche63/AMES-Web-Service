@@ -9,7 +9,7 @@ import java.sql.Statement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.regrep.JaxrConstants;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class JdbcConsumer {
 

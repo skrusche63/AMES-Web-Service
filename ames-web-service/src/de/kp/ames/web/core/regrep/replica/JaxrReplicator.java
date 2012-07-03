@@ -37,11 +37,11 @@ import org.freebxml.omar.client.xml.registry.infomodel.SlotImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.SpecificationLinkImpl;
 import org.freebxml.omar.common.CanonicalSchemes;
 
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
+import de.kp.ames.web.shared.JaxrConstants;
 
 /**
  * JaxrReplicator creates a new registry object

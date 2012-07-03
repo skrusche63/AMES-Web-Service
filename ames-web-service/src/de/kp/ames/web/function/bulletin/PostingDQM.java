@@ -26,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.json.DateCollector;
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.render.GuiFactory;
@@ -34,6 +33,7 @@ import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncSQL;
 import de.kp.ames.web.function.IconCls;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class PostingDQM extends JaxrDQM {
 

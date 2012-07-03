@@ -45,9 +45,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import de.kp.ames.web.core.format.StringOutputStream;
-import de.kp.ames.web.core.regrep.JaxrConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
+
+import de.kp.ames.web.shared.JaxrConstants;
 
 /**
  * This class is part of the KML layer on top of
