@@ -18,6 +18,7 @@ package de.kp.ames.web.function.upload;
  *
  */
 
+import java.awt.image.BufferedImage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItemIterator;
@@ -26,11 +27,23 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONArray;
 
+import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.cache.CacheManager;
+import de.kp.ames.web.core.graphics.GraphicsUtil;
 import de.kp.ames.web.core.malware.MalwareScanner;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
+import de.kp.ames.web.function.dms.cache.DmsDocument;
+import de.kp.ames.web.function.dms.cache.DmsImage;
+import de.kp.ames.web.function.dms.cache.DocumentCacheManager;
+import de.kp.ames.web.function.dms.cache.ImageCacheManager;
+import de.kp.ames.web.function.office.OfficeConverter;
+import de.kp.ames.web.function.office.OfficeFactory;
+import de.kp.ames.web.function.transform.cache.XslCacheManager;
+import de.kp.ames.web.function.transform.cache.XslTransformator;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class UploadServiceImpl extends BusinessImpl {
@@ -167,22 +180,133 @@ public class UploadServiceImpl extends BusinessImpl {
 			
 		} else {
 
-			try {
-				/*
-				 * JSON response
-				 */
-				String content = getJSONResponse(type, format);
-				sendJSONResponse(content, ctx.getResponse());
+			/*
+			 * This is an optional parameter that determines 
+			 * a certain cache object
+			 */
+			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 
-			} catch (Exception e) {
-				this.sendBadRequest(ctx, e);
+			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_File)) {
 
+				try {
+					/*
+					 * File response
+					 */
+					FileUtil file = getFileResponse(type, item);
+					if (file.getMimetype().equals(GlobalConstants.MT_XML) == false) {
+						/*
+						 * Retrieve file in PDF format
+						 */
+						OfficeFactory factory = new OfficeFactory(jaxrHandle, file);
+						OfficeConverter converter = factory.getOfficeConverter();
+						
+						file = converter.convert();
+						
+					}
+
+					sendFileResponse(file, ctx.getResponse());
+					
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+					
+				}
+								
+			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Image)) {
+
+				try {
+					/*
+					 * Image response
+					 */
+					BufferedImage image = getImageResponse(type, item);
+					sendImageResponse(image, ctx.getResponse());
+					
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+					
+				}
+				
+			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
+
+				try {
+					/*
+					 * JSON response
+					 */
+					String content = getJSONResponse(type, format);
+					sendJSONResponse(content, ctx.getResponse());
+	
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+	
+				}
+				
 			}
 
 		}
 		
 	}
+
+	/**
+	 * Get a single file
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private FileUtil getFileResponse(String type, String item) throws Exception {
+
+		FileUtil file = null;
+		
+		if (type.equals(ClassificationConstants.FNC_ID_Document)) {
+		
+			DocumentCacheManager cacheManager = DocumentCacheManager.getInstance();
+			DmsDocument cacheEntry = (DmsDocument)cacheManager.getFromCache(item);
+
+			if (cacheEntry == null) throw new Exception("[UploadServiceImpl] Cache Entry with key <" + item + "> not found.");			
+			file = cacheEntry.asFile();
+			
+		} else if (type.equals(ClassificationConstants.FNC_ID_Transformator)) {
+
+			XslCacheManager cacheManager = XslCacheManager.getInstance();
+			XslTransformator cacheEntry = (XslTransformator)cacheManager.getFromCache(item);
+
+			if (cacheEntry == null) throw new Exception("[UploadServiceImpl] Cache Entry with key <" + item + "> not found.");			
+			file = cacheEntry.asFile();
+			
+		}
+		
+		return file;
 	
+	}
+
+	/**
+	 * Get a single image
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private BufferedImage getImageResponse(String type, String item) throws Exception {
+
+		BufferedImage image = null;
+		
+		if (type.equals(ClassificationConstants.FNC_ID_Image)) {
+
+			ImageCacheManager cacheManager = ImageCacheManager.getInstance();
+			DmsImage cacheEntry = (DmsImage)cacheManager.getFromCache(item);
+			
+			if (cacheEntry == null) throw new Exception("[UploadServiceImpl] Cache Entry with key <" + item + "> not found.");	
+				
+			image = cacheEntry.getImage();
+			return GraphicsUtil.createSource(image);
+
+		}
+
+		return image;
+
+	}
+
 	/**
 	 * A helper method to retrieve cache entries in a JSON representation
 	 * 

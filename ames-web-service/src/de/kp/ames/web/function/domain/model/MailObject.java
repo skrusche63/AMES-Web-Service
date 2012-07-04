@@ -92,7 +92,7 @@ public class MailObject extends BusinessObject {
 		/* 
 		 * Home url
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
 		eo.setHome(home);
 
 		/* 

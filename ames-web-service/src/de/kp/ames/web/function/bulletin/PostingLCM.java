@@ -125,7 +125,7 @@ public class PostingLCM extends JaxrLCM {
 		/* 
 		 * Home url
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
 		
 		/*
 		 * Set properties

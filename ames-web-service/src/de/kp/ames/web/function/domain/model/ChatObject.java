@@ -91,7 +91,7 @@ public class ChatObject extends BusinessObject {
 		/* 
 		 * Home url
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
 		eo.setHome(home);
 
 		/* 

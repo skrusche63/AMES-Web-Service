@@ -61,6 +61,11 @@ public class ReactorParams {
 		 */
 		this.ro = ro;
 		this.domain = domain;
+	
+		/*
+		 * Register jaxrHandle
+		 */
+		this.jaxrHandle = jaxrHandle;
 		
 	}
 	

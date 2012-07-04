@@ -124,7 +124,7 @@ public class ServiceObject extends BusinessObject {
 		ServiceImpl service = jaxrLCM.createService(jForm.getString(RIM_NAME));
 		
 		if (jForm.has(RIM_DESC)) service.setDescription(jaxrLCM.createInternationalString(jForm.getString(RIM_DESC)));				
-		service.setHome(jaxrHandle.getEndpoint().replace("/soap", ""));
+		service.setHome(jaxrHandle.getEndpoint().replace("/saml", ""));
 
 		if (serviceBinding != null) service.addServiceBinding(serviceBinding);
 

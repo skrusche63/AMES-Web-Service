@@ -37,6 +37,7 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.transform.cache.XslCacheManager;
 import de.kp.ames.web.function.transform.cache.XslTransformator;
+import de.kp.ames.web.shared.JsonConstants;
 
 public class TransformatorObject extends BusinessObject {
 
@@ -83,7 +84,7 @@ public class TransformatorObject extends BusinessObject {
 		/* 
 		 * Home url
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
 		eo.setHome(home);
 
 		/* 
@@ -94,7 +95,7 @@ public class TransformatorObject extends BusinessObject {
 		
 		XslCacheManager cacheManager = XslCacheManager.getInstance();
 		
-		String key = jForm.getString(RIM_ID);
+		String key = jForm.getString(JsonConstants.J_KEY);
 		XslTransformator transformator = (XslTransformator)cacheManager.getFromCache(key);
 		
 		if (transformator == null) throw new Exception("[TransformatorObject] XSL Transformator with id <" + key + "> not found.");

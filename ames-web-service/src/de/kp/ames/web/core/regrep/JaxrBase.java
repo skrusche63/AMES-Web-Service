@@ -234,7 +234,7 @@ public class JaxrBase {
 		String endpoint = jaxrHandle.getEndpoint();
 		
 		home = (home==null) ? endpoint : home;
-		home = home.replace("/soap", "");
+		home = home.replace("/saml", "");
 
 		return home;
 		

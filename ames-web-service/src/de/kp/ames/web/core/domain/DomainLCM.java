@@ -251,7 +251,7 @@ public class DomainLCM extends JaxrLCM {
 		/*
 		 * home url
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
 		rp.setHome(home);
 	
 		/* 

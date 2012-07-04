@@ -116,7 +116,7 @@ public class UserLCM extends PartyLCM {
 		/* 
 		 * Home url
 		 */
-		String rimHome = jaxrHandle.getEndpoint().replace("/soap", "");
+		String rimHome = jaxrHandle.getEndpoint().replace("/saml", "");
 		user.setHome(rimHome);
 
         /* 

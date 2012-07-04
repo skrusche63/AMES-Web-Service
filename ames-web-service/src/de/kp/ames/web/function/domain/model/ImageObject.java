@@ -37,6 +37,7 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.dms.cache.DmsImage;
 import de.kp.ames.web.function.dms.cache.ImageCacheManager;
+import de.kp.ames.web.shared.JsonConstants;
 
 public class ImageObject extends BusinessObject {
 
@@ -72,7 +73,7 @@ public class ImageObject extends BusinessObject {
 		/* 
 		 * Home url
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
 		eo.setHome(home);
 
 		/* 
@@ -81,7 +82,7 @@ public class ImageObject extends BusinessObject {
 		
 		ImageCacheManager cacheManager = ImageCacheManager.getInstance();
 		
-		String key = jForm.getString(RIM_ID);
+		String key = jForm.getString(JsonConstants.J_KEY);
 		DmsImage image = (DmsImage)cacheManager.getFromCache(key);
 		
 		if (image == null) throw new Exception("[ImageObject] Image with id <" + key + "> not found.");

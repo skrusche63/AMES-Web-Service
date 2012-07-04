@@ -446,7 +446,7 @@ public class SecurityImpl extends BusinessImpl {
 		/* 
 		 * Home url
 		 */
-		rimHome = jaxrHandle.getEndpoint().replace("/soap", "");
+		rimHome = jaxrHandle.getEndpoint().replace("/saml", "");
 		eo.setHome(rimHome);
 
 		/* 

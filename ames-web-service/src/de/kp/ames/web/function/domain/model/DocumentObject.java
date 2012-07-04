@@ -37,6 +37,7 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.dms.cache.DmsDocument;
 import de.kp.ames.web.function.dms.cache.DocumentCacheManager;
+import de.kp.ames.web.shared.JsonConstants;
 
 public class DocumentObject extends BusinessObject {
 
@@ -72,7 +73,7 @@ public class DocumentObject extends BusinessObject {
 		/* 
 		 * Home url
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
 		eo.setHome(home);
 
 		/* 
@@ -81,7 +82,7 @@ public class DocumentObject extends BusinessObject {
 		
 		DocumentCacheManager cacheManager = DocumentCacheManager.getInstance();
 		
-		String key = jForm.getString(RIM_ID);
+		String key = jForm.getString(JsonConstants.J_KEY);
 		DmsDocument document = (DmsDocument)cacheManager.getFromCache(key);
 		
 		if (document == null) throw new Exception("[DocumentObject] Document with id <" + key + "> not found.");

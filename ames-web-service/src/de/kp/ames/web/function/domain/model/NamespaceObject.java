@@ -97,7 +97,7 @@ public class NamespaceObject extends BusinessObject {
 		/* 
 		 * Home url
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
 		rp.setHome(home);
 
 		/*

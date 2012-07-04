@@ -233,7 +233,7 @@ public class GroupLCM extends PartyLCM {
 			/* 
 			 * Home url
 			 */
-			String rimHome = jaxrHandle.getEndpoint().replace("/soap", "");
+			String rimHome = jaxrHandle.getEndpoint().replace("/saml", "");
 			affiliation.setHome(rimHome);
 
 			/*
@@ -537,7 +537,7 @@ public class GroupLCM extends PartyLCM {
 		 * Home url
 		 */
 
-		String rimHome = jaxrHandle.getEndpoint().replace("/soap", "");
+		String rimHome = jaxrHandle.getEndpoint().replace("/saml", "");
 		org.setHome(rimHome);
 
         /* 

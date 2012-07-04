@@ -151,7 +151,7 @@ public class CoreObject implements ICoreObject {
 		/* 
 		 * Home url
 		 */
-		String home = jaxrHandle.getEndpoint().replace("/soap", "");
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
 		registryObject.setHome(home);
 
 		/*

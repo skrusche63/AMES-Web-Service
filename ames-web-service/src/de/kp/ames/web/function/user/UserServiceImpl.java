@@ -22,7 +22,9 @@ import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
+import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.FormatConstants;
 import de.kp.ames.web.shared.MethodConstants;
 
 public class UserServiceImpl extends BusinessImpl {
@@ -63,24 +65,20 @@ public class UserServiceImpl extends BusinessImpl {
 			this.sendNotImplemented(ctx);
 			
 		} else {
-			/* 
-			 * Retrieve all users that are affiliated to a certain community (source)
-			 */
-			String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
-			if (source == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
 
-				try {
-					String content = users(source, format);
-					sendJSONResponse(content, ctx.getResponse());
+			try {
 
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
+				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 
-				}
-				
+				String start = this.method.getAttribute(FncConstants.ATTR_START);
+				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
+
+				String content = getJSONResponse(format, item, start, limit);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
 			}
 			
 		}
@@ -115,15 +113,12 @@ public class UserServiceImpl extends BusinessImpl {
 	}
 	
 	/**
-	 * Retrieve all users that are affiliated to 
-	 * a certain community of interest
-	 * 
 	 * @param community
 	 * @param format
 	 * @return
 	 * @throws Exception
 	 */
-	private String users(String community, String format) throws Exception {
+	private String getJSONResponse(String format, String item, String start, String limit) throws Exception {
 
 		String content = null;
 		
@@ -132,13 +127,39 @@ public class UserServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
 
-		UserDQM dqm = new UserDQM(jaxrHandle);
-		JSONArray jArray = dqm.getUsers(community);
+		if (format.equals(FormatConstants.FNC_FORMAT_ID_Object)) {
+			/*
+			 * Retrieve a JSON representation of a single user
+			 */
+			
+			// TODO
 		
-		/*
-		 * Render result
-		 */
-		content = render(jArray, format);
+		} else {
+			/*
+			 * Retrieve all users that are affiliated to 
+			 * a certain community of interest
+			 */ 
+			String community = item;
+			
+			UserDQM dqm = new UserDQM(jaxrHandle);
+			JSONArray jArray = dqm.getUsers(community);
+	
+			/*
+			 * Render result
+			 */
+			if ((start == null) || (limit == null)) {
+				content = render(jArray, format);
+	
+			} else {
+				content = render(jArray, start, limit, format);
+			}
+			
+			/*
+			 * Render result
+			 */
+			content = render(jArray, format);
+		
+		}
 		
 		/*
 		 * Logoff
