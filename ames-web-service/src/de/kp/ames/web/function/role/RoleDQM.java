@@ -31,7 +31,6 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.kp.ames.web.core.domain.JsonCoreProvider;
 import de.kp.ames.web.core.json.DateCollector;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
@@ -53,41 +52,6 @@ public class RoleDQM extends JaxrDQM {
 
 	public RoleDQM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
-	}
-
-	/**
-	 * Retrieve all namespaces a certain community or user
-	 * is responsible for
-	 * 
-	 * @param responsible
-	 * @return
-	 * @throws Exception
-	 */
-	public JSONArray getNamespaces(String responsible) throws Exception {
-		
-		/*
-		 * Sort result by datetime
-		 */
-		DateCollector collector = new DateCollector();
-
-		/*
-		 * Get namespaces
-		 */
-		String sqlString = FncSQL.getSQLResponsibilities_All(responsible);
-		List<RegistryObjectImpl> namespaces = getRegistryObjectsByQuery(sqlString);
-
-		if (namespaces.size() == 0) return new JSONArray();
-		
-		for (RegistryObjectImpl namespace:namespaces) {
-			JSONObject jNamespace = JsonCoreProvider.getRefObject(jaxrHandle, namespace);
-
-			Date lastModified = getLastModified(namespace);
-			collector.put(lastModified, jNamespace);
-			
-		}
-
-		return new JSONArray(collector.values());
-
 	}
 	
 	/**

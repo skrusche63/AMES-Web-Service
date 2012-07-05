@@ -68,33 +68,7 @@ public class RoleServiceImpl extends BusinessImpl {
 			
 		} else {
 
-			if (type.equals(ClassificationConstants.FNC_ID_Namespace)) {
-
-				/* 
-				 * Retrieves all the namespaces a certain community 
-				 * or user is responsible for
-				 */
-				String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
-				if (source == null) {
-					this.sendNotImplemented(ctx);
-					
-				} else {
-
-					try {
-						/*
-						 * JSON response
-						 */
-						String content = namespaces(source, format);
-						sendJSONResponse(content, ctx.getResponse());
-
-					} catch (Exception e) {
-						this.sendBadRequest(ctx, e);
-
-					}
-					
-				}
-
-			} else if (type.equals(ClassificationConstants.FNC_ID_Responsibility)) {
+			if (type.equals(ClassificationConstants.FNC_ID_Responsibility)) {
 				/* 
 				 * A responsibility is actually equal to a certain namespace,
 				 * as a specific community or user be responsible (source) for
@@ -201,40 +175,6 @@ public class RoleServiceImpl extends BusinessImpl {
 		
 	}
 	
-	/**
-	 * Retrieve all namespaces a certain community or user
-	 * is responsible for
-	 * 
-	 * @param source
-	 * @param format
-	 * @return
-	 * @throws Exception
-	 */
-	private String namespaces(String source, String format) throws Exception {
-
-		String content = null;
-		
-		/*
-		 * Login
-		 */		
-		JaxrClient.getInstance().logon(jaxrHandle);
-
-		RoleDQM dqm = new RoleDQM(jaxrHandle);
-		JSONArray jArray = dqm.getNamespaces(source);
-		
-		/*
-		 * Render result
-		 */
-		content = render(jArray, format);
-		
-		/*
-		 * Logoff
-		 */
-		JaxrClient.getInstance().logoff(jaxrHandle);
-		return content;
-		
-	}
-
 	/**
 	 * Retrieve registered responsibilities
 	 * (registry packages)

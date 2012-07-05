@@ -29,6 +29,9 @@ import de.kp.ames.web.shared.MethodConstants;
 
 public class GroupServiceImpl extends BusinessImpl {
 
+	/**
+	 * Constructor
+	 */
 	public GroupServiceImpl() {	
 		super();
 	}
