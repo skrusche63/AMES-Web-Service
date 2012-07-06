@@ -131,7 +131,11 @@ public class TransformServiceImpl extends BusinessImpl {
 			 */
 			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 
-			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
+			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_File)) {
+
+				// TODO
+				
+			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 				/*
 				 * Optional parameters that may be used to describe
 				 * a Grid-oriented response

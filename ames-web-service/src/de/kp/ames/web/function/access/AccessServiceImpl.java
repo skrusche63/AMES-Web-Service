@@ -102,6 +102,10 @@ public class AccessServiceImpl extends BusinessImpl {
 					}
 					
 				}
+
+			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Image)) {
+			
+				// TODO
 				
 			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 				/*

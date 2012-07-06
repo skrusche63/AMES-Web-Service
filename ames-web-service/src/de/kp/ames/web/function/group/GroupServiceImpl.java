@@ -141,7 +141,15 @@ public class GroupServiceImpl extends BusinessImpl {
 				}
 				
 			} else if (type.equals(ClassificationConstants.FNC_ID_Community)) {
-				
+
+				String start = this.method.getAttribute(FncConstants.ATTR_START);			
+				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
+
+				/*
+				 * A request for a single community of interest
+				 */
+				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+
 				/*
 				 * Retrieve communities of interest, either
 				 * all registered ones or those, that refer
@@ -150,7 +158,7 @@ public class GroupServiceImpl extends BusinessImpl {
 				String affiliate = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
 				
 				try {
-					String content = communities(affiliate, format);
+					String content = communities(format, item, affiliate, start, limit);
 					sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -249,7 +257,7 @@ public class GroupServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String communities(String affiliate, String format) throws Exception {
+	private String communities(String format, String item, String affiliate, String start, String limit) throws Exception {
 
 		String content = null;
 		
@@ -259,12 +267,18 @@ public class GroupServiceImpl extends BusinessImpl {
 		JaxrClient.getInstance().logon(jaxrHandle);
 
 		GroupDQM dqm = new GroupDQM(jaxrHandle);
-		JSONArray jArray = dqm.getCommunities(affiliate);
+		JSONArray jArray = dqm.getCommunities(item, affiliate);
 		
 		/*
 		 * Render result
 		 */
-		content = render(jArray, format);
+		if ((start == null) || (limit == null)) {
+			content = render(jArray, format);
+			
+		} else {
+			content = render(jArray, format, start, limit);
+			
+		}
 		
 		/*
 		 * Logoff

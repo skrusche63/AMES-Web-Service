@@ -66,30 +66,38 @@ public class GroupDQM extends JaxrDQM {
 	 * @return
 	 * @throws Exception
 	 */
-	public JSONArray getCommunities(String affiliate) throws Exception {
+	public JSONArray getCommunities(String item, String affiliate) throws Exception {
 		
-		/*
-		 * Sort result by name of community
-		 */
-		StringCollector collector = new StringCollector();
-
-		/*
-		 * Determine SQL statement
-		 */
-		String sqlString = (affiliate == null) ? JaxrSQL.getSQLOrganizations_All() : JaxrSQL.getSQLOrganisations_AffiliatedWith(affiliate);
-		List<OrganizationImpl> organizations = getOrganizationsByQuery(sqlString);
-		
-		/*
-		 * Build sorted list
-		 */
-		for (OrganizationImpl organization:organizations) {
-
-			JSONObject jOrganization = JsonCoreProvider.getOrganization(jaxrHandle, organization);	
-			collector.put(jOrganization.getString(JaxrConstants.RIM_NAME), jOrganization);
-
-		}
+		if (item != null) {
+			// TODO
+			return null;
 			
-		return new JSONArray(collector.values());
+		} else {
+		
+			/*
+			 * Sort result by name of community
+			 */
+			StringCollector collector = new StringCollector();
+	
+			/*
+			 * Determine SQL statement
+			 */
+			String sqlString = (affiliate == null) ? JaxrSQL.getSQLOrganizations_All() : JaxrSQL.getSQLOrganisations_AffiliatedWith(affiliate);
+			List<OrganizationImpl> organizations = getOrganizationsByQuery(sqlString);
+			
+			/*
+			 * Build sorted list
+			 */
+			for (OrganizationImpl organization:organizations) {
+	
+				JSONObject jOrganization = JsonCoreProvider.getOrganization(jaxrHandle, organization);	
+				collector.put(jOrganization.getString(JaxrConstants.RIM_NAME), jOrganization);
+	
+			}
+				
+			return new JSONArray(collector.values());
+			
+		}
 		
 	}
 
