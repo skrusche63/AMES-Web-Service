@@ -18,10 +18,10 @@ package de.kp.ames.web.function.domain.model;
  *
  */
 
-import de.kp.ames.web.core.domain.model.JsonRegistryObject;
+import de.kp.ames.web.core.domain.model.JsonExtrinsicObject;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 
-public class JsonDocument extends JsonRegistryObject {
+public class JsonDocument extends JsonExtrinsicObject {
 
 	/**
 	 * Constructor

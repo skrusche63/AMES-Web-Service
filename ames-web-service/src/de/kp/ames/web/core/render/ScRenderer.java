@@ -42,7 +42,7 @@ public class ScRenderer implements GuiRenderer {
 	public String createGrid(JSONArray jArray) {
 
 		JSONObject jResponse = new JSONObject();
-		int card = jResponse.length();
+		int card = jArray.length();
 
 		try {
 		

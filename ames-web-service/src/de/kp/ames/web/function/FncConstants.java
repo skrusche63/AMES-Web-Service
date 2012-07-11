@@ -50,7 +50,6 @@ public class FncConstants {
 	public static String ATTR_ALIAS;
 	public static String ATTR_AFFILIATE;
 	public static String ATTR_COMMUNITY;
-	public static String ATTR_ENDPOINT;
 	public static String ATTR_KEYPASS;
 	public static String ATTR_LIMIT;
 	public static String ATTR_START;
@@ -100,7 +99,6 @@ public class FncConstants {
 		ATTR_ALIAS     = bundle.getString(GlobalConstants.ATTR_ALIAS);
 		ATTR_AFFILIATE = bundle.getString(GlobalConstants.ATTR_AFFILIATE);
 		ATTR_COMMUNITY = bundle.getString(GlobalConstants.ATTR_COMMUNITY);
-		ATTR_ENDPOINT  = bundle.getString(GlobalConstants.ATTR_ENDPOINT);
 		ATTR_KEYPASS   = bundle.getString(GlobalConstants.ATTR_KEYPASS);
 		ATTR_LIMIT     = bundle.getString(GlobalConstants.ATTR_LIMIT);		
 		ATTR_START     = bundle.getString(GlobalConstants.ATTR_START);

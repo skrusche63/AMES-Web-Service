@@ -30,6 +30,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.shared.JaxrConstants;
@@ -103,6 +104,10 @@ public class JsonUser extends JsonRegistryObject {
     		
     		put(JaxrConstants.RIM_EMAIL, address);
     		
+    	} else {
+    		
+    		put(JaxrConstants.RIM_EMAIL, " - ");
+    		
     	}
     	
     	/* 
@@ -118,6 +123,10 @@ public class JsonUser extends JsonRegistryObject {
         	
         	put(JaxrConstants.RIM_PHONE, jTelephoneNumber.get().toString());
    	    
+    	} else {
+           	
+        	put(JaxrConstants.RIM_PHONE, new JSONObject().toString());
+    		
     	}
 
 	}

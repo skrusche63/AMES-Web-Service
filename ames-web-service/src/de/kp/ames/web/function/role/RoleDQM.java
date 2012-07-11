@@ -172,6 +172,8 @@ public class RoleDQM extends JaxrDQM {
 			JSONObject jConcept = jConcepts.getJSONObject(i);
 				
 			String conceptType = jConcept.getString(RIM_ID);
+			
+			jConcept.put(JsonConstants.J_CHECK, false);
 			if (conceptTypes.contains(conceptType)) jConcept.put(JsonConstants.J_CHECK, true);
 			
 		} 

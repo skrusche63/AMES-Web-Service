@@ -37,6 +37,7 @@ import de.kp.ames.web.core.json.StringCollector;
 import de.kp.ames.web.core.render.GuiFactory;
 import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.function.FncMessages;
+import de.kp.ames.web.shared.JsonConstants;
 
 public class SearcherImpl implements Searcher {
 
@@ -72,14 +73,14 @@ public class SearcherImpl implements Searcher {
 		/*
 		 * A single facet field is supported
 		 */
-		query.addFacetField(SearchConstants.J_FACET);					
+		query.addFacetField(JsonConstants.J_FACET);					
 		query.setQuery("*");
 
 		/*
 		 * Retrieve facets from Apache Solr
 		 */
 		QueryResponse response = solrProxy.executeQuery(query);
-		FacetField facet = response.getFacetField(SearchConstants.J_FACET);
+		FacetField facet = response.getFacetField(JsonConstants.J_FACET);
 
 		/*
 		 * Evaluate response
@@ -101,10 +102,10 @@ public class SearcherImpl implements Searcher {
 			
 			JSONObject jCount = new JSONObject();				
 
-			jCount.put(SearchConstants.J_COUNT, count.getCount());
+			jCount.put(JsonConstants.J_COUNT, count.getCount());
 			
-			jCount.put(SearchConstants.J_FIELD, facet.getName());
-			jCount.put(SearchConstants.J_VALUE, count.getName());
+			jCount.put(JsonConstants.J_FIELD, facet.getName());
+			jCount.put(JsonConstants.J_VALUE, count.getName());
 			
 			collector.put(name, jCount);
 			
@@ -124,7 +125,7 @@ public class SearcherImpl implements Searcher {
 		 * Build Apache Solr query
 		 */
 		JSONObject jQuery = new JSONObject(request);
-		String term = jQuery.has(SearchConstants.J_TERM) ? jQuery.getString(SearchConstants.J_TERM) : "*";
+		String term = jQuery.has(JsonConstants.J_TERM) ? jQuery.getString(JsonConstants.J_TERM) : "*";
 		
 		String fp = setFacets(jQuery);		
 		SolrQuery query = new SolrQuery();
@@ -165,13 +166,13 @@ public class SearcherImpl implements Searcher {
 			 * Identifier
 			 */
 			String id  = (String)doc.getFieldValue(SearchConstants.S_ID);
-			jDoc.put(SearchConstants.J_ID, id);
+			jDoc.put(JsonConstants.J_ID, id);
 			
 			/* 
 			 * Name
 			 */
 			String name  = (String)doc.getFieldValue(SearchConstants.S_NAME);
-			jDoc.put(SearchConstants.J_NAME, name);
+			jDoc.put(JsonConstants.J_NAME, name);
 
 			/* 
 			 * Source
@@ -179,7 +180,7 @@ public class SearcherImpl implements Searcher {
 			String source = (String)doc.getFieldValue(SearchConstants.S_FACET);
 			pos = source.lastIndexOf(":");
 			
-			jDoc.put(SearchConstants.J_FACET, source.substring(pos+1));
+			jDoc.put(JsonConstants.J_FACET, source.substring(pos+1));
 			
 			/* 
 			 * Description
@@ -187,7 +188,7 @@ public class SearcherImpl implements Searcher {
 			String desc  = (String)doc.getFieldValue(SearchConstants.S_DESC);
 			desc = (desc == null) ? FncMessages.NO_DESCRIPTION_DESC : desc;
 
-			jDoc.put(SearchConstants.J_DESC, desc);
+			jDoc.put(JsonConstants.J_DESC, desc);
 			collector.put(name, jDoc);
 
 		}
@@ -240,7 +241,7 @@ public class SearcherImpl implements Searcher {
 	protected String setFacets(JSONObject jQuery) throws Exception {
 		
 		String fp = null;
-		if (jQuery.has(SearchConstants.J_FACET)) {
+		if (jQuery.has(JsonConstants.J_FACET)) {
 			
 			/* 
 			 * Externally selected facets are mapped
@@ -249,13 +250,13 @@ public class SearcherImpl implements Searcher {
 			
 			fp = "";
 			
-			JSONArray jFacets = jQuery.getJSONArray(SearchConstants.J_FACET);
+			JSONArray jFacets = jQuery.getJSONArray(JsonConstants.J_FACET);
 			for (int i=0; i < jFacets.length(); i++) {
 				
 				JSONObject jFacet = jFacets.getJSONObject(i);
 				
-				String field = jFacet.getString(SearchConstants.J_FIELD);
-				String value = jFacet.getString(SearchConstants.J_VALUE);
+				String field = jFacet.getString(JsonConstants.J_FIELD);
+				String value = jFacet.getString(JsonConstants.J_VALUE);
 				
 				fp += "+" + field + ":\"" + value + "\"";
 				
@@ -322,8 +323,8 @@ public class SearcherImpl implements Searcher {
 			
 			JSONObject jTerm = new JSONObject();
 			
-			jTerm.put(SearchConstants.J_NAME, name);
-			jTerm.put(SearchConstants.J_CARD, card);
+			jTerm.put(JsonConstants.J_NAME, name + "(" + card + ")");
+			jTerm.put(JsonConstants.J_TERM, name);
 			
 			jTerms.put(jTerm);
 			

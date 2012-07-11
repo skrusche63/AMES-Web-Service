@@ -20,6 +20,7 @@ package de.kp.ames.web.core.search;
 
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.MethodConstants;
 
 public class SearchServiceImpl extends BusinessImpl {
 
@@ -36,7 +37,7 @@ public class SearchServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {		
 
 		String methodName = this.method.getName();
-		if (methodName.equals(SearchConstants.METH_FACET)) {
+		if (methodName.equals(MethodConstants.METH_FACET)) {
 			
 			/*
 			 * Call facet method
@@ -54,11 +55,11 @@ public class SearchServiceImpl extends BusinessImpl {
 
 			}
 
-		} else if (methodName.equals(SearchConstants.METH_SEARCH)) {
+		} else if (methodName.equals(MethodConstants.METH_SEARCH)) {
 			/*
 			 * Call search method
 			 */
-			String query = this.method.getAttribute(SearchConstants.ATTR_QUERY);
+			String query = this.method.getAttribute(MethodConstants.ATTR_QUERY);
 
 			String start = this.method.getAttribute(SearchConstants.ATTR_START);
 			String limit = this.method.getAttribute(SearchConstants.ATTR_LIMIT);
@@ -83,11 +84,11 @@ public class SearchServiceImpl extends BusinessImpl {
 			}
 
 			
-		} else if (methodName.equals(SearchConstants.METH_SUGGEST)) {			
+		} else if (methodName.equals(MethodConstants.METH_SUGGEST)) {			
 			/*
 			 * Call suggest method
 			 */
-			String query = this.method.getAttribute(SearchConstants.ATTR_QUERY);
+			String query = this.method.getAttribute(MethodConstants.ATTR_QUERY);
 			String start = this.method.getAttribute(SearchConstants.ATTR_START);
 			String limit = this.method.getAttribute(SearchConstants.ATTR_LIMIT);
 			

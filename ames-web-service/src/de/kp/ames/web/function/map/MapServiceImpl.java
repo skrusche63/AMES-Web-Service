@@ -45,35 +45,9 @@ public class MapServiceImpl extends BusinessImpl {
 			 * Call get method
 			 */
 			doGetRequest(ctx);
-
-		} else if (methodName.equals(MethodConstants.METH_LAYERS)) {
-			/*
-			 * Call layers method
-			 */
-			String endpoint = this.method.getAttribute(FncConstants.ATTR_ENDPOINT);			
-			if (endpoint == null) {
-				this.sendNotImplemented(ctx);
-
-			} else {
-
-				String start = this.method.getAttribute(FncConstants.ATTR_START);			
-				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
-
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = layers(endpoint, start, limit);
-					sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-
-			}
 			
 		}
+
 	}
 
 	/* (non-Javadoc)
@@ -81,24 +55,63 @@ public class MapServiceImpl extends BusinessImpl {
 	 */
 	public void doGetRequest(RequestContext ctx) {
 
-		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
-		String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);			
-		
-		if ((type == null) || (source == null)) {
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+
+		if (type == null) {
 			this.sendNotImplemented(ctx);
 			
 		} else {
 			
-			try {
-				/*
-				 * JSON response
-				 */
-				String content = getJSONResponse(type, source);
-				sendJSONResponse(content, ctx.getResponse());
+			if (type.equals(ClassificationConstants.FNC_ID_Layer)) {
 
-			} catch (Exception e) {
-				this.sendBadRequest(ctx, e);
+				String endpoint = this.method.getAttribute(MethodConstants.ATTR_ENDPOINT);			
+				if (endpoint == null) {
+					this.sendNotImplemented(ctx);
 
+				} else {
+
+					String start = this.method.getAttribute(FncConstants.ATTR_START);			
+					String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
+
+					try {
+						/*
+						 * JSON response
+						 */
+						String content = getJSONLayers(endpoint, start, limit);
+						sendJSONResponse(content, ctx.getResponse());
+
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+
+					}
+
+				}
+				
+			} else {
+
+				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);			
+
+				if (item == null) {
+					this.sendNotImplemented(ctx);
+
+				} else {
+					/*
+					 * Retrieve Kml based information
+					 */
+					try {
+						/*
+						 * JSON response
+						 */
+						String content = getJSONResponse(type, item);
+						sendJSONResponse(content, ctx.getResponse());
+		
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+		
+					}
+					
+				}
+				
 			}
 			
 		}
@@ -107,11 +120,11 @@ public class MapServiceImpl extends BusinessImpl {
 
 	/**
 	 * @param type
-	 * @param source
+	 * @param item
 	 * @return
 	 * @throws Exception
 	 */
-	private String getJSONResponse(String type, String source) throws Exception {
+	private String getJSONResponse(String type, String item) throws Exception {
 
 		String content = null;
 		
@@ -126,7 +139,7 @@ public class MapServiceImpl extends BusinessImpl {
 			 * that are members of a specific registry package
 			 */
 			MapDQM dqm = new MapDQM(jaxrHandle);
-			content = dqm.getEdges(source);
+			content = dqm.getEdges(item);
 
 		} else if (type.equals(ClassificationConstants.FNC_ID_Node)) {
 			/*
@@ -135,7 +148,7 @@ public class MapServiceImpl extends BusinessImpl {
 			 * the according edges are retrieved by another method
 			 */
 			MapDQM dqm = new MapDQM(jaxrHandle);
-			content =dqm.getNodes(source);
+			content = dqm.getNodes(item);
 
 		} else {
 			throw new Exception("[MapServiceImpl] Information type <" + type + "> is not supported");
@@ -156,7 +169,7 @@ public class MapServiceImpl extends BusinessImpl {
 	 * 
 	 * @return
 	 */
-	private String layers(String endpoint, String start, String limit) throws Exception {
+	private String getJSONLayers(String endpoint, String start, String limit) throws Exception {
 		
 		/*
 		 * Connect to WMS service defined by endpoint parameter

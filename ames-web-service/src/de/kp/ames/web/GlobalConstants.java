@@ -38,7 +38,7 @@ public class GlobalConstants {
 
 	public static String RSS_ENDPOINT    = "ames.rss.endpoint";
 	public static String SEARCH_ENDPOINT = "ames.search.endpoint";
-	
+
 	/*
 	 * RSS Feed parameters
 	 */
@@ -69,7 +69,6 @@ public class GlobalConstants {
 	public static String ATTR_AFFILIATE = "ames.attr.affiliate";
 	public static String ATTR_ALIAS   	= "ames.attr.alias";
 	public static String ATTR_COMMUNITY = "ames.attr.community";
-	public static String ATTR_ENDPOINT  = "ames.attr.endpoint";
 	public static String ATTR_IMAGE     = "ames.attr.image";
 	public static String ATTR_KEYPASS 	= "ames.attr.keypass";
 	public static String ATTR_LIMIT   	= "ames.attr.limit";

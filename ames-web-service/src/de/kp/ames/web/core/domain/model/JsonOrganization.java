@@ -30,6 +30,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.shared.JaxrConstants;
@@ -80,6 +81,7 @@ public class JsonOrganization extends JsonRegistryObject {
     	/*
     	 * Convert email address
     	 */
+    	
     	Collection<?>emailAddresses = org.getEmailAddresses();
     	if (emailAddresses.iterator().hasNext()) {
     		
@@ -89,9 +91,13 @@ public class JsonOrganization extends JsonRegistryObject {
     		address = (address == null) ? " - " : address;
     		
     		put(JaxrConstants.RIM_EMAIL, address);
+        		
+    	} else {
     		
+    		put(JaxrConstants.RIM_EMAIL, " - ");
+     		
     	}
-    	
+   	
     	/* 
     	 * Convert telephone number
     	 */
@@ -105,18 +111,28 @@ public class JsonOrganization extends JsonRegistryObject {
         	
         	put(JaxrConstants.RIM_PHONE, jTelephoneNumber.get().toString());
    	    
+    	} else {
+ 
+        	put(JaxrConstants.RIM_PHONE, new JSONObject().toString());
+        	 
     	}
     	
     	/*
     	 * Convert primary contact
     	 */
     	UserImpl contact = (UserImpl)org.getPrimaryContact();
-    	if (contact == null) return;
-    	
-    	JsonUser jUser = new JsonUser(jaxrHandle);
-    	jUser.set(contact);
-    	
-    	put(JaxrConstants.RIM_CONTACT, jUser.get().toString());
+    	if (contact == null) {;
+	    	
+	    	put(JaxrConstants.RIM_CONTACT, new JSONObject().toString());
+
+    	} else {
+    		
+	    	JsonUser jUser = new JsonUser(jaxrHandle);
+	    	jUser.set(contact);
+	    	
+	    	put(JaxrConstants.RIM_CONTACT, jUser.get().toString());
+	    	
+    	}
 
     }
     
