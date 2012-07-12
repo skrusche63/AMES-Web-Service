@@ -33,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.shared.IconConstants;
 import de.kp.ames.web.shared.JaxrConstants;
 
 public class JsonOrganization extends JsonRegistryObject {
@@ -133,6 +134,11 @@ public class JsonOrganization extends JsonRegistryObject {
 	    	put(JaxrConstants.RIM_CONTACT, jUser.get().toString());
 	    	
     	}
+
+    	/*
+    	 * Convert icon
+    	 */
+    	put(JaxrConstants.RIM_ICON, IconConstants.ORGANIZATION);
 
     }
     

@@ -18,8 +18,17 @@ package de.kp.ames.web.function.domain.model;
  *
  */
 
+import java.util.Locale;
+
+import javax.xml.registry.JAXRException;
+
+import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+import org.json.JSONException;
+
 import de.kp.ames.web.core.domain.model.JsonExtrinsicObject;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.shared.IconConstants;
+import de.kp.ames.web.shared.JaxrConstants;
 
 public class JsonTransformator extends JsonExtrinsicObject {
 
@@ -31,5 +40,22 @@ public class JsonTransformator extends JsonExtrinsicObject {
 	public JsonTransformator(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
+
+	   /* (non-Javadoc)
+     * @see de.kp.ames.web.core.domain.model.JsonExtrinsicObject#set(org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl, java.util.Locale)
+     */
+    public void set(RegistryObjectImpl ro, Locale locale) throws JSONException, JAXRException {    
+    	
+    	/*
+    	 * Convert extrinsic object
+    	 */
+    	super.set(ro, locale);
+    	
+    	/*
+    	 * Convert icon
+    	 */
+    	put(JaxrConstants.RIM_ICON, IconConstants.TRANSFORMATOR);
+
+    }
 
 }

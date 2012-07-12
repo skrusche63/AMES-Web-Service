@@ -124,8 +124,8 @@ public class DocumentObject extends BusinessObject {
 		DataHandler handler = new DataHandler(FileUtil.createByteArrayDataSource(document.getBytes(), mimetype));                	
 
 		eo.setMimeType(mimetype);
-		eo.setRepositoryItem(handler);				
-
+		eo.setRepositoryItem(handler);			
+		
 		/*
 		 * Indicate as created
 		 */

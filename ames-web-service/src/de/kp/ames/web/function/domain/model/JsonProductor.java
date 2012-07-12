@@ -37,6 +37,7 @@ import org.json.JSONObject;
 
 import de.kp.ames.web.core.domain.model.JsonService;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.shared.IconConstants;
 import de.kp.ames.web.shared.JaxrConstants;
 
 public class JsonProductor extends JsonService {
@@ -70,6 +71,11 @@ public class JsonProductor extends JsonService {
     	 */
     	JSONArray jArray = getSpecifications(productor);
     	put(JaxrConstants.RIM_SPEC, jArray.toString());
+
+    	/*
+    	 * Convert icon
+    	 */
+    	put(JaxrConstants.RIM_ICON, IconConstants.SERVICE);
 
     }
  
