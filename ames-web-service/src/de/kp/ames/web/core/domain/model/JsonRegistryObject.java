@@ -88,12 +88,16 @@ public class JsonRegistryObject extends JsonRegistryEntry implements IJsonRegist
 		 * Convert name
 		 */
     	String name = jaxrBase.getName(ro, locale);
-		put(JaxrConstants.RIM_NAME, name);
+    	name = (name == null) ? "" : name;
+		
+    	put(JaxrConstants.RIM_NAME, name);
 		
 		/*
 		 * Convert description
 		 */
 		String description = jaxrBase.getDescription(ro, locale);
+		description = (description == null) ? "" : description;
+		
 		put(JaxrConstants.RIM_DESC, description);
 
 		/*

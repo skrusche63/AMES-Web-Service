@@ -65,6 +65,11 @@ public class PostingDQM extends JaxrDQM {
 	public JSONArray getPostings(String recipient) throws Exception {
 		
 		/*
+		 * Return empty response
+		 */
+		if (recipient == null) return new JSONArray();
+		
+		/*
 		 * Sort result by datetime
 		 */
 		DateCollector collector = new DateCollector();

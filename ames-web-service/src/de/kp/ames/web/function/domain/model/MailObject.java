@@ -26,8 +26,6 @@ import javax.xml.registry.JAXRException;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
-import org.json.JSONObject;
-
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
@@ -35,7 +33,6 @@ import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.shared.ClassificationConstants;
-import de.kp.ames.web.shared.JaxrConstants;
 
 public class MailObject extends BusinessObject {
 
@@ -51,12 +48,6 @@ public class MailObject extends BusinessObject {
 	 * @throws Exception
 	 */
 	public RegistryObjectImpl create(String data) throws Exception {
-
-		/*
-		 * Initialize data
-		 */
-		JSONObject jForm = new JSONObject(data);
-
 
 		/* 
 		 * A chat message is a certain extrinsic object that holds all 
@@ -79,15 +70,6 @@ public class MailObject extends BusinessObject {
 
 		eo.setLid(eid);
 		eo.getKey().setId(eid);
-
-		/*
-		 * Name & description using default locale
-		 */
-		String name = jForm.getString(JaxrConstants.RIM_NAME);				
-		eo.setName(jaxrLCM.createInternationalString(name));
-
-		String desc = jForm.getString(JaxrConstants.RIM_DESC);
-		eo.setDescription(jaxrLCM.createInternationalString(desc));
 		
 		/* 
 		 * Home url

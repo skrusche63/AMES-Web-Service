@@ -61,35 +61,29 @@ public class BulletinServiceImpl extends BusinessImpl {
 	public void doGetRequest(RequestContext ctx) {
 
 		String recipient = this.method.getAttribute(MethodConstants.ATTR_TARGET);
-		if (recipient == null) {
-			this.sendNotImplemented(ctx);
 
+		String start = this.method.getAttribute(FncConstants.ATTR_START);
+		String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
+
+		if ((start == null) || (limit == null)) {
+			this.sendNotImplemented(ctx);
+			
 		} else {
 
-			String start = this.method.getAttribute(FncConstants.ATTR_START);
-			String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
-	
-			if ((start == null) || (limit == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = getJSONResponse(recipient, start, limit);
+				sendJSONResponse(content, ctx.getResponse());
 
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = getJSONResponse(recipient, start, limit);
-					sendJSONResponse(content, ctx.getResponse());
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
 
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
 			}
-
+			
 		}
-		
+
 	}
 	
 	/* (non-Javadoc)

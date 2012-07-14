@@ -18,15 +18,21 @@ package de.kp.ames.web.function.domain.model;
  *
  */
 
+import java.io.InputStream;
 import java.util.Locale;
 
+import javax.activation.DataHandler;
 import javax.xml.registry.JAXRException;
 
+import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.domain.model.JsonExtrinsicObject;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.shared.IconConstants;
 import de.kp.ames.web.shared.JaxrConstants;
 
@@ -50,6 +56,33 @@ public class JsonMail extends JsonExtrinsicObject {
     	 * Convert extrinsic object
     	 */
     	super.set(ro, locale);
+    	
+    	/*
+    	 * Convert "subject" and "from"
+    	 */
+    	String from    = "";
+    	String subject = "";
+    	
+    	try {
+
+    		ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl)ro;
+    		DataHandler dataHandler = eo.getRepositoryItem();
+    	
+    		InputStream stream = dataHandler.getInputStream();
+    		byte[] bytes = FileUtil.getByteArrayFromInputStream(stream);
+    		
+    		JSONObject jMail = new JSONObject(new String(bytes, GlobalConstants.UTF_8));
+    		
+    		from    = jMail.getString(JaxrConstants.RIM_FROM);
+    		subject = jMail.getString(JaxrConstants.RIM_SUBJECT);
+    		
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		
+    	}
+    	
+    	put(JaxrConstants.RIM_FROM, from);
+    	put(JaxrConstants.RIM_SUBJECT, subject);
     	
     	/*
     	 * Convert icon
