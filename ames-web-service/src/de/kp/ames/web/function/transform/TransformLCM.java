@@ -45,7 +45,34 @@ public class TransformLCM extends JaxrLCM {
 	public TransformLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
-	
+
+	/**
+	 * Delete transformator
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteTransformator(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.TRANSFORMATOR_DELETED);
+		return jResponse.toString();
+		
+	}
+
 	/**
 	 * Submit XSL transformation
 	 * 

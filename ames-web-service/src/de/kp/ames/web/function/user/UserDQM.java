@@ -38,6 +38,27 @@ public class UserDQM extends JaxrDQM {
 	}
 	
 	/**
+	 * Retrieve a single user identified by his unique
+	 * identifier (item) in a JSON representation
+	 * 
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	public JSONArray getUser(String item) throws Exception {
+
+		/*
+		 * Retrieve a single user in a JSON representation
+		 */
+		UserImpl user = (UserImpl)this.getRegistryObjectById(item);
+		if (user == null) throw new Exception("[UserDQM] RegistryObject with id <" + item + "> does not exist.");
+
+		JSONObject jUser = JsonCoreProvider.getUser(jaxrHandle, user);	
+		return new JSONArray().put(jUser);
+
+	}
+	
+	/**
 	 * Retrieve affiliated users of a certain community
 	 * as a sorted list in a JSON representation
 	 * 

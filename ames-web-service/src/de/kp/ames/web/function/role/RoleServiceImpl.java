@@ -65,7 +65,28 @@ public class RoleServiceImpl extends BusinessImpl {
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doDeleteRequest(RequestContext ctx) {
-		// TODO
+
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+
+		if ((item == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = delete(type, item);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -258,6 +279,43 @@ public class RoleServiceImpl extends BusinessImpl {
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return content;
 		
+	}
+
+	/**
+	 * A helper method to either delete a responsibility or a role
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private String delete(String type, String item) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+		
+		if (type.equals(ClassificationConstants.FNC_ID_Responsibility)) {
+
+			RoleLCM lcm = new RoleLCM(jaxrHandle);
+			content = lcm.deleteResponsibility(item);
+			
+		} else if (type.equals(ClassificationConstants.FNC_ID_Role)) {
+
+			RoleLCM lcm = new RoleLCM(jaxrHandle);
+			content = lcm.deleteRole(item);
+
+		}
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+
 	}
 
 	private String submit(String type, String data) throws Exception {

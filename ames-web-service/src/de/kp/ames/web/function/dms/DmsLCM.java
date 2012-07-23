@@ -47,6 +47,60 @@ public class DmsLCM extends JaxrLCM {
 		super(jaxrHandle);
 	}
 
+	/**
+	 * Delete document
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteDocument(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.DOCUMENT_DELETED);
+		return jResponse.toString();
+		
+	}
+
+	/**
+	 * Delete image
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteImage(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.IMAGE_DELETED);
+		return jResponse.toString();
+		
+	}
+
 	public String submitDocument(String data) throws Exception {
 		/*
 		 * Create or retrieve registry package that is 

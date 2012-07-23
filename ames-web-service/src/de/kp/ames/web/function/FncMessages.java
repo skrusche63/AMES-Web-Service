@@ -26,6 +26,7 @@ public class FncMessages extends CoreMessages {
 	 * Access specific messages
 	 */
 	public static String ACCESSOR_CREATED = "Accessor successfully created.";
+	public static String ACCESSOR_DELETED = "Accessor successfully deleted.";
 	
 	/*
 	 * Bulletin specific messages
@@ -43,8 +44,11 @@ public class FncMessages extends CoreMessages {
 	 * DMS specific messages
 	 */
 	public static String DOCUMENT_CREATED = "Document successfully submitted.";
+	public static String DOCUMENT_DELETED = "Document sucessfully deleted.";
 	public static String IMAGE_CREATED    = "Image successfully submitted.";
-	
+	public static String IMAGE_DELETED    = "Image successfully deleted.";
+
+
 	/*
 	 * Group specifc messages
 	 */
@@ -55,6 +59,7 @@ public class FncMessages extends CoreMessages {
 	public static String CONTACT_CREATED       = "Primary contact successfully submitted.";
 	public static String ORGANIZATION_CREATED  = "Organization successfully submitted.";
 	public static String ORGANIZATION_UPDATED  = "Organization successfully updated.";
+	public static String ORGANIZATION_DELETED  = "Organization successfully deleted.";
 	
 	/*
 	 * Namespace specific messages
@@ -62,13 +67,24 @@ public class FncMessages extends CoreMessages {
 	public static String FOLDER_CREATED = "Namespace folder successfully submitted.";
 	
 	/*
+	 * Role specific messages
+	 */
+	public static String RESPONSIBILITY_CREATED = "Resposibility successfully created.";
+	public static String RESPONSIBILITY_DELETED = "Resposibility successfully deleted.";
+	public static String ROLES_CREATED          = "Roles successfully created.";
+	public static String ROLE_DELETED           = "Role successfully deleted.";
+
+	/*
 	 * Transformation specific messages
 	 */
 	public static String EVALUATION_CREATED    = "Evaluation successfully submitted.";
 	public static String PRODUCT_CREATED       = "Product successfully submitted.";
+	public static String PRODUCT_DELETED       = "Product successfully deleted.";
 	public static String PRODUCTOR_CREATED     = "Productor successfully submitted.";
+	public static String PRODUCTOR_DELETED     = "Productor successfully deleted.";
 	public static String REASONER_CREATED      = "Reasoner successfully submitted.";
 	public static String TRANSFORMATOR_CREATED = "Transformator successfully submitted.";
+	public static String TRANSFORMATOR_DELETED = "Transformator successfully deleted.";
 
 	public static String CACHE_ENTRY_DELETE = "Cache Entry successfully deleted.";
 

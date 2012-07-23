@@ -47,7 +47,61 @@ public class ProductLCM extends JaxrLCM {
 	public ProductLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
-	
+
+	/**
+	 * Delete product
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteProduct(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.PRODUCT_DELETED);
+		return jResponse.toString();
+		
+	}
+
+	/**
+	 * Delete productor
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteProductor(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.PRODUCTOR_DELETED);
+		return jResponse.toString();
+		
+	}
+
 	/**
 	 * Create ProductObject
 	 * 

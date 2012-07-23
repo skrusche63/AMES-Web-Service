@@ -47,6 +47,33 @@ public class AccessLCM extends JaxrLCM {
 	}
 
 	/**
+	 * Delete accessor
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteAccessor(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.ACCESSOR_DELETED);
+		return jResponse.toString();
+		
+	}
+
+	/**
 	 * Submit Accessor
 	 * 
 	 * @param data

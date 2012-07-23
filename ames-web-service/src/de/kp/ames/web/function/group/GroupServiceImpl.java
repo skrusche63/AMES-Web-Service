@@ -69,33 +69,34 @@ public class GroupServiceImpl extends BusinessImpl {
 	 */
 	public void doDeleteRequest(RequestContext ctx) {
 		
-		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+		
+		/*
+		 * This parameter is optional in case of
+		 * a community delete request
+		 */
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);			
+
 		if (type == null) {
 			this.sendNotImplemented(ctx);
 			
 		} else {
 			
 			/*
-			 * Delete request requires data
+			 * Delete request may have additional data
 			 */
 			String data = this.getRequestData(ctx);
-			if (data == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				try {
-					/*
-					 * JSON response
-					 */
-					String content = delete(type, data);
-					sendJSONResponse(content, ctx.getResponse());
 
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = delete(type, item, data);
+				sendJSONResponse(content, ctx.getResponse());
 
-				}
-				
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
 			}
 			
 		}		
@@ -293,11 +294,12 @@ public class GroupServiceImpl extends BusinessImpl {
 	 * from an OASIS ebXML RegRep
 	 * 
 	 * @param type
+	 * @param item
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	private String delete(String type, String data) throws Exception {
+	private String delete(String type, String item, String data) throws Exception {
 
 		String content = null;
 		
@@ -307,14 +309,19 @@ public class GroupServiceImpl extends BusinessImpl {
 		JaxrClient.getInstance().logon(jaxrHandle);		
 		
 		if (type.equals(ClassificationConstants.FNC_ID_Affiliation)) {
-
+			
+			/*
+			 * Deleting affiliation requires knowledge about
+			 * the respective groups & users; that is why
+			 * additional data are provided
+			 */
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
 			content = lcm.deleteAffiliation(data);
 
 		} else if (type.equals(ClassificationConstants.FNC_ID_Community)) {
 
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
-			content = lcm.deleteCommunity(data);
+			content = lcm.deleteCommunity(item);
 			
 		} else {
 			throw new Exception("[GroupServiceImpl] Information type <" + type + "> is not supported");

@@ -129,11 +129,18 @@ public class UserServiceImpl extends BusinessImpl {
 
 		if (format.equals(FormatConstants.FNC_FORMAT_ID_Object)) {
 			/*
-			 * Retrieve a JSON representation of a single user
+			 * Retrieve a certain user identified
+			 * by its unique identifier
 			 */
+			UserDQM dqm = new UserDQM(jaxrHandle);
+			JSONArray jArray = dqm.getUsers(item);
+
+			/*
+			 * Render result
+			 */
+			content = render(jArray, format);
+	
 			
-			// TODO
-		
 		} else {
 			/*
 			 * Retrieve all users that are affiliated to 

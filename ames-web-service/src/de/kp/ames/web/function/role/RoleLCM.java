@@ -37,6 +37,7 @@ import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
+import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
 import de.kp.ames.web.shared.constants.JaxrConstants;
 import de.kp.ames.web.shared.constants.JsonConstants;
@@ -45,9 +46,7 @@ public class RoleLCM extends JaxrLCM {
 	/*
 	 * Response messages
 	 */
-	private static String MISSING_PARAMETERS     = "Please provide valid parameters.";
-	private static String RESPONSIBILITY_CREATED = "Resposibility successfully created.";
-	private static String ROLES_CREATED          = "Roles successfully created.";
+	private static String MISSING_PARAMETERS = "Please provide valid parameters.";
 
 	private static String RIM_ID        = JaxrConstants.RIM_ID;
 	private static String RIM_NAMESPACE = JaxrConstants.RIM_NAMESPACE;
@@ -56,7 +55,61 @@ public class RoleLCM extends JaxrLCM {
 	public RoleLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
 	}
-	
+
+	/**
+	 * Delete responsibility
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteResponsibility(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.RESPONSIBILITY_DELETED);
+		return jResponse.toString();
+		
+	}
+
+	/**
+	 * Delete role
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteRole(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.ROLE_DELETED);
+		return jResponse.toString();
+		
+	}
+
 	/**
 	 * Build responsilities (association instances) for
 	 * a set for referenced namespaces
@@ -141,10 +194,9 @@ public class RoleLCM extends JaxrLCM {
 		/*
 		 * Update response message
 		 */
-		message = RESPONSIBILITY_CREATED;
 		
 		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
+		jResponse.put(JsonConstants.J_MESSAGE, FncMessages.RESPONSIBILITY_CREATED);
 
 		return jResponse.toString();
 
@@ -213,10 +265,9 @@ public class RoleLCM extends JaxrLCM {
 		/*
 		 * Update response message
 		 */
-		message = ROLES_CREATED;
 		
 		jResponse.put(JsonConstants.J_SUCCESS, true);
-		jResponse.put(JsonConstants.J_MESSAGE, message);
+		jResponse.put(JsonConstants.J_MESSAGE, FncMessages.ROLES_CREATED);
 
 		return jResponse.toString();
 		

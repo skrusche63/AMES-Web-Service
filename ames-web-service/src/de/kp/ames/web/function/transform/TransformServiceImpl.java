@@ -110,7 +110,28 @@ public class TransformServiceImpl extends BusinessImpl {
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doDeleteRequest(RequestContext ctx) {
-		// TODO
+
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+
+		if ((item == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = delete(type, item);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -240,6 +261,39 @@ public class TransformServiceImpl extends BusinessImpl {
 		 */
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return content;
+	}
+
+	/**
+	 * A helper method to delete a transformator instance
+	 * of a certain type
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private String delete(String type, String item) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+		
+		/*
+		 * The type parameter is a MUST for the interface,
+		 * but actually not used 
+		 */
+		TransformLCM lcm = new TransformLCM(jaxrHandle);
+		content = lcm.deleteTransformator(item);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+
 	}
 
 	/**

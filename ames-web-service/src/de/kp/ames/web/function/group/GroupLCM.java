@@ -98,13 +98,28 @@ public class GroupLCM extends PartyLCM {
 	/**
 	 * Delete a certain community of interest
 	 * 
-	 * @param data
+	 * @param uid
 	 * @return
 	 * @throws Exception
 	 */
-	public String deleteCommunity(String data) throws Exception {
-		//TODO
-		return null;
+	public String deleteCommunity(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.ORGANIZATION_DELETED);
+		return jResponse.toString();
+			
 	}
 	
 	/**
