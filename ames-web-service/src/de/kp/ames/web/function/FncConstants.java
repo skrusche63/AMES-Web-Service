@@ -29,6 +29,7 @@ public class FncConstants {
 	public static String ACCESSOR_PRE;
 	public static String AFFILIATION_PRE;
 	public static String CHAT_PRE;
+	public static String COMMENT_PRE;
 	public static String COMMUNITY_PRE;
 	public static String CORE_PRE;
 	public static String DOCUMENT_PRE;
@@ -78,6 +79,7 @@ public class FncConstants {
 		ACCESSOR_PRE      = basePrefix + ":accessor";
 		AFFILIATION_PRE   = basePrefix + ":affiliation";
 		CHAT_PRE          = basePrefix + ":chat";
+		COMMENT_PRE       = basePrefix + ":comment";
 		COMMUNITY_PRE     = basePrefix + ":community";
 		CORE_PRE          = basePrefix + ":core";
 		DOCUMENT_PRE      = basePrefix + ":document";

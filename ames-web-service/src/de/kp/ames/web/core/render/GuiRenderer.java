@@ -26,8 +26,9 @@ public interface GuiRenderer {
 	 * 
 	 * @param jArray
 	 * @return
+	 * @throws Exception
 	 */
-	public String createGrid(JSONArray jArray);
+	public String createGrid(JSONArray jArray) throws Exception;
 
 	/**
 	 * Build a Grid representation from a JSON array
@@ -37,8 +38,9 @@ public interface GuiRenderer {
 	 * @param jArray
 	 * @param total
 	 * @return
+	 * @throws Exception
 	 */
-	public String createGrid(JSONArray jArray, long total);
+	public String createGrid(JSONArray jArray, long total) throws Exception ;
 
 	/**
 	 * Build a paged GUI grid representation from a JSON array
@@ -47,24 +49,27 @@ public interface GuiRenderer {
 	 * @param start
 	 * @param limit
 	 * @return
+	 * @throws Exception
 	 */
-	public String createGrid(JSONArray jArray, String start, String limit);
+	public String createGrid(JSONArray jArray, String start, String limit) throws Exception;
 	
 	/**
 	 * Build a Object representation from a JSON Array
 	 * 
 	 * @param jArray
 	 * @return
+	 * @throws Exception
 	 */
-	public String createObject(JSONArray jArray);
+	public String createObject(JSONArray jArray) throws Exception;
 
 	/**
 	 * Build a Tree representation from a JSON Array
 	 * 
 	 * @param jArray
 	 * @return
+	 * @throws Exception
 	 */
-	public String createTree(JSONArray jArray);
+	public String createTree(JSONArray jArray) throws Exception;
 	
 	/*
 	 * Paging paramters depend on registered Gui

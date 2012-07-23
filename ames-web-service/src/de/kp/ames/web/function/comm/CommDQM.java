@@ -33,7 +33,7 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.domain.JsonBusinessProvider;
-import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
 
 public class CommDQM extends JaxrDQM {
 

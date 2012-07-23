@@ -20,6 +20,7 @@ package de.kp.ames.web.function;
 
 public class IconCls {
 
-	public static String POST = "x-post";
+	public static String COMMENT = "x-comment";
+	public static String POST    = "x-post";
 
 }

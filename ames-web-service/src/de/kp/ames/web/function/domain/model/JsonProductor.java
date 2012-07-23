@@ -37,8 +37,8 @@ import org.json.JSONObject;
 
 import de.kp.ames.web.core.domain.model.JsonService;
 import de.kp.ames.web.core.regrep.JaxrHandle;
-import de.kp.ames.web.shared.IconConstants;
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.IconConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 public class JsonProductor extends JsonService {
 
@@ -124,8 +124,10 @@ public class JsonProductor extends JsonService {
     		RegistryObjectImpl ro = (RegistryObjectImpl)spec.getSpecificationObject();
 
     		JSONObject jTransformator = new JSONObject();
-    		
-    		jTransformator.put(JaxrConstants.RIM_ID, ro.getId());
+
+    		jTransformator.put(JaxrConstants.RIM_SEQNO, seqNo);
+
+    		jTransformator.put(JaxrConstants.RIM_ID,   ro.getId());
     		jTransformator.put(JaxrConstants.RIM_NAME, jaxrBase.getName(ro));
     			
     		collector.put(seqNo, jTransformator);

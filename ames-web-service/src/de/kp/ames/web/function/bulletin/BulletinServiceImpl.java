@@ -24,9 +24,8 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
-import de.kp.ames.web.shared.ClassificationConstants;
-import de.kp.ames.web.shared.FormatConstants;
-import de.kp.ames.web.shared.MethodConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
+import de.kp.ames.web.shared.constants.MethodConstants;
 
 public class BulletinServiceImpl extends BusinessImpl {
 
@@ -60,21 +59,24 @@ public class BulletinServiceImpl extends BusinessImpl {
 	 */
 	public void doGetRequest(RequestContext ctx) {
 
-		String recipient = this.method.getAttribute(MethodConstants.ATTR_TARGET);
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);
+		
+		String target = this.method.getAttribute(MethodConstants.ATTR_TARGET);
 
-		String start = this.method.getAttribute(FncConstants.ATTR_START);
-		String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
-
-		if ((start == null) || (limit == null)) {
+		if ((format == null) || (type == null) || (target == null)) {
 			this.sendNotImplemented(ctx);
-			
+
 		} else {
+
+			String start = this.method.getAttribute(FncConstants.ATTR_START);
+			String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
 
 			try {
 				/*
 				 * JSON response
 				 */
-				String content = getJSONResponse(recipient, start, limit);
+				String content = getJSONResponse(type, target, start, limit, format);
 				sendJSONResponse(content, ctx.getResponse());
 
 			} catch (Exception e) {
@@ -105,8 +107,26 @@ public class BulletinServiceImpl extends BusinessImpl {
 				this.sendNotImplemented(ctx);
 				
 			} else {
+
+				if (type.equals(ClassificationConstants.FNC_ID_Comment)) {
+					
+					String posting = this.method.getAttribute(MethodConstants.ATTR_TARGET);
+					if (posting == null) {
+						this.sendNotImplemented(ctx);
+					
+					} else {
+						
+						try {
+							String content = submitComment(posting, data);
+							sendJSONResponse(content, ctx.getResponse());
+
+						} catch (Exception e) {
+							this.sendBadRequest(ctx, e);
+
+						}
+					}
 				
-				if (type.equals(ClassificationConstants.FNC_ID_Posting)) {
+				} else if (type.equals(ClassificationConstants.FNC_ID_Posting)) {
 					
 					String recipient = this.method.getAttribute(MethodConstants.ATTR_TARGET);
 					if (recipient == null) {
@@ -115,7 +135,7 @@ public class BulletinServiceImpl extends BusinessImpl {
 					} else {
 						
 						try {
-							String content = submit(recipient, data);
+							String content = submitPosting(recipient, data);
 							sendJSONResponse(content, ctx.getResponse());
 
 						} catch (Exception e) {
@@ -124,6 +144,7 @@ public class BulletinServiceImpl extends BusinessImpl {
 						}
 					}
 				}
+
 			}
 			
 		}
@@ -137,7 +158,7 @@ public class BulletinServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String getJSONResponse(String recipient, String start, String limit) throws Exception {
+	private String getJSONResponse(String type, String target, String start, String limit, String format) throws Exception {
 
 		String content = null;
 		
@@ -145,15 +166,43 @@ public class BulletinServiceImpl extends BusinessImpl {
 		 * Login
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
+				
+		if (type.equals(ClassificationConstants.FNC_ID_Comment)) {
+			
+			PostingDQM dqm = new PostingDQM(jaxrHandle);
+			JSONArray jArray = dqm.getComments(target);
+			
+			/*
+			 * Render result
+			 */
+			if ((start == null) || (limit == null)) {
+				content = render(jArray, format);
+				
+			} else {
+				content = render(jArray, start, limit, format);
+				
+			}
+			
+		} else if (type.equals(ClassificationConstants.FNC_ID_Posting)) {
 		
-		PostingDQM dqm = new PostingDQM(jaxrHandle);
-		JSONArray jArray = dqm.getPostings(recipient);
-		
-		/*
-		 * Render result
-		 */
-		String format = FormatConstants.FNC_FORMAT_ID_Grid;
-		content = render(jArray, start, limit, format);
+			PostingDQM dqm = new PostingDQM(jaxrHandle);
+			JSONArray jArray = dqm.getPostings(target);
+			
+			/*
+			 * Render result
+			 */
+			if ((start == null) || (limit == null)) {
+				content = render(jArray, format);
+				
+			} else {
+				content = render(jArray, start, limit, format);
+				
+			}
+
+		} else {
+			throw new Exception("[BulletinServiceImpl] Information type <" + type + "> is not supported");
+
+		}
 		
 		/*
 		 * Logoff
@@ -162,6 +211,40 @@ public class BulletinServiceImpl extends BusinessImpl {
 		return content;
 		
 	}
+
+	/**
+	 * A helper method to submit a certain comment
+	 * for a specific posting
+	 * 
+	 * @param posting
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	private String submitComment(String posting, String data) throws Exception {
+		/*
+		 * Access OASIS ebXML RegRep to register
+		 * a certain comment for a specific posting
+		 */
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+
+		PostingLCM lcm = new PostingLCM(jaxrHandle);
+		content = lcm.submitComment(posting, data);
+
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+
+	}
+
 	/**
 	 * A helper method to submit a certain posting
 	 * 
@@ -170,7 +253,7 @@ public class BulletinServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String submit(String recipient, String data) throws Exception {
+	private String submitPosting(String recipient, String data) throws Exception {
 		/*
 		 * Access OASIS ebXML RegRep to register
 		 * a certain posting for a specific recipient
@@ -184,7 +267,7 @@ public class BulletinServiceImpl extends BusinessImpl {
 		JaxrClient.getInstance().logon(jaxrHandle);
 
 		PostingLCM lcm = new PostingLCM(jaxrHandle);
-		content = lcm.submit(recipient, data);
+		content = lcm.submitPosting(recipient, data);
 
 		/*
 		 * Logoff

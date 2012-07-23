@@ -38,7 +38,7 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
 import de.kp.ames.web.function.domain.model.NamespaceObject;
-import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
 
 public class NsLCM extends JaxrLCM {
 

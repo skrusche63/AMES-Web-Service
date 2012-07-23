@@ -43,10 +43,11 @@ public class ScConstants {
 	/*
 	 * Grid response parameters
 	 */
-	public static String SC_DATA        = "data";
-	public static String SC_STATUS 	 	= "status";
-	public static String SC_STARTROW 	= "startRow";
-	public static String SC_ENDROW   	= "endRow";
-	public static String SC_TOTALROWS 	= "totalRows";
+	public static String SC_DATA      = "data";
+	public static String SC_STATUS 	  = "status";
+	public static String SC_STARTROW  = "startRow";
+	public static String SC_ENDROW    = "endRow";
+	public static String SC_TOTALROWS = "totalRows";
+	public static String SC_RESPONSE  = "response";
 
 }

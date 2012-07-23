@@ -33,7 +33,7 @@ import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncSQL;
 import de.kp.ames.web.function.IconCls;
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 public class PostingDQM extends JaxrDQM {
 
@@ -50,6 +50,71 @@ public class PostingDQM extends JaxrDQM {
 		 */
 		renderer = GuiFactory.getInstance().getRenderer();
 		
+	}
+	
+	/**
+	 * Retrieve sorted list of comments that refer to a
+	 * specific posting
+	 * 
+	 * @param posting
+	 * @return
+	 * @throws Exception
+	 */
+	public JSONArray getComments(String posting) throws Exception {
+
+		/*
+		 * Return empty response
+		 */
+		if (posting == null) return new JSONArray();
+		
+		/*
+		 * Sort result by datetime
+		 */
+		DateCollector collector = new DateCollector();
+
+		/*
+		 * Retrieve SQL statement
+		 */
+		String sqlString = FncSQL.getSQLComments_All(posting);
+		List<ExtrinsicObjectImpl> comments = getExtrinsicObjectsByQuery(sqlString);
+		
+		for (ExtrinsicObjectImpl comment:comments) {
+
+			/*
+			 * The raw posting is registered as the repository item
+			 * of a certain extrinsic object
+			 */
+			FileUtil file = getRepositoryItem(comment);
+			JSONObject jComment = new JSONObject(new String(file.getFile()));
+
+			/*
+			 * Add metadata to JSON representation of
+			 * a certain comment
+			 */
+			String uid = comment.getId();
+			jComment.put(JaxrConstants.RIM_ID, uid);
+
+			Date lastModified = getLastModified(comment);
+			jComment.put(JaxrConstants.RIM_TIMESTAMP, lastModified);
+
+			String author = getAuthor(comment);
+			jComment.put(JaxrConstants.RIM_AUTHOR, author);
+
+			/*
+			 * Add rendering information
+			 */
+			String iconParam = renderer.getIconParam();
+			jComment.put(iconParam, IconCls.POST);
+				
+			/*
+			 * Sort postings by datetime
+			 */
+			collector.put(lastModified, jComment);
+
+		}
+		
+		return new JSONArray(collector.values());
+
 	}
 	
 	/**

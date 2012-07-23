@@ -19,6 +19,7 @@ package de.kp.ames.web.http;
  */
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -27,13 +28,18 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.opensaml.saml2.core.Assertion;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
@@ -448,4 +454,77 @@ public class RequestDispatcher extends HttpServlet {
 		return services;
 		
 	}
+	
+	/**
+	 * Retrieve the actually registered services from the server's file system
+	 * 
+	 * @param ctx
+	 * @return
+	 */
+	private ArrayList<BaseParam> getServices(RequestContext ctx) {
+
+		/*
+		 * Retrieve services declaration from the file system
+		 */
+		ServletContext context = ctx.getContext();
+		
+		String filename = "/WEB-INF/resources/services.xml";		  
+		InputStream is = context.getResourceAsStream(filename);
+
+		
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+
+		ArrayList<BaseParam> params = new ArrayList<BaseParam>();
+		
+		try {
+			
+			Document xmlDoc = factory.newDocumentBuilder().parse(is);
+			NodeList services = xmlDoc.getElementsByTagName("service");
+
+			for (int i=0; i < services.getLength(); i++) {
+				
+				Element eService = (Element)services.item(i);
+				BaseParam param = getServiceParams(eService);
+				
+				if (param == null) continue;
+				
+				params.add(param);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+
+		return params;
+
+	}
+	
+	private BaseParam getServiceParams(Element eService) {
+
+		String id    = "";
+		String clazz = "";
+		
+		NodeList properties = eService.getChildNodes();
+		for (int i=0; i < properties.getLength(); i++) {
+			
+			Element property = (Element)properties.item(i);
+
+			if (property.getTagName().equals("service-id")) {
+				id = property.getTextContent().trim();
+			}
+
+			if (property.getTagName().equals("service-class")) {
+				clazz = property.getTextContent().trim();
+			}
+
+		}
+
+		if (id.equals("")  || clazz.equals("")) return null;
+		return new BaseParam(id, clazz);
+		
+	}
+
 }

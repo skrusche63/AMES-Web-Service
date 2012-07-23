@@ -20,7 +20,7 @@ package de.kp.ames.web.core.regrep;
 
 import java.security.SecureRandom;
 
-import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
 
 /**
  * JaxrIdentity is an identity generator for unique

@@ -45,8 +45,8 @@ import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
-import de.kp.ames.web.shared.ClassificationConstants;
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 public class PostingLCM extends JaxrLCM {
 
@@ -60,6 +60,148 @@ public class PostingLCM extends JaxrLCM {
 	}
 
 	/**
+	 * Submit comment for a certain posting
+	 * 
+	 * @param posting
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public String submitComment(String posting, String data) throws Exception {
+
+		/*
+		 * Create or retrieve registry package that is 
+		 * responsible for managing comments
+		 */
+		RegistryPackageImpl container = null;		
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+		
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Comment);
+		if (list.size() == 0) {
+			/*
+			 * Create container
+			 */
+			container = createCommentPackage();
+			
+		} else {
+			/*
+			 * Retrieve container
+			 */
+			container = list.get(0);
+
+		}
+
+		/* 
+		 * A comment is a certain extrinsic object that holds all relevant
+		 * and related information in a single JSON repository item
+		 */
+
+		ExtrinsicObjectImpl eo = null;
+		JaxrTransaction transaction = new JaxrTransaction();
+
+		// create extrinsic object that serves as a container for
+		// the respective comment
+		eo = createExtrinsicObject();
+		if (eo == null) throw new JAXRException();
+				
+		/* 
+		 * Identifier
+		 */
+		String eid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.COMMENT_PRE);
+
+		/*
+		* Name & description using default locale
+		*/
+		
+		JSONObject jPosting = new JSONObject(data);
+
+		String name = jPosting.getString(JaxrConstants.RIM_NAME);				
+		String desc = jPosting.getString(JaxrConstants.RIM_DESC);
+		/* 
+		 * Home url
+		 */
+		String home = jaxrHandle.getEndpoint().replace("/saml", "");
+		
+		/*
+		 * Set properties
+		 */
+		setProperties(eo, eid, name, desc, home);
+				
+		/* 
+		 * Mime type & handler
+		 */
+		String mimetype = GlobalConstants.MT_JSON;
+		eo.setMimeType(mimetype);
+				
+		byte[] bytes = data.getBytes(GlobalConstants.UTF_8);
+
+		DataHandler handler = new DataHandler(FileUtil.createByteArrayDataSource(bytes, mimetype));                	
+    	eo.setRepositoryItem(handler);				
+
+    	transaction.addObjectToSave(eo);
+
+		/*
+		 * Create classification
+		 */
+		ClassificationImpl c = createClassification(ClassificationConstants.FNC_ID_Comment);
+		c.setName(createInternationalString(Locale.US, "Comment Classification"));
+
+		/* 
+		 * Associate classification and posting container
+		 */
+		eo.addClassification(c);
+		transaction.addObjectToSave(c);				
+
+		/* 
+		 * Add extrinsic object to container
+		 */
+		container.addRegistryObject(eo);
+		transaction.addObjectToSave(container);
+				
+		/*
+		 * Create association
+		 */
+		String aid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.COMMENT_PRE);
+		AssociationImpl a = this.createAssociation_RelatedTo(eo);		
+		/*
+		 * Set properties
+		 */
+		setProperties(a, aid, "Posting Link", "This is a directed association between a posting and the respective comment.", home);
+
+		/*
+		 * Source object
+		 */
+		RegistryObjectImpl so = (RegistryObjectImpl)jaxrHandle.getDQM().getRegistryObject(posting);
+		
+		so.addAssociation(a);
+		transaction.addObjectToSave(a);
+		
+		/*
+		 * Add association to container
+		 */
+		container.addRegistryObject(a);
+
+		/*
+		 * Save objects
+		 */
+		transaction.addObjectToSave(container);
+		saveObjects(transaction.getObjectsToSave(), false, false);
+
+		/*
+		 * Supply reactor
+		 */
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, eo, ClassificationConstants.FNC_ID_Comment, RAction.C_INDEX);
+		ReactorImpl.onSubmit(reactorParams);
+
+		/*
+		 * Retrieve response message
+		 */
+		JSONObject jResponse = transaction.getJResponse(eid, FncMessages.COMMENT_CREATED);
+		return jResponse.toString();
+	
+	}
+	
+	/**
 	 * Submit posting for a certain recipient; a posting is an 
 	 * extrinsic object that is classified as posting and contained
 	 * within the respective positing container; 
@@ -72,7 +214,7 @@ public class PostingLCM extends JaxrLCM {
 	 * @return
 	 * @throws Exception 
 	 */
-	public String submit(String recipient, String data) throws Exception {
+	public String submitPosting(String recipient, String data) throws Exception {
 		
 		/*
 		 * Create or retrieve registry package that is 
@@ -97,7 +239,7 @@ public class PostingLCM extends JaxrLCM {
 		}
 
 		/* 
-		 * A positing is a certain extrinsic object that holds all relevant
+		 * A posting is a certain extrinsic object that holds all relevant
 		 * and related information in a single JSON repository item
 		 */
 
@@ -226,6 +368,41 @@ public class PostingLCM extends JaxrLCM {
 		ro.setHome(home);
 
 	}
+
+	/**
+	 * A helper method to create a new comment container
+	 * 
+	 * @return
+	 * @throws JAXRException
+	 */
+	private RegistryPackageImpl createCommentPackage() throws JAXRException  {
+
+		FncParams params = new FncParams();
+		
+		/*
+		 * Name & description
+		 */
+		params.put(FncParams.K_NAME, "Comments");
+		params.put(FncParams.K_DESC, FncMessages.COMMENT_DESC);
+		
+		/*
+		 * Prefix
+		 */
+		params.put(FncParams.K_PRE, FncConstants.COMMENT_PRE);
+		
+		/*
+		 * Classification
+		 */
+		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Comment);
+		
+		/*
+		 * Create package
+		 */
+		DomainLCM lcm = new DomainLCM(jaxrHandle);
+		return lcm.createBusinessPackage(params);
+	
+	}
+
 	
 	/**
 	 * A helper method to create a new posting container

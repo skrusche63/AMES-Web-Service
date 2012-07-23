@@ -37,9 +37,9 @@ import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.core.vocab.VocabDQM;
 import de.kp.ames.web.function.FncSQL;
-import de.kp.ames.web.shared.ClassificationConstants;
-import de.kp.ames.web.shared.JaxrConstants;
-import de.kp.ames.web.shared.JsonConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
+import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class RoleDQM extends JaxrDQM {
 

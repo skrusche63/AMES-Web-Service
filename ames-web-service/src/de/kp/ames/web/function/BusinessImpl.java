@@ -23,7 +23,7 @@ import org.json.JSONArray;
 import de.kp.ames.web.core.render.GuiFactory;
 import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.core.service.ServiceImpl;
-import de.kp.ames.web.shared.FormatConstants;
+import de.kp.ames.web.shared.constants.FormatConstants;
 
 public class BusinessImpl extends ServiceImpl {
 

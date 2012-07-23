@@ -37,7 +37,7 @@ import de.kp.ames.web.core.json.StringCollector;
 import de.kp.ames.web.core.render.GuiFactory;
 import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.function.FncMessages;
-import de.kp.ames.web.shared.JsonConstants;
+import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class SearcherImpl implements Searcher {
 

@@ -4,8 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.http.RequestContext;
-import de.kp.ames.web.shared.FormatConstants;
-import de.kp.ames.web.shared.MethodConstants;
+import de.kp.ames.web.shared.constants.FormatConstants;
+import de.kp.ames.web.shared.constants.MethodConstants;
 
 public class FrameServiceImpl extends BusinessImpl {
 

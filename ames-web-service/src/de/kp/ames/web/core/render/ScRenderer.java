@@ -39,98 +39,73 @@ public class ScRenderer implements GuiRenderer {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#createGrid(org.json.JSONArray)
 	 */
-	public String createGrid(JSONArray jArray) {
+	public String createGrid(JSONArray jArray) throws Exception {
 
 		JSONObject jResponse = new JSONObject();
 		int card = jArray.length();
-
-		try {
 		
-			jResponse.put(ScConstants.SC_STATUS, 0);	
-			jResponse.put(ScConstants.SC_TOTALROWS, card);
+		jResponse.put(ScConstants.SC_STATUS, 0);	
+		jResponse.put(ScConstants.SC_TOTALROWS, card);
 
-			jResponse.put(ScConstants.SC_DATA, jArray);
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-			
-		} finally {}
-
-		
+		jResponse.put(ScConstants.SC_DATA, jArray);		
 		return jResponse.toString();
 		
 
 	}
 
 	/* (non-Javadoc)
-	 * @see de.kp.ames.web.function.GuiRenderer#createGrid(org.json.JSONArray, int)
+	 * @see de.kp.ames.web.core.render.GuiRenderer#createGrid(org.json.JSONArray, long)
 	 */
-	public String createGrid(JSONArray jArray, long total) {
+	public String createGrid(JSONArray jArray, long total) throws Exception {
 
 		JSONObject jResponse = new JSONObject();
-		try {
 		
-			jResponse.put(ScConstants.SC_STATUS, 0);	
-			jResponse.put(ScConstants.SC_TOTALROWS, total);
+		jResponse.put(ScConstants.SC_STATUS, 0);	
+		jResponse.put(ScConstants.SC_TOTALROWS, total);
 
-			jResponse.put(ScConstants.SC_DATA, jArray);
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-			
-		} finally {}
-
-		
-		return jResponse.toString();
+		jResponse.put(ScConstants.SC_DATA, jArray);		
+		return new JSONObject().put(ScConstants.SC_RESPONSE, jResponse).toString();
 		
 	}
 
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#createGrid(org.json.JSONArray, java.lang.String, java.lang.String)
 	 */
-	public String createGrid(JSONArray jArray, String start, String limit) {
+	public String createGrid(JSONArray jArray, String start, String limit) throws Exception {
 		
 		JSONObject jResponse = new JSONObject();
 		int card = jResponse.length();
-		try {
 			
-			jResponse.put(ScConstants.SC_STATUS, 0);			
-			jResponse.put(ScConstants.SC_STARTROW, start);
-			
-			jResponse.put(ScConstants.SC_ENDROW, limit);
-			jResponse.put(ScConstants.SC_TOTALROWS, card);
-
-			/* 
-			 * Number of sorted object is sliced with the provided 
-			 * start and limit parameters
-			 */
-			
-			int begin = this.toIntegerValue(start);
-			int end   = begin + this.toIntegerValue(limit);
-			
-			end = (card < end) ? card : end;
-			
-			Collection<JSONObject> list = new ArrayList<JSONObject>();
-			for (int i=begin; i < end; i++) {
-				list.add(jArray.getJSONObject(i));
-			}
-			
-			jResponse.put(ScConstants.SC_DATA, new JSONArray(list));
-
-		} catch(Exception e) {
-			e.printStackTrace();
-			
-		} finally {}
-
+		jResponse.put(ScConstants.SC_STATUS, 0);			
+		jResponse.put(ScConstants.SC_STARTROW, start);
 		
-		return jResponse.toString();
+		jResponse.put(ScConstants.SC_ENDROW, limit);
+		jResponse.put(ScConstants.SC_TOTALROWS, card);
+
+		/* 
+		 * Number of sorted object is sliced with the provided 
+		 * start and limit parameters
+		 */
+		
+		int begin = this.toIntegerValue(start);
+		int end   = begin + this.toIntegerValue(limit);
+		
+		end = (card < end) ? card : end;
+		
+		Collection<JSONObject> list = new ArrayList<JSONObject>();
+		for (int i=begin; i < end; i++) {
+			list.add(jArray.getJSONObject(i));
+		}
+		
+		jResponse.put(ScConstants.SC_DATA, new JSONArray(list));		
+		return new JSONObject().put(ScConstants.SC_RESPONSE, jResponse).toString();
 		
 	}
 	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#createObject(org.json.JSONArray)
 	 */
-	public String createObject(JSONArray jArray) {
+	public String createObject(JSONArray jArray) throws Exception {
 		// TODO
 		return null;
 	}
@@ -138,7 +113,7 @@ public class ScRenderer implements GuiRenderer {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#createTree(org.json.JSONArray)
 	 */
-	public String createTree(JSONArray jArray) {
+	public String createTree(JSONArray jArray) throws Exception {
 		// TODO
 		return null;
 	}

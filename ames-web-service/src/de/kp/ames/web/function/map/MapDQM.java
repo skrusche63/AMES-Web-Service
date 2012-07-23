@@ -34,8 +34,8 @@ import de.kp.ames.web.core.format.kml.KmlObject;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.function.access.wms.WmsConsumer;
-import de.kp.ames.web.shared.JaxrConstants;
-import de.kp.ames.web.shared.JsonConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
+import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class MapDQM extends JaxrDQM {
 

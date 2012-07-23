@@ -20,7 +20,7 @@ package de.kp.ames.web.function;
 
 import org.freebxml.omar.common.CanonicalSchemes;
 
-import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
 
 public class FncSQL {
 
@@ -38,7 +38,13 @@ public class FncSQL {
 	 * This is the classification of a certain namespace folder
 	 */
 	private static String FOLDER = ClassificationConstants.FNC_ID_Folder;
-	
+
+	/*
+	 * This is the classification of a comment associated with the bulletin
+	 * board functionality
+	 */
+	private static String COMMENT = ClassificationConstants.FNC_ID_Comment;
+
 	/*
 	 * This is the classification of a posting associated with the bulletin
 	 * board functionality
@@ -61,6 +67,19 @@ public class FncSQL {
 
 		return query;
 
+	}
+
+	/**
+	 * @param posting
+	 * @return
+	 */
+	public static String getSQLComments_All(String posting) {
+		
+		String query = "SELECT DISTINCT eo.* FROM ExtrinsicObject eo, Association a, Classification clas" + 
+		" WHERE a.sourceObject='" + posting + "' AND a.targetObject=eo.id AND clas.classifiedObject=eo.id AND clas.classificationNode='" + COMMENT + "'";
+
+		return query;
+		
 	}
 
 	/**

@@ -38,7 +38,7 @@ import de.kp.ames.web.function.dms.cache.DmsImage;
 import de.kp.ames.web.function.dms.cache.DocumentCacheManager;
 import de.kp.ames.web.function.dms.cache.ImageCacheManager;
 import de.kp.ames.web.function.domain.JsonBusinessProvider;
-import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
 
 public class DmsDQM extends JaxrDQM {
 

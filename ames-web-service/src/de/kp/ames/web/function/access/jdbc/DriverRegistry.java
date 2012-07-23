@@ -21,7 +21,7 @@ package de.kp.ames.web.function.access.jdbc;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
 
 public class DriverRegistry {
 

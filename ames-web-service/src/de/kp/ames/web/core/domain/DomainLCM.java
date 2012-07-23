@@ -38,7 +38,7 @@ import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
-import de.kp.ames.web.shared.ClassificationConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
 
 public class DomainLCM extends JaxrLCM {
 	

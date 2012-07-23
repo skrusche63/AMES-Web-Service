@@ -18,10 +18,12 @@ package de.kp.ames.web.core.util;
  *
  */
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import javax.activation.DataSource;
 
@@ -208,6 +210,36 @@ public class FileUtil {
     
     }
 
+    /**
+     * A helper method to convert an InputStream into a String
+     * 
+     * @param is
+     * @return
+     */
+    public static String getStringFromInputStream(InputStream is) {
+ 
+		try {
+
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));			
+			StringBuilder stringBuilder = new StringBuilder();
+
+			String line = null;
+
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuilder.append(line + "\n");
+			}
+
+			bufferedReader.close();
+			return stringBuilder.toString();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+   	
+    }
+    
     /**
      * @param bytes
      * @param mimetype

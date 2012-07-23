@@ -26,6 +26,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.cache.CacheManager;
@@ -33,6 +34,7 @@ import de.kp.ames.web.core.graphics.GraphicsUtil;
 import de.kp.ames.web.core.malware.MalwareScanner;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
+import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.dms.cache.DmsDocument;
 import de.kp.ames.web.function.dms.cache.DmsImage;
 import de.kp.ames.web.function.dms.cache.DocumentCacheManager;
@@ -42,9 +44,10 @@ import de.kp.ames.web.function.office.OfficeFactory;
 import de.kp.ames.web.function.transform.cache.XslCacheManager;
 import de.kp.ames.web.function.transform.cache.XslTransformator;
 import de.kp.ames.web.http.RequestContext;
-import de.kp.ames.web.shared.ClassificationConstants;
-import de.kp.ames.web.shared.FormatConstants;
-import de.kp.ames.web.shared.MethodConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
+import de.kp.ames.web.shared.constants.FormatConstants;
+import de.kp.ames.web.shared.constants.JsonConstants;
+import de.kp.ames.web.shared.constants.MethodConstants;
 
 public class UploadServiceImpl extends BusinessImpl {
 
@@ -164,7 +167,28 @@ public class UploadServiceImpl extends BusinessImpl {
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doDeleteRequest(RequestContext ctx) {
-		// TODO	
+
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);			
+
+		if ((type == null) || (item == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+				
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = delete(item, type);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}		
 	}
 	
 	/* (non-Javadoc)
@@ -329,6 +353,39 @@ public class UploadServiceImpl extends BusinessImpl {
 
 	}
 
+	/**
+	 * A helper method to delete a certain cache entry
+	 * 
+	 * @param item
+	 * @param type
+	 * @return
+	 * @throws Exception
+	 */
+	private String delete(String item, String type) throws Exception {
+
+		/*
+		 * Determine cache manager
+		 */
+		UploadFactory factory = new UploadFactory();
+		CacheManager manager = factory.getCacheManager(type);
+
+		/*
+		 * Remove from cache
+		 */
+		manager.removeFromCache(item);
+		
+		/*
+		 * Build response
+		 */
+		JSONObject jResponse = new JSONObject();
+		
+		jResponse.put(JsonConstants.J_SUCCESS, true);
+		jResponse.put(JsonConstants.J_MESSAGE, FncMessages.CACHE_ENTRY_DELETE);
+		
+		return jResponse.toString();
+		
+	}
+	
 	/**
 	 * A helper method to process an uploaded file
 	 * 

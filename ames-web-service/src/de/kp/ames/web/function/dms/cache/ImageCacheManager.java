@@ -31,7 +31,7 @@ import org.json.JSONObject;
 
 import de.kp.ames.web.core.cache.CacheEntry;
 import de.kp.ames.web.core.cache.CacheManager;
-import de.kp.ames.web.shared.JsonConstants;
+import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class ImageCacheManager implements CacheManager {
 

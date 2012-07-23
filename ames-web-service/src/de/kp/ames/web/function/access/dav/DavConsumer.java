@@ -22,7 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.util.FileUtil;
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 import de.kp.ames.webdav.WebDAVClient;
 import de.kp.ames.webdav.WebDAVFile;
 

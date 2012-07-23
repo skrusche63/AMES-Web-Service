@@ -33,8 +33,8 @@ import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.domain.model.JsonExtrinsicObject;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.util.FileUtil;
-import de.kp.ames.web.shared.IconConstants;
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.IconConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 public class JsonMail extends JsonExtrinsicObject {
 

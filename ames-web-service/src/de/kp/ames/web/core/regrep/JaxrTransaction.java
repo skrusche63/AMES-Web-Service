@@ -29,7 +29,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.CoreMessages;
-import de.kp.ames.web.shared.JsonConstants;
+import de.kp.ames.web.shared.constants.JsonConstants;
 
 /**
  * JaxrTransaction is a temporary data structure that is used to

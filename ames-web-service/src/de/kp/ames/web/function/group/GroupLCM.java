@@ -44,8 +44,8 @@ import de.kp.ames.web.core.regrep.lcm.PartyLCM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
-import de.kp.ames.web.shared.ClassificationConstants;
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 public class GroupLCM extends PartyLCM {
 
@@ -95,6 +95,18 @@ public class GroupLCM extends PartyLCM {
 		super(jaxrHandle);
 	}
 
+	/**
+	 * Delete a certain community of interest
+	 * 
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteCommunity(String data) throws Exception {
+		//TODO
+		return null;
+	}
+	
 	/**
 	 * Delete all affiliations between a certain user and
 	 * a specific organization

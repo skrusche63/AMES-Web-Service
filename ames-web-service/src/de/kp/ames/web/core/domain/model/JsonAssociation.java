@@ -27,7 +27,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONException;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 public class JsonAssociation extends JsonRegistryObject {
 

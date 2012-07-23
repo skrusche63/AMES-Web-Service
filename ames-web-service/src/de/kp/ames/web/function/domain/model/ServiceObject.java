@@ -33,7 +33,7 @@ import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 public class ServiceObject extends BusinessObject {
 

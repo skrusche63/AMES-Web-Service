@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import de.kp.ames.web.core.render.GuiFactory;
 import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.shared.MethodConstants;
+import de.kp.ames.web.shared.constants.MethodConstants;
 
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)

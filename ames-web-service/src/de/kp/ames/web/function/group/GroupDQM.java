@@ -30,8 +30,8 @@ import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.core.vocab.VocabDQM;
-import de.kp.ames.web.shared.ClassificationConstants;
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 public class GroupDQM extends JaxrDQM {
 	
@@ -69,8 +69,15 @@ public class GroupDQM extends JaxrDQM {
 	public JSONArray getCommunities(String item, String affiliate) throws Exception {
 		
 		if (item != null) {
-			// TODO
-			return null;
+			
+			/*
+			 * Retrieve a single organization in a JSON representation
+			 */
+			OrganizationImpl organization = (OrganizationImpl)this.getRegistryObjectById(item);
+			if (organization == null) throw new Exception("[GroupDQM] RegistryObject with id <" + item + "> does not exist.");
+
+			JSONObject jOrganization = JsonCoreProvider.getOrganization(jaxrHandle, organization);	
+			return new JSONArray().put(jOrganization);
 			
 		} else {
 		

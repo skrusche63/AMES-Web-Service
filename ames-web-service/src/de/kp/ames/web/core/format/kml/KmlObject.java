@@ -48,7 +48,7 @@ import de.kp.ames.web.core.format.StringOutputStream;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 
-import de.kp.ames.web.shared.JaxrConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 /**
  * This class is part of the KML layer on top of

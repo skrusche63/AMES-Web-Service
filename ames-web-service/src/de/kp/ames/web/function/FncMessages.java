@@ -30,6 +30,7 @@ public class FncMessages extends CoreMessages {
 	/*
 	 * Bulletin specific messages
 	 */
+	public static String COMMENT_CREATED = "Comment successfully created.";
 	public static String POSTING_CREATED = "Posting successfully created.";
 
 	/*
@@ -69,6 +70,8 @@ public class FncMessages extends CoreMessages {
 	public static String REASONER_CREATED      = "Reasoner successfully submitted.";
 	public static String TRANSFORMATOR_CREATED = "Transformator successfully submitted.";
 
+	public static String CACHE_ENTRY_DELETE = "Cache Entry successfully deleted.";
+
 	/*
 	 * User specific messages
 	 */
@@ -85,6 +88,7 @@ public class FncMessages extends CoreMessages {
 	 */
 	public static String ACCESSOR_DESC      = "This is the top package to manage all submitted accessors.";
 	public static String CHAT_DESC          = "This is the top package to manage all submitted chat messages.";
+	public static String COMMENT_DESC       = "This is the top package to manage all submitted comments.";
 	public static String DOCUMENT_DESC      = "This is the top package to manage all submitted documents.";
 	public static String EVALUATION_DESC    = "This is the top package to manage all submitted evaluations.";
 	public static String IMAGE_DESC         = "This is the top package to manage all submitted images.";

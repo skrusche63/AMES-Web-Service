@@ -18,9 +18,14 @@ package de.kp.ames.web.function.security;
  *
  */
 
+import java.io.InputStream;
+
+import javax.servlet.ServletContext;
+
+import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.http.RequestContext;
-import de.kp.ames.web.shared.MethodConstants;
+import de.kp.ames.web.shared.constants.MethodConstants;
 
 public class DisclaimerImpl extends BusinessImpl {
 
@@ -51,7 +56,38 @@ public class DisclaimerImpl extends BusinessImpl {
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doGetRequest(RequestContext ctx) {
-		// TODO
+		/*
+		 * Retrieve disclaimer as html file from the container's context
+		 */		
+		try {
+			/*
+			 * Html response
+			 */
+			String content = getDisclaimer(ctx);
+			this.sendHTMLResponse(content, ctx.getResponse());
+			
+		} catch (Exception e) {
+			this.sendBadRequest(ctx, e);
+			
+		}
+		
 	}
 
+	/**
+	 * Retrieve the disclaimer from the server's file system
+	 * 
+	 * @param ctx
+	 * @return
+	 */
+	private String getDisclaimer(RequestContext ctx) {
+
+		ServletContext context = ctx.getContext();
+		
+		String filename = "/WEB-INF/resources/disclaimer.html";		  
+		InputStream is = context.getResourceAsStream(filename);
+
+		return FileUtil.getStringFromInputStream(is);
+
+	}
+	
 }

@@ -37,7 +37,7 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.transform.cache.XslCacheManager;
 import de.kp.ames.web.function.transform.cache.XslTransformator;
-import de.kp.ames.web.shared.JsonConstants;
+import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class TransformatorObject extends BusinessObject {
 

@@ -27,7 +27,7 @@ import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.service.ServiceImpl;
 import de.kp.ames.web.http.RequestContext;
-import de.kp.ames.web.shared.MethodConstants;
+import de.kp.ames.web.shared.constants.MethodConstants;
 
 public class GraphicsImpl extends ServiceImpl {
 

@@ -119,7 +119,7 @@ public class RuleProvider extends JaxrDQM {
 	 */
 	public FileUtil getReasoner(String uid) throws Exception {
 		
-		String xml = reasonerToXxml(uid);
+		String xml = reasonerToXml(uid);
 		if (xml == null) throw new Exception("[RuleProvider] Conversion of Reasoner with id <" + uid + "> failed.");
 
 		FileUtil reasoner = new FileUtil(xml.getBytes(GlobalConstants.UTF_8), GlobalConstants.MT_XML);
@@ -209,7 +209,7 @@ public class RuleProvider extends JaxrDQM {
 	 * @return
 	 * @throws Exception
 	 */
-	private String reasonerToXxml(String uid) throws Exception {
+	private String reasonerToXml(String uid) throws Exception {
 
 		/* 
 		 * Determine reasoner from unique identifier
