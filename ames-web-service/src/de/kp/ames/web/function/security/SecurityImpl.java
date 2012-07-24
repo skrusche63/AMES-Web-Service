@@ -1,23 +1,4 @@
 package de.kp.ames.web.function.security;
-/**
- *	Copyright 2012 Dr. Krusche & Partner PartG
- *
- *	AMES-Web-Service is free software: you can redistribute it and/or 
- *	modify it under the terms of the GNU General Public License 
- *	as published by the Free Software Foundation, either version 3 of 
- *	the License, or (at your option) any later version.
- *
- *	AMES- Web-Service is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
- * 
- *  See the GNU General Public License for more details. 
- *
- *	You should have received a copy of the GNU General Public License
- *	along with this software. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -61,27 +42,11 @@ public class SecurityImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(MethodConstants.METH_GET)) {
-			
+		if (methodName.equals(MethodConstants.METH_GET)) {			
 			/*
-			 * Call getCreds method
+			 * Call get method
 			 */
-			String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);
-			if (service == null) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-				
-				try {
-					String content = getCredentials(service);
-					this.sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
+			doGetRequest(ctx);
 
 		} else if (methodName.equals(MethodConstants.METH_SET)) {
 
@@ -89,34 +54,15 @@ public class SecurityImpl extends BusinessImpl {
 			 * Call setCreds method
 			 */
 			String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);
+			String data    = this.getRequestData(ctx);
 
-			/* 
-			 * Retrieve credentials from POST request
-			 */
-			String creds = null;
-			
-			try {
-				BufferedReader reader = ctx.getRequest().getReader();
-				StringBuffer buffer = new StringBuffer();
-				
-				String line;
-				while ( (line = reader.readLine()) != null) {
-					buffer.append(line);
-				}
-
-				creds = buffer.toString();
-				
-			} catch (IOException e) {
-				// do nothing
-			}
-
-			if ((service == null) || (creds == null)) {
+			if ((service == null) || (data == null)) {
 				this.sendNotImplemented(ctx);
 				
 			} else {
 
 				try {
-					String content = set(service, creds);
+					String content = set(service, data);
 					this.sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -124,30 +70,6 @@ public class SecurityImpl extends BusinessImpl {
 
 				}
 				
-			}
-			
-		} else if (methodName.equals(MethodConstants.METH_REGISTER)) {
-
-			/*
-			 * Call register method
-			 */
-			String alias   = this.method.getAttribute(FncConstants.ATTR_ALIAS);
-			String keypass = this.method.getAttribute(FncConstants.ATTR_KEYPASS);
-
-			if ((alias == null) || (keypass == null)) {
-				sendNotImplemented(ctx);
-				
-			} else {
-
-				try {
-					String content = register(alias, keypass);
-					this.sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-
 			}
 
 		}
@@ -171,6 +93,8 @@ public class SecurityImpl extends BusinessImpl {
 				/*
 				 * Get apps description for the callers user
 				 */
+				
+				// TODO
 				
 			} else if (type.equals(ClassificationConstants.FNC_SECURITY_ID_Safe)) {
 
@@ -199,55 +123,7 @@ public class SecurityImpl extends BusinessImpl {
 		}
 
 	}
-	
-	/**
-	 * @param alias
-	 * @param keypass
-	 * @return
-	 */
-	private String register(String alias, String keypass) throws Exception {
 		
-		JSONObject jResponse = new JSONObject();
-		
-		/*
-		 * Initialize response
-		 */
-		jResponse.put("result", true);
-		jResponse.put("message", "Authentication has been successful.");
-
-		/*
-		 * User identifier: This is a check whether there is
-		 * a SAML v2.0 assertion associated with this request
-		 */
-		String uid = jaxrHandle.getUser();
-		if (uid == null) {
-
-			jResponse.put("result", false);
-			jResponse.put("message", "Unknown user. Authentication failed.");
-			
-			return jResponse.toString();
-
-		}
-
-		jResponse.put("id", uid);
-		
-		/*
-		 * User name: this is a check whether there is a user
-		 * instance associated with the caller's user
-		 */
-		String name = null; // TODO
-		jResponse.put("name", name);
-		
-		/*
-		 * User role
-		 */
-		String role = null; // TODO
-		jResponse.put("role", role);
-
-		return jResponse.toString();
-		
-	}
-	
 	/**
 	 * Retrieve password safe associated with the caller's user
 	 * 

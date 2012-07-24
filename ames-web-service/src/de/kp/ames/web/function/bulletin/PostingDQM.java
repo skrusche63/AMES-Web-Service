@@ -104,7 +104,7 @@ public class PostingDQM extends JaxrDQM {
 			 * Add rendering information
 			 */
 			String iconParam = renderer.getIconParam();
-			jComment.put(iconParam, IconCls.POST);
+			jComment.put(iconParam, IconCls.COMMENT);
 				
 			/*
 			 * Sort postings by datetime
