@@ -461,6 +461,7 @@ public class RequestDispatcher extends HttpServlet {
 	 * @param ctx
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private ArrayList<BaseParam> getServices(RequestContext ctx) {
 
 		/*

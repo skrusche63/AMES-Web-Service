@@ -25,6 +25,7 @@ import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.util.BaseParam;
+import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
@@ -154,7 +155,17 @@ public class TransformServiceImpl extends BusinessImpl {
 
 			if (format.startsWith(FormatConstants.FNC_FORMAT_ID_File)) {
 
-				// TODO
+				try {
+					/*
+					 * JSON response
+					 */
+					FileUtil content = getFileResponse(type, item);
+					sendFileResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
 				
 			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 				/*
@@ -294,6 +305,40 @@ public class TransformServiceImpl extends BusinessImpl {
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return content;
 
+	}
+
+	/**
+	 * Retrieve Xsl transformator in a FileUtil representation
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private FileUtil getFileResponse(String type, String item) throws Exception {
+
+		FileUtil file = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+		
+		/*
+		 * Retrieve Xsl transformator in a FileUtil representation
+		 */
+		TransformDQM dqm = new TransformDQM(jaxrHandle);
+		file = dqm.getTransformator(item);
+		
+		// TODO: there may be some extra functionality to
+		// properly render an XSL artefact in a browser
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return file;
+	
 	}
 
 	/**

@@ -18,13 +18,18 @@ package de.kp.ames.web.function.transform;
  *
  */
 
+import java.io.InputStream;
 import java.util.List;
 
+import javax.activation.DataHandler;
+
+import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
+import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.domain.JsonBusinessProvider;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
 
@@ -37,6 +42,25 @@ public class TransformDQM extends JaxrDQM {
 	 */
 	public TransformDQM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
+	}
+	
+	public FileUtil getTransformator(String item) throws Exception {
+		
+		/*
+		 * Determine Xsl transformator from the repository
+		 * item of the respective registry object
+		 */
+  		ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl) getRegistryObjectById(item);
+		if (eo == null) throw new Exception("[TransformDQM] A transformator with id <" + item + "> does not exist.");
+
+		String mimetype = eo.getMimeType();
+		
+		DataHandler handler = eo.getRepositoryItem();
+		InputStream stream = handler.getInputStream();
+		
+		FileUtil file = new FileUtil(stream, mimetype);
+		return file;
+
 	}
 	
 	/**

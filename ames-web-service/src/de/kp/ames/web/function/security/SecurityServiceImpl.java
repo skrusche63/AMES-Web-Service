@@ -1,9 +1,31 @@
 package de.kp.ames.web.function.security;
+/**
+ *	Copyright 2012 Dr. Krusche & Partner PartG
+ *
+ *	AMES-Web-Service is free software: you can redistribute it and/or 
+ *	modify it under the terms of the GNU General Public License 
+ *	as published by the Free Software Foundation, either version 3 of 
+ *	the License, or (at your option) any later version.
+ *
+ *	AMES- Web-Service is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * 
+ *  See the GNU General Public License for more details. 
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this software. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.activation.DataHandler;
+import javax.servlet.ServletContext;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.registry.JAXRException;
 import javax.xml.registry.UnsupportedCapabilityException;
 
@@ -11,8 +33,12 @@ import org.freebxml.omar.client.xml.registry.infomodel.AssociationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
@@ -25,14 +51,21 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncSQL;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
+import de.kp.ames.web.shared.constants.JsonConstants;
 import de.kp.ames.web.shared.constants.MethodConstants;
 
-public class SecurityImpl extends BusinessImpl {
+public class SecurityServiceImpl extends BusinessImpl {
 
+	/*
+	 * A predefined user that must be adapted after a respective
+	 * role system has been established
+	 */
+	private static String USER_ROLE = "Registered User";
+	
 	/**
 	 * Constructor
 	 */
-	public SecurityImpl() {
+	public SecurityServiceImpl() {
 		super();
 	}
 	
@@ -49,29 +82,11 @@ public class SecurityImpl extends BusinessImpl {
 			doGetRequest(ctx);
 
 		} else if (methodName.equals(MethodConstants.METH_SET)) {
-
 			/*
-			 * Call setCreds method
+			 * Call set method
 			 */
-			String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);
-			String data    = this.getRequestData(ctx);
-
-			if ((service == null) || (data == null)) {
-				this.sendNotImplemented(ctx);
-				
-			} else {
-
-				try {
-					String content = set(service, data);
-					this.sendJSONResponse(content, ctx.getResponse());
-
-				} catch (Exception e) {
-					this.sendBadRequest(ctx, e);
-
-				}
-				
-			}
-
+			doSetRequest(ctx);
+			
 		}
 
 	}
@@ -93,8 +108,15 @@ public class SecurityImpl extends BusinessImpl {
 				/*
 				 * Get apps description for the callers user
 				 */
-				
-				// TODO
+				try {
+					
+					String content = getUsersApps(ctx);
+					this.sendJSONResponse(content, ctx.getResponse());
+
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+
+				}
 				
 			} else if (type.equals(ClassificationConstants.FNC_SECURITY_ID_Safe)) {
 
@@ -124,6 +146,32 @@ public class SecurityImpl extends BusinessImpl {
 
 	}
 		
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSetRequest(RequestContext ctx) {
+
+		String service = this.method.getAttribute(MethodConstants.ATTR_SERVICE);
+		String data    = this.getRequestData(ctx);
+
+		if ((service == null) || (data == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				String content = set(service, data);
+				this.sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
+		
+	}
+
 	/**
 	 * Retrieve password safe associated with the caller's user
 	 * 
@@ -210,6 +258,187 @@ public class SecurityImpl extends BusinessImpl {
 
 	}
 
+	/**
+	 * This method retrieves the user & his
+	 * registered and accessible apps
+	 * 
+	 * @param ctx
+	 * @return
+	 * @throws Exception
+	 */
+	private String getUsersApps(RequestContext ctx) throws Exception {
+		
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
+
+		/*
+		 * Retrieve caller's unique identifier
+		 */
+		String uid = jaxrHandle.getUser();
+		if (uid == null) {
+			/*
+			 * Return empty JSON object
+			 */
+			content = new JSONObject().toString();
+
+		} else {
+			
+			JSONObject jResponse = new JSONObject();
+			
+			JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+			UserImpl user = (UserImpl)dqm.getRegistryObjectById(uid);
+
+			/*
+			 * Retrieve user name & role
+			 * 
+			 * __FUTURE__ Roles & Rights
+			 * 
+			 */
+			String name = dqm.getName(user);
+			String role = USER_ROLE;
+			
+			JSONObject jUser = new JSONObject();
+			jUser.put("id", uid);
+			
+			jUser.put("name", name);
+			jUser.put("role", role);
+			
+			jResponse.put("user", jUser);
+			
+			/*
+			 * Retrieve default apps
+			 * 
+			 * __FUTURE__ Marketplace
+			 * 
+			 */
+			JSONArray jApps = getDefaultApps(ctx);
+			jResponse.put("apps", jApps);
+			
+			content = jResponse.toString();
+			
+		}
+
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		
+		return content;
+
+	}
+	
+	/**
+	 * A helper method to retrieve the registered apps
+	 * for the caller's user
+	 * 
+	 * @param uid
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	private JSONArray getRegisteredApps(String uid) {
+		/*
+		 * This method must be adapted after a marketplace
+		 * is implemented and associated with this framework.
+		 */
+		
+		return new JSONArray();
+	
+	}
+	
+	/**
+	 * A helper method to retrieve a set of default AND
+	 * user independent set of application descriptions
+	 * 
+	 * @param ctx
+	 * @return
+	 * @throws Exception
+	 */
+	private JSONArray getDefaultApps(RequestContext ctx) throws Exception {
+
+		ServletContext context = ctx.getContext();
+		
+		String filename = "/WEB-INF/resources/defaultapps.xml";		  
+		InputStream is = context.getResourceAsStream(filename);
+		
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+
+		JSONArray jDefaultApps = new JSONArray();
+		
+		try {
+			
+			Document xmlDoc = factory.newDocumentBuilder().parse(is);
+			NodeList apps = xmlDoc.getElementsByTagName("app");
+
+			for (int i=0; i < apps.getLength(); i++) {
+				
+				Element eService = (Element)apps.item(i);
+				JSONObject jApp = getAppParams(eService);
+				
+				if (jApp == null) continue;
+				
+				jDefaultApps.put(jApp);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+
+		return jDefaultApps;
+
+	}
+	
+	/**
+	 * A helper method to describe a W3C dom element
+	 * in a JSON representation
+	 * 
+	 * @param eApp
+	 * @return
+	 * @throws Exception
+	 */
+	private JSONObject getAppParams(Element eApp) throws Exception {
+		
+		String id   = "";
+		String name = "";
+		String icon = "";
+		
+		NodeList properties = eApp.getChildNodes();
+		for (int i=0; i < properties.getLength(); i++) {
+			
+			Element property = (Element)properties.item(i);
+
+			if (property.getTagName().equals("app-id")) {
+				id = property.getTextContent().trim();
+			}
+
+			if (property.getTagName().equals("app-name")) {
+				name = property.getTextContent().trim();
+			}
+
+			if (property.getTagName().equals("app-icon")) {
+				icon = property.getTextContent().trim();
+			}
+
+		}
+
+		if (id.equals("") || name.equals("") || icon.equals("")) return null;
+		
+		JSONObject jApp = new JSONObject();
+		jApp.put(JsonConstants.J_ID, id);
+		
+		jApp.put(JsonConstants.J_NAME, name);
+		jApp.put(JsonConstants.J_ICON, icon);
+		
+		return jApp;
+
+	}
+	
 	/**
 	 * Create or update password safe for caller's user
 	 * 

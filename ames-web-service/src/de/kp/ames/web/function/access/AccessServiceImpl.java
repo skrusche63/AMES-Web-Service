@@ -18,6 +18,10 @@ package de.kp.ames.web.function.access;
  *
  */
 
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -140,7 +144,22 @@ public class AccessServiceImpl extends BusinessImpl {
 
 			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Image)) {
 			
-				// TODO
+				String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+				if (source == null) {
+					this.sendNotImplemented(ctx);
+				
+				} else {
+					
+					try {
+						BufferedImage image = getImageResponse(type, item, source);
+						sendImageResponse(image, ctx.getResponse());
+	
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+	
+					}
+					
+				}
 				
 			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 				/*
@@ -209,7 +228,58 @@ public class AccessServiceImpl extends BusinessImpl {
 		return file;
 
 	}
-	
+
+	/**
+	 * Retrieve an image from an external data source
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 */
+	private BufferedImage getImageResponse(String type, String item, String source) throws Exception {
+
+		FileUtil file = null;
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+
+		AccessDQM dqm = new AccessDQM(jaxrHandle);
+		JSONObject jAccessor = dqm.getAccessor(item);
+		
+		if (type.equals(ClassificationConstants.FNC_ID_Mail)) {
+			
+			/*
+			 * Retrieve a certain mail attachment
+			 * from an external IMAP server
+			 */
+			ImapConsumer consumer = new ImapConsumer(jAccessor);
+			file = consumer.getAttachment(Integer.parseInt(source));
+			
+		} else if (type.equals(ClassificationConstants.FNC_ID_WebDav)) {
+			
+			/*
+			 * Retrieve a certain file from a WebDAV server
+			 */
+			DavConsumer consumer = new DavConsumer(jAccessor);
+			file = consumer.getFile();
+			
+		}
+
+		/*
+		 * Convert most popular image formats into 'png'
+		 * when sending the respective image (see sendImageResponse)
+		 */
+		BufferedImage image = ImageIO.read(file.getInputStream());
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return image;
+
+	}
+
 	/**
 	 * Retrieve access specific information objects either
 	 * as a single object or a set of objects
