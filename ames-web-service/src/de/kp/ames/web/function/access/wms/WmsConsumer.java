@@ -73,15 +73,16 @@ public class WmsConsumer {
 	/* 
 	 * WMS Tag Names
 	 */
-	private static String WMS_BBOX  = "LatLonBoundingBox";
-	private static String WMS_LAYER = "Layer";
-	private static String WMS_MAXX  = "maxx";
-	private static String WMS_MAXY  = "maxy";
-	private static String WMS_MINX  = "minx";
-	private static String WMS_MINY  = "miny";
-	private static String WMS_NAME  = "Name";
-	private static String WMS_SRS   = "SRS";
-	private static String WMS_TITLE = "Title";
+	private static String WMS_BBOX      = "LatLonBoundingBox";
+	private static String WMS_LAYER     = "Layer";
+	private static String WMS_MAXX      = "maxx";
+	private static String WMS_MAXY      = "maxy";
+	private static String WMS_MINX      = "minx";
+	private static String WMS_MINY      = "miny";
+	private static String WMS_NAME      = "Name";
+	private static String WMS_QUERYABLE = "queryable";
+	private static String WMS_SRS       = "SRS";
+	private static String WMS_TITLE     = "Title";
 	
     public WmsConsumer(String endpoint) {
    	
@@ -196,6 +197,7 @@ public class WmsConsumer {
         protected void initService() {
             setProperty(REQUEST, "GetCapabilities");
             setProperty(SERVICE, "WMS");
+            setProperty(VERSION, "1.1.0");
         }
 
         @Override
@@ -284,8 +286,12 @@ public class WmsConsumer {
 				for (int i=0; i < layers.getLength(); i++) {
 					Node layer = layers.item(i);
 
-    				JSONObject jLayer =  getJLayer(layer);   				
-    				if (jLayer != null) jLayers.put(jLayers.length(), jLayer);
+					if (layer.hasAttributes() && (layer.getAttributes().getNamedItem(WMS_QUERYABLE) != null) && layer.getAttributes().getNamedItem(WMS_QUERYABLE).getTextContent().trim().equals("1")) {
+
+							JSONObject jLayer =  getJLayer(layer);   				
+		    				if (jLayer != null && !jLayer.has(WMS_NAME)) jLayers.put(jLayers.length(), jLayer);
+
+					}
 
 				}
 
@@ -311,6 +317,15 @@ public class WmsConsumer {
     		
     		for (int i=0; i < nodes.getLength(); i++) {
     			Node node = nodes.item(i);
+
+                /*
+                 * skip Layer which contains another layer as
+                 * <Title>GeoServer Web Map Service</Title>
+                 * which contains all other layers
+                 */
+                if (node.getNodeName().equals(WMS_LAYER)) continue;
+
+    			
     			if (node.getNodeName().equals(WMS_NAME)) {
     				/*
     				 * Name

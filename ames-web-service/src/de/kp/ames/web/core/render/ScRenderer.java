@@ -74,7 +74,7 @@ public class ScRenderer implements GuiRenderer {
 	public String createGrid(JSONArray jArray, String start, String limit) throws Exception {
 		
 		JSONObject jResponse = new JSONObject();
-		int card = jResponse.length();
+		int card = jArray.length();
 			
 		jResponse.put(ScConstants.SC_STATUS, 0);			
 		jResponse.put(ScConstants.SC_STARTROW, start);

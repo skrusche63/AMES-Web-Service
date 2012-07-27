@@ -374,7 +374,7 @@ public class RequestDispatcher extends HttpServlet {
 		 * different communities of interest and their
 		 * associated members
 		 */
-		services.add(new BaseParam("bulletin", "de.kp.ames.web.function.bulletin.BulletinImpl"));
+		services.add(new BaseParam("bulletin", "de.kp.ames.web.function.bulletin.BulletinServiceImpl"));
 		
 		/*
 		 * Chat & Mail Service to support the registration (submit)
@@ -419,13 +419,13 @@ public class RequestDispatcher extends HttpServlet {
 		 * user credentials (i.e. alias, keypass) that
 		 * are used to access external chat & mail server
 		 */
-		services.add(new BaseParam("security", "de.kp.ames.web.function.security.SecurityImpl"));
+		services.add(new BaseParam("security", "de.kp.ames.web.function.security.SecurityServiceImpl"));
 
 		/*
 		 * Core Search Service that supports access to
 		 * the Enterprise Search Server Solr
 		 */
-		services.add(new BaseParam("search", "de.kp.ames.web.core.search.SearchImpl"));
+		services.add(new BaseParam("search", "de.kp.ames.web.core.search.SearchServiceImpl"));
 		
 		/*
 		 * Transform Service that supports the XSL
@@ -437,7 +437,7 @@ public class RequestDispatcher extends HttpServlet {
 		 * Upload service that supports the upload and
 		 * malware scan of external files
 		 */
-		services.add(new BaseParam("upload", "de.kp.ames.web.function.upload.UploadImpl"));
+		services.add(new BaseParam("upload", "de.kp.ames.web.function.upload.UploadServiceImpl"));
 
 		/*
 		 * User service is used to retrieve user
@@ -449,7 +449,7 @@ public class RequestDispatcher extends HttpServlet {
 		 * Core Vocabulary Service is used to retrieve all
 		 * semantic information to classify other objects
 		 */
-		services.add(new BaseParam("vocab", "de.kp.ames.web.core.vocab.VocabImpl"));
+		services.add(new BaseParam("vocab", "de.kp.ames.web.core.vocab.VocabServiceImpl"));
 
 		return services;
 		

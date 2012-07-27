@@ -157,10 +157,12 @@ public class TransformServiceImpl extends BusinessImpl {
 
 				try {
 					/*
-					 * JSON response
+					 * HTML Response
 					 */
-					FileUtil content = getFileResponse(type, item);
-					sendFileResponse(content, ctx.getResponse());
+					FileUtil content = getFileResponse(type, item);					
+					String xml = content.toString();
+					
+					sendHTMLResponse(xmlToHtml(xml), ctx.getResponse());
 
 				} catch (Exception e) {
 					this.sendBadRequest(ctx, e);
@@ -330,9 +332,6 @@ public class TransformServiceImpl extends BusinessImpl {
 		TransformDQM dqm = new TransformDQM(jaxrHandle);
 		file = dqm.getTransformator(item);
 		
-		// TODO: there may be some extra functionality to
-		// properly render an XSL artefact in a browser
-		
 		/*
 		 * Logoff
 		 */
@@ -415,4 +414,25 @@ public class TransformServiceImpl extends BusinessImpl {
 		return content;
 
 	}
+	
+	/**
+	 * A helper method to convert an XML artefact into a Html document
+	 * 
+	 * @param xml
+	 * @return
+	 */
+	private String xmlToHtml(String xml) {
+		
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0.1 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"");
+		sb.append("<html><body><style=\"background:#f2f2f4;padding:8px;font-family:tahoma,arial,helvetica,sans-serif;color:#566d99;font-size:11px;\"><pre>");
+		
+		sb.append(encodeHtml(xml));
+		sb.append("</pre></body></html>");
+		
+		return sb.toString();
+	
+	}
+	
 }

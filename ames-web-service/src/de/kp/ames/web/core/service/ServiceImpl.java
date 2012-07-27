@@ -324,6 +324,30 @@ public class ServiceImpl implements Service {
 
 	}
 
+	/**
+	 * A helper method to encode a certain String
+	 * 
+	 * @param s
+	 * @return
+	 */
+	protected String encodeHtml(String s) {
+		
+		StringBuffer sb = new StringBuffer();
+		for (int i=0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			
+			if ( c > 127 || c=='"' || c=='<' || c == '>') {
+				sb.append("&#" + (int)c + ";");
+			
+			} else {
+				sb.append(c);
+				
+			}
+		}
+		
+		return sb.toString();
+		
+	}
 
 	
 }

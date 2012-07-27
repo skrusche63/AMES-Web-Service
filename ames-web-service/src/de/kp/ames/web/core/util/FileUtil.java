@@ -25,7 +25,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Properties;
+
 import javax.activation.DataSource;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+
+import de.kp.ames.web.core.format.StringOutputStream;
 
 /**
  * @author Stefan Krusche (krusche@dr-kruscheundpartner.de)
@@ -267,6 +279,56 @@ public class FileUtil {
 
 	}
   
+	public String toXml()  {
+		
+        String xml = null;
+        try {
+        	
+        	/*
+        	 * Convert inputstream into W3C dom document
+        	 */
+    		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    		dbf.setNamespaceAware(true);
+ 
+			Document xmlDoc = dbf.newDocumentBuilder().parse(getInputStream());
+
+    		/*
+    		 * Serialize W3C dom document
+    		 */
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer();
+	            
+            Properties outFormat = new Properties();
+           
+            outFormat.setProperty( OutputKeys.INDENT, "yes" );
+            outFormat.setProperty("{http://xml.apache.org/xslt}indent-amount", "4");	        
+            
+            outFormat.setProperty( OutputKeys.METHOD, "xml" );
+	        outFormat.setProperty( OutputKeys.OMIT_XML_DECLARATION, "no" );
+	        
+            outFormat.setProperty( OutputKeys.VERSION, "1.0" );
+            outFormat.setProperty( OutputKeys.ENCODING, "UTF-8" );
+            
+            transformer.setOutputProperties( outFormat );
+
+	        DOMSource domSource = new DOMSource(xmlDoc.getDocumentElement());
+            OutputStream output = new StringOutputStream();
+            
+            StreamResult result = new StreamResult( output );
+            transformer.transform( domSource, result );
+
+            xml = output.toString();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+ 
+        }
+
+        return xml;
+        
+	}
+
+	
 }
 
 class ByteArrayDataSource implements DataSource {

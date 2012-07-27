@@ -18,11 +18,13 @@ package de.kp.ames.web.http;
  *
  */
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.render.GuiFactory;
 import de.kp.ames.web.core.render.GuiRenderer;
 import de.kp.ames.web.function.FncConstants;
@@ -97,7 +99,7 @@ public class RequestMethod {
 		if (tokens.length != 2) throw new Exception(ATTRIBUTE_ERROR);
 		
 		String key = tokens[0];
-		String val = tokens[1];
+		String val = URLDecoder.decode(tokens[1], GlobalConstants.UTF_8);
 		
 		attributes.put(key, val);
 		
