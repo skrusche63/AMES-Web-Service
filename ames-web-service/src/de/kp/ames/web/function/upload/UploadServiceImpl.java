@@ -83,7 +83,7 @@ public class UploadServiceImpl extends BusinessImpl {
 			 * to the requestor; note, that the result must
 			 * be a text response
 			 */
-			String result = "false";
+			boolean result = false;
 			HttpServletRequest request = ctx.getRequest();
 
 			try {
@@ -117,7 +117,7 @@ public class UploadServiceImpl extends BusinessImpl {
 							boolean checked = MalwareScanner.scanForViruses(bytes);						
 							
 							if (checked == false) {
-								result = "false";
+								result = true;
 	
 							} else {
 
@@ -150,9 +150,15 @@ public class UploadServiceImpl extends BusinessImpl {
 				}
 				
 				/*
-				 * Send text response
+				 * Send html response
 				 */
-				this.sendTextResponse(result, ctx.getResponse());
+				if (result == true) {
+					this.sendHTMLResponse(createHtmlSuccess(), ctx.getResponse());
+				
+				} else {
+					this.sendHTMLResponse(createHtmlFailure(), ctx.getResponse());
+					
+				}
 				
 			} catch ( Exception e ) {
 				this.sendBadRequest(ctx, e);
@@ -397,14 +403,46 @@ public class UploadServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String upload(String item, String type, String fileName, String mimeType, byte[] bytes) throws Exception {
+	private boolean upload(String item, String type, String fileName, String mimeType, byte[] bytes) throws Exception {
 		
 		UploadFactory factory = new UploadFactory();
 		CacheManager manager = factory.getCacheManager(type);
 
 		manager.setToCache(item, fileName, mimeType, bytes);
-		return "true";
+		return true;
 		
 	}
 	
+	/**
+	 * @return
+	 */
+	private String createHtmlSuccess() {
+		
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("<html><head>");
+		sb.append("<script type=\"text/javascript\">");
+		
+		sb.append("function onSuccess(){window.parent.onUploadSuccess();}");
+		sb.append("</head><body onload=\"onSuccess()\"></body></html>");
+		
+		return sb.toString();
+		
+	}
+	
+	/**
+	 * @return
+	 */
+	private String createHtmlFailure() {
+		
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("<html><head>");
+		sb.append("<script type=\"text/javascript\">");
+		
+		sb.append("function onSuccess(){window.parent.onUploadFailure();}");
+		sb.append("</head><body onload=\"onSuccess()\"></body></html>");
+		
+		return sb.toString();
+	}
 }
