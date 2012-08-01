@@ -30,7 +30,6 @@ import java.util.Set;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +38,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.opensaml.saml2.core.Assertion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.kp.ames.web.Bundle;
@@ -75,8 +75,8 @@ public class RequestDispatcher extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-
-		initializeServices();
+		
+		initializeServices(config.getServletContext());
 		
 	}
 	
@@ -99,15 +99,16 @@ public class RequestDispatcher extends HttpServlet {
 			sendUnauthorizedResponse(message, "text/plain", response);
 			
 		} else {
+			
+			RequestContext ctx = new RequestContext(request, response);
+			ctx.setContext(getServletContext());
+
 			/*
 			 * Retrieve service from the unique service identifier
 			 * provided with the actual request url
 			 */
 			Service service = getService(request);
 			service.setJaxrHandle(jaxrHandle);
-			
-			RequestContext ctx = new RequestContext(request, response);
-			ctx.setContext(getServletContext());
 
 			/* 
 			 * Evaluate method
@@ -200,8 +201,9 @@ public class RequestDispatcher extends HttpServlet {
 	/**
 	 * The main method to register new services, i.e. additional
 	 * core and business functionality 
+	 * @param servletContext 
 	 */
-	private void initializeServices() {
+	private void initializeServices(ServletContext servletContext) {
 
 		if (initialized == true) return;
 
@@ -214,7 +216,7 @@ public class RequestDispatcher extends HttpServlet {
 		 * Retrieve actual service configuration
 		 * and initialize respective services
 		 */
-		ArrayList<BaseParam> serviceConfig = getServiceConfig();
+		ArrayList<BaseParam> serviceConfig = getServices(servletContext);
 		for (BaseParam param:serviceConfig) {
 			
 			String key = param.getKey();
@@ -227,6 +229,7 @@ public class RequestDispatcher extends HttpServlet {
 
 		}
 	
+		System.out.println("====> registeredServices loaded from services.xml: " + registeredServices.size());
 	}
 
 	/**
@@ -365,112 +368,21 @@ public class RequestDispatcher extends HttpServlet {
 		
 	}
 	
-	private ArrayList<BaseParam> getServiceConfig() {
-		
-		ArrayList<BaseParam> services = new ArrayList<BaseParam>();
-
-		/*
-		 * Bulletin Service to support a posting between
-		 * different communities of interest and their
-		 * associated members
-		 */
-		services.add(new BaseParam("bulletin", "de.kp.ames.web.function.bulletin.BulletinServiceImpl"));
-		
-		/*
-		 * Chat & Mail Service to support the registration (submit)
-		 * of chat and mail message via a selected client
-		 */
-		services.add(new BaseParam("comm", "de.kp.ames.web.function.comm.CommServiceImpl"));
-		
-		/*
-		 * Disclaimer Service to represent a disclaimer
-		 * to the caller's user; a disclaimer is returned
-		 * after successful login
-		 */
-		services.add(new BaseParam("disclaimer", "de.kp.ames.web.function.security.DisclaimerImpl"));
-
-		/*
-		 * Core Group Service is used to manage community
-		 * of interest specific information objects including
-		 * organizations
-		 */
-		services.add(new BaseParam("group", "de.kp.ames.web.function.group.GroupServiceImpl"));
-
-		/*
-		 * Map Service is used to retrieve map specific
-		 * information such as layers
-		 */
-		services.add(new BaseParam("map", "de.kp.ames.web.function.map.MapServiceImpl"));
-
-		/*
-		 * Role service is used to retrieve role & rights
-		 * specific information
-		 */
-		services.add(new BaseParam("role", "de.kp.ames.web.function.role.RoleServiceImpl"));
-
-		/*
-		 * RSS Service is used to provide actually registered
-		 * and temporarily cached registry objects as an RSS feed
-		 */
-		services.add(new BaseParam("rss", "de.kp.ames.web.core.rss.RssServiceImpl"));
-
-		/*
-		 * Security Service is used to register additional
-		 * user credentials (i.e. alias, keypass) that
-		 * are used to access external chat & mail server
-		 */
-		services.add(new BaseParam("security", "de.kp.ames.web.function.security.SecurityServiceImpl"));
-
-		/*
-		 * Core Search Service that supports access to
-		 * the Enterprise Search Server Solr
-		 */
-		services.add(new BaseParam("search", "de.kp.ames.web.core.search.SearchServiceImpl"));
-		
-		/*
-		 * Transform Service that supports the XSL
-		 * transformation of registry objects
-		 */
-		services.add(new BaseParam("transform", "de.kp.ames.web.function.transform.TransformServiceImpl"));
-
-		/*
-		 * Upload service that supports the upload and
-		 * malware scan of external files
-		 */
-		services.add(new BaseParam("upload", "de.kp.ames.web.function.upload.UploadServiceImpl"));
-
-		/*
-		 * User service is used to retrieve user
-		 * specific information
-		 */
-		services.add(new BaseParam("user", "de.kp.ames.web.function.user.UserServiceImpl"));
-
-		/*
-		 * Core Vocabulary Service is used to retrieve all
-		 * semantic information to classify other objects
-		 */
-		services.add(new BaseParam("vocab", "de.kp.ames.web.core.vocab.VocabServiceImpl"));
-
-		return services;
-		
-	}
 	
 	/**
 	 * Retrieve the actually registered services from the server's file system
 	 * 
-	 * @param ctx
+	 * @param servletContext
 	 * @return
 	 */
-	@SuppressWarnings("unused")
-	private ArrayList<BaseParam> getServices(RequestContext ctx) {
+	private ArrayList<BaseParam> getServices(ServletContext servletContext) {
 
 		/*
 		 * Retrieve services declaration from the file system
 		 */
-		ServletContext context = ctx.getContext();
 		
-		String filename = "/WEB-INF/resources/services.xml";		  
-		InputStream is = context.getResourceAsStream(filename);
+		String filename = "/WEB-INF/classes/resources/services.xml";		  
+		InputStream is = servletContext.getResourceAsStream(filename);
 
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -511,13 +423,13 @@ public class RequestDispatcher extends HttpServlet {
 		NodeList properties = eService.getChildNodes();
 		for (int i=0; i < properties.getLength(); i++) {
 			
-			Element property = (Element)properties.item(i);
+			Node property = properties.item(i);
 
-			if (property.getTagName().equals("service-id")) {
+			if (property.getNodeName().equals("service-id")) {
 				id = property.getTextContent().trim();
 			}
 
-			if (property.getTagName().equals("service-class")) {
+			if (property.getNodeName().equals("service-class")) {
 				clazz = property.getTextContent().trim();
 			}
 
