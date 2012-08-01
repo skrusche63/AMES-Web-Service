@@ -38,43 +38,52 @@ public class SymbolServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(MethodConstants.METH_KEYS)) {
+		if (methodName.equals(MethodConstants.METH_GET)) {
 
 			/*
-			 * Call keys method
+			 * Call get method
 			 */
-			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+			doGetRequest(ctx);
+			
+		}
+		
+	}
 
-			if (type == null) {
-				this.sendNotImplemented(ctx);
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGetRequest(RequestContext ctx) {
 
-			} else {
+		/*
+		 * Call keys method
+		 */
+		String format = this.method.getAttribute(MethodConstants.ATTR_FORMAT);	
+		String type   = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 
+		if ((format == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+
+		} else {
+
+			if (format.equals(FormatConstants.FNC_FORMAT_ID_Tree)) {
+			
 				String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);
-
+	
 				try {
 					/*
 					 * JSON response
 					 */
 					String content = keys(type, parent);
 					sendJSONResponse(content, ctx.getResponse());
-
+	
 				} catch (Exception e) {
 					this.sendBadRequest(ctx, e);
-
+	
 				}
-
-			}
-			
-		} else if (method.equals(MethodConstants.METH_SYMBOLS)) {
-
-			String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
-			String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);	
-
-			if (type == null) {
-				this.sendNotImplemented(ctx);
 				
-			} else {
+			} else if (format.equals(FormatConstants.FNC_FORMAT_ID_Grid)) {
+				
+				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);	
 
 				String affiliation = this.method.getAttribute(FncConstants.ATTR_AFFILIATION);
 				String echelon     = this.method.getAttribute(FncConstants.ATTR_ECHELON);
@@ -92,11 +101,11 @@ public class SymbolServiceImpl extends BusinessImpl {
 				}
 
 			}
-
+			
 		}
- 		
-	}
-
+		
+	} 
+	
 	/**
 	 * Get control information for either APP-6-B or
 	 * Icon-based symbols
