@@ -63,6 +63,8 @@ public class JsonMail extends JsonExtrinsicObject {
     	String from    = "";
     	String subject = "";
     	
+    	String message = "";
+    	
     	try {
 
     		ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl)ro;
@@ -76,6 +78,8 @@ public class JsonMail extends JsonExtrinsicObject {
     		from    = jMail.getString(JaxrConstants.RIM_FROM);
     		subject = jMail.getString(JaxrConstants.RIM_SUBJECT);
     		
+    		message = jMail.getString(JaxrConstants.RIM_MESSAGE);
+    		
     	} catch (Exception e) {
     		e.printStackTrace();
     		
@@ -83,6 +87,11 @@ public class JsonMail extends JsonExtrinsicObject {
     	
     	put(JaxrConstants.RIM_FROM, from);
     	put(JaxrConstants.RIM_SUBJECT, subject);
+    	
+    	/*
+    	 * Mail body
+    	 */
+    	put(JaxrConstants.RIM_MESSAGE, message);
     	
     	/*
     	 * Convert icon

@@ -62,6 +62,8 @@ public class JsonChat extends JsonExtrinsicObject {
     	 */
     	String from    = "";
     	String subject = "";
+
+    	String message = "";
     	
     	try {
 
@@ -71,10 +73,12 @@ public class JsonChat extends JsonExtrinsicObject {
     		InputStream stream = dataHandler.getInputStream();
     		byte[] bytes = FileUtil.getByteArrayFromInputStream(stream);
     		
-    		JSONObject jMail = new JSONObject(new String(bytes, GlobalConstants.UTF_8));
+    		JSONObject jChat = new JSONObject(new String(bytes, GlobalConstants.UTF_8));
     		
-    		from    = jMail.getString(JaxrConstants.RIM_FROM);
-    		subject = jMail.getString(JaxrConstants.RIM_SUBJECT);
+    		from    = jChat.getString(JaxrConstants.RIM_FROM);
+    		subject = jChat.getString(JaxrConstants.RIM_SUBJECT);
+ 
+    		message = jChat.getString(JaxrConstants.RIM_MESSAGE);
     		
     	} catch (Exception e) {
     		e.printStackTrace();
@@ -83,6 +87,8 @@ public class JsonChat extends JsonExtrinsicObject {
     	
     	put(JaxrConstants.RIM_FROM, from);
     	put(JaxrConstants.RIM_SUBJECT, subject);
+    	
+    	put(JaxrConstants.RIM_MESSAGE, message);
 
     	/*
     	 * Convert icon

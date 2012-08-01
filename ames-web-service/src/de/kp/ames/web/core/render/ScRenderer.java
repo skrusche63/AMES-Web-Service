@@ -48,7 +48,7 @@ public class ScRenderer implements GuiRenderer {
 		jResponse.put(ScConstants.SC_TOTALROWS, card);
 
 		jResponse.put(ScConstants.SC_DATA, jArray);		
-		return jResponse.toString();
+		return new JSONObject().put(ScConstants.SC_RESPONSE, jResponse).toString();
 		
 
 	}

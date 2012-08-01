@@ -21,6 +21,7 @@ package de.kp.ames.web.function.dms;
 import java.awt.image.BufferedImage;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
@@ -126,15 +127,15 @@ public class DmsServiceImpl extends BusinessImpl {
 		 */
 		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
 		try {
+			
+			HttpServletRequest request   = ctx.getRequest();
+			HttpServletResponse response = ctx.getResponse();
+			
 			/*
 			 * File response
 			 */
 			FileUtil file = getFileResponse(item);			
-
-			HttpServletResponse response = ctx.getResponse();
-			response.setHeader("Content-disposition", "attachment; filename=" + file.getFilename());
-			
-			sendFileResponse(file, response);			
+			sendFileDownloadResponse(file, request, response);			
 			
 		} catch (Exception e) {
 			this.sendBadRequest(ctx, e);

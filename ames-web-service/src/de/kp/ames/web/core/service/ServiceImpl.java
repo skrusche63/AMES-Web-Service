@@ -22,8 +22,10 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.kp.ames.web.GlobalConstants;
@@ -184,6 +186,9 @@ public class ServiceImpl implements Service {
 		sendResponse(content, GlobalConstants.MT_XML, response);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.Service#sendFileResponse(de.kp.ames.web.core.util.FileUtil, javax.servlet.http.HttpServletResponse)
+	 */
 	public void sendFileResponse(FileUtil file, HttpServletResponse response) throws IOException {
 
 		if (file == null) return;
@@ -193,6 +198,72 @@ public class ServiceImpl implements Service {
 	
 		response.setContentType(file.getMimetype());
 		response.setContentLength(file.getLength());
+	
+		OutputStream os = response.getOutputStream();
+	
+		os.write(file.getFile());				
+		os.close();
+		
+	}
+
+	/**
+	 * A specific method to enable file download even in a secure (SSL) environment
+	 * 
+	 * @param file
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
+	public void sendFileDownloadResponse(FileUtil file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		if (file == null) return;
+
+		/*
+		 * Distinguish between secure and non-secure download requests
+		 */
+		if (request.isSecure()) {
+
+			response.addHeader("Cache-Control", "no-cache");
+	        response.addHeader("Pragma", "no-cache");
+            
+	        response.addHeader("Expires", "-1");
+    
+        } else {
+          
+        	response.addHeader("Cache-Control", "private");
+            response.addHeader("Pragma", "public");
+    
+        }
+
+		/*
+		 * Determine user agent
+		 */
+		String ua = request.getHeader("User-Agent").toLowerCase();        
+		boolean isIE = ((ua.indexOf("msie 6.0") != -1) || (ua.indexOf("msie 7.0") != -1)) ? true : false;
+
+		/*
+		 * Encode file name
+		 */		
+        String encFileName = URLEncoder.encode(file.getFilename(), "UTF-8");
+
+        if (isIE) {
+                    
+        	response.addHeader("Content-Disposition", "attachment;  filename=\"" + encFileName + "\"" );
+            response.addHeader("Connection", "close");
+
+            response.setContentType("application/force-download;  name=\"" + encFileName + "\"" );
+            
+        } else {
+                    
+        	response.addHeader("Content-Disposition", "attachment; filename=\"" + encFileName + "\"" );
+                   
+        	response.setContentType("application/octet-stream; name=\"" + encFileName + "\"" );
+            response.setContentLength(file.getLength());
+
+        }
+		
+		// finally set http status
+		response.setStatus( HttpServletResponse.SC_OK );
 	
 		OutputStream os = response.getOutputStream();
 	
@@ -348,6 +419,5 @@ public class ServiceImpl implements Service {
 		return sb.toString();
 		
 	}
-
 	
 }

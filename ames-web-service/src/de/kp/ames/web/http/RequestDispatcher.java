@@ -394,7 +394,7 @@ public class RequestDispatcher extends HttpServlet {
 		 * of interest specific information objects including
 		 * organizations
 		 */
-		services.add(new BaseParam("group", "de.kp.ames.web.core.group.GroupServiceImpl"));
+		services.add(new BaseParam("group", "de.kp.ames.web.function.group.GroupServiceImpl"));
 
 		/*
 		 * Map Service is used to retrieve map specific

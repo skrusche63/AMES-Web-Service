@@ -34,6 +34,7 @@ import de.kp.ames.web.core.graphics.GraphicsUtil;
 import de.kp.ames.web.core.malware.MalwareScanner;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
+import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.dms.cache.DmsDocument;
 import de.kp.ames.web.function.dms.cache.DmsImage;
@@ -257,11 +258,14 @@ public class UploadServiceImpl extends BusinessImpl {
 				
 			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Json)) {
 
+				String start = this.method.getAttribute(FncConstants.ATTR_START);
+				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);
+
 				try {
 					/*
 					 * JSON response
 					 */
-					String content = getJSONResponse(type, format);
+					String content = getJSONResponse(type, start, limit, format);
 					sendJSONResponse(content, ctx.getResponse());
 	
 				} catch (Exception e) {
@@ -345,7 +349,7 @@ public class UploadServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String getJSONResponse(String type, String format) throws Exception {
+	private String getJSONResponse(String type, String start, String limit, String format) throws Exception {
 
 		UploadFactory factory = new UploadFactory();
 		CacheManager manager = factory.getCacheManager(type);
@@ -355,7 +359,7 @@ public class UploadServiceImpl extends BusinessImpl {
 		/*
 		 * Render result
 		 */
-		return render(jArray, format);
+		return render(jArray, start, limit, format);
 
 	}
 
@@ -424,6 +428,8 @@ public class UploadServiceImpl extends BusinessImpl {
 		sb.append("<script type=\"text/javascript\">");
 		
 		sb.append("function onSuccess(){window.parent.onUploadSuccess();}");
+		sb.append("</script>");
+
 		sb.append("</head><body onload=\"onSuccess()\"></body></html>");
 		
 		return sb.toString();
@@ -441,6 +447,8 @@ public class UploadServiceImpl extends BusinessImpl {
 		sb.append("<script type=\"text/javascript\">");
 		
 		sb.append("function onSuccess(){window.parent.onUploadFailure();}");
+		sb.append("</script>");
+
 		sb.append("</head><body onload=\"onSuccess()\"></body></html>");
 		
 		return sb.toString();
