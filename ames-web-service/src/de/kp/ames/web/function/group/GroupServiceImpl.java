@@ -117,6 +117,8 @@ public class GroupServiceImpl extends BusinessImpl {
 
 			if (type.equals(ClassificationConstants.FNC_ID_Category)) {
 
+				String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);			
+
 				String start = this.method.getAttribute(FncConstants.ATTR_START);			
 				String limit = this.method.getAttribute(FncConstants.ATTR_LIMIT);			
 		
@@ -131,7 +133,7 @@ public class GroupServiceImpl extends BusinessImpl {
 					 */
 
 					try {
-						String content = categories(start, limit, format);
+						String content = categories(format, item, start, limit);
 						sendJSONResponse(content, ctx.getResponse());
 
 					} catch (Exception e) {
@@ -225,7 +227,7 @@ public class GroupServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String categories(String start, String limit, String format) throws Exception {
+	private String categories(String format, String item, String start, String limit) throws Exception {
 
 		String content = null;
 		
@@ -234,6 +236,7 @@ public class GroupServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
 
+		// TODO
 		GroupDQM dqm = new GroupDQM(jaxrHandle);
 		JSONArray jArray = dqm.getCategories();
 
@@ -375,7 +378,7 @@ public class GroupServiceImpl extends BusinessImpl {
 			 */
 
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
-			content = lcm.submitCategory(data);
+			content = lcm.submitCategory(source, data);
 
 		} else if (type.equals(ClassificationConstants.FNC_ID_Contact)) {
 

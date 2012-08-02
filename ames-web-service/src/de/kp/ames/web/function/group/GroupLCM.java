@@ -316,7 +316,7 @@ public class GroupLCM extends PartyLCM {
 	 * @return
 	 * @throws Exception
 	 */
-	public String submitCategory(String data) throws Exception {
+	public String submitCategory(String group, String data) throws Exception {
 	
 		/*
 		 * Initialize transaction
@@ -331,8 +331,6 @@ public class GroupLCM extends PartyLCM {
 		/*
 		 * Determine organization
 		 */
-		String group = jForm.getString(RIM_ID);
-
 		RegistryObjectImpl ro = getRegistryObjectById(group);
 		if (ro == null) throw new Exception("[GroupLCM] Organization with id <" + group + "> does not exist.");
 
