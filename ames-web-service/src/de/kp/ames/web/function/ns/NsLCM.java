@@ -52,6 +52,33 @@ public class NsLCM extends JaxrLCM {
 	}
 
 	/**
+	 * Delete namespace
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteNamepace(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.FOLDER_DELETED);
+		return jResponse.toString();
+		
+	}
+
+	/**
 	 * Submit a certain namespace 
 	 * 
 	 * @param data

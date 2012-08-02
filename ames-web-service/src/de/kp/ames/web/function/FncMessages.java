@@ -65,6 +65,7 @@ public class FncMessages extends CoreMessages {
 	 * Namespace specific messages
 	 */
 	public static String FOLDER_CREATED = "Namespace folder successfully submitted.";
+	public static String FOLDER_DELETED = "Namespace folder successfully deleted.";
 	
 	/*
 	 * Role specific messages

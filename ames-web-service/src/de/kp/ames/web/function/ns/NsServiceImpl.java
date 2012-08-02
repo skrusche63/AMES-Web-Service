@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.access.AccessLCM;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.constants.MethodConstants;
 
@@ -38,7 +39,13 @@ public class NsServiceImpl extends BusinessImpl {
 	public void processRequest(RequestContext ctx) {	
 
 		String methodName = this.method.getName();
-		if (methodName.equals(MethodConstants.METH_GET)) {
+		if (methodName.equals(MethodConstants.METH_DELETE)) {
+			/*
+			 * Call delete method
+			 */
+			doDeleteRequest(ctx);
+
+		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
 			 */
@@ -54,6 +61,34 @@ public class NsServiceImpl extends BusinessImpl {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDeleteRequest(RequestContext ctx) {
+
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+
+		if ((item == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = delete(type, item);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doGetRequest(de.kp.ames.web.http.RequestContext)
 	 */
@@ -166,6 +201,34 @@ public class NsServiceImpl extends BusinessImpl {
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return content;
 		
+	}
+
+	/**
+	 * A helper method to delete a namespace
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private String delete(String type, String item) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+
+		NsLCM lcm = new NsLCM(jaxrHandle);
+		content = lcm.deleteNamepace(item);
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+
 	}
 
 	/**
