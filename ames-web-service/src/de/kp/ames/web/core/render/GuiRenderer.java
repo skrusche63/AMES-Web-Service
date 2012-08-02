@@ -70,7 +70,18 @@ public interface GuiRenderer {
 	 * @throws Exception
 	 */
 	public String createTree(JSONArray jArray) throws Exception;
-	
+
+	/**
+	 * Build a Tree representation from a JSON Array
+	 * with a reference to a parent node
+	 * 
+	 * @param jArray
+	 * @param parent
+	 * @return
+	 * @throws Exception
+	 */
+	public String createTree(JSONArray jArray, String parent) throws Exception;
+
 	/*
 	 * Paging paramters depend on registered Gui
 	 */

@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.json.StringCollector;
+import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class SymbolDQM {
 
@@ -84,23 +85,26 @@ public class SymbolDQM {
 		/*
 		 * Determine parent
 		 */
-		if (parent == null) parent = processor.getRootKey();
+		String pkey = parent.equals("null") ? pkey = processor.getRootKey() : parent;
 		
 		/*
 		 * Retrieve key information
 		 */
-		JSONArray jArray = processor.getChildren(parent);					
+		JSONArray jArray = processor.getChildren(pkey);					
 		for (int i=0; i < jArray.length(); i++) {
 			
 			String key = jArray.getString(i);
 			
-			JSONObject jSymbol = processor.getSymbol(key);
+			/*
+			 * Clone JSON object
+			 */
+			JSONObject jSymbol = new JSONObject(processor.getSymbol(key).toString());
 			if (jSymbol != null) collector.put(jSymbol.getString(SymbolProcessor.J_NAME), jSymbol);
 		
 		}
 		
 		return new JSONArray(collector.values());
-		
+
 	}
 
 	/**

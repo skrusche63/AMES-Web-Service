@@ -24,6 +24,8 @@ import java.util.Collection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.kp.ames.web.shared.constants.JsonConstants;
+
 
 /**
  * A helper class to render results for a SmartGwt 3.0 GUI
@@ -114,10 +116,47 @@ public class ScRenderer implements GuiRenderer {
 	 * @see de.kp.ames.web.function.GuiRenderer#createTree(org.json.JSONArray)
 	 */
 	public String createTree(JSONArray jArray) throws Exception {
-		// TODO
-		return null;
-	}
+		
+		JSONObject jResponse = new JSONObject();
+
+		jResponse.put(ScConstants.SC_STATUS, 0);			
+		jResponse.put(ScConstants.SC_DATA, jArray);		
 	
+		return new JSONObject().put(ScConstants.SC_RESPONSE, jResponse).toString();	
+	
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.render.GuiRenderer#createTree(org.json.JSONArray, java.lang.String)
+	 */
+	public String createTree(JSONArray jArray, String parent) throws Exception {
+		
+		for (int i=0; i < jArray.length(); i++) {
+			
+			JSONObject jEntry = jArray.getJSONObject(i);
+			if (!jEntry.has(JsonConstants.J_CHILDREN)) jEntry.put(JsonConstants.J_IS_FOLDER, false);
+
+			/*
+			 * Remove key children from JSON object
+			 */
+			jEntry.remove(JsonConstants.J_CHILDREN);
+
+			/*
+			 * Add parent identifier
+			 */
+			jEntry.put(JsonConstants.J_PID, parent);
+			
+		}
+				
+		JSONObject jResponse = new JSONObject();
+
+		jResponse.put(ScConstants.SC_STATUS, 0);			
+		jResponse.put(ScConstants.SC_DATA, jArray);		
+	
+		return new JSONObject().put(ScConstants.SC_RESPONSE, jResponse).toString();	
+	
+	}
+
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#getStartParam()
 	 */

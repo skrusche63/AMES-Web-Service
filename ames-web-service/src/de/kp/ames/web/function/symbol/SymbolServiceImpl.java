@@ -128,7 +128,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 			 * Render result
 			 */
 			String format = FormatConstants.FNC_FORMAT_ID_Tree;
-			content = render(jArray, format);
+			content = render(jArray, parent, format);
 			
 		} else if (type.equals(ClassificationConstants.FNC_SYMBOL_ID_Icon)) {
 
@@ -139,7 +139,7 @@ public class SymbolServiceImpl extends BusinessImpl {
 			 * Render result
 			 */
 			String format = FormatConstants.FNC_FORMAT_ID_Tree;
-			content = render(jArray, format);
+			content = render(jArray, parent, format);
 			
 		}
 		

@@ -72,6 +72,31 @@ public class BusinessImpl extends ServiceImpl {
 	}
 	
 	/**
+	 * A helper method to render a JSON array with
+	 * respect to a certain parent
+	 * 
+	 * @param jArray
+	 * @param parent
+	 * @param format
+	 * @return
+	 * @throws Exception
+	 */
+	protected String render(JSONArray jArray, String parent, String format) throws Exception {
+
+		if (format.equals(FormatConstants.FNC_FORMAT_ID_Tree)) {
+			/*
+			 * Render JSONArray as a Tree
+			 */
+			return renderer.createTree(jArray, parent);
+
+		} else {
+			throw new Exception("[BusinessImpl] Format <" + format + "> not supported.");
+			
+		}
+
+	}
+	
+	/**
 	 * A helper method to render a JSON array
 	 * 
 	 * @param jArray
