@@ -20,14 +20,14 @@ public class HtmlRenderer {
 
 		// html body
 		htmlDocument.append("<body>\n");
-		htmlDocument.append("<div class=\"xchat-h\">From: " + from + "</div>");
-		htmlDocument.append("<div class=\"xchat-h\">Date: " + date + "</div>");
+		htmlDocument.append("<div class=\"mail-from\">From: " + from + "</div>");
+		htmlDocument.append("<div class=\"mail-date\">Date: " + date + "</div>");
 		
-		htmlDocument.append("<div class=\"xchat-content\"><b>Subject:</b><p>" + subject + "</p></div>");
+		htmlDocument.append("<div class=\"mail-content\"><b>Subject:</b><p>" + subject + "</p></div>");
 		htmlDocument.append("<div style=\"margin:8px;border-bottom:1px solid #cccccc;\">&nbsp;</div>\n");
 			
 		htmlDocument.append("<div style=\"margin:8px;margin-left:0px;\">\n");
-		htmlDocument.append("<div class=\"xchat-content\"><b>Message:</b><p>" + body + "</p></div>");
+		htmlDocument.append("<div class=\"mail-content\"><b>Message:</b><p>" + body + "</p></div>");
 		
 		htmlDocument.append("</div>\n");		
 		htmlDocument.append("</body>\n");

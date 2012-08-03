@@ -142,6 +142,25 @@ public class AccessServiceImpl extends BusinessImpl {
 					
 				}
 
+			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Html)) {
+
+				String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
+				if (source == null) {
+					this.sendNotImplemented(ctx);
+				
+				} else {
+					
+					try {
+						String html = getHtmlResponse(type, item, source);
+						sendHTMLResponse(html, ctx.getResponse());
+	
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+	
+					}
+					
+				}
+
 			} else if (format.startsWith(FormatConstants.FNC_FORMAT_ID_Image)) {
 			
 				String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);
@@ -226,6 +245,43 @@ public class AccessServiceImpl extends BusinessImpl {
 		 */
 		JaxrClient.getInstance().logoff(jaxrHandle);
 		return file;
+
+	}
+
+	/**
+	 * Retrieve a html artefact
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 */
+	private String getHtmlResponse(String type, String item, String source) throws Exception {
+
+		String html = null;
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+
+		AccessDQM dqm = new AccessDQM(jaxrHandle);
+		JSONObject jAccessor = dqm.getAccessor(item);
+		
+		if (type.equals(ClassificationConstants.FNC_ID_Mail)) {
+			
+			/*
+			 * Retrieve a certain mail attachment
+			 * from an external IMAP server
+			 */
+			ImapConsumer consumer = new ImapConsumer(jAccessor);
+			html = consumer.getHTMLMessage(Integer.parseInt(source));
+			
+		}
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return html;
 
 	}
 

@@ -213,7 +213,7 @@ public class ImapConsumer {
 		    	}
 		    	
 		    	jMessage.put(ImapConstants.J_FROM, from);
-			      
+		    	
 		    	FileUtil attachment = getAttachment(m);
 		    	if (attachment == null) {
 		    		jMessage.put(ImapConstants.J_ATTACHMENT, false);
