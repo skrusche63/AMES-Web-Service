@@ -177,7 +177,11 @@ public class RoleServiceImpl extends BusinessImpl {
 	public void doSubmitRequest(RequestContext ctx) {
 
 		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
-		if (type == null) {
+
+		String source = this.method.getAttribute(MethodConstants.ATTR_SOURCE);			
+		String target = this.method.getAttribute(MethodConstants.ATTR_TARGET);			
+
+		if ((type == null) || (source == null)) {
 			this.sendNotImplemented(ctx);
 			
 		} else {
@@ -192,10 +196,11 @@ public class RoleServiceImpl extends BusinessImpl {
 			} else {
 
 				try {
+
 					/*
 					 * JSON response
 					 */
-					String content = submit(type, data);
+					String content = submit(type, source, target, data);
 					sendJSONResponse(content, ctx.getResponse());
 
 				} catch (Exception e) {
@@ -318,7 +323,7 @@ public class RoleServiceImpl extends BusinessImpl {
 
 	}
 
-	private String submit(String type, String data) throws Exception {
+	private String submit(String type, String source, String target, String data) throws Exception {
 
 		String content = null;
 		
@@ -335,7 +340,7 @@ public class RoleServiceImpl extends BusinessImpl {
 			 * only namespaces contribute to responsibilities
 			 */
 			RoleLCM lcm = new RoleLCM(jaxrHandle);
-			content = lcm.submitResponsibility(data);
+			content = lcm.submitResponsibility(source, data);
 
 		} else if (type.equals(ClassificationConstants.FNC_ID_Role)) {
 			
@@ -344,7 +349,7 @@ public class RoleServiceImpl extends BusinessImpl {
 			 * assigned to a certain affiliation
 			 */
 			RoleLCM lcm = new RoleLCM(jaxrHandle);
-			content = lcm.submitRoles(data);
+			content = lcm.submitRoles(source, target, data);
 
 		} else {
 			throw new Exception("[RoleImpl] Information type <" + type + "> is not supported");

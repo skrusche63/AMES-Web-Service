@@ -118,7 +118,7 @@ public class RoleLCM extends JaxrLCM {
 	 * @return
 	 * @throws Exception
 	 */
-	public String submitResponsibility(String data) throws Exception {
+	public String submitResponsibility(String source, String data) throws Exception {
 	
 		JSONObject jResponse = new JSONObject();
 		
@@ -143,10 +143,8 @@ public class RoleLCM extends JaxrLCM {
 		/*
 		 * Retrieve responsible
 		 */
-		String uid = jForm.getString(RIM_ID);
-		RegistryObjectImpl responsible = getRegistryObjectById(uid);
-		
-		if (responsible == null) new Exception("[RoleLCM] Responsible with id <" + uid + "> not found.");
+		RegistryObjectImpl responsible = getRegistryObjectById(source);		
+		if (responsible == null) new Exception("[RoleLCM] Responsible with id <" + source + "> not found.");
 
 		/*
 		 * Responsibility is registered within namespace container
@@ -209,7 +207,7 @@ public class RoleLCM extends JaxrLCM {
 	 * @return
 	 * @throws Exception
 	 */
-	public String submitRoles(String data) throws Exception {
+	public String submitRoles(String user, String group, String data) throws Exception {
 		
 		JSONObject jResponse = new JSONObject();
 		
@@ -234,9 +232,6 @@ public class RoleLCM extends JaxrLCM {
 		/*
 		 * Retrieve affiliation
 		 */
-		String group = jForm.getString(JsonConstants.J_GROUP);
-		String user  = jForm.getString(JsonConstants.J_AFFILIATE);
-
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 			
 		String sqlString = JaxrSQL.getSQLAssociations_AffiliatedWith(user, group);
