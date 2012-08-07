@@ -29,6 +29,9 @@
 	<classpathentry kind="lib" path="lib-test/junit.jar"/>
 	<classpathentry kind="lib" path="lib-test/ant-junit.jar"/>
 	<classpathentry kind="lib" path="lib-test/ant.jar"/>
+	<classpathentry kind="lib" path="lib-test/mockito-all-1.9.5-rc1.jar"/>
+	<classpathentry kind="lib" path="lib-test/org.springframework.core-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib-test/org.springframework.test-3.1.1.RELEASE.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ames-oojdrew"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ames-webdav"/>
