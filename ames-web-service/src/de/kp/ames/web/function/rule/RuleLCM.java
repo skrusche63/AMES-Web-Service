@@ -177,13 +177,13 @@ public class RuleLCM extends JaxrLCM {
 		/*
 		 * Supply reactor
 		 */
-		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Productor, RAction.C_INDEX_RSS);
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Reasoner, RAction.C_INDEX_RSS);
 		ReactorImpl.onSubmit(reactorParams);
 
 		/*
 		 * Retrieve response
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.PRODUCTOR_CREATED);
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.REASONER_CREATED);
 		return jResponse.toString();
 	}
 	
