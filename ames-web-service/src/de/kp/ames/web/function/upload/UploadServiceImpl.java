@@ -78,94 +78,11 @@ public class UploadServiceImpl extends BusinessImpl {
 			doGetRequest(ctx);
 			
 		} else if (methodName.equals(MethodConstants.METH_SET)) {
-
 			/*
-			 * The result of the upload request, returned
-			 * to the requestor; note, that the result must
-			 * be a text response
+			 * Call set method
 			 */
-			boolean result = false;
-			HttpServletRequest request = ctx.getRequest();
-
-			try {
-				
-				boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-				if (isMultipart) {
-					
-					/* 
-					 * Create new file upload handler
-					 */
-					ServletFileUpload upload = new ServletFileUpload();
-		
-					/*
-					 * Parse the request
-					 */
-					FileItemIterator iter = upload.getItemIterator( request );
-					while ( iter.hasNext() ) {
-						
-						FileItemStream fileItem = iter.next();
-						if ( fileItem.isFormField() ) {
-							// not supported
-							
-						} else {
-								
-							/* 
-							 * Hook into the upload request to some virus scanning
-							 * using the scanner factory of this application
-							 */
-							
-							byte[] bytes = FileUtil.getByteArrayFromInputStream(fileItem.openStream());
-							boolean checked = MalwareScanner.scanForViruses(bytes);						
-							
-							if (checked == false) {
-								result = true;
-	
-							} else {
-
-								String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);		
-								String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
-								if ((item == null) || (type == null)) {
-									this.sendNotImplemented(ctx);
-
-								} else {
-									
-									String fileName = FilenameUtils.getName( fileItem.getName() );
-									String mimeType = fileItem.getContentType();
-									
-									try {
-										result = upload(item, type, fileName, mimeType, bytes);
-										
-									} catch (Exception e) {
-										sendBadRequest(ctx, e);
-										
-									}
-									
-								}
-	
-							}
-							
-						}
-						
-					}
-	
-				}
-				
-				/*
-				 * Send html response
-				 */
-				if (result == true) {
-					this.sendHTMLResponse(createHtmlSuccess(), ctx.getResponse());
-				
-				} else {
-					this.sendHTMLResponse(createHtmlFailure(), ctx.getResponse());
-					
-				}
-				
-			} catch ( Exception e ) {
-				this.sendBadRequest(ctx, e);
-	
-			} finally {}
-
+			doSetRequest(ctx);
+			
 		}
 
 	}
@@ -279,6 +196,100 @@ public class UploadServiceImpl extends BusinessImpl {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doSetRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSetRequest(RequestContext ctx) {
+
+		/*
+		 * The result of the upload request, returned
+		 * to the requestor; note, that the result must
+		 * be a text response
+		 */
+		boolean result = false;
+		HttpServletRequest request = ctx.getRequest();
+
+		try {
+			
+			boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+			if (isMultipart) {
+				
+				/* 
+				 * Create new file upload handler
+				 */
+				ServletFileUpload upload = new ServletFileUpload();
+	
+				/*
+				 * Parse the request
+				 */
+				FileItemIterator iter = upload.getItemIterator( request );
+				while ( iter.hasNext() ) {
+					
+					FileItemStream fileItem = iter.next();
+					if ( fileItem.isFormField() ) {
+						// not supported
+						
+					} else {
+							
+						/* 
+						 * Hook into the upload request to some virus scanning
+						 * using the scanner factory of this application
+						 */
+						
+						byte[] bytes = FileUtil.getByteArrayFromInputStream(fileItem.openStream());
+						boolean checked = MalwareScanner.scanForViruses(bytes);						
+						
+						if (checked == false) {
+							result = true;
+
+						} else {
+
+							String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);		
+							String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			
+							if ((item == null) || (type == null)) {
+								this.sendNotImplemented(ctx);
+
+							} else {
+								
+								String fileName = FilenameUtils.getName( fileItem.getName() );
+								String mimeType = fileItem.getContentType();
+								
+								try {
+									result = upload(item, type, fileName, mimeType, bytes);
+									
+								} catch (Exception e) {
+									sendBadRequest(ctx, e);
+									
+								}
+								
+							}
+
+						}
+						
+					}
+					
+				}
+
+			}
+			
+			/*
+			 * Send html response
+			 */
+			if (result == true) {
+				this.sendHTMLResponse(createHtmlSuccess(), ctx.getResponse());
+			
+			} else {
+				this.sendHTMLResponse(createHtmlFailure(), ctx.getResponse());
+				
+			}
+			
+		} catch ( Exception e ) {
+			this.sendBadRequest(ctx, e);
+
+		} finally {}
+
+	}
+	
 	/**
 	 * Get a single file
 	 * 

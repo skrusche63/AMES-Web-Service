@@ -124,6 +124,33 @@ public class RuleLCM extends JaxrLCM {
 	}
 
 	/**
+	 * Delete evaluation
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteEvaluation(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.EVALUATION_DELETED);
+		return jResponse.toString();
+		
+	}
+
+	/**
 	 * Submit ReasonerObject
 	 * 
 	 * @param data
@@ -186,7 +213,61 @@ public class RuleLCM extends JaxrLCM {
 		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.REASONER_CREATED);
 		return jResponse.toString();
 	}
-	
+
+	/**
+	 * Delete reasoner
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteReasoner(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.REASONER_DELETED);
+		return jResponse.toString();
+		
+	}
+
+	/**
+	 * Delete rule
+	 * 
+	 * @param uid
+	 * @return
+	 * @throws Exception
+	 */
+	public String deleteRule(String uid) throws Exception {
+
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Delete object
+		 */
+		deleteRegistryObject(uid, transaction);
+		
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(uid, FncMessages.RULE_DELETED);
+		return jResponse.toString();
+		
+	}
+
 	/**
 	 * A helper method to create a new evaluation container
 	 * 

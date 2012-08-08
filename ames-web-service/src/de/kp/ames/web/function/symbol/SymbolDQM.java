@@ -22,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.json.StringCollector;
-import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class SymbolDQM {
 

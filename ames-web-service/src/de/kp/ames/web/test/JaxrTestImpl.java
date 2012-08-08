@@ -90,13 +90,63 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 		return method;
 	
 	}
+
+	public void testDoDeleteRequest() throws Exception {
+
+		RequestMethod method = createTestMethod(MethodConstants.METH_GET, getDeleteAttributes());
+
+		/*
+		 * Create mock Http Request
+		 */
+		HttpServletRequest request = mock(HttpServletRequest.class);
+
+		/*
+		 * Create mock Http Response
+		 */
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		
+		/*
+		 * Create request context
+		 */
+		RequestContext ctx = new RequestContext(request, response);
+
+		/*
+		 * Invoke speific test case
+		 */
+		doDelete(jaxrHandle, method, ctx);
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+
+	}
+
+	public void testDoGetRequest() throws Exception {
+
+		RequestMethod method = createTestMethod(MethodConstants.METH_GET, getGetAttributes());
+
+		/*
+		 * Create mock Http Request
+		 */
+		HttpServletRequest request = mock(HttpServletRequest.class);
+
+		/*
+		 * Create mock Http Response
+		 */
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		
+		/*
+		 * Create request context
+		 */
+		RequestContext ctx = new RequestContext(request, response);
+
+		/*
+		 * Invoke speific test case
+		 */
+		doGet(jaxrHandle, method, ctx);
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+
+	}
 	
 	public void testDoSubmitRequest() throws Exception {
 		
-		/*
-		 * Specify submit method for type document only;
-		 * for testing other Dms entry are not important
-		 */
 		RequestMethod method = createTestMethod(MethodConstants.METH_SUBMIT, getSubmitAttributes());
 
 		/*
@@ -153,7 +203,37 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 	public Service getService() {
 		return null;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTest#getDeleteAttributes()
+	 */
+	public HashMap<String, String> getDeleteAttributes() {
+		/*
+		 * Must be overridden
+		 */
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTest#getGetAttributes()
+	 */
+	public HashMap<String, String> getGetAttributes() {
+		/*
+		 * Must be overridden
+		 */
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTest#getSetAttributes()
+	 */
+	public HashMap<String,String> getSetAttributes() {
+		/*
+		 * Must be overridden
+		 */
+		return null;
+	}
+
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTest#getSubmitAttributes()
 	 */
@@ -162,6 +242,54 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 		 * Must be overridden
 		 */
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTest#doDelete(de.kp.ames.web.core.regrep.JaxrHandle, de.kp.ames.web.http.RequestMethod, de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDelete(JaxrHandle jaxrHandle, RequestMethod method, RequestContext ctx) {
+		/*
+		 * Specify service
+		 */
+		Service service = getService();
+
+		service.setJaxrHandle(jaxrHandle);
+		service.setMethod(method);
+		
+		service.doDeleteRequest(ctx);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTest#doGet(de.kp.ames.web.core.regrep.JaxrHandle, de.kp.ames.web.http.RequestMethod, de.kp.ames.web.http.RequestContext)
+	 */
+	public void doGet(JaxrHandle jaxrHandle, RequestMethod method, RequestContext ctx) {
+		/*
+		 * Specify service
+		 */
+		Service service = getService();
+
+		service.setJaxrHandle(jaxrHandle);
+		service.setMethod(method);
+		
+		service.doGetRequest(ctx);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTest#doSet(de.kp.ames.web.core.regrep.JaxrHandle, de.kp.ames.web.http.RequestMethod, de.kp.ames.web.http.RequestContext)
+	 */
+	public void doSet(JaxrHandle jaxrHandle, RequestMethod method, RequestContext ctx) {
+		/*
+		 * Specify service
+		 */
+		Service service = getService();
+
+		service.setJaxrHandle(jaxrHandle);
+		service.setMethod(method);
+		
+		service.doSetRequest(ctx);
+		
 	}
 
 	/* (non-Javadoc)

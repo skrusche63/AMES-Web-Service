@@ -48,7 +48,6 @@ public class RoleLCM extends JaxrLCM {
 	 */
 	private static String MISSING_PARAMETERS = "Please provide valid parameters.";
 
-	private static String RIM_ID        = JaxrConstants.RIM_ID;
 	private static String RIM_NAMESPACE = JaxrConstants.RIM_NAMESPACE;
 	private static String RIM_ROLES     = JaxrConstants.RIM_ROLE;
 	

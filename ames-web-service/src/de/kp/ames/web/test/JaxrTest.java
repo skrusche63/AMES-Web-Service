@@ -34,10 +34,49 @@ public interface JaxrTest {
 	public JSONObject createJsonSubmitData() throws Exception;
 
 	/**
-	 * A helper method to specify attribuest for a certain request
+	 * A helper method to specify attributes for a delete request
+	 * @return
+	 */
+	public HashMap<String,String> getDeleteAttributes();
+
+	/**
+	 * A helper method to specify attributes for a get request
+	 * @return
+	 */
+	public HashMap<String,String> getGetAttributes();
+
+	/**
+	 * A helper method to specify attributes for a set request
+	 * @return
+	 */
+	public HashMap<String,String> getSetAttributes();
+
+	/**
+	 * A helper method to specify attributes for a submit request
 	 * @return
 	 */
 	public HashMap<String,String> getSubmitAttributes();
+
+	/**
+	 * Describes Delete Test Case
+	 * 
+	 * @throws Exception
+	 */
+	public void doDelete(JaxrHandle jaxrHandle, RequestMethod method, RequestContext ctx);
+
+	/**
+	 * Describes Get Test Case
+	 * 
+	 * @throws Exception
+	 */
+	public void doGet(JaxrHandle jaxrHandle, RequestMethod method, RequestContext ctx);
+
+	/**
+	 * Describes Set Test Case
+	 * 
+	 * @throws Exception
+	 */
+	public void doSet(JaxrHandle jaxrHandle, RequestMethod method, RequestContext ctx);
 
 	/**
 	 * Describes Submit Test Case

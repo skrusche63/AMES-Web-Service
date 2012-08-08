@@ -76,14 +76,22 @@ public class FncMessages extends CoreMessages {
 	public static String ROLE_DELETED           = "Role successfully deleted.";
 
 	/*
-	 * Transformation specific messages
+	 * Rule specific messages
 	 */
 	public static String EVALUATION_CREATED    = "Evaluation successfully submitted.";
+	public static String EVALUATION_DELETED    = "Evaluation successfully deleted.";
+	public static String REASONER_CREATED      = "Reasoner successfully submitted.";
+	public static String REASONER_DELETED      = "Reasoner successfully deleted.";
+	public static String RULE_CREATED          = "Rule successfully submitted.";
+	public static String RULE_DELETED          = "Rule successfully deleted.";
+
+	/*
+	 * Transformation specific messages
+	 */
 	public static String PRODUCT_CREATED       = "Product successfully submitted.";
 	public static String PRODUCT_DELETED       = "Product successfully deleted.";
 	public static String PRODUCTOR_CREATED     = "Productor successfully submitted.";
 	public static String PRODUCTOR_DELETED     = "Productor successfully deleted.";
-	public static String REASONER_CREATED      = "Reasoner successfully submitted.";
 	public static String TRANSFORMATOR_CREATED = "Transformator successfully submitted.";
 	public static String TRANSFORMATOR_DELETED = "Transformator successfully deleted.";
 

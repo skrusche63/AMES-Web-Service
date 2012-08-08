@@ -27,6 +27,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.util.BaseParam;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.function.role.RoleLCM;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
 import de.kp.ames.web.shared.constants.MethodConstants;
@@ -49,6 +50,12 @@ public class RuleServiceImpl extends BusinessImpl {
 			 */
 			doApplyRequest(ctx);
 
+		} else if (methodName.equals(MethodConstants.METH_DELETE)) {
+			/*
+			 * Call delete method
+			 */
+			doDeleteRequest(ctx);
+			
 		} else if (methodName.equals(MethodConstants.METH_GET)) {
 			/*
 			 * Call get method
@@ -100,6 +107,35 @@ public class RuleServiceImpl extends BusinessImpl {
 
 		}
 		
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.core.service.ServiceImpl#doDeleteRequest(de.kp.ames.web.http.RequestContext)
+	 */
+	public void doDeleteRequest(RequestContext ctx) {
+
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+
+		if ((item == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
+			
+		} else {
+
+			try {
+				/*
+				 * JSON response
+				 */
+				String content = delete(type, item);
+				sendJSONResponse(content, ctx.getResponse());
+
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+
+			}
+			
+		}
+
 	}
 	
 	/* (non-Javadoc)
@@ -217,7 +253,49 @@ public class RuleServiceImpl extends BusinessImpl {
 		return content;
 
 	}
-	
+
+	/**
+	 * A helper method to either delete an evaluation, reasoer or rule
+	 * 
+	 * @param type
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private String delete(String type, String item) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);		
+		
+		if (type.equals(ClassificationConstants.FNC_ID_Evaluation)) {
+
+			RuleLCM lcm = new RuleLCM(jaxrHandle);
+			content = lcm.deleteEvaluation(item);
+			
+		} else if (type.equals(ClassificationConstants.FNC_ID_Reasoner)) {
+
+			RuleLCM lcm = new RuleLCM(jaxrHandle);
+			content = lcm.deleteReasoner(item);
+
+		} else if (type.equals(ClassificationConstants.FNC_ID_Rule)) {
+
+			RuleLCM lcm = new RuleLCM(jaxrHandle);
+			content = lcm.deleteRule(item);
+
+		}
+		
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
+
+	}
+
 	/**
 	 * Get reasoning specific information objects
 	 * 
