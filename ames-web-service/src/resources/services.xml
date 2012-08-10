@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <services version="1.0">
     <service>
+		<service-id>access</service-id>
+		<service-class>de.kp.ames.web.function.access.AccessServiceImpl</service-class>
+        <service-desc>
+         Service to manage Accessors and to support access to
+         external data sources.
+        </service-desc>
+	</service>
+    
+    <service>
 		<service-id>bulletin</service-id>
 		<service-class>de.kp.ames.web.function.bulletin.BulletinServiceImpl</service-class>
         <service-desc>
-         Bulletin Service to support a posting between
-         different communities of interest and their
-         associated members
+         Service to support a posting mechanism between different 
+         communities of interest and their associated members.
         </service-desc>
 	</service>
     
@@ -14,8 +22,8 @@
 		<service-id>comm</service-id>
 		<service-class>de.kp.ames.web.function.comm.CommServiceImpl</service-class>
         <service-desc>
-         Chat &amp; Mail Service to support the registration (submit)
-         of chat and mail message via a selected client
+         Service to support the registration (submit) of chat and mail 
+         messages via a predefined client application.
         </service-desc>
 	</service>
     
