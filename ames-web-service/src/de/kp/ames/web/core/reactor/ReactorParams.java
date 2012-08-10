@@ -1,4 +1,22 @@
 package de.kp.ames.web.core.reactor;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.core.reactor
+ *  Module: ReactorParams
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #core #params #reactor #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 

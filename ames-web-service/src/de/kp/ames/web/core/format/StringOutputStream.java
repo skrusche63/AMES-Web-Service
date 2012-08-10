@@ -1,5 +1,23 @@
 package de.kp.ames.web.core.format;
 /**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.core.format
+ *  Module: StringOutputStream
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #core #format #output #stream #string #web
+ * </SemanticAssist>
+ *
+ */
+
+/**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
  *	AMES-Web-Service is free software: you can redistribute it and/or 

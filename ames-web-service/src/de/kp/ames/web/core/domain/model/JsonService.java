@@ -1,5 +1,23 @@
 package de.kp.ames.web.core.domain.model;
 /**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.core.domain.model
+ *  Module: JsonService
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #core #domain #json #model #service #web
+ * </SemanticAssist>
+ *
+ */
+
+/**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
  *	AMES-Web-Service is free software: you can redistribute it and/or 

@@ -1,4 +1,22 @@
 package de.kp.ames.web.core.domain.model;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.core.domain.model
+ *  Module: IJsonRegistryObject
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #core #domain #i #json #model #object #registry #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import javax.xml.registry.JAXRException;
 

@@ -1,5 +1,23 @@
 package de.kp.ames.web.function.rule.data;
 /**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.function.rule.data
+ *  Module: XslLoader
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #data #function #loader #rule #web #xsl
+ * </SemanticAssist>
+ *
+ */
+
+/**
  *	Copyright 2012 Dr. Krusche & Partner PartG
  *
  *	AMES-Web-Service is free software: you can redistribute it and/or 

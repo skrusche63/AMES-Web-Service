@@ -1,4 +1,22 @@
 package de.kp.ames.web.function.access.jdbc;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.function.access.jdbc
+ *  Module: JdbcConsumer
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #access #consumer #function #jdbc #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import java.sql.Connection;
 import java.sql.ResultSet;

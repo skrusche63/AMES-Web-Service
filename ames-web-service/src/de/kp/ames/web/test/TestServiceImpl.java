@@ -1,4 +1,22 @@
 package de.kp.ames.web.test;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.test
+ *  Module: TestServiceImpl
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #service #test #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import java.io.File;
 import java.io.FileOutputStream;

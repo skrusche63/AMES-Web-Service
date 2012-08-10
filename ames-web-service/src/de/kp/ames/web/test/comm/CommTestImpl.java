@@ -1,4 +1,22 @@
 package de.kp.ames.web.test.comm;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.test.comm
+ *  Module: CommTestImpl
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #comm #test #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import java.util.HashMap;
 

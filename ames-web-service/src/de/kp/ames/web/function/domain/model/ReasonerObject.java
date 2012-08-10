@@ -1,4 +1,22 @@
 package de.kp.ames.web.function.domain.model;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.function.domain.model
+ *  Module: ReasonerObject
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #domain #function #model #object #reasoner #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;

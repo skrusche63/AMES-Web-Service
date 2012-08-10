@@ -1,4 +1,22 @@
 package de.kp.ames.web.test.transform;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.test.transform
+ *  Module: TransformTestImpl
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #test #transform #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import java.util.HashMap;
 

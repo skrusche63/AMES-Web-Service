@@ -1,4 +1,22 @@
 package de.kp.ames.web.test.dms;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.test.dms
+ *  Module: DmsTestImpl
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #dms #test #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import java.util.HashMap;
 

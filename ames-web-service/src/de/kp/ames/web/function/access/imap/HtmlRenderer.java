@@ -1,4 +1,22 @@
 package de.kp.ames.web.function.access.imap;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.function.access.imap
+ *  Module: HtmlRenderer
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #access #function #html #imap #renderer #web
+ * </SemanticAssist>
+ *
+ */
+
 
 public class HtmlRenderer {
 

@@ -1,4 +1,22 @@
 package de.kp.ames.web.function.dms.extract;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.function.dms.extract
+ *  Module: Extractor
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #dms #extract #extractor #function #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import java.io.InputStream;
 import java.util.Set;

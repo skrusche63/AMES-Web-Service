@@ -1,4 +1,22 @@
 package de.kp.ames.web.function.frame;
+/**
+ * This Java module is part of the
+ *  Application Developer Framework
+ *
+ *  Project: AMES-Web-Service
+ *  Package: de.kp.ames.web.function.frame
+ *  Module: FrameServiceImpl
+ *  @author krusche@dr-kruscheundpartner.de
+ *
+ * Add your semantic annotations within the SemanticAssist tags and
+ * mark them with a leading hashtag #:
+ *
+ * <SemanticAssist>
+ *     #frame #function #service #web
+ * </SemanticAssist>
+ *
+ */
+
 
 import javax.servlet.http.HttpServletRequest;
 
