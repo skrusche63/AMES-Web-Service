@@ -1,4 +1,22 @@
 package de.kp.ames.web.function.domain.model;
+
+import java.io.InputStream;
+import java.util.Locale;
+
+import javax.activation.DataHandler;
+import javax.xml.registry.JAXRException;
+
+import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+
+import de.kp.ames.web.GlobalConstants;
+import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.regrep.JaxrIdentity;
+import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
+import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.function.FncConstants;
+import de.kp.ames.web.shared.constants.ClassificationConstants;
 /**
  * This Java module is part of the
  *  Application Developer Framework
@@ -36,41 +54,20 @@ package de.kp.ames.web.function.domain.model;
  *
  */
 
-import java.util.Locale;
+public class AttachmentObject extends BusinessObject {
 
-import javax.activation.DataHandler;
-import javax.xml.registry.JAXRException;
-
-import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
-import de.kp.ames.web.GlobalConstants;
-import de.kp.ames.web.core.regrep.JaxrHandle;
-import de.kp.ames.web.core.regrep.JaxrIdentity;
-import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
-import de.kp.ames.web.core.util.FileUtil;
-import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.shared.constants.ClassificationConstants;
-
-public class MailObject extends BusinessObject {
-
-	public MailObject(JaxrHandle jaxrHandle, JaxrLCM jaxrLCM) {
+	public AttachmentObject(JaxrHandle jaxrHandle, JaxrLCM jaxrLCM) {
 		super(jaxrHandle, jaxrLCM);		
 	}
 	
 	/**
-	 * Create RegistryObject representation of MailObject
+	 * Create RegistryObject representation of AttachmentObject
 	 * 
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	public RegistryObjectImpl create(String data) throws Exception {
-
-		/* 
-		 * A mail message is a certain extrinsic object that holds all 
-		 * relevant and related information in a single JSON repository item
-		 */
+	public RegistryObjectImpl create(InputStream data, String mimetype) throws Exception {
 
 		ExtrinsicObjectImpl eo = null;
 
@@ -79,12 +76,12 @@ public class MailObject extends BusinessObject {
 		 * the respective mail message
 		 */
 		eo = jaxrLCM.createExtrinsicObject();
-		if (eo == null)  throw new JAXRException("[MailObject] Creation of ExtrinsicObject failed.");
+		if (eo == null)  throw new JAXRException("[AttachmentObject] Creation of ExtrinsicObject failed.");
 				
 		/* 
 		 * Identifier
 		 */
-		String eid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.MAIL_PRE);
+		String eid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.ATTACHMENT_PRE);
 
 		eo.setLid(eid);
 		eo.getKey().setId(eid);
@@ -98,10 +95,9 @@ public class MailObject extends BusinessObject {
 		/* 
 		 * Mime type & handler
 		 */
-		String mimetype = GlobalConstants.MT_JSON;
 		eo.setMimeType(mimetype);
 				
-		byte[] bytes = data.getBytes(GlobalConstants.UTF_8);
+		byte[] bytes = FileUtil.getByteArrayFromInputStream(data);
 
 		DataHandler handler = new DataHandler(FileUtil.createByteArrayDataSource(bytes, mimetype));                	
     	eo.setRepositoryItem(handler);				
@@ -109,11 +105,11 @@ public class MailObject extends BusinessObject {
 		/*
 		 * Create classification
 		 */
-		ClassificationImpl c = jaxrLCM.createClassification(ClassificationConstants.FNC_ID_Mail);
-		c.setName(jaxrLCM.createInternationalString(Locale.US, "Mail Classification"));
+		ClassificationImpl c = jaxrLCM.createClassification(ClassificationConstants.FNC_ID_Attachment);
+		c.setName(jaxrLCM.createInternationalString(Locale.US, "Attachment Classification"));
 
 		/* 
-		 * Associate classification and mail message
+		 * Associate classification and mail attachment
 		 */
 		eo.addClassification(c);
 

@@ -37,8 +37,11 @@ package de.kp.ames.web.core.rss;
  */
 import java.net.URL;
 
+import org.json.JSONArray;
+
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.service.ServiceImpl;
+import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.constants.FormatConstants;
@@ -49,7 +52,7 @@ import de.kp.ames.web.shared.constants.MethodConstants;
  * remote RSS feeds in JSON or native RSS representation
  */
 
-public class RssServiceImpl extends ServiceImpl {
+public class RssServiceImpl extends BusinessImpl {
 
 	private RssProvider provider;
 	private RssConsumer consumer;
@@ -60,6 +63,8 @@ public class RssServiceImpl extends ServiceImpl {
 	 * Constructor
 	 */
 	public RssServiceImpl() {	
+		super();
+		
 		consumer = new RssConsumer();
 		provider = new RssProvider();		
 	}
@@ -144,7 +149,8 @@ public class RssServiceImpl extends ServiceImpl {
 			/*
 			 * Retrieve OASIS ebXML RegRep RSS feed (local)
 			 */
-			content = provider.getJFeed();
+			JSONArray jArray = provider.getJFeed();
+			content = render(jArray, FormatConstants.FNC_FORMAT_ID_Grid);
 		
 		} else if (type.equals("remote")) {
 			/*
@@ -182,7 +188,8 @@ public class RssServiceImpl extends ServiceImpl {
 				/*
 				 * Retrieve RSS feed in JSON representation
 				 */
-				content = consumer.getJFeed(method);
+				JSONArray jArray = consumer.getJFeed(method);
+				content = render(jArray, FormatConstants.FNC_FORMAT_ID_Grid);
 				
 			}
 			

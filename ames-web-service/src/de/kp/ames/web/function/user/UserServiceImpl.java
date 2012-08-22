@@ -151,7 +151,7 @@ public class UserServiceImpl extends BusinessImpl {
 			 * by its unique identifier
 			 */
 			UserDQM dqm = new UserDQM(jaxrHandle);
-			JSONArray jArray = dqm.getUsers(item);
+			JSONArray jArray = dqm.getUser(item);
 
 			/*
 			 * Render result

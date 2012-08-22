@@ -47,8 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.json.JSONObject;
-
+import org.json.JSONArray;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.fetcher.impl.HashMapFeedInfoCache;
@@ -249,13 +248,11 @@ public class RssConsumer {
 	 * 
 	 * @return
 	 */
-	public String getJFeed(String method) {
+	public JSONArray getJFeed(String method) {
 		
 		try {
 			SyndFeed feed = execute(method);
-			JSONObject jFeed = RssConverter.getJFeed(feed);
-			
-			return jFeed.toString();
+			return RssConverter.getJFeed(feed);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

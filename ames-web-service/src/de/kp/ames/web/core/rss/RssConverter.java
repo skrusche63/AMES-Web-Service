@@ -74,14 +74,9 @@ public class RssConverter {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONObject getJFeed(SyndFeed feed) throws Exception {
-
-		JSONObject jFeed = new JSONObject();
+	public static JSONArray getJFeed(SyndFeed feed) throws Exception {
 		
-		jFeed.put("total", 0);
-		jFeed.put("list", new JSONArray());
-		
-		JSONArray jList = new JSONArray();
+		JSONArray jFeed = new JSONArray();
 
 		List<?> entries = feed.getEntries();
 		for (int i=0; i < entries.size(); i++) {
@@ -95,12 +90,9 @@ public class RssConverter {
 	    	
 	    	jEntry.put(URI,  entry.getLink());
 
-	    	jList.put(i, jEntry);
+	    	jFeed.put(i, jEntry);
 
 		}
-		
-		jFeed.put("total", jList.length());
-		jFeed.put("list", jList);
 
 		return jFeed;
 	  
@@ -113,14 +105,9 @@ public class RssConverter {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONObject getJFeed(List<SyndEntry> entries) throws Exception {
+	public static JSONArray getJFeed(List<SyndEntry> entries) throws Exception {
 		
-		JSONObject jFeed = new JSONObject();
-		
-		jFeed.put("total", 0);
-		jFeed.put("list", new JSONArray());
-		
-		JSONArray jList = new JSONArray();
+		JSONArray jFeed = new JSONArray();
 		
 		for (SyndEntry entry:entries) {
 
@@ -160,12 +147,9 @@ public class RssConverter {
 
 			// home
 			jEntry.put("home", entry.getLink());
-			jList.put(jEntry);
+			jFeed.put(jEntry);
 			
 		}
-
-		jFeed.put("total", jList.length());
-		jFeed.put("list", jList);
 
 		return jFeed;
 		

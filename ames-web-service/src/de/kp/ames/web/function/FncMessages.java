@@ -130,6 +130,7 @@ public class FncMessages extends CoreMessages {
 	 * Top pacakge descriptions
 	 */
 	public static String ACCESSOR_DESC      = "This is the top package to manage all submitted accessors.";
+	public static String ATTACHMENT_DESC    = "This is the top package to manage all submitted mail attachments.";
 	public static String CHAT_DESC          = "This is the top package to manage all submitted chat messages.";
 	public static String COMMENT_DESC       = "This is the top package to manage all submitted comments.";
 	public static String DOCUMENT_DESC      = "This is the top package to manage all submitted documents.";

@@ -39,8 +39,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
-import org.json.JSONObject;
-
+import org.json.JSONArray;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
@@ -108,14 +107,12 @@ public class RssProvider {
 	 * 
 	 * @return
 	 */
-	public String getJFeed() {
+	public JSONArray getJFeed() {
 		
 		try {
 			
 			List<SyndEntry> entries = processor.getEntries();
-			JSONObject jFeed = RssConverter.getJFeed(entries);
-			
-			return jFeed.toString();
+			return RssConverter.getJFeed(entries);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

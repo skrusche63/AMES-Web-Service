@@ -36,7 +36,11 @@ package de.kp.ames.web.function.comm;
  *
  */
 
+import java.io.InputStream;
+import java.net.URLDecoder;
+
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
@@ -44,6 +48,7 @@ import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
 import de.kp.ames.web.shared.constants.FormatConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 import de.kp.ames.web.shared.constants.MethodConstants;
 
 public class CommServiceImpl extends BusinessImpl {
@@ -125,26 +130,75 @@ public class CommServiceImpl extends BusinessImpl {
 	 */
 	public void doSubmitRequest(RequestContext ctx) {
 
-		String data = this.getRequestData(ctx);
 		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);
-		
-		if ((data == null) || (type == null)) {
+		if (type == null) {
 			this.sendNotImplemented(ctx);
 			
 		} else {
 
-			try {
+			if (type.equals(ClassificationConstants.FNC_ID_Chat)) {
+				
 				/*
-				 * JSON response
+				 * Chat message processing
 				 */
-				String content = submit(type, data);
-				sendJSONResponse(content, ctx.getResponse());
+				String data = this.getRequestData(ctx);
+		
+				if (data == null) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
+		
+					try {
+						/*
+						 * JSON response
+						 */
+						String content = submitChat(data);
+						sendJSONResponse(content, ctx.getResponse());
+		
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+		
+					}
+		
+				}
+				
+			} else {
+				/*
+				 * Mail message processing
+				 */
+				String mail = this.method.getAttribute(MethodConstants.ATTR_MAIL);
+				if (mail == null) {
+					this.sendNotImplemented(ctx);
+					
+				} else {
+					
+					try {
 
-			} catch (Exception e) {
-				this.sendBadRequest(ctx, e);
+						JSONObject jMail = new JSONObject(URLDecoder.decode(mail, "UTF-8"));
+						/*
+						 * Process potential attachment
+						 */
+						String file = jMail.has(JaxrConstants.RIM_FILE) ? jMail.getString(JaxrConstants.RIM_FILE) : null;
+						String mime = jMail.has(JaxrConstants.RIM_MIME) ? jMail.getString(JaxrConstants.RIM_MIME) : null;
+						
+						InputStream attachment = null;
+						
+						if ((file != null) && (mime != null)) attachment = ctx.getRequest().getInputStream();
+
+						/*
+						 * JSON response
+						 */
+						String content = submitMail(jMail.toString(), attachment, mime);
+						sendJSONResponse(content, ctx.getResponse());
+
+					} catch (Exception e) {
+						this.sendBadRequest(ctx, e);
+		
+					}
+				}
 
 			}
-
+			
 		}
 		
 	}
@@ -202,13 +256,13 @@ public class CommServiceImpl extends BusinessImpl {
 	}
 
 	/**
-	 * A helper method to submit a chat or mail message
+	 * A helper method to submit a chat
 	 * 
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	private String submit(String type, String data) throws Exception {
+	private String submitChat(String data) throws Exception {
 
 		String content = null;
 		
@@ -216,20 +270,35 @@ public class CommServiceImpl extends BusinessImpl {
 		 * Login
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
-
-		if (type.equals(ClassificationConstants.FNC_ID_Chat)) {
 			
-			CommLCM lcm = new CommLCM(jaxrHandle);
-			content = lcm.submitChat(data);
+		CommLCM lcm = new CommLCM(jaxrHandle);
+		content = lcm.submitChat(data);
 		
-		} else if (type.equals(ClassificationConstants.FNC_ID_Mail)) {
+		/*
+		 * Logoff
+		 */
+		JaxrClient.getInstance().logoff(jaxrHandle);
+		return content;
 
-			CommLCM lcm = new CommLCM(jaxrHandle);
-			content = lcm.submitMail(data);
+	}
+	
+	/**
+	 * @param mail
+	 * @param attachment
+	 * @return
+	 * @throws Exception
+	 */
+	private String submitMail(String mail, InputStream attachment, String mime) throws Exception {
+
+		String content = null;
+		
+		/*
+		 * Login
+		 */		
+		JaxrClient.getInstance().logon(jaxrHandle);
 			
-		} else {
-			
-		}
+		CommLCM lcm = new CommLCM(jaxrHandle);
+		content = lcm.submitMail(mail, attachment, mime);
 		
 		/*
 		 * Logoff

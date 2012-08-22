@@ -36,21 +36,25 @@ package de.kp.ames.web.function.comm;
  *
  */
 
+import java.io.InputStream;
 import java.util.List;
 import javax.xml.registry.JAXRException;
 
+import org.freebxml.omar.client.xml.registry.infomodel.AssociationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.domain.DomainLCM;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.regrep.lcm.JaxrLCM;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
 import de.kp.ames.web.function.FncParams;
+import de.kp.ames.web.function.domain.model.AttachmentObject;
 import de.kp.ames.web.function.domain.model.ChatObject;
 import de.kp.ames.web.function.domain.model.MailObject;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
@@ -124,10 +128,12 @@ public class CommLCM extends JaxrLCM {
 	 * Register a new mail message
 	 * 
 	 * @param data
+	 * @param attachment
+	 * @param mimetype
 	 * @return
 	 * @throws Exception
 	 */
-	public String submitMail(String data) throws Exception {
+	public String submitMail(String data, InputStream attachment, String mimetype) throws Exception {
 
 		/*
 		 * Create or retrieve registry package that is 
@@ -160,11 +166,54 @@ public class CommLCM extends JaxrLCM {
 		 * Create MailObject
 		 */
 		MailObject mailObject = new MailObject(jaxrHandle, this);
-		RegistryObjectImpl ro = mailObject.create(data);
+		RegistryObjectImpl mailRo = mailObject.create(data);
 
-    	transaction.addObjectToSave(ro);
-		container.addRegistryObject(ro);
+    	transaction.addObjectToSave(mailRo);
+		container.addRegistryObject(mailRo);
 
+		/*
+		 * Attachment handling
+		 */
+		if (attachment != null) {
+			
+			RegistryObjectImpl attachRo = submitAttachment(attachment, mimetype, transaction);
+
+			JaxrLCM lcm = new JaxrLCM(jaxrHandle);
+			
+			/*
+			 * Associate mail and attachment
+			 */
+			AssociationImpl a = lcm.createAssociation_RelatedTo(attachRo);
+			mailRo.addAssociation(a);
+			
+			/* 
+			 * Identifier
+			 */
+			String aid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.MAIL_PRE);
+			
+			a.setLid(aid);
+			a.getKey().setId(aid);
+
+			/* 
+			 * Name & description
+			 */
+			a.setName(lcm.createInternationalString("Mail - relatedTo - Attachment"));
+			a.setDescription(lcm.createInternationalString("This is a relation between a mail and its attachment."));
+				
+			/* 
+			 * Home url
+			 */
+			a.setHome(jaxrHandle.getEndpoint().replace("/saml", ""));
+
+			transaction.addObjectToSave(a);
+			
+			/* 
+			 * Confirm association
+			 */
+			lcm.confirmAssociation(a);
+			
+		}
+		
 		/*
 		 * Save objects	
 		 */		
@@ -174,10 +223,50 @@ public class CommLCM extends JaxrLCM {
 		/*
 		 * Get response 
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.MAIL_CREATED);		
+		JSONObject jResponse = transaction.getJResponse(mailRo.getId(), FncMessages.MAIL_CREATED);		
 		return jResponse.toString();
 		
 	}
+	
+	private RegistryObjectImpl submitAttachment(InputStream attachment, String mimetype, JaxrTransaction transaction) throws Exception {
+
+		/*
+		 * Create or retrieve registry package that is 
+		 * responsible for managing mail attachments
+		 */
+		RegistryPackageImpl container = null;		
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+		
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Attachment);
+		if (list.size() == 0) {
+			/*
+			 * Create container
+			 */
+			container = createAttachmentPackage();
+			
+		} else {
+			/*
+			 * Retrieve container
+			 */
+			container = list.get(0);
+
+		}
+
+		/*
+		 * Create AttachmentObject
+		 */
+		AttachmentObject attachmentObject = new AttachmentObject(jaxrHandle, this);
+		RegistryObjectImpl ro = attachmentObject.create(attachment, mimetype);
+
+    	transaction.addObjectToSave(ro);
+		container.addRegistryObject(ro);
+
+		transaction.addObjectToSave(container);
+
+		return ro;
+		
+	}
+	
 	/**
 	 * A helper method to create a new chat message container
 	 * 
@@ -212,6 +301,40 @@ public class CommLCM extends JaxrLCM {
 	
 	}
 
+	/**
+	 * A helper method to create a new attachment container
+	 * 
+	 * @return
+	 * @throws JAXRException
+	 */
+	private RegistryPackageImpl createAttachmentPackage() throws JAXRException  {
+
+		FncParams params = new FncParams();
+		
+		/*
+		 * Name & description
+		 */
+		params.put(FncParams.K_NAME, "Attachments");
+		params.put(FncParams.K_DESC, FncMessages.ATTACHMENT_DESC);
+		
+		/*
+		 * Prefix
+		 */
+		params.put(FncParams.K_PRE, FncConstants.ATTACHMENT_PRE);
+		
+		/*
+		 * Classification
+		 */
+		params.put(FncParams.K_CLAS, ClassificationConstants.FNC_ID_Attachment);
+		
+		/*
+		 * Create package
+		 */
+		DomainLCM lcm = new DomainLCM(jaxrHandle);
+		return lcm.createBusinessPackage(params);
+	
+	}	
+	
 	/**
 	 * A helper method to create a new mail message container
 	 * 
