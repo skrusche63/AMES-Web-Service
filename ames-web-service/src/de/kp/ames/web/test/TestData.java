@@ -22,6 +22,8 @@ import java.util.HashMap;
 
 import org.json.JSONObject;
 
+import de.kp.ames.web.shared.constants.ClassificationConstants;
+
 public class TestData {
 
 	private static TestData instance = new TestData();
@@ -138,7 +140,14 @@ public class TestData {
 	}
 	
 	private void initialize() {
-		// TODO
+
+		uidMap = new HashMap<String,String>();
+		
+		/*
+		 * Symbol Test
+		 */
+		uidMap.put(ClassificationConstants.FNC_SYMBOL_ID_APP6B, "1.X.3");
+		
 	}
 	
 }
