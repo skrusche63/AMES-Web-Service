@@ -64,28 +64,64 @@ public class JsonTelephoneNumber extends JsonRegistryEntry {
 	 */
 	public void set(TelephoneNumberImpl telephoneNumber) throws JAXRException, JSONException {
 
+		if (telephoneNumber == null) {
+			setDefaultNumber();
+			
+		} else {
+			/*
+			 * Country code
+			 */
+			String countryCode = telephoneNumber.getCountryCode();
+			countryCode = (countryCode == null) ? "" : countryCode;
+
+			put(JaxrConstants.RIM_COUNTRY_CODE, countryCode);
+			
+			/*
+			 * Area code
+			 */
+			String areaCode = telephoneNumber.getAreaCode();
+			areaCode = (areaCode == null) ? "" : areaCode;
+
+			put(JaxrConstants.RIM_AREA_CODE, areaCode);
+	
+			/*
+			 * Phone number
+			 */
+			String phoneNumber = telephoneNumber.getNumber();
+			phoneNumber = (phoneNumber == null) ? "" : phoneNumber;
+
+			put(JaxrConstants.RIM_PHONE_NUMBER, phoneNumber);
+	
+			String extension = telephoneNumber.getExtension();
+			extension = (extension == null) ? "" : extension;
+
+			put(JaxrConstants.RIM_PHONE_EXTENSION, extension);
+
+		}
+		
+	}
+
+	private void setDefaultNumber() throws JSONException {
+
+		String emptyString = "";
+
 		/*
 		 * Country code
 		 */
-		String countryCode = telephoneNumber.getCountryCode();
-		put(JaxrConstants.RIM_COUNTRY_CODE, countryCode);
+		put(JaxrConstants.RIM_COUNTRY_CODE, emptyString);
 		
 		/*
 		 * Area code
 		 */
-		String areaCode = telephoneNumber.getAreaCode();
-		put(JaxrConstants.RIM_AREA_CODE, areaCode);
+		put(JaxrConstants.RIM_AREA_CODE, emptyString);
 
 		/*
 		 * Phone number
 		 */
-		String phoneNumber = telephoneNumber.getNumber();
-		put(JaxrConstants.RIM_PHONE_NUMBER, phoneNumber);
+		put(JaxrConstants.RIM_PHONE_NUMBER, emptyString);
+		put(JaxrConstants.RIM_PHONE_EXTENSION, emptyString);
 
-		String extension = telephoneNumber.getExtension();
-		put(JaxrConstants.RIM_PHONE_EXTENSION, extension);
 
 	}
-
-
+	
 }

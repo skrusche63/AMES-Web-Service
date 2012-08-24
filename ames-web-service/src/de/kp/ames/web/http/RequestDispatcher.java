@@ -84,9 +84,9 @@ public class RequestDispatcher extends HttpServlet {
 	private boolean initialized = false;
 	
 	/*
-	 * registered services
+	 * registered service clazzes
 	 */
-	private HashMap<String, Service> registeredServices;
+	private HashMap<String, String> registeredServiceClazzes;
 
 	/* (non-Javadoc)
 	 * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
@@ -219,6 +219,7 @@ public class RequestDispatcher extends HttpServlet {
 	/**
 	 * The main method to register new services, i.e. additional
 	 * core and business functionality 
+	 * 
 	 * @param servletContext 
 	 */
 	private void initializeServices(ServletContext servletContext) {
@@ -226,9 +227,9 @@ public class RequestDispatcher extends HttpServlet {
 		if (initialized == true) return;
 
 		/*
-		 * Temporary cache for all registered services
+		 * Temporary cache for all service descriptions
 		 */
-		registeredServices = new HashMap<String, Service>();
+		registeredServiceClazzes = new HashMap<String, String>();
 
 		/*
 		 * Retrieve actual service configuration
@@ -240,14 +241,10 @@ public class RequestDispatcher extends HttpServlet {
 			String key = param.getKey();
 			String val = param.getValue();
 			
-			Service service = createServiceForName(val);
-			if (service == null) continue;
-			
-			registeredServices.put(key, service);
+			registeredServiceClazzes.put(key,val);
 
 		}
 	
-		System.out.println("====> registeredServices loaded from services.xml: " + registeredServices.size());
 	}
 
 	/**
@@ -319,30 +316,17 @@ public class RequestDispatcher extends HttpServlet {
 	 * @return
 	 */
 	private Service getService(HttpServletRequest request) {
+
+		/*
+		 * Determine ServiceClazz from request
+		 */
+		String serviceClazz = getServiceClazzFromRequest(request);
+		if (serviceClazz == null) return null;
+
 		
-		String path = request.getRequestURI();
-
-		// determine service identifier from request URI
-		int pos = path.lastIndexOf("/") + 1;
-		String sid = path.substring(pos);
-
-		Service service = null;
-
-		Set<String> keys = registeredServices.keySet();
-		Iterator<String> iter = keys.iterator();
-
-		while (iter.hasNext()) {
-
-			String key = iter.next();			
-			if (sid.equals(key)) {
-				service =  registeredServices.get(key);
-				break;
-			}
-		
-		}
-		
+		Service service = createServiceForName(serviceClazz);
 		if (service == null) return null;
-		
+
 		// invoke request method from request uri
 		RequestMethod method;
 		try {
@@ -361,6 +345,47 @@ public class RequestDispatcher extends HttpServlet {
 		
 	}
 
+	/**
+	 * A helper method to determine the ServiceClazz
+	 * for the actual request
+	 * 
+	 * @param request
+	 * @return
+	 */
+	private String getServiceClazzFromRequest(HttpServletRequest request) {
+
+		String path = request.getRequestURI();
+
+		/* 
+		 * Determine service identifier from request URI
+		 */
+		int pos = path.lastIndexOf("/") + 1;
+		String sid = path.substring(pos);
+
+		/*
+		 * Determine ClazzName for service
+		 */
+		String serviceClazz = null;
+
+		Set<String> keys = registeredServiceClazzes.keySet();
+		Iterator<String> iter = keys.iterator();
+
+		while (iter.hasNext()) {
+
+			String key = iter.next();			
+			if (sid.equals(key)) {
+				
+				serviceClazz =  registeredServiceClazzes.get(key);
+				break;
+			
+			}
+		
+		}
+		
+		return serviceClazz;
+
+	}
+	
 	/**
 	 * Helper method to create a certain service from a given class name
 	 * 
@@ -385,8 +410,7 @@ public class RequestDispatcher extends HttpServlet {
 		return null;
 		
 	}
-	
-	
+		
 	/**
 	 * Retrieve the actually registered services from the server's file system
 	 * 

@@ -62,54 +62,100 @@ public class JsonPostalAddress extends JsonRegistryEntry {
 	 */
 	public void set(PostalAddressImpl postalAddress) throws JSONException, JAXRException  {
     	
+		if (postalAddress == null) {
+			setDefaultAddress();
+		
+		} else {
+		
+			/*
+			 * Country
+			 */
+			String country = postalAddress.getCountry();
+	 
+	       	country = (country == null) ? "" : country;
+	       	put(JaxrConstants.RIM_COUNTRY, country);
+	       	
+	       	/*
+	       	 * State or Province
+	       	 */
+	       	String state =  postalAddress.getStateOrProvince();
+	       	
+	       	state = (state == null) ? "" : state;
+	       	put(JaxrConstants.RIM_STATE_OR_PROVINCE, state);
+	 
+	       	/*
+	       	 * Postal Code
+	       	 */
+	       	String code = postalAddress.getPostalCode();
+	       	code = (code == null) ? "" : code;
+	       	      	
+	       	put(JaxrConstants.RIM_POSTAL_CODE, code);
+	 
+	       	/*
+	       	 * City
+	       	 */
+	       	String city = postalAddress.getCity();
+	       	city = (city == null) ? "" : city;
+	              	
+	       	put(JaxrConstants.RIM_CITY, city);
+	
+	       	/*
+	       	 * Street
+	       	 */
+	       	String street = postalAddress.getStreet();
+	       	street = (street == null) ? "" : street;
+	       	
+	       	put(JaxrConstants.RIM_STREET, street);
+	       	
+	       	/*
+	       	 * Street number
+	       	 */
+	       	String number = postalAddress.getStreetNumber();
+	       	number = (number == null) ? "" : number;
+	       	
+	    	put(JaxrConstants.RIM_STREET_NUMBER, number);
+			
+		}
+  
+    }
+
+	/**
+	 * A helper method to generate an initial postal address
+	 * 
+	 * @throws JSONException
+	 */
+	private void setDefaultAddress() throws JSONException {
+
+		String emptyString = "";
 		/*
 		 * Country
 		 */
-		String country = postalAddress.getCountry();
- 
-       	country = (country == null) ? "" : country;
-       	put(JaxrConstants.RIM_COUNTRY, country);
+       	put(JaxrConstants.RIM_COUNTRY, emptyString);
        	
        	/*
        	 * State or Province
        	 */
-       	String state =  postalAddress.getStateOrProvince();
-       	
-       	state = (state == null) ? "" : state;
-       	put(JaxrConstants.RIM_STATE_OR_PROVINCE, state);
+       	put(JaxrConstants.RIM_STATE_OR_PROVINCE, emptyString);
  
        	/*
        	 * Postal Code
        	 */
-       	String code = postalAddress.getPostalCode();
-       	code = (code == null) ? "" : code;
-       	      	
-       	put(JaxrConstants.RIM_POSTAL_CODE, code);
+       	put(JaxrConstants.RIM_POSTAL_CODE, emptyString);
  
        	/*
        	 * City
        	 */
-       	String city = postalAddress.getCity();
-       	city = (city == null) ? "" : city;
-              	
-       	put(JaxrConstants.RIM_CITY, city);
+       	put(JaxrConstants.RIM_CITY, emptyString);
 
        	/*
        	 * Street
        	 */
-       	String street = postalAddress.getStreet();
-       	street = (street == null) ? "" : street;
-       	
-       	put(JaxrConstants.RIM_STREET, street);
+       	put(JaxrConstants.RIM_STREET, emptyString);
        	
        	/*
        	 * Street number
        	 */
-       	String number = postalAddress.getStreetNumber();
-       	number = (number == null) ? "" : number;
-       	
-    	put(JaxrConstants.RIM_STREET_NUMBER, number);
-   
-    }
+    	put(JaxrConstants.RIM_STREET_NUMBER, emptyString);
 
+	}
 }
