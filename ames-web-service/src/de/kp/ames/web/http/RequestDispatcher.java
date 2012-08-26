@@ -94,6 +94,9 @@ public class RequestDispatcher extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		
+		/*
+		 * Initialize registered service descriptions
+		 */
 		initializeServices(config.getServletContext());
 		
 	}

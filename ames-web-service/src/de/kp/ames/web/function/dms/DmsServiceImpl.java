@@ -139,24 +139,40 @@ public class DmsServiceImpl extends BusinessImpl {
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doDownloadRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doDownloadRequest(RequestContext ctx) {
-		/*
-		 * This is an optional parameter that determines 
-		 * a certain registry object
-		 */
+
 		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
-		try {
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+
+		if ((item == null) || (type == null)) {
+			this.sendNotImplemented(ctx);
 			
-			HttpServletRequest request   = ctx.getRequest();
-			HttpServletResponse response = ctx.getResponse();
+		} else {
+
+			try {
 			
-			/*
-			 * File response
-			 */
-			FileUtil file = getFileResponse(item);			
-			sendFileDownloadResponse(file, request, response);			
+				HttpServletRequest request   = ctx.getRequest();
+				HttpServletResponse response = ctx.getResponse();
+
+				if (type.equals(ClassificationConstants.FNC_ID_Document)) {
+					/*
+					 * File response
+					 */
+					FileUtil file = getFileResponse(item);			
+					sendFileDownloadResponse(file, request, response);	
+					
+				} else if (type.equals(ClassificationConstants.FNC_ID_Image)) {
+					/*
+					 * Image response
+					 */
+					BufferedImage image = getImageResponse(item);
+					sendImageResponse(image, ctx.getResponse());
+					
+				}
 			
-		} catch (Exception e) {
-			this.sendBadRequest(ctx, e);
+			} catch (Exception e) {
+				this.sendBadRequest(ctx, e);
+				
+			}
 			
 		}
 		
@@ -168,31 +184,40 @@ public class DmsServiceImpl extends BusinessImpl {
 	public void doExtractRequest(RequestContext ctx) {
 
 		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
-		if (item == null) {
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+
+		if ((item == null) || (type == null)) {
 			this.sendNotImplemented(ctx);
 			
 		} else {
 
-			try {
+			if (type.equals(ClassificationConstants.FNC_ID_Document)) {
 
-				FileUtil file = getFileResponse(item);
-
-				/*
-				 * Retrieve terms from file
-				 */
-				String mimeType = file.getMimetype();
+				try {
+					
+					FileUtil file = getFileResponse(item);
+	
+					/*
+					 * Retrieve terms from file
+					 */
+					String mimeType = file.getMimetype();
+					
+					ExtractFactory factory = new ExtractFactory();
+					Extractor extractor = factory.getExtractor(mimeType);
+					
+					Set<String> terms = extractor.extract(file.getInputStream());
+					JSONArray jArray = new JSONArray(terms);
+					
+					String content = jArray.toString();
+					sendJSONResponse(content, ctx.getResponse());
+					
+				} catch (Exception e) {
+					this.sendBadRequest(ctx, e);
+					
+				}
 				
-				ExtractFactory factory = new ExtractFactory();
-				Extractor extractor = factory.getExtractor(mimeType);
-				
-				Set<String> terms = extractor.extract(file.getInputStream());
-				JSONArray jArray = new JSONArray(terms);
-				
-				String content = jArray.toString();
-				sendJSONResponse(content, ctx.getResponse());
-				
-			} catch (Exception e) {
-				this.sendBadRequest(ctx, e);
+			} else {
+				this.sendNotImplemented(ctx);
 				
 			}
 

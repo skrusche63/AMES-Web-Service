@@ -51,7 +51,10 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 	};
 
 	public JaxrTestImpl(JaxrHandle jaxrHandle, String methodName) {
+		super(methodName);
+		
 		this.jaxrHandle = jaxrHandle;
+	
 	}
 
 	/* (non-Javadoc)
@@ -109,9 +112,9 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 	
 	}
 
-	public void testDoDeleteRequest() throws Exception {
-
-		RequestMethod method = createTestMethod(MethodConstants.METH_GET, getDeleteAttributes());
+	/** DELETE     DELETE     DELETE     DELETE     DELETE     DELETE **/
+	
+	public RequestContext createDoDeleteMockContext() {
 
 		/*
 		 * Create mock Http Request
@@ -126,46 +129,66 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 		/*
 		 * Create request context
 		 */
-		RequestContext ctx = new RequestContext(request, response);
+		return new RequestContext(request, response);
+		
+	}
+	
+	public void doDeleteRequest(RequestContext ctx) {
 
+		RequestMethod method = createTestMethod(MethodConstants.METH_GET, getDeleteAttributes());
+	
 		/*
-		 * Invoke speific test case
+		 * Invoke specific test case
 		 */
 		doDelete(jaxrHandle, method, ctx);
-		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+		assertEquals(HttpServletResponse.SC_OK, ((MockHttpServletResponse)ctx.getResponse()).getStatus());
+
+	}
+	
+	public void testDoDeleteRequest() throws Exception {
+		doDeleteRequest(createDoDeleteMockContext());
+	}
+
+	/** GET     GET     GET     GET     GET     GET **/
+
+	public RequestContext createDoGetMockContext() {
+
+		/*
+		 * Create mock Http Request
+		 */
+		HttpServletRequest request = mock(HttpServletRequest.class);
+
+		/*
+		 * Create mock Http Response
+		 */
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		
+		/*
+		 * Create request context
+		 */
+		return new RequestContext(request, response);
 
 	}
 
-	public void testDoGetRequest() throws Exception {
+	public void doGetRequest(RequestContext ctx) throws Exception {
 
 		RequestMethod method = createTestMethod(MethodConstants.METH_GET, getGetAttributes());
 
 		/*
-		 * Create mock Http Request
-		 */
-		HttpServletRequest request = mock(HttpServletRequest.class);
-
-		/*
-		 * Create mock Http Response
-		 */
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		/*
-		 * Create request context
-		 */
-		RequestContext ctx = new RequestContext(request, response);
-
-		/*
-		 * Invoke speific test case
+		 * Invoke specific test case
 		 */
 		doGet(jaxrHandle, method, ctx);
-		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+		assertEquals(HttpServletResponse.SC_OK, ((MockHttpServletResponse)ctx.getResponse()).getStatus());
 
 	}
-	
-	public void testDoSubmitRequest() throws Exception {
-		
-		RequestMethod method = createTestMethod(MethodConstants.METH_SUBMIT, getSubmitAttributes());
+
+	public void testDoGetRequest() throws Exception {		
+		doGetRequest(createDoGetMockContext());
+	}
+
+	/** SUBMIT     SUBMIT     SUBMIT     SUBMIT     SUBMIT     SUBMIT **/
+
+	public RequestContext createDoSubmitMockContext() throws Exception {
 
 		/*
 		 * Create mock Http Request
@@ -181,14 +204,24 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 		/*
 		 * Create request context
 		 */
-		RequestContext ctx = new RequestContext(request, response);
+		return new RequestContext(request, response);
+
+	}
+	
+	public void doSubmitRequest(RequestContext ctx) throws Exception {
+		
+		RequestMethod method = createTestMethod(MethodConstants.METH_SUBMIT, getSubmitAttributes());
 
 		/*
 		 * Invoke speific test case
 		 */
 		doSubmit(jaxrHandle, method, ctx);
-		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
-
+		assertEquals(HttpServletResponse.SC_OK, ((MockHttpServletResponse)ctx.getResponse()).getStatus());
+		
+	}
+	
+	public void testDoSubmitRequest() throws Exception {
+		doSubmitRequest(createDoSubmitMockContext());
 	}
 
 	/* (non-Javadoc)
