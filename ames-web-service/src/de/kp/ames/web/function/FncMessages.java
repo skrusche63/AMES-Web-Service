@@ -116,6 +116,13 @@ public class FncMessages extends CoreMessages {
 	public static String CACHE_ENTRY_DELETE = "Cache Entry successfully deleted.";
 
 	/*
+	 * Vocabulary specific messages
+	 */
+	public static String SCHEME_CREATED  = "Classification Scheme successfully submitted.";
+	public static String CONCEPT_CREATED = "Classification Node successfully submitted.";
+
+	
+	/*
 	 * User specific messages
 	 */
 	public static String USER_UPDATED = "User successfully updated.";

@@ -52,6 +52,7 @@ import org.freebxml.omar.client.xml.registry.BusinessLifeCycleManagerImpl;
 import org.freebxml.omar.client.xml.registry.DeclarativeQueryManagerImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.AssociationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.ClassificationSchemeImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ConceptImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.EmailAddressImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExternalLinkImpl;
@@ -190,6 +191,52 @@ public class JaxrLCM extends JaxrBase {
 
 	}
 
+	/**
+	 * A helper method to create a ClassificationScheme instance
+	 * 
+	 * @param name
+	 * @param description
+	 * @return
+	 * @throws JAXRException
+	 */
+	public ClassificationSchemeImpl createClassificationScheme(String name, String description) throws JAXRException {
+
+		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
+		return (ClassificationSchemeImpl)blcm.createClassificationScheme(name, description);
+	
+	}
+
+	/**
+	 * A helper method to create a ClassificationScheme instance
+	 * 
+	 * @param name
+	 * @param description
+	 * @return
+	 * @throws JAXRException
+	 */
+	public ClassificationSchemeImpl createClassificationScheme(InternationalString name, InternationalString description) throws JAXRException {
+
+		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
+		return (ClassificationSchemeImpl)blcm.createClassificationScheme(name, description);
+	
+	}
+
+	/**
+	 * A helper method to create a Concept instance
+	 * 
+	 * @param parent
+	 * @param name
+	 * @param code
+	 * @return
+	 * @throws JAXRException
+	 */
+	public ConceptImpl createConcept(ClassificationSchemeImpl parent, String name, String code) throws JAXRException {
+
+		BusinessLifeCycleManagerImpl blcm = jaxrHandle.getBLCM();
+		return(ConceptImpl) blcm.createConcept(parent, name, code);
+	
+	}
+	
 	/**
 	 * A helper method to create a Concept instance
 	 * 
