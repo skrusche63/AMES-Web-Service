@@ -47,13 +47,28 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 
 	protected JaxrHandle jaxrHandle;
 
-	public JaxrTestImpl() {
-	};
+	/*
+	 * Reference to additional request data
+	 */
+	protected String type;	
+	protected String data;
+
+	public JaxrTestImpl() {}
 
 	public JaxrTestImpl(JaxrHandle jaxrHandle, String methodName) {
 		super(methodName);
 		
 		this.jaxrHandle = jaxrHandle;
+	
+	}
+
+	public JaxrTestImpl(JaxrHandle jaxrHandle, String methodName, String type, String data) {
+		super(methodName);
+		
+		this.jaxrHandle = jaxrHandle;
+		
+		this.type = type;
+		this.data = data;
 	
 	}
 
@@ -63,7 +78,7 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 	public Test suite(JaxrHandle jaxrHandle, String clazzName) throws Exception {
 		
 		/*
-		 * Register JaxrHandl) {
+		 * Register JaxrHandle
 		 * 
 		 */
 		this.jaxrHandle = jaxrHandle;
@@ -89,6 +104,36 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 
 		return suite;
 
+	}
+
+	public Test suite(JaxrHandle jaxrHandle, String clazzName, String type, String data) throws Exception {
+		
+		/*
+		 * Register JaxrHandle
+		 * 
+		 */
+		this.jaxrHandle = jaxrHandle;
+		
+		TestSuite suite = new TestSuite();
+
+		Class<?> clazz = Class.forName(clazzName);
+		Method[] methods = clazz.getMethods();
+		
+		Class<?>[] paramTypes = { JaxrHandle.class, String.class, String.class, String.class };
+		
+		for (Method method : methods) {
+			
+			if (method.getName().startsWith("test")) {
+
+				Constructor<?> constructor = clazz.getConstructor(paramTypes);
+
+				Object[] params = { method.getName(), jaxrHandle };
+				suite.addTest((Test) constructor.newInstance(params));
+
+			}
+		}
+
+		return suite;
 	}
 	
 	private RequestMethod createTestMethod(String name, HashMap<String,String> attributes) {

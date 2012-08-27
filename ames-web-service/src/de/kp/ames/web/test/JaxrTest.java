@@ -31,7 +31,9 @@ import de.kp.ames.web.http.RequestMethod;
 
 public interface JaxrTest {
 
-	public Test suite(JaxrHandle jaxrHandle, String className) throws Exception;
+	public Test suite(JaxrHandle jaxrHandle, String clazzName) throws Exception;
+
+	public Test suite(JaxrHandle jaxrHandle, String clazzName, String type, String data) throws Exception;
 
 	/**
 	 * A helper method to retrieve the service that is responsible

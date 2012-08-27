@@ -17,7 +17,7 @@ package de.kp.ames.web.test;
  *
  */
 
-
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -66,6 +66,12 @@ public class TestServiceImpl implements TestService {
 		String clazzName = request.getParameter("name");
 		if (clazzName == null) return;
 
+		/*
+		 * Retrieve additional paramaters
+		 */
+		String type = request.getParameter("type");
+		String data = getRequestData(request);
+		
 		try {
 			/*
 			 * Prepare test result
@@ -82,11 +88,23 @@ public class TestServiceImpl implements TestService {
 			
 			resultFormatter.setOutput(writer);
 			result.addListener(resultFormatter);
+			
+			/*
+			 * Build appropriate test suite
+			 */
+			Test suite = null;
+			if ((type == null)  || (data == null)) {
 
-						
-			Class<?> clazz = Class.forName(clazzName);
-			Test suite = ((JaxrTest) clazz.newInstance()).suite(jaxrHandle, clazzName);
+				Class<?> clazz = Class.forName(clazzName);
+				suite = ((JaxrTest) clazz.newInstance()).suite(jaxrHandle, clazzName);
 
+			} else {
+
+				Class<?> clazz = Class.forName(clazzName);
+				suite = ((JaxrTest) clazz.newInstance()).suite(jaxrHandle, clazzName, type, data);
+				
+			}
+				
 			long startTime = new Date().getTime();
 			suite.run(result);
 			long endTime = new Date().getTime();
@@ -135,6 +153,27 @@ public class TestServiceImpl implements TestService {
 		File f = new File("");
 		return f.getAbsolutePath() + "/test-result";		
 	
+	}
+
+	private String getRequestData(HttpServletRequest request) {
+		
+		StringBuffer buffer = null;;
+
+		try {
+			BufferedReader reader = request.getReader();
+			buffer = new StringBuffer();
+			
+			String line;
+			while ( (line = reader.readLine()) != null) {
+				buffer.append(line);
+			}
+
+		} catch (IOException e) {
+			// do nothing
+		}
+
+		return (buffer == null) ? null : buffer.toString();
+		
 	}
 
 
