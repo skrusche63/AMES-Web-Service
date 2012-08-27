@@ -126,8 +126,10 @@ public class ScRenderer implements GuiRenderer {
 	 * @see de.kp.ames.web.function.GuiRenderer#createObject(org.json.JSONArray)
 	 */
 	public String createObject(JSONArray jArray) throws Exception {
-		// TODO
-		return null;
+		
+		if (jArray.length() == 0) return new JSONObject().toString();
+		return jArray.getJSONObject(0).toString();
+
 	}
 	
 	/* (non-Javadoc)

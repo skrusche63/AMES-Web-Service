@@ -177,12 +177,8 @@ public class UserServiceImpl extends BusinessImpl {
 	
 			} else {
 				content = render(jArray, start, limit, format);
+
 			}
-			
-			/*
-			 * Render result
-			 */
-			content = render(jArray, format);
 		
 		}
 		
