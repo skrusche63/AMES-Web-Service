@@ -101,7 +101,7 @@ public class JsonTelephoneNumber extends JsonRegistryEntry {
 		
 	}
 
-	private void setDefaultNumber() throws JSONException {
+	public void setDefaultNumber() throws JSONException {
 
 		String emptyString = "";
 

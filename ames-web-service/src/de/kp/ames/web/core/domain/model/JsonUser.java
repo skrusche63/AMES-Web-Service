@@ -37,8 +37,8 @@ package de.kp.ames.web.core.domain.model;
  */
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
-
 import javax.xml.registry.JAXRException;
 
 import org.freebxml.omar.client.xml.registry.infomodel.EmailAddressImpl;
@@ -98,8 +98,11 @@ public class JsonUser extends JsonRegistryObject {
     	JsonPersonName jPersonName = new JsonPersonName(jaxrHandle);
     	jPersonName.set(personName);
     	
-    	put(JaxrConstants.RIM_USER_NAME, jPersonName.get().toString());
- 
+    	/*
+    	 * Set person name
+    	 */
+    	setPersonName(jPersonName);
+   	
     	/*
     	 * Convert postal address
     	 */
@@ -107,8 +110,11 @@ public class JsonUser extends JsonRegistryObject {
     	
     	JsonPostalAddress jPostalAddress = new JsonPostalAddress(jaxrHandle);
     	jPostalAddress.set(postalAddress);
-    	
-    	put(JaxrConstants.RIM_ADDRESS, jPostalAddress.get().toString());
+
+    	/*
+    	 * Set postal address
+    	 */
+    	setPostalAddress(jPostalAddress);
 
     	/*
     	 * Convert email address
@@ -140,11 +146,20 @@ public class JsonUser extends JsonRegistryObject {
         	JsonTelephoneNumber jTelephoneNumber = new JsonTelephoneNumber(jaxrHandle);
         	jTelephoneNumber.set(telephoneNumber);
         	
-        	put(JaxrConstants.RIM_PHONE, jTelephoneNumber.get().toString());
+        	/*
+        	 * Set telephone number
+        	 */
+        	setTelephoneNumber(jTelephoneNumber);
    	    
     	} else {
-           	
-        	put(JaxrConstants.RIM_PHONE, new JSONObject().toString());
+ 
+    		JsonTelephoneNumber jTelephoneNumber = new JsonTelephoneNumber(jaxrHandle);
+        	jTelephoneNumber.setDefaultNumber();
+ 
+        	/*
+        	 * Set telephone number
+        	 */
+        	setTelephoneNumber(jTelephoneNumber);
     		
     	}
 
@@ -152,6 +167,60 @@ public class JsonUser extends JsonRegistryObject {
     	 * Convert icon
     	 */
     	put(JaxrConstants.RIM_ICON, IconConstants.USER);
+
+	}
+	
+	/**
+	 * A helper method to flatten a PersonName
+	 * 
+	 * @param jPostalAddress
+	 * @throws JSONException
+	 */
+	private void setPersonName(JsonPersonName jPersonName) throws JSONException {
+ 
+		JSONObject jObject = jPersonName.get();
+    	Iterator<?> keys = jObject.keys();
+    	
+    	while (keys.hasNext()) {
+    		String key = (String)keys.next();
+    		put(key, jObject.getString(key));
+    	}
+
+	}
+
+	/**
+	 * A helper method to flatten a PostalAddress
+	 * 
+	 * @param jPostalAddress
+	 * @throws JSONException
+	 */
+	private void setPostalAddress(JsonPostalAddress jPostalAddress) throws JSONException {
+		 
+    	JSONObject jObject = jPostalAddress.get();
+    	Iterator<?> keys = jObject.keys();
+    	
+    	while (keys.hasNext()) {
+    		String key = (String)keys.next();
+    		put(key, jObject.getString(key));
+    	}
+
+	}
+
+	/**
+	 * A hlper method to flatten a TelephoneNumber
+	 * 
+	 * @param jTelephoneNumber
+	 * @throws JSONException
+	 */
+	private void setTelephoneNumber(JsonTelephoneNumber jTelephoneNumber) throws JSONException {
+
+	   	JSONObject jObject = jTelephoneNumber.get();
+    	Iterator<?> keys = jObject.keys();
+    	
+    	while (keys.hasNext()) {
+    		String key = (String)keys.next();
+    		put(key, jObject.getString(key));
+    	}
 
 	}
 	
