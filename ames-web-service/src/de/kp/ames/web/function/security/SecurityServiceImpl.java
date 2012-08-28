@@ -316,7 +316,7 @@ public class SecurityServiceImpl extends BusinessImpl {
 			 * __FUTURE__ Roles & Rights
 			 * 
 			 */
-			String name = dqm.getName(user);
+			String name = dqm.getUserFullName(user);
 			String role = USER_ROLE;
 			
 			JSONObject jUser = new JSONObject();

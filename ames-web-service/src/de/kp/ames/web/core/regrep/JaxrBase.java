@@ -65,6 +65,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.SlotImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.freebxml.omar.common.BindingUtility;
 import org.freebxml.omar.common.IterativeQueryParams;
 
@@ -710,6 +711,18 @@ public class JaxrBase {
 	   	   	
     	return null;
     	
+	}
+	
+	/**
+	 * A helper method to retrieve the fullname
+	 * of a certain user instance
+	 * 
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public String getUserFullName(UserImpl user) throws Exception {
+		return user.getPersonName().getFullName();
 	}
 	
 	/**
