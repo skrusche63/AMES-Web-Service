@@ -92,6 +92,14 @@
 	</service>
 
     <service>
+		<service-id>rule</service-id>
+		<service-class>de.kp.ames.web.function.rule.RuleServiceImpl</service-class>
+        <service-desc>
+         Rule service is used to access &amp; retrieve Rule-based information
+        </service-desc>
+	</service>
+    
+    <service>
 		<service-id>rss</service-id>
 		<service-class>de.kp.ames.web.core.rss.RssServiceImpl</service-class>
         <service-desc>
