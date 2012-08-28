@@ -96,7 +96,7 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 
 				Constructor<?> constructor = clazz.getConstructor(paramTypes);
 
-				Object[] params = { method.getName(), jaxrHandle };
+				Object[] params = {jaxrHandle, method.getName()};
 				suite.addTest((Test) constructor.newInstance(params));
 
 			}
@@ -127,7 +127,7 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 
 				Constructor<?> constructor = clazz.getConstructor(paramTypes);
 
-				Object[] params = { method.getName(), jaxrHandle };
+				Object[] params = {jaxrHandle, method.getName(), type, data};
 				suite.addTest((Test) constructor.newInstance(params));
 
 			}
@@ -236,10 +236,18 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 	public RequestContext createDoSubmitMockContext() throws Exception {
 
 		/*
+		 * Create mock submit data
+		 */
+		JSONObject jData = createJsonSubmitData();
+		
+		BufferedReader bufferedReader = mock(BufferedReader.class);
+		when(bufferedReader.readLine()).thenReturn(jData.toString(), (String[]) null);
+
+		/*
 		 * Create mock Http Request
 		 */
 		HttpServletRequest request = mock(HttpServletRequest.class);
-		when(request.getReader()).thenReturn(createSubmitData());
+		when(request.getReader()).thenReturn(bufferedReader);
 
 		/*
 		 * Create mock Http Response
@@ -283,14 +291,10 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 	 * @see de.kp.ames.web.test.JaxrTest#createSubmitData()
 	 */
 	public BufferedReader createSubmitData() throws Exception {
-
-		JSONObject jData = createJsonSubmitData();
-		
-		BufferedReader bufferedReader = mock(BufferedReader.class);
-		when(bufferedReader.readLine()).thenReturn(jData.toString(), (String[]) null);
-
-		return bufferedReader;
-		
+		/*
+		 * This method is no longer used
+		 */
+		return null;
 	}
 
 	/* (non-Javadoc)

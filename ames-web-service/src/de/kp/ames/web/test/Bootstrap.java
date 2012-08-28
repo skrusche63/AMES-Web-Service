@@ -12,6 +12,12 @@ public class Bootstrap extends TestCase {
 	private static String BASE_URL   = "https://localhost:8443/ames/test/unit?name=";
 	private static String CLAZZ_NAME = 	"de.kp.ames.web.test.vocab.VocabTestImpl";
 
+	/*
+	 * This is a dammy url for an initial request against a SAML-based
+	 * security infrastructure that uses HTTP 302 (redirect)
+	 */
+	private static String PING_URL = "https://localhost:8443/ames/test/unit";
+	
 	private String[] mainConcepts = {
 			
 			ClassificationConstants.FNC_ID_Accessor,
@@ -68,6 +74,19 @@ public class Bootstrap extends TestCase {
 	};
 	
 	public Bootstrap() {
+		
+		try {
+			/* 
+			 * Invoke HttpsClient with a GET request to
+			 * enable subsequent POST requests
+			 */		
+			HttpClient client = new HttpClient();
+			client.doGet(PING_URL);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	public void test() throws Exception {

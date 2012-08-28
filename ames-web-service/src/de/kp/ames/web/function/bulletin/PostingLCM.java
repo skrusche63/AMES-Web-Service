@@ -192,7 +192,7 @@ public class PostingLCM extends JaxrLCM {
 		RegistryObjectImpl so = (RegistryObjectImpl)jaxrHandle.getDQM().getRegistryObject(posting);
 		
 		so.addAssociation(a);
-		transaction.addObjectToSave(a);
+		transaction.addObjectToSave(so);
 		
 		/*
 		 * Add association to container
@@ -202,6 +202,8 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Save objects
 		 */
+		confirmAssociation(a);
+		
 		transaction.addObjectToSave(container);
 		saveObjects(transaction.getObjectsToSave(), false, false);
 
@@ -260,12 +262,13 @@ public class PostingLCM extends JaxrLCM {
 		 * A posting is a certain extrinsic object that holds all relevant
 		 * and related information in a single JSON repository item
 		 */
-
 		ExtrinsicObjectImpl eo = null;
 		JaxrTransaction transaction = new JaxrTransaction();
 
-		// create extrinsic object that serves as a container for
-		// the respective posting
+		/* 
+		 * Create extrinsic object that serves as a container for
+		 * the respective posting
+		 */
 		eo = createExtrinsicObject();
 		if (eo == null) throw new JAXRException();
 				
@@ -276,12 +279,15 @@ public class PostingLCM extends JaxrLCM {
 
 		/*
 		* Name & description using default locale
-		*/
-		
+		*/		
 		JSONObject jPosting = new JSONObject(data);
 
-		String name = jPosting.getString(JaxrConstants.RIM_NAME);				
-		String desc = jPosting.getString(JaxrConstants.RIM_DESC);
+		/*
+		 * Name is the 'name' of the recipient
+		 */
+		String name = "[POST] " + jPosting.getString(JaxrConstants.RIM_NAME);				
+		String desc = "[SUBJ] " + jPosting.getString(JaxrConstants.RIM_SUBJECT);
+		
 		/* 
 		 * Home url
 		 */
@@ -339,7 +345,7 @@ public class PostingLCM extends JaxrLCM {
 		RegistryObjectImpl so = (RegistryObjectImpl)jaxrHandle.getDQM().getRegistryObject(recipient);
 		
 		so.addAssociation(a);
-		transaction.addObjectToSave(a);
+		transaction.addObjectToSave(so);
 		
 		/*
 		 * Add association to container
@@ -349,6 +355,8 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Save objects
 		 */
+		confirmAssociation(a);
+		
 		transaction.addObjectToSave(container);
 		saveObjects(transaction.getObjectsToSave(), false, false);
 
