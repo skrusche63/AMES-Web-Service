@@ -36,13 +36,13 @@ package de.kp.ames.web.function.symbol;
  *
  */
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class SymbolProcessor {
@@ -67,17 +67,20 @@ public class SymbolProcessor {
 	 * A helper method to initialize reference
 	 * information to managed symbols
 	 */
-	protected void init() {
+	public void init(RequestContext ctx) {
 
+		/*
+		 * Parameters to acess the configuration file must be present
+		 */
 		if ((SYMBOL_PATH == null) || (SYMBOL_ROOT == null)) return;
+		if (initialized == true) return;
 		
 		try {
 			
 			/*
 			 * Load control information
 			 */
-			File file = new File(SYMBOL_PATH);
-			FileInputStream fis = new FileInputStream(file);
+			InputStream fis = ctx.getContext().getResourceAsStream(SYMBOL_PATH);;
 	
 			byte[] bytes = FileUtil.getByteArrayFromInputStream(fis);
 			jSymbols = new JSONObject(new String(bytes));

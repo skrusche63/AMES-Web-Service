@@ -83,6 +83,12 @@ public class SymbolServiceImpl extends BusinessImpl {
 
 		} else {
 
+			/*
+			 * Initialize the registered Symbol processors
+			 */
+			APP6bProcessor.getInstance().init(ctx);
+			IconProcessor.getInstance().init(ctx);
+			
 			if (format.equals(FormatConstants.FNC_FORMAT_ID_Tree)) {
 			
 				String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);

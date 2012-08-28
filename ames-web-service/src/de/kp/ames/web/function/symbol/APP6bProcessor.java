@@ -52,8 +52,6 @@ public class APP6bProcessor extends SymbolProcessor {
 
 		SYMBOL_URI = Bundle.getInstance().getString(GlobalConstants.SYMBOL_APP6B_URI);
 		
-		init();
-		
 	}
 	
 	public static APP6bProcessor getInstance() {

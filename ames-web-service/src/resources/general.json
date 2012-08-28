@@ -1,0 +1,41 @@
+{
+"GEN.X":{"id":"GEN.X","name":"IT Symbology","children":["GEN.X.C.1","GEN.X.C.2","GEN.X.D.1","GEN.X.D.2","GEN.X.F.1","GEN.X.N.1","GEN.X.S.1","GEN.X.W.1"]},
+
+"GEN.X.C.1":{"id":"GEN.X.C.1","name":"Computer",  "children":["GEN.X.C.1.1","GEN.X.C.1.2"]},
+"GEN.X.C.1.1":{"id":"GEN.X.C.1.1","name":"Computer", "symb":"GEN.X.C.1.1"},
+"GEN.X.C.1.2":{"id":"GEN.X.C.1.2","name":"Server",   "symb":"GEN.X.C.1.2"},
+
+"GEN.X.C.2":{"id":"GEN.X.C.2","name":"Connection","symb":"GEN.X.C.2"},
+
+"GEN.X.D.1":  {"id":"GEN.X.D.1",  "name":"Device", "children":["GEN.X.D.1.1","GEN.X.D.1.2"]},
+"GEN.X.D.1.1":{"id":"GEN.X.D.1.1","name":"Camera",   "symb":"GEN.X.D.1.1"},
+"GEN.X.D.1.2":{"id":"GEN.X.D.1.2","name":"Harddisk", "symb":"GEN.X.D.1.2"},
+
+"GEN.X.D.2":{"id":"GEN.X.D.2","name":"Document",  "symb":"GEN.X.D.2"},
+"GEN.X.F.1":{"id":"GEN.X.F.1","name":"Firewall",  "symb":"GEN.X.F.1"},
+
+"GEN.X.M.1":   {"id":"GEN.X.M.1",   "name":"Mimetype", "children":["GEN.X.M.1.1","GEN.X.M.1.2","GEN.X.M.1.3","GEN.X.M.1.4","GEN.X.M.1.5","GEN.X.M.1.14","GEN.X.M.1.6","GEN.X.M.1.7","GEN.X.M.1.8","GEN.X.M.1.9","GEN.X.M.1.10","GEN.X.M.1.11","GEN.X.M.1.12","GEN.X.M.1.13"]},
+"GEN.X.M.1.1": {"id":"GEN.X.M.1.1", "name":"*.doc",   "symb":"GEN.X.M.1.1"},
+"GEN.X.M.1.2": {"id":"GEN.X.M.1.2", "name":"*.html",  "symb":"GEN.X.M.1.2"},
+"GEN.X.M.1.3": {"id":"GEN.X.M.1.3", "name":"*.odb",   "symb":"GEN.X.M.1.3"},
+"GEN.X.M.1.4": {"id":"GEN.X.M.1.4", "name":"*.odp",   "symb":"GEN.X.M.1.4"},
+"GEN.X.M.1.5": {"id":"GEN.X.M.1.5", "name":"*.ods",   "symb":"GEN.X.M.1.5"},
+
+"GEN.X.M.1.6": {"id":"GEN.X.M.1.6", "name":"*.pdf",   "symb":"GEN.X.M.1.6"},
+"GEN.X.M.1.7": {"id":"GEN.X.M.1.7", "name":"*.ppt",   "symb":"GEN.X.M.1.7"},
+"GEN.X.M.1.8": {"id":"GEN.X.M.1.8", "name":"*.theme", "symb":"GEN.X.M.1.8"},
+"GEN.X.M.1.9": {"id":"GEN.X.M.1.9", "name":"*.xhtml", "symb":"GEN.X.M.1.9"},
+"GEN.X.M.1.10":{"id":"GEN.X.M.1.10","name":"*.xml",   "symb":"GEN.X.M.1.10"},
+
+"GEN.X.M.1.11": {"id":"GEN.X.M.1.11", "name":"*.gif",   "symb":"GEN.X.M.1.11"},
+"GEN.X.M.1.12": {"id":"GEN.X.M.1.12", "name":"*.jpg",   "symb":"GEN.X.M.1.12"},
+"GEN.X.M.1.13": {"id":"GEN.X.M.1.13", "name":"*.png",   "symb":"GEN.X.M.1.13"},
+"GEN.X.M.1.14": {"id":"GEN.X.M.1.14", "name":"*.odt",   "symb":"GEN.X.M.1.14"},
+
+
+"GEN.X.N.1":  {"id":"GEN.X.N.1",  "name":"Network", "children":["GEN.X.N.1.1"]},
+"GEN.X.N.1.1":{"id":"GEN.X.D.1.1","name":"Local Network", "symb":"GEN.X.N.1.1"},
+
+"GEN.X.S.1":{"id":"GEN.X.S.1","name":"System",    "symb":"GEN.X.S.1"},
+"GEN.X.W.1":{"id":"GEN.X.W.1","name":"Wireless",  "symb":"GEN.X.W.1"}
+}

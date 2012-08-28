@@ -51,8 +51,6 @@ public class IconProcessor extends SymbolProcessor {
 		SYMBOL_ROOT = "GEN.X";
 
 		SYMBOL_URI = Bundle.getInstance().getString(GlobalConstants.SYMBOL_ICON_URI);
-
-		init();
 		
 	}
 	
