@@ -38,36 +38,30 @@ import de.kp.ames.web.shared.constants.MethodConstants;
 import de.kp.ames.web.test.JaxrTestImpl;
 import de.kp.ames.web.test.TestData;
 
-public class UserTestImpl extends JaxrTestImpl {
+public class UserFormatGridTestImpl extends JaxrTestImpl {
 
 	/*
 	 * The User Test supports get & submit (edit) 
 	 * requests for registry user
 	 */
 	
-	public UserTestImpl() {
+	public UserFormatGridTestImpl() {
 		super();
+		
 	}
 
-	public UserTestImpl(JaxrHandle jaxrHandle, String methodName) {
+	public UserFormatGridTestImpl(JaxrHandle jaxrHandle, String methodName) {
 		super(jaxrHandle, methodName);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.kp.ames.web.test.JaxrTestImpl#getService()
-	 */
-	public Service getService() {
-		return new UserServiceImpl();
-	}
-	
-    @Override
+	@Override
 	public Test suite(JaxrHandle jaxrHandle, String clazzName) throws Exception {
 
-		System.out.println("====> UserTestImpl.suite: " + clazzName);
+		System.out.println("====> UserFormGridTestImpl.suite: " + clazzName);
 
 		TestSuite suite = new TestSuite();
 		
-        suite.addTest(new UserTestImpl(jaxrHandle, "testDoGetRequest"));
+        suite.addTest(new UserFormatGridTestImpl(jaxrHandle, "testDoGetRequest"));
 
 		return suite;
 	}
@@ -75,27 +69,36 @@ public class UserTestImpl extends JaxrTestImpl {
 	@Override
 	public void testDoGetRequest() throws Exception {
 		
-		System.out.println("====> UserTestImpl.testDoGetRequest");
-	
-		RequestContext ctx = createDoGetMockContext();
-
-		super.doGetRequest(ctx);
+		System.out.println("====> UserFormGridTestImpl.testDoGetRequest");
 		
-		MockHttpServletResponse response = (MockHttpServletResponse) ctx.getResponse();
-		System.out.println("====> testDoGetRequest: status: " +  response.getStatus() + "\n\n Response: " + response.getContentAsString());
-		
-		if (response.getStatus() == HttpServletResponse.SC_OK) {
-			JSONObject jObj = new JSONObject(response.getContentAsString());
-			int totalRows = jObj.getJSONObject("response").getInt("totalRows");
-			System.out.println("====> testDoGetRequest:  result totalRows: " +  totalRows  + 
-					"\n\n Response: " + response.getContentAsString());
+		for (int i = 0; i < 3; i++) {
+			RequestContext ctx = createDoGetMockContext();
 
-			assertEquals(8, totalRows);
+			super.doGetRequest(ctx);
+			
+			MockHttpServletResponse response = (MockHttpServletResponse) ctx.getResponse();
+			
+			if (response.getStatus() != HttpServletResponse.SC_OK) {
+				System.out.println("====> testDoGetRequest: run #" + i + " status: " +  response.getStatus() + "\n\n Response: " + response.getContentAsString());
+			} else {
+				JSONObject jObj = new JSONObject(response.getContentAsString());
+				int totalRows = jObj.getJSONObject("response").getInt("totalRows");
+				System.out.println("====> testDoGetRequest:  run #" + i + " result totalRows: " +  totalRows);
 
+				assertEquals(8, totalRows);
+
+			}
+			
 		}
 	}
 
-    
+	
+	/* (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTestImpl#getService()
+	 */
+	public Service getService() {
+		return new UserServiceImpl();
+	}
 
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#createJsonSubmitData()
@@ -113,13 +116,7 @@ public class UserTestImpl extends JaxrTestImpl {
 		 * This test case retrieves a single existing user
 		 */
 		HashMap<String,String> attributes = new HashMap<String,String>();
-		attributes.put(MethodConstants.ATTR_FORMAT, FormatConstants.FNC_FORMAT_ID_Object);
-
-		/*
-		 * Test User
-		 */
-		String item = TestData.getInstance().getIdentifier(ClassificationConstants.FNC_ID_User);
-		attributes.put(MethodConstants.ATTR_ITEM, item);
+		attributes.put(MethodConstants.ATTR_FORMAT, FormatConstants.FNC_FORMAT_ID_Grid);
 
 		return attributes;
 		

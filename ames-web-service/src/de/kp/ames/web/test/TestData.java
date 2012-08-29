@@ -148,6 +148,11 @@ public class TestData {
 		 */
 		uidMap.put(ClassificationConstants.FNC_SYMBOL_ID_APP6B, "1.X.3");
 		
+   		/*
+		 * User Test
+		 */
+		uidMap.put(ClassificationConstants.FNC_ID_User, "urn:freebxml:registry:predefinedusers:farrukh");
+
 	}
 	
 }

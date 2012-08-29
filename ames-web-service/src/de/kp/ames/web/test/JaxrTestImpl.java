@@ -123,7 +123,10 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 		
 		for (Method method : methods) {
 			
-			if (method.getName().startsWith("test")) {
+			/*
+			 * Focus POST requests on SUBMIT tests
+			 */
+			if (method.getName().startsWith("testDoSubmit")) {
 
 				Constructor<?> constructor = clazz.getConstructor(paramTypes);
 

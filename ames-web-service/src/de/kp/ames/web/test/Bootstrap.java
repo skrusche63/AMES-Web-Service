@@ -1,19 +1,29 @@
 package de.kp.ames.web.test;
 
+import javax.servlet.http.HttpServletResponse;
+
+import junit.framework.TestCase;
+
 import org.json.JSONObject;
 
 import de.kp.ames.http.HttpClient;
+import de.kp.ames.http.Response;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
 import de.kp.ames.web.shared.constants.JaxrConstants;
-import junit.framework.TestCase;
 
 public class Bootstrap extends TestCase {
+
+	/*
+	 * This is one HttpClient instance used as a SAML-enabled session
+	 * for all requests
+	 */
+	private HttpClient client;
 
 	private static String BASE_URL   = "https://localhost:8443/ames/test/unit?name=";
 	private static String CLAZZ_NAME = 	"de.kp.ames.web.test.vocab.VocabTestImpl";
 
 	/*
-	 * This is a dammy url for an initial request against a SAML-based
+	 * This is a dummy url for an initial request against a SAML-based
 	 * security infrastructure that uses HTTP 302 (redirect)
 	 */
 	private static String PING_URL = "https://localhost:8443/ames/test/unit";
@@ -77,12 +87,14 @@ public class Bootstrap extends TestCase {
 		
 		try {
 			/* 
-			 * Invoke HttpsClient with a GET request to
-			 * enable subsequent POST requests
+			 * Invoke HttpsClient with an initial GET request 
+			 * through SAML security redirection 
+			 * to enable subsequent POST requests with SAML assertion
 			 */		
-			HttpClient client = new HttpClient();
+			client = new HttpClient();
 			client.doGet(PING_URL);
-
+			System.out.println("====> Bootstrap.pingRequest");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -192,11 +204,9 @@ public class Bootstrap extends TestCase {
 
 		String url  = BASE_URL + CLAZZ_NAME + "&type=" + type;
 
-		/* 
-		 * Invoke HttpsClient
-		 */		
-		HttpClient client = new HttpClient();
-		client.doPost(url, data);
+		Response response = client.doPost(url, data);
+		
+		assertEquals(HttpServletResponse.SC_OK, response.getHttpStatus());
 
 	}
 }
