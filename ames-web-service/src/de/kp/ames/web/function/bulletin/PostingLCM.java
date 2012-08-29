@@ -133,8 +133,9 @@ public class PostingLCM extends JaxrLCM {
 		
 		JSONObject jPosting = new JSONObject(data);
 
-		String name = jPosting.getString(JaxrConstants.RIM_NAME);				
-		String desc = jPosting.getString(JaxrConstants.RIM_DESC);
+		String name = "[COMMENT] " + jPosting.getString(JaxrConstants.RIM_NAME);	
+		String desc = "[SUBJ] " + jPosting.getString(JaxrConstants.RIM_SUBJECT);
+//		String desc = jPosting.getString(JaxrConstants.RIM_DESC);
 		/* 
 		 * Home url
 		 */

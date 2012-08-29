@@ -45,7 +45,7 @@ public class SearchConstants {
 	 * Apache Solr parameters
 	 */
 	public static String S_DESC   = "description";
-	public static String S_FACET  = "facet";
+	public static String S_FACET  = "facet_txt";
 	public static String S_ID     = "id";
 	public static String S_NAME   = "name";
 		
