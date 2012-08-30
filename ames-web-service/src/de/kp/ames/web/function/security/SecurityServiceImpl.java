@@ -625,7 +625,11 @@ public class SecurityServiceImpl extends BusinessImpl {
 		 */
 		a.setHome(rimHome);
 
-		transaction.addObjectToSave(a);
+		/*
+		 * User must be updated as an association
+		 * has been added
+		 */
+		transaction.addObjectToSave(user);
 		
 		/* 
 		 * Confirm association

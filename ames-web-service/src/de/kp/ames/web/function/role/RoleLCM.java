@@ -187,11 +187,6 @@ public class RoleLCM extends JaxrLCM {
 			confirmAssociation(responsibility);				
 
 			/*
-			 * Add responsibility to transaction
-			 */
-			transaction.addObjectToSave(responsibility);
-
-			/*
 			 * Add association to container 
 			 */
 			container.addRegistryObject(responsibility);

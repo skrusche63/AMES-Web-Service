@@ -204,8 +204,6 @@ public class CommLCM extends JaxrLCM {
 			 * Home url
 			 */
 			a.setHome(jaxrHandle.getEndpoint().replace("/saml", ""));
-
-			transaction.addObjectToSave(a);
 			
 			/* 
 			 * Confirm association
