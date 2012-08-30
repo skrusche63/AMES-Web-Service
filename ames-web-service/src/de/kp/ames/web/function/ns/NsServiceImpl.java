@@ -42,6 +42,7 @@ import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.http.RequestContext;
+import de.kp.ames.web.shared.constants.FormatConstants;
 import de.kp.ames.web.shared.constants.MethodConstants;
 
 public class NsServiceImpl extends BusinessImpl {
@@ -127,7 +128,9 @@ public class NsServiceImpl extends BusinessImpl {
 			 * a certain registry package as parent
 			 */
 			String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);
-
+			
+			parent = (parent == null || parent.equals("null")) ? null : parent;
+			
 			/*
 			 * Optional parameters that may be used to describe
 			 * a Grid-oriented response
@@ -205,12 +208,21 @@ public class NsServiceImpl extends BusinessImpl {
 		/*
 		 * Render result
 		 */
-		if ((start == null) || (limit == null)) {
-			content = render(jArray, format);
+		if (format.equals(FormatConstants.FNC_FORMAT_ID_Tree)) {
+			
+			content = render(jArray, parent, format);
+			
+		} else if (format.equals(FormatConstants.FNC_FORMAT_ID_Grid)) {
+			
+			if ((start == null) || (limit == null)) {
+				content = render(jArray, format);
 
-		} else {
-			content = render(jArray, start, limit, format);
+			} else {
+				content = render(jArray, start, limit, format);
+			}
+
 		}
+
 		
 		/*
 		 * Logoff

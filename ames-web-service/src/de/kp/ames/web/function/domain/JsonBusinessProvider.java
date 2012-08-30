@@ -86,7 +86,8 @@ public class JsonBusinessProvider extends JsonCoreProvider {
 	 */
 	private static IJsonRegistryObject createJsonObjectForName(JaxrHandle jaxrHandle, String objectName) throws Exception {
 
-		Class<?> clazz = Class.forName(objectName);
+		String MODUL_PACKAGE = "de.kp.ames.web.function.domain.model";
+		Class<?> clazz = Class.forName(MODUL_PACKAGE + "." + objectName);
 		Constructor<?> constructor = clazz.getConstructor(JaxrHandle.class);
 		
 		Object instance = constructor.newInstance(jaxrHandle);

@@ -74,6 +74,15 @@
 	</service>
 
     <service>
+        <service-id>ns</service-id>
+        <service-class>de.kp.ames.web.function.ns.NsServiceImpl</service-class>
+        <service-desc>
+         Namespace Service is used to retrieve namespace specific
+         information.
+        </service-desc>
+    </service>
+
+    <service>
 		<service-id>product</service-id>
 		<service-class>de.kp.ames.web.function.product.ProductServiceImpl</service-class>
         <service-desc>

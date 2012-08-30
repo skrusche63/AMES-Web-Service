@@ -298,7 +298,7 @@ public class GroupServiceImpl extends BusinessImpl {
 			content = render(jArray, format);
 			
 		} else {
-			content = render(jArray, format, start, limit);
+			content = render(jArray, start, limit, format);
 			
 		}
 		

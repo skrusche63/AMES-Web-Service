@@ -82,7 +82,8 @@ public class BulletinServiceImpl extends BusinessImpl {
 		
 		String target = this.method.getAttribute(MethodConstants.ATTR_TARGET);
 
-		if ((format == null) || (type == null) || (target == null)) {
+//		if ((format == null) || (type == null) || (target == null)) {
+		if ((format == null) || (type == null)) {
 			this.sendNotImplemented(ctx);
 
 		} else {

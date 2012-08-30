@@ -91,7 +91,11 @@ public class TestData {
 	 * Ns-Layer
 	 */
 	public JSONObject getNsSubmitData() throws Exception {
-		// TODO
+//		JSONObject jForm = new JSONObject();
+//		jForm.put(JaxrConstants.RIM_NAME, value);
+//		jForm.put(JaxrConstants.RIM_DESC, value);
+//		jForm.put(JaxrConstants.RIM_SLOT, value);
+		
 		return null;
 	}
 	
