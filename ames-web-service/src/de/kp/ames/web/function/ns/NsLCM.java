@@ -104,6 +104,18 @@ public class NsLCM extends JaxrLCM {
 	 * @throws Exception
 	 */
 	public String submitNamespace(String data) throws Exception {
+		return submitNamespace(data, null);
+	}
+	
+	/**
+	 * Submit a certain namespace to an optional parent namespace 
+	 * 
+	 * @param data
+	 * @param parent
+	 * @return
+	 * @throws Exception
+	 */
+	public String submitNamespace(String data, String parent) throws Exception {
 
 		/*
 		 * Create or retrieve registry package that is 
@@ -112,18 +124,24 @@ public class NsLCM extends JaxrLCM {
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
-		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Namespace);
-		if (list.size() == 0) {
-			/*
-			 * Create container
-			 */
-			container = createNamespacePackage();
-			
+		if (parent == null) {
+			List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Namespace);
+			if (list.size() == 0) {
+				/*
+				 * Create container
+				 */
+				container = createNamespacePackage();
+				
+			} else {
+				/*
+				 * Retrieve container
+				 */
+				container = list.get(0);
+	
+			}
 		} else {
-			/*
-			 * Retrieve container
-			 */
-			container = list.get(0);
+			container = (RegistryPackageImpl)dqm.getRegistryObjectById(parent);
+			if (container == null) throw new JAXRException("[NsLCM] RegistryPackage with id <" + parent + "> not found.");
 
 		}
 		

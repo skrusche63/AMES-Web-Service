@@ -172,7 +172,17 @@ public class NsServiceImpl extends BusinessImpl {
 				/*
 				 * JSON response
 				 */
-				String content = submit(data);
+				
+				/*
+				 * This is an optional parameter that determines 
+				 * a certain registry package as parent
+				 */
+				String parent = this.method.getAttribute(MethodConstants.ATTR_PARENT);
+				
+				parent = (parent == null || parent.equals("null")) ? null : parent;
+
+				
+				String content = submit(data, parent);
 				sendJSONResponse(content, ctx.getResponse());
 
 			} catch (Exception e) {
@@ -265,7 +275,7 @@ public class NsServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String submit(String data) throws Exception {
+	private String submit(String data, String parent) throws Exception {
 
 		String content = null;
 		
@@ -275,7 +285,7 @@ public class NsServiceImpl extends BusinessImpl {
 		JaxrClient.getInstance().logon(jaxrHandle);		
 
 		NsLCM lcm = new NsLCM(jaxrHandle);
-		content = lcm.submitNamespace(data);
+		content = lcm.submitNamespace(data, parent);
 		
 		/*
 		 * Logoff

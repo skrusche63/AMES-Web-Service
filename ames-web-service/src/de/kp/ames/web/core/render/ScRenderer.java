@@ -154,7 +154,20 @@ public class ScRenderer implements GuiRenderer {
 		for (int i=0; i < jArray.length(); i++) {
 			
 			JSONObject jEntry = jArray.getJSONObject(i);
-			if (!jEntry.has(JsonConstants.J_CHILDREN)) jEntry.put(JsonConstants.J_IS_FOLDER, false);
+			
+			/*
+			 * if entry has no explicit folder flag
+			 */
+			if (!jEntry.has(JsonConstants.J_IS_FOLDER)) {
+				/*
+				 * check if it has no children data structure
+				 */
+				if (!jEntry.has(JsonConstants.J_CHILDREN)) 
+					/*
+					 * then set folder flag to false
+					 */
+					jEntry.put(JsonConstants.J_IS_FOLDER, false);
+			}
 
 			/*
 			 * Remove key children from JSON object

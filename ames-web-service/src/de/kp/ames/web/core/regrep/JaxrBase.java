@@ -383,7 +383,7 @@ public class JaxrBase {
 	/**
 	 * A helper method to evaluate whether a certain registry objects
 	 * holds associations to other objects, that are classified by
-	 * the actualy set of semantic concepts
+	 * the actually set of semantic concepts
 	 * 
 	 * @param ro
 	 * @param concepts
