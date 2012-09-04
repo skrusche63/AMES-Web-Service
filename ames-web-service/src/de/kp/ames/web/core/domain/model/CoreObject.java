@@ -227,7 +227,8 @@ public class CoreObject implements ICoreObject {
 		 * Classifications
 		 */
 		JSONArray jClases = jForm.has(RIM_CLAS) ? new JSONArray(jForm.getString(RIM_CLAS)) : null;
-		if (jClases != null) {
+		//if (jClases != null) {
+		if (jClases != null && jClases.length()>0) {
 			
 			List<ClassificationImpl> classifications = updateClassifications(registryObject, jClases);			
 			/*

@@ -91,9 +91,11 @@ public class RequestMethod {
 		// the first token describes the method: method=name
 		setName(tokens[0]);
 		
+		attributes = new HashMap<String, String>();
 		if (tokens.length > 1) {
+			// attributes = new HashMap<String, String>();
+			
 			// retrieve attribute from query: key=value
-			attributes = new HashMap<String, String>();
 			for (int i=1; i < tokens.length; i++) {
 				setAttribute(tokens[i]);
 			}
@@ -114,7 +116,7 @@ public class RequestMethod {
 
 		String[] tokens = token.split("=");
 
-		if (tokens.length != 2) throw new Exception(ATTRIBUTE_ERROR);
+		if (tokens.length != 2) throw new Exception(ATTRIBUTE_ERROR + " token: " + token);
 		
 		String key = tokens[0];
 		String val = URLDecoder.decode(tokens[1], GlobalConstants.UTF_8);

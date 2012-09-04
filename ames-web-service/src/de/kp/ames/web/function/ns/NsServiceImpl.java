@@ -222,16 +222,23 @@ public class NsServiceImpl extends BusinessImpl {
 			
 			content = render(jArray, parent, format);
 			
-		} else if (format.equals(FormatConstants.FNC_FORMAT_ID_Grid)) {
+		} else if (format.equals(FormatConstants.FNC_FORMAT_ID_Object)) {
 			
+			content = render(jArray, format);
+			
+		} else if (format.equals(FormatConstants.FNC_FORMAT_ID_Grid)) {
+		
 			if ((start == null) || (limit == null)) {
 				content = render(jArray, format);
-
+	
 			} else {
 				content = render(jArray, start, limit, format);
 			}
 
+		} else {
+			throw new Exception("[NsServiceImpl] Format <" + format + "> not supported.");
 		}
+
 
 		
 		/*

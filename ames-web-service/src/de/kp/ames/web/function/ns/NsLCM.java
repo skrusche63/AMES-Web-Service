@@ -119,12 +119,15 @@ public class NsLCM extends JaxrLCM {
 
 		/*
 		 * Create or retrieve registry package that is 
-		 * responsible for managing namespaces
+		 * responsible for managing this namespace
 		 */
 		RegistryPackageImpl container = null;		
 		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
 		
 		if (parent == null) {
+			/*
+			 * root namespace
+			 */
 			List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Namespace);
 			if (list.size() == 0) {
 				/*
@@ -140,6 +143,9 @@ public class NsLCM extends JaxrLCM {
 	
 			}
 		} else {
+			/*
+			 * given namespace parent
+			 */
 			container = (RegistryPackageImpl)dqm.getRegistryObjectById(parent);
 			if (container == null) throw new JAXRException("[NsLCM] RegistryPackage with id <" + parent + "> not found.");
 
