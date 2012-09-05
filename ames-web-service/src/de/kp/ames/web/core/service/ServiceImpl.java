@@ -40,6 +40,9 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URLEncoder;
 
 import javax.imageio.ImageIO;
@@ -179,6 +182,9 @@ public class ServiceImpl implements Service {
 	 * @see de.kp.ames.web.core.service.Service#sendJSONResponse(java.lang.String, javax.servlet.http.HttpServletResponse)
 	 */
 	public void sendJSONResponse(String content, HttpServletResponse response) throws IOException {
+		
+		System.out.println("======> sendJSONResponse: " + content);
+		
 		if (content == null) return;
 		sendResponse(content, GlobalConstants.MT_JSON, response);		
 	}
@@ -382,7 +388,13 @@ public class ServiceImpl implements Service {
 	 */
 	protected void sendBadRequest(RequestContext ctx, Throwable e) {
 
-		String errorMessage = "[" + this.getClass().getName() + "] " + e.getMessage();
+		// TODO: xxx pa debug stacktrace
+	    Writer result = new StringWriter();
+	    PrintWriter printWriter = new PrintWriter(result);
+	    e.printStackTrace(printWriter);
+
+		String errorMessage = "[" + this.getClass().getName() + "] " + result.toString();
+//		String errorMessage = "[" + this.getClass().getName() + "] " + e.getMessage();
 		int errorStatus = HttpServletResponse.SC_BAD_REQUEST;
 		
 		try {
