@@ -89,7 +89,7 @@ public class JaxrBase {
 	 * Default value of the locale used to build
 	 * an international string
 	 */
-	public Locale defaultLocale = Locale.GERMAN;
+	public Locale defaultLocale = Locale.US;
 
 	protected static HashMap<Integer, String> eventMap;
 	protected static HashMap<Integer, String> statusMap;

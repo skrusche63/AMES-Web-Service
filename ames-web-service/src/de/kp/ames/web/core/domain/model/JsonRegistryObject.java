@@ -106,7 +106,11 @@ public class JsonRegistryObject extends JsonRegistryEntry implements IJsonRegist
 		 * Convert name
 		 */
     	String name = jaxrBase.getName(ro, locale);
-    	name = (name == null) ? "" : name;
+    	
+    	/*
+    	 * If no matching locale string exists, get the closest match
+    	 */
+    	name = (name == "") ? ro.getDisplayName() : name;
 		
     	put(JaxrConstants.RIM_NAME, name);
 		
