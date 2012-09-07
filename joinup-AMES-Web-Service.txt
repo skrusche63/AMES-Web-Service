@@ -1,0 +1,74 @@
+Name:
+Ad-hoc Mobile Ecosystem - Web Service development framework
+
+Short Name:
+AMES-Web-Service
+
+Abstract:
+AMES Web Service is the next OSS contribution of German IT-Amt Bw and is the server-side part of a new Ad-hoc Web application development framework.
+
+
+Full description:
+
+One of the main objective in the transformation process of the German Bundeswehr is to achieve the capability for Net-Centric Operations in joint and multinational scenarios. 
+To gain this capability, it is essential to establish a context sensitive Shared Space of information, based on open international standards and fulfilling advanced operational and security requirements. 
+
+After the successful releases of the ebXML OMARv32-SAML family on JoinUp, this release is the next significant step on a roadmap towards an Ad-hoc Web application development framework built upon the Shared Space.
+
+This project is part of that framework and represents the server-side functionality organized in reusable building blocks to implement secure Web based applications. It enables Web-based applications or Web-Services to connect in a secure manner to an infrastructure of federated OASIS ebXML Registries, Solr Enterprise Search and WSS GeoServer backend services.
+
+The AMES Web Service project is part of a family of other releases building the overall application development framework, see dependencies.
+
+This project was funded by the German IT-Amt Bundeswehr under the contract E/IB1S/CA018/AF020 and released under GNU Public License Version 3 (GPLv3). 
+
+The examples of the target audience include Enterprise, Government, NATO/PfP Partners, NGOs, public authorities, disaster relief management, etc.
+
+Features:
+AMES-Web-Service is setup as an Eclipse project and has the following project dependencies:
+* AMES-Http
+* AMES-NLP
+* AMES-Office
+* AMES-OOJDrew
+* AMES-Web-Shared
+* AMES-WebDAV
+* OMARv32 SAML Client
+
+
+Technical key feature list:
+* Support for Java 6 (64bit)
+* Modular libraries of core and business functionality
+* OpenSAML (OASIS SAML v2.0)
+* OMARv32 SAML (OASIS ebXML v3.0)
+* GeoTools (WMS)
+* Apache Jackrabbit (WebDAV)
+* Rome Project (RSS)
+
+Future Plans:
+* Establish a community.
+* Support Android as a secure mobile platform.
+
+Get involved:
+At this stage, code is available for usage, study, redistribution and improvements (the four freedoms of OSS). However, direct contributions are actually not supported as we are not in the state to manage commits or share committer privileges.
+
+Public Administration Reference:
+The project was funded by the IT-Amt Bw of the German Bundeswehr under the contract E/IB1S/CA018/AF020.
+
+Email Contact:
+team[at]dr-kruscheundpartner[dot]de
+
+Dependencies:
+* AMES-Http
+* AMES-NLP
+* AMES-Office
+* AMES-OOJDrew
+* AMES-Web-Shared
+* AMES-WebDAV
+* OMARv32 SAML Client
+
+Keywords:
+development framework, Web Service, Single Page Application, SPA, Rich Internet Application, RIA, OASIS, Enterprise Search, Solr, OASIS, ebXML, OMAR, registry, repository, Shared Space, Distributed, Federation, Java, Open Source, SAML, IT-Security
+
+Comment:
+none
+
+

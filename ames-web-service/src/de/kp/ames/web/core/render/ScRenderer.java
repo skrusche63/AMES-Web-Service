@@ -42,6 +42,7 @@ import java.util.Collection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.kp.ames.web.shared.constants.JaxrConstants;
 import de.kp.ames.web.shared.constants.JsonConstants;
 
 
@@ -55,6 +56,7 @@ public class ScRenderer implements GuiRenderer {
 
 	public ScRenderer() {
 	}
+	
 	
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.function.GuiRenderer#createGrid(org.json.JSONArray)
@@ -156,28 +158,35 @@ public class ScRenderer implements GuiRenderer {
 			JSONObject jEntry = jArray.getJSONObject(i);
 			
 			/*
-			 * if entry has no explicit folder flag
+			 * then set folder flag always to true
 			 */
-			if (!jEntry.has(JsonConstants.J_IS_FOLDER)) {
-				/*
-				 * check if it has no children data structure
-				 */
-				if (!jEntry.has(JsonConstants.J_CHILDREN)) 
-					/*
-					 * then set folder flag to false
-					 */
-					jEntry.put(JsonConstants.J_IS_FOLDER, false);
-			}
+			jEntry.put(JsonConstants.J_IS_FOLDER, true);
 
 			/*
 			 * Remove key children from JSON object
 			 */
-			jEntry.remove(JsonConstants.J_CHILDREN);
+			if (jEntry.has(JsonConstants.J_CHILDREN))
+				jEntry.remove(JsonConstants.J_CHILDREN);
+
+			/*
+			 * Copy rimId to separate primaryKey "id"
+			 */
+			if (jEntry.has(JaxrConstants.RIM_ID)) {
+				jEntry.put(JsonConstants.J_ID, jEntry.get(JaxrConstants.RIM_ID));
+			}
 
 			/*
 			 * Add parent identifier
 			 */
 			jEntry.put(JsonConstants.J_PID, parent);
+			
+			/*
+			 * Expand icon with prefix
+			 */
+			if (jEntry.has(JaxrConstants.RIM_ICON)) {
+				String icon = ScConstants.SC_ICON_DIR + jEntry.getString(JaxrConstants.RIM_ICON) + ScConstants.SC_ICON_SUFFIX;
+				jEntry.put(JaxrConstants.RIM_ICON, icon);
+			}
 			
 		}
 				
@@ -236,6 +245,17 @@ public class ScRenderer implements GuiRenderer {
 		
 		return 0;
 
+	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * @see de.kp.ames.web.core.render.GuiRenderer#createObject(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public String createObject(String request, String response) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

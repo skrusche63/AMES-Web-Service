@@ -230,11 +230,7 @@ public class CoreObject implements ICoreObject {
 		//if (jClases != null) {
 		if (jClases != null && jClases.length()>0) {
 			
-			List<ClassificationImpl> classifications = updateClassifications(registryObject, jClases);			
-			/*
-			 * Set composed object
-			 */
-			registryObject.addClassifications(classifications);
+			updateClassifications(registryObject, jClases);			
 			
 		}
 
@@ -286,6 +282,8 @@ public class CoreObject implements ICoreObject {
 	protected List<ClassificationImpl> updateClassifications(RegistryObjectImpl registryObject, JSONArray jClases) throws Exception {
 
 		ArrayList<String> conceptTypes = JsonUtil.getStringArray(jClases);
+		
+		
 		return jaxrLCM.updateClassifications(registryObject, conceptTypes);
 	
 	}

@@ -107,10 +107,14 @@ public class SearchServiceImpl extends BusinessImpl {
 			 * Call suggest method
 			 */
 			String query = this.method.getAttribute(MethodConstants.ATTR_QUERY);
-			String start = this.method.getAttribute(SearchConstants.ATTR_START);
-			String limit = this.method.getAttribute(SearchConstants.ATTR_LIMIT);
+			//String start = this.method.getAttribute(SearchConstants.ATTR_START);
+			//String limit = this.method.getAttribute(SearchConstants.ATTR_LIMIT);
 			
-			if ((query == null) || (start == null) || (limit == null)) {
+			String start = "0";
+			String limit = "10";
+			
+			//if ((query == null) || (start == null) || (limit == null)) {
+			if (query == null) {
 				this.sendNotImplemented(ctx);
 				
 			} else {

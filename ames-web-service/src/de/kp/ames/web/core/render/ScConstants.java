@@ -68,4 +68,11 @@ public class ScConstants {
 	public static String SC_TOTALROWS = "totalRows";
 	public static String SC_RESPONSE  = "response";
 
+	/*
+	 * Icon Directory & suffix
+	 */
+	public static String SC_ICON_DIR    = "icons/16/";
+	public static String SC_ICON_SUFFIX = ".png";
+
+	
 }

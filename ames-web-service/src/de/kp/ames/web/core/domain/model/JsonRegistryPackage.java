@@ -36,14 +36,7 @@ package de.kp.ames.web.core.domain.model;
  *
  */
 
-import javax.xml.registry.JAXRException;
-
-import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
-import org.json.JSONException;
-
 import de.kp.ames.web.core.regrep.JaxrHandle;
-import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class JsonRegistryPackage extends JsonRegistryObject {
 
@@ -56,22 +49,5 @@ public class JsonRegistryPackage extends JsonRegistryObject {
 		super(jaxrHandle);
 	}
 
-	/**
-     * Convert registry package into JSON object
-     * 
-	 * @param ro
-	 * @throws JSONException
-	 * @throws JAXRException
-	 */
-	public void set(RegistryObjectImpl ro) throws JSONException, JAXRException {
-		super.set(ro);
-		
-		/*
-		 * Set flag if Registry Package has members
-		 */
-		// TODO: use SC renderer independent attribute name 
-    	put(JsonConstants.J_IS_FOLDER, ((RegistryPackageImpl)ro).getRegistryObjects().size() == 0 ? false : true);
-
-	}
 	
 }

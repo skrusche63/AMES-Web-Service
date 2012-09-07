@@ -130,6 +130,8 @@ public class RequestDispatcher extends HttpServlet {
 			 */
 			Service service = getService(request);
 			service.setJaxrHandle(jaxrHandle);
+			
+			System.out.println("====> RequestDispatcher.doGet service: " + service.getClass().getSimpleName() + " method: " + service.getMethod().getName());
 
 			/* 
 			 * Evaluate method
@@ -186,7 +188,9 @@ public class RequestDispatcher extends HttpServlet {
 			 */
 			Service service = getService(request);
 			service.setJaxrHandle(jaxrHandle);
-			
+
+			System.out.println("====> RequestDispatcher.doPost service: " + service.getClass().getSimpleName() + " method: " + service.getMethod());
+
 			RequestContext ctx = new RequestContext(request, response);
 			ctx.setContext(getServletContext());
 			

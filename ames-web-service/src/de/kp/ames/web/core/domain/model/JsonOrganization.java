@@ -192,7 +192,7 @@ public class JsonOrganization extends JsonRegistryObject {
 	}
 
 	/**
-	 * A hlper method to flatten a TelephoneNumber
+	 * A helper method to flatten a TelephoneNumber
 	 * 
 	 * @param jTelephoneNumber
 	 * @throws JSONException

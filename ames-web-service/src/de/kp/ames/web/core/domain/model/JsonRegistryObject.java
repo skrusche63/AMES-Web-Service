@@ -47,6 +47,7 @@ import javax.xml.registry.JAXRException;
 import org.freebxml.omar.client.xml.registry.infomodel.AuditableEventImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ConceptImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.InternationalStringImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,7 +119,7 @@ public class JsonRegistryObject extends JsonRegistryEntry implements IJsonRegist
 		 * Convert description
 		 */
 		String description = jaxrBase.getDescription(ro, locale);
-		description = (description == null) ? "" : description;
+		description = (description == "") ? ((InternationalStringImpl)ro.getDescription()).getClosestValue() : description;
 		
 		put(JaxrConstants.RIM_DESC, description);
 

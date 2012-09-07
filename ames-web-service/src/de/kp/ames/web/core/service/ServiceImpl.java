@@ -49,6 +49,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.util.FileUtil;
@@ -340,7 +342,7 @@ public class ServiceImpl implements Service {
 	 */
 	protected String getRequestData(RequestContext ctx) {
 		
-		StringBuffer buffer = null;;
+		StringBuffer buffer = null;
 
 		try {
 			BufferedReader reader = ctx.getRequest().getReader();
@@ -351,7 +353,15 @@ public class ServiceImpl implements Service {
 				buffer.append(line);
 			}
 
-		} catch (IOException e) {
+			/*
+			 * Check if data is a JSONObject
+			 * Then check if it has a 'data' key to unpack
+			 */
+			JSONObject jObject = new JSONObject(buffer.toString());
+			if (jObject.has("data"))
+				return jObject.getJSONObject("data").toString();
+				
+		} catch (Exception e) {
 			// do nothing
 		}
 

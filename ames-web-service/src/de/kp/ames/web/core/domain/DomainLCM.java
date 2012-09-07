@@ -255,11 +255,13 @@ public class DomainLCM extends JaxrLCM {
 		/* 
 		 * Identifier
 		 */
-		String uid = JaxrIdentity.getInstance().getPrefixUID(FncParams.K_PRE);
+		String uid = JaxrIdentity.getInstance().getPrefixUID(params.get(FncParams.K_PRE));
 	
 		rp.setLid(uid);
 		rp.getKey().setId(uid);
 
+		System.out.println("====> DomainLCM.createBusinessPackage: uid: " + uid + " lid: " + rp.getLid() + " id: " + rp.getId() );
+		
 		/* 
 		 * Description
 		 */

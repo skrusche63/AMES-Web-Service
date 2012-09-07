@@ -84,7 +84,7 @@ public class NsServiceImpl extends BusinessImpl {
 	 */
 	public void doDeleteRequest(RequestContext ctx) {
 
-		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);
+		String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);	
 		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 
 		if ((item == null) || (type == null)) {
@@ -159,10 +159,8 @@ public class NsServiceImpl extends BusinessImpl {
 	 */
 	public void doSubmitRequest(RequestContext ctx) {
 			
-		/*
-		 * Submit request requires data
-		 */
 		String data = this.getRequestData(ctx);
+		
 		if (data == null) {
 			this.sendNotImplemented(ctx);
 			
@@ -181,7 +179,9 @@ public class NsServiceImpl extends BusinessImpl {
 				
 				parent = (parent == null || parent.equals("null")) ? null : parent;
 
-				
+				/*
+				 * route request node
+				 */
 				String content = submit(data, parent);
 				sendJSONResponse(content, ctx.getResponse());
 
@@ -279,6 +279,7 @@ public class NsServiceImpl extends BusinessImpl {
 
 	/**
 	 * @param data
+	 * @param jRequestObject 
 	 * @return
 	 * @throws Exception
 	 */

@@ -243,9 +243,9 @@ public class SearcherImpl implements Searcher {
 		JSONArray jTerms = getTermValues(SearchConstants.TERMS_FIELD, terms);
 		
 		/*
-		 * Render result
+		 * Render result for DataSource
 		 */
-		return renderer.createGrid(jTerms);
+		return jTerms.toString();
 
 	}
 	/**

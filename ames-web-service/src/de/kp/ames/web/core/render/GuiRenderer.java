@@ -81,6 +81,16 @@ public interface GuiRenderer {
 	public String createObject(JSONArray jArray) throws Exception;
 
 	/**
+	 * Rewrite a request object from a server response object
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public String createObject(String request, String response) throws Exception;
+
+	/**
 	 * Build a Tree representation from a JSON Array
 	 * 
 	 * @param jArray
