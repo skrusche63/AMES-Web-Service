@@ -53,6 +53,7 @@ import org.json.JSONObject;
 
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
+import de.kp.ames.web.core.util.DateUtil;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.http.RequestMethod;
@@ -190,6 +191,23 @@ public class ServiceImpl implements Service {
 		if (content == null) return;
 		sendResponse(content, GlobalConstants.MT_JSON, response);		
 	}
+	
+	public void sendZIPResponse(byte[] bytes, HttpServletResponse response) throws IOException {
+		if (bytes == null)
+			return;
+		
+    	System.out.println("====> ServiceImpl.sendZIPResponse");
+
+    	String timestamp = DateUtil.createTimeStamp("yyyyMMdd-HHmm");
+		
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + timestamp + 
+				"-SemanticCheckout.zip\"");
+		
+    	System.out.println("======> ServiceImpl.sendZIPResponse ts: " + timestamp);
+
+		sendResponse(bytes, "application/zip", response);
+	}
+
 
 	public void sendRSSResponse(String content, HttpServletResponse response) throws IOException {
 		if (content == null) return;
@@ -332,6 +350,29 @@ public class ServiceImpl implements Service {
 		os.close();
 
 	}
+	
+	/*
+	 * Direct interface for bytes for download support
+	 * 
+	 * (non-Javadoc)
+	 * @see de.kp.ames.semantic.service.Service#sendResponse(byte[], java.lang.String, javax.servlet.http.HttpServletResponse)
+	 */
+	public void sendResponse(byte[] bytes, String mimetype, HttpServletResponse response) throws IOException {
+
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.setCharacterEncoding("UTF-8");
+
+		response.setContentType(mimetype);
+
+		response.setContentLength(bytes.length);
+
+		OutputStream os = response.getOutputStream();
+
+		os.write(bytes);
+		os.close();
+
+	}
+
 
 	/**
 	 * A helper method to retrieve the request data (POST) 

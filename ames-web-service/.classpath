@@ -32,6 +32,8 @@
 	<classpathentry kind="lib" path="lib-test/org.springframework.core-3.1.1.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib-test/org.springframework.test-3.1.1.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/apache-solr-solrj-3.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/jatl-0.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ames-oojdrew"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ames-webdav"/>

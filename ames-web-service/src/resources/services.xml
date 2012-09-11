@@ -146,6 +146,14 @@
 	</service>
     
     <service>
+		<service-id>scm</service-id>
+		<service-class>de.kp.ames.web.function.scm.ScmServiceImpl</service-class>
+        <service-desc>
+         SCM Service that supports the Semantic Software Catalog
+        </service-desc>
+	</service>
+
+    <service>
 		<service-id>transform</service-id>
 		<service-class>de.kp.ames.web.function.transform.TransformServiceImpl</service-class>
         <service-desc>

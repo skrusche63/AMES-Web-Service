@@ -89,7 +89,28 @@ public class SolrProxy {
 		if (instance == null) instance = new SolrProxy();
 		return instance;
 	}
-	
+
+	/**
+	 * This method deletes documents
+	 * defined by a query
+	 */
+	public boolean delete(String query) {
+		boolean deleted = false;
+
+		try {
+
+			server.deleteByQuery(query);
+			deleted = true;
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		
+		} finally {}
+		
+		return deleted;
+		
+	}
+
 	/**
 	 * This method deletes an existing Apache Solr index
 	 * as a whole
@@ -122,6 +143,33 @@ public class SolrProxy {
 			e.printStackTrace();
 			
 		} finally {}
+
+	}
+
+	/**
+	 * Base method to create index entries for an Apache Solr
+	 * search index from a collection of documents
+	 * 
+	 * @param documents
+	 * @return
+	 */
+	public boolean createIndexEntries(Collection<SolrInputDocument> documents) {
+
+		boolean indexed = false;
+
+		try {
+
+			server.add(documents);
+			server.commit();
+			
+			indexed = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {}
+		
+		return indexed;
 
 	}
 
