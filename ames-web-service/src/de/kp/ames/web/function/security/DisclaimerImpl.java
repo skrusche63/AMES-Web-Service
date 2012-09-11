@@ -101,7 +101,7 @@ public class DisclaimerImpl extends BusinessImpl {
 
 		ServletContext context = ctx.getContext();
 		
-		String filename = "/WEB-INF/resources/disclaimer.html";		  
+		String filename = "/WEB-INF/classes/resources/disclaimer.html";		  
 		InputStream is = context.getResourceAsStream(filename);
 
 		return FileUtil.getStringFromInputStream(is);

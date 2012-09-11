@@ -56,6 +56,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
@@ -383,7 +384,7 @@ public class SecurityServiceImpl extends BusinessImpl {
 
 		ServletContext context = ctx.getContext();
 		
-		String filename = "/WEB-INF/resources/defaultapps.xml";		  
+		String filename = "/WEB-INF/classes/resources/defaultapps.xml";		  
 		InputStream is = context.getResourceAsStream(filename);
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -433,17 +434,17 @@ public class SecurityServiceImpl extends BusinessImpl {
 		NodeList properties = eApp.getChildNodes();
 		for (int i=0; i < properties.getLength(); i++) {
 			
-			Element property = (Element)properties.item(i);
+			Node property = properties.item(i);
 
-			if (property.getTagName().equals("app-id")) {
+			if (property.getNodeName().equals("app-id")) {
 				id = property.getTextContent().trim();
 			}
 
-			if (property.getTagName().equals("app-name")) {
+			if (property.getNodeName().equals("app-name")) {
 				name = property.getTextContent().trim();
 			}
 
-			if (property.getTagName().equals("app-icon")) {
+			if (property.getNodeName().equals("app-icon")) {
 				icon = property.getTextContent().trim();
 			}
 
