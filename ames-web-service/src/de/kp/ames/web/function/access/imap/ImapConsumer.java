@@ -80,18 +80,22 @@ public class ImapConsumer {
 	public ImapConsumer(JSONObject jAccessor) {
 		
 		try {
-			
+			/*
+			 * unpack Slots
+			 */
+			JSONObject jSlots = new JSONObject(jAccessor.getString(JaxrConstants.RIM_SLOT));
+
 			/*
 			 * Access parameters
 			 */
-			String host = jAccessor.getString(JaxrConstants.SLOT_ENDPOINT);
-			String port = jAccessor.getString(JaxrConstants.SLOT_PORT);
+			String host = jSlots.getString(JaxrConstants.SLOT_ENDPOINT);
+			String port = jSlots.getString(JaxrConstants.SLOT_PORT);
 			
 			/*
 			 * Credentials
 			 */
-			String alias   = jAccessor.getString(JaxrConstants.SLOT_ALIAS);
-			String keypass = jAccessor.getString(JaxrConstants.SLOT_KEYPASS);
+			String alias   = jSlots.getString(JaxrConstants.SLOT_ALIAS);
+			String keypass = jSlots.getString(JaxrConstants.SLOT_KEYPASS);
 
 			
 			/*

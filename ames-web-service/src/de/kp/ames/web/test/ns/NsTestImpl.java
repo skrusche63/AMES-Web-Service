@@ -44,6 +44,7 @@ public class NsTestImpl extends JaxrTestImpl {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#getService()
 	 */
+	@Override
 	public Service getService() {
 		return new NsServiceImpl();
 	}
@@ -51,6 +52,7 @@ public class NsTestImpl extends JaxrTestImpl {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#createJsonSubmitData()
 	 */
+	@Override
 	public JSONObject createJsonSubmitData() throws Exception {
 		return TestData.getInstance().getNsSubmitData();
 	}
@@ -58,6 +60,7 @@ public class NsTestImpl extends JaxrTestImpl {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#getDeleteAttributes()
 	 */
+	@Override
 	public HashMap<String,String> getDeleteAttributes() {
 
 		HashMap<String,String> attributes = new HashMap<String,String>();
@@ -73,6 +76,7 @@ public class NsTestImpl extends JaxrTestImpl {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#getGetAttributes()
 	 */
+	@Override
 	public HashMap<String,String> getGetAttributes() {
 
 		HashMap<String,String> attributes = new HashMap<String,String>();
@@ -90,6 +94,7 @@ public class NsTestImpl extends JaxrTestImpl {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#getSubmitAttributes()
 	 */
+	@Override
 	public HashMap<String,String> getSubmitAttributes() {
 		
 		HashMap<String,String> attributes = new HashMap<String,String>();

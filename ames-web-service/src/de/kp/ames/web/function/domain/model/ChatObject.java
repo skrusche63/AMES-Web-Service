@@ -98,13 +98,10 @@ public class ChatObject extends BusinessObject {
 		eo.getKey().setId(eid);
 
 		/*
-		 * Name & description using default locale
+		 * Name using default locale
 		 */
-		String name = jForm.getString(JaxrConstants.RIM_NAME);				
+		String name = "[CHAT] " + jForm.getString(JaxrConstants.RIM_MESSAGE_ID);				
 		eo.setName(jaxrLCM.createInternationalString(name));
-
-		String desc = jForm.getString(JaxrConstants.RIM_DESC);
-		eo.setDescription(jaxrLCM.createInternationalString(desc));
 		
 		/* 
 		 * Home url

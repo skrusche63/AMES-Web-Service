@@ -47,6 +47,7 @@ import org.apache.solr.common.SolrInputDocument;
 import de.kp.ames.web.Bundle;
 import de.kp.ames.web.GlobalConstants;
 
+@SuppressWarnings("deprecation")
 public class SolrProxy {
 
 	/*

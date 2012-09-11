@@ -407,6 +407,8 @@ public class ServiceImpl implements Service {
 //		String errorMessage = "[" + this.getClass().getName() + "] " + e.getMessage();
 		int errorStatus = HttpServletResponse.SC_BAD_REQUEST;
 		
+		System.out.println("====> sendBadRequest: " + errorMessage);
+		
 		try {
 			sendErrorResponse(errorMessage, errorStatus, ctx.getResponse());
 

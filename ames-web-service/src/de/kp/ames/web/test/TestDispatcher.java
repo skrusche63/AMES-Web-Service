@@ -54,6 +54,8 @@ public class TestDispatcher extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		System.out.println("====> TestDispatcher.doGet");
+
 		/*
 		 * Retrieve JaxrHandle
 		 */
@@ -89,6 +91,9 @@ public class TestDispatcher extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		
+		System.out.println("====> TestDispatcher.doPost");
+
 		/*
 		 * Retrieve JaxrHandle
 		 */
@@ -111,7 +116,10 @@ public class TestDispatcher extends HttpServlet {
 			
 			ServletContext context = getServletContext();
 			
+
 			TestService service = getService(sid);
+			System.out.println("====> TestDispatcher.doPost service: " + service.getClass().getSimpleName());
+			
 			service.setJaxrHandle(jaxrHandle);
 			
 			service.execute(request, response, context);

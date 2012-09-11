@@ -71,16 +71,21 @@ public class DavConsumer {
 		try {
 			
 			/*
+			 * unpack Slots
+			 */
+			JSONObject jSlots = new JSONObject(jAccessor.getString(JaxrConstants.RIM_SLOT));
+			
+			/*
 			 * Access parameters
 			 */
-			uri = jAccessor.getString(JaxrConstants.SLOT_URI);
-			if (jAccessor.has(JaxrConstants.SLOT_MIMETYPE)) mimetype = jAccessor.getString(JaxrConstants.SLOT_MIMETYPE);
+			uri = jSlots.getString(JaxrConstants.SLOT_URI);
+			if (jSlots.has(JaxrConstants.SLOT_MIMETYPE)) mimetype = jSlots.getString(JaxrConstants.SLOT_MIMETYPE);
 
 			/*
 			 * Credentials
 			 */
-			String alias   = jAccessor.getString(JaxrConstants.SLOT_ALIAS);
-			String keypass = jAccessor.getString(JaxrConstants.SLOT_KEYPASS);
+			String alias   = jSlots.getString(JaxrConstants.SLOT_ALIAS);
+			String keypass = jSlots.getString(JaxrConstants.SLOT_KEYPASS);
 
 			client = new WebDAVClient(alias, keypass, uri);
 

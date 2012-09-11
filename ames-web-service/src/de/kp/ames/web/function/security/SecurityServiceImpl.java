@@ -116,6 +116,8 @@ public class SecurityServiceImpl extends BusinessImpl {
 
 		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
 		
+		System.out.println("====> SecurityServiceImpl.doGetRequest: type: " + type);
+		
 		if (type == null) {
 			this.sendNotImplemented(ctx);
 
@@ -203,6 +205,8 @@ public class SecurityServiceImpl extends BusinessImpl {
 		 * Retrieve caller's unique identifier
 		 */
 		String uid = jaxrHandle.getUser();
+		
+		System.out.println("====> SecurityServiceImpl.getCredentials: uid: <" + uid + ">");
 		if (uid == null) {
 			/*
 			 * Return empty JSON object
@@ -471,6 +475,9 @@ public class SecurityServiceImpl extends BusinessImpl {
 		 * Retrieve caller's unique identifier
 		 */
 		String uid = jaxrHandle.getUser();
+		
+		System.out.println("====> SecurityServiceImpl.set: uid: <" + uid + ">");
+
 		if (uid == null) {
 			/*
 			 * Return empty JSON object
@@ -487,6 +494,8 @@ public class SecurityServiceImpl extends BusinessImpl {
 		
 		String sqlString = FncSQL.getSQLAssertions_Safe(uid);
 		List<AssociationImpl> as = dqm.getAssociationsByQuery(sqlString);
+
+		System.out.println("======> SecurityServiceImpl.set: asso.size(): " + as.size());
 
 		if (as.size() == 0) {
 			/*

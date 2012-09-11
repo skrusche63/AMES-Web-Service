@@ -47,20 +47,25 @@ public class JdbcConsumer {
 
 		try {
 
+			/*
+			 * unpack Slots
+			 */
+			JSONObject jSlots = new JSONObject(jAccessor.getString(JaxrConstants.RIM_SLOT));
+
 			/* 
 			 * Database access parameters
 			 */
-			String name   = jAccessor.getString(JaxrConstants.SLOT_DATABASE);
-			String driver = jAccessor.getString(JaxrConstants.SLOT_DRIVER);
-			String url    = jAccessor.getString(JaxrConstants.SLOT_ENDPOINT);
+			String name   = jSlots.getString(JaxrConstants.SLOT_DATABASE);
+			String driver = jSlots.getString(JaxrConstants.SLOT_DRIVER);
+			String url    = jSlots.getString(JaxrConstants.SLOT_ENDPOINT);
 			
 			/* 
 			 * User credentials
 			 */
-			String alias   = jAccessor.getString(JaxrConstants.SLOT_ALIAS);
-			String keypass = jAccessor.getString(JaxrConstants.SLOT_KEYPASS);
+			String alias   = jSlots.getString(JaxrConstants.SLOT_ALIAS);
+			String keypass = jSlots.getString(JaxrConstants.SLOT_KEYPASS);
 
-			sqlString = jAccessor.getString(JaxrConstants.SLOT_SQL);
+			sqlString = jSlots.getString(JaxrConstants.SLOT_SQL);
 
 			connection = new JdbcConnection();
 			connection.connect(name, driver, url, alias, keypass);
@@ -169,7 +174,7 @@ public class JdbcConsumer {
 			 * Retrieve columns from metadata description
 			 */
 			JSONArray jColumns = new JSONArray();
-			for (int col=1; col < columnCount; col++) {
+			for (int col=1; col <= columnCount; col++) {
 				jColumns.put(metadata.getColumnName(col));
 			}
 			
@@ -183,7 +188,7 @@ public class JdbcConsumer {
 				// this is a row processing
 				JSONObject jRecord = new JSONObject();
 				
-				for (int col=1; col < columnCount; col++) {
+				for (int col=1; col <= columnCount; col++) {
 					
 					/* 
 					 * Table and data type are actually not supported; 
