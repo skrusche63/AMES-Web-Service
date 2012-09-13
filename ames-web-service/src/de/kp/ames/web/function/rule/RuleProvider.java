@@ -57,6 +57,7 @@ import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ConceptImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExternalLinkImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.InternationalStringImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ServiceBindingImpl;
@@ -387,7 +388,13 @@ public class RuleProvider extends JaxrDQM {
 		 * rim.name (registry object)
 		 */
 		Element eName = xmlDoc.createElementNS(SM_NS, SM_PRE + ":" + NAME_TAG);
-		eName.appendChild(xmlDoc.createTextNode(getName(ro)));
+		String name = getName(ro);
+    	/*
+    	 * If no matching locale string exists, get the closest match
+    	 */
+    	name = (name == "") ? ro.getDisplayName() : name;
+
+		eName.appendChild(xmlDoc.createTextNode(name));
 
 		elem.appendChild(eName);
 				
@@ -395,7 +402,14 @@ public class RuleProvider extends JaxrDQM {
 		 * rim.description (registry object)
 		 */
 		Element eDesc = xmlDoc.createElementNS(SM_NS, SM_PRE + ":" + DESCRIPTION_TAG);
-		eDesc.appendChild(xmlDoc.createTextNode(getDescription(ro)));
+		String description = getDescription(ro);
+		description = (description == "") ? ((InternationalStringImpl)ro.getDescription()).getClosestValue() : description;
+
+    	/*
+    	 * If no matching locale string exists, get the closest match
+    	 */
+		description = (description == "") ? ((InternationalStringImpl)ro.getDescription()).getClosestValue() : description;
+		eDesc.appendChild(xmlDoc.createTextNode(description));
 
 		elem.appendChild(eDesc);
 

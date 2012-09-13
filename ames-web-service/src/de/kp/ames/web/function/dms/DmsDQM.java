@@ -130,7 +130,7 @@ public class DmsDQM extends JaxrDQM {
 			if (eo == null) throw new Exception("[DmsDQM] An image with id <" + item + "> does not exist.");
 
 			String mimetype = eo.getMimeType();
-			if ((mimetype == null) || mimetype.startsWith("image") == false) {
+			if ((mimetype != null) && mimetype.startsWith("image")) {
 		
 				DataHandler handler = eo.getRepositoryItem();
 				image = ImageIO.read(handler.getInputStream());

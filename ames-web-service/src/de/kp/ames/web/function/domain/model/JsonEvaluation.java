@@ -41,6 +41,7 @@ import java.util.Locale;
 import javax.xml.registry.JAXRException;
 
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.InternationalStringImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.common.CanonicalSchemes;
 import org.json.JSONException;
@@ -91,7 +92,14 @@ public class JsonEvaluation extends JsonExtrinsicObject {
 			String associativeId   = associative.getId();
 			
 			String associativeName = jaxrBase.getName(associative);
+        	/*
+        	 * If no matching locale string exists, get the closest match
+        	 */
+			associativeName = (associativeName == "") ? associative.getDisplayName() : associativeName;
+
 			String associativeDesc = jaxrBase.getDescription(associative);
+			associativeDesc = (associativeDesc == "") ? ((InternationalStringImpl)associative.getDescription()).getClosestValue() : associativeDesc;
+
 			
 			String associativeType = associative.getObjectType().getKey().getId();
 			

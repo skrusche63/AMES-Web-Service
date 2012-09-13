@@ -42,6 +42,7 @@ import java.util.List;
 
 import javax.xml.registry.JAXRException;
 
+import org.freebxml.omar.client.xml.registry.infomodel.InternationalStringImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -196,7 +197,10 @@ public class RssConverter {
 			SyndContent desc = new SyndContentImpl();			 
 			desc.setType(GlobalConstants.MT_HTML);
 			
-			desc.setValue(dqm.getDescription(ro));	        
+			String description = dqm.getDescription(ro);
+			description = (description == "") ? ((InternationalStringImpl)ro.getDescription()).getClosestValue() : description;
+
+			desc.setValue(description);	        
 	        entry.setDescription(desc);
 			
 	        /* 

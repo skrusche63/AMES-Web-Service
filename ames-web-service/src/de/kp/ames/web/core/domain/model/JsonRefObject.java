@@ -72,7 +72,12 @@ public class JsonRefObject extends JsonRegistryObject {
 		/* 
 		 * Convert name
 		 */
-    	put(JaxrConstants.RIM_NAME, jaxrBase.getName(ro));
+		String name = jaxrBase.getName(ro);
+    	/*
+    	 * If no matching locale string exists, get the closest match
+    	 */
+    	name = (name == "") ? ro.getDisplayName() : name;
+    	put(JaxrConstants.RIM_NAME, name);
 
 		/*
 		 * Slots

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <apps version="1.0">
     <app>
+        <app-id>urn:oasis:names:tc:ebxml-regrep:FNC:App:Bulletin</app-id>
+        <app-name>Bulletin Board</app-name>
+        <app-icon>scmsys.png</app-icon>
+    </app>
+    <app>
         <app-id>urn:oasis:names:tc:ebxml-regrep:FNC:App:ScmSys</app-id>
         <app-name>Semantic Software Catalog</app-name>
-        <app-icon>tbd</app-icon>
+        <app-icon>scmsys.png</app-icon>
     </app>
     <app>
         <app-id>urn:oasis:names:tc:ebxml-regrep:FNC:App:ShowCase</app-id>
         <app-name>ADF Showcase</app-name>
-        <app-icon>tbd</app-icon>
+        <app-icon>scmsys.png</app-icon>
     </app>
 </apps>

@@ -146,7 +146,13 @@ public class JsonProductor extends JsonService {
     		jTransformator.put(JaxrConstants.RIM_SEQNO, seqNo);
 
     		jTransformator.put(JaxrConstants.RIM_ID,   ro.getId());
-    		jTransformator.put(JaxrConstants.RIM_NAME, jaxrBase.getName(ro));
+    		String name = jaxrBase.getName(ro);
+        	/*
+        	 * If no matching locale string exists, get the closest match
+        	 */
+        	name = (name == "") ? ro.getDisplayName() : name;
+
+    		jTransformator.put(JaxrConstants.RIM_NAME, name);
     			
     		collector.put(seqNo, jTransformator);
     		

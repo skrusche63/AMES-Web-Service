@@ -303,7 +303,11 @@ public class ImapConsumer {
 		if (store == null) return file;
 		
 		try {
-			
+			/*
+			 * Connect to IMAP store
+			 */
+		    store.connect(); 
+
 		    /*
 		     * Retrieve & open INBOX folder
 		     */
@@ -360,6 +364,11 @@ public class ImapConsumer {
 		if (store == null) return html;
 		
 		try {
+			/*
+			 * Connect to IMAP store
+			 */
+		    store.connect(); 
+
 		    /*
 		     * Retrieve & open INBOX folder
 		     */

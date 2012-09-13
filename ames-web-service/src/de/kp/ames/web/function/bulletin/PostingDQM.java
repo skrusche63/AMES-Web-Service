@@ -116,7 +116,7 @@ public class PostingDQM extends JaxrDQM {
 			jComment.put(JaxrConstants.RIM_TIMESTAMP, lastModified);
 
 			String author = getAuthor(comment);
-			jComment.put(JaxrConstants.RIM_AUTHOR, author);
+			jComment.put(JaxrConstants.RIM_FROM, author);
 
 			/*
 			 * Add rendering information
@@ -183,7 +183,7 @@ public class PostingDQM extends JaxrDQM {
 			jPosting.put(JaxrConstants.RIM_TIMESTAMP, lastModified);
 
 			String author = getAuthor(posting);
-			jPosting.put(JaxrConstants.RIM_AUTHOR, author);
+			jPosting.put(JaxrConstants.RIM_FROM, author);
 
 			/*
 			 * Add rendering information

@@ -257,10 +257,7 @@ public class UploadServiceImpl extends BusinessImpl {
 						byte[] bytes = FileUtil.getByteArrayFromInputStream(fileItem.openStream());
 						boolean checked = MalwareScanner.scanForViruses(bytes);						
 						
-						if (checked == false) {
-							result = true;
-
-						} else {
+						if (checked) {
 
 							String item = this.method.getAttribute(MethodConstants.ATTR_ITEM);		
 							String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);			

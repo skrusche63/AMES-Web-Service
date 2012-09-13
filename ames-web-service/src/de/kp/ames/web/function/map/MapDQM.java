@@ -162,6 +162,11 @@ public class MapDQM extends JaxrDQM {
 				if ((jStart != null) && (jEnd != null)) {
 					
 					String name = getName(edge);
+			    	/*
+			    	 * If no matching locale string exists, get the closest match
+			    	 */
+			    	name = (name == "") ? ro.getDisplayName() : name;
+
 					
 					JSONObject jEdge = new JSONObject();				
 					jEdge.put(JsonConstants.J_NAME, name);

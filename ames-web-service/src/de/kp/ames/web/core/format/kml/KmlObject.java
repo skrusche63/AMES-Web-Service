@@ -53,6 +53,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.freebxml.omar.client.xml.registry.infomodel.InternationalStringImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.SlotImpl;
@@ -402,6 +403,8 @@ public class KmlObject {
     	Element descElem = kmlDoc.createElementNS(KML_NS, KML_PRE + ":" + DESCRIPTION_TAG);
 
 		String description = jaxrDQM.getDescription(ro);
+		description = (description == "") ? ((InternationalStringImpl)ro.getDescription()).getClosestValue() : description;
+
 		descElem.setTextContent(description);
 		
 		return descElem;

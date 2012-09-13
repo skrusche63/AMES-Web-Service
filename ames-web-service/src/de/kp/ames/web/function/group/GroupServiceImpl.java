@@ -362,12 +362,12 @@ public class GroupServiceImpl extends BusinessImpl {
 	 * information to the OASIS ebXML RegRep
 	 * 
 	 * @param type
-	 * @param source
+	 * @param item
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	private String submit(String type, String source, String data) throws Exception {
+	private String submit(String type, String item, String data) throws Exception {
 
 		String content = null;
 		
@@ -381,11 +381,11 @@ public class GroupServiceImpl extends BusinessImpl {
 			/* 
 			 * An affiliation is a specific association between a certain user
 			 * and a community of interest; with this request an affiliation is
-			 * either created or modified; 'source' refers to an existing affiliation
+			 * either created or modified; 'item' refers to an existing affiliation
 			 */
 
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
-			content = lcm.submitAffiliation(source, data);
+			content = lcm.submitAffiliation(item, data);
 
 		} else if (type.equals(ClassificationConstants.FNC_ID_Category)) {
 
@@ -396,7 +396,7 @@ public class GroupServiceImpl extends BusinessImpl {
 			 */
 
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
-			content = lcm.submitCategory(source, data);
+			content = lcm.submitCategory(item, data);
 
 		} else if (type.equals(ClassificationConstants.FNC_ID_Contact)) {
 
@@ -407,7 +407,7 @@ public class GroupServiceImpl extends BusinessImpl {
 			 */
 
 			GroupLCM lcm = new GroupLCM(jaxrHandle);
-			content = lcm.submitContact(source, data);
+			content = lcm.submitContact(item, data);
 
 		} else if (type.equals(ClassificationConstants.FNC_ID_Community)) {
 			

@@ -105,6 +105,12 @@ public class RoleDQM extends JaxrDQM {
 			 * Name
 			 */
 			String name = getName(rp);
+			/*
+	    	 * If no matching default locale string exists, get the closest match
+	    	 */
+	    	name = (name == "") ? rp.getDisplayName() : name;
+
+			
 			/* 
 			 * The top level container for all namespaces is 
 			 * excluded from this request

@@ -47,13 +47,14 @@ import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.domain.DomainLCM;
+import de.kp.ames.web.core.reactor.ReactorImpl;
 import de.kp.ames.web.core.reactor.ReactorParams;
 import de.kp.ames.web.core.reactor.ReactorParams.RAction;
-import de.kp.ames.web.core.reactor.ReactorImpl;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
@@ -135,7 +136,7 @@ public class PostingLCM extends JaxrLCM {
 
 		String name = "[COMMENT] " + jPosting.getString(JaxrConstants.RIM_NAME);	
 		String desc = "[SUBJ] " + jPosting.getString(JaxrConstants.RIM_SUBJECT);
-//		String desc = jPosting.getString(JaxrConstants.RIM_DESC);
+
 		/* 
 		 * Home url
 		 */
@@ -157,7 +158,6 @@ public class PostingLCM extends JaxrLCM {
 		DataHandler handler = new DataHandler(FileUtil.createByteArrayDataSource(bytes, mimetype));                	
     	eo.setRepositoryItem(handler);				
 
-    	transaction.addObjectToSave(eo);
 
 		/*
 		 * Create classification
@@ -169,13 +169,11 @@ public class PostingLCM extends JaxrLCM {
 		 * Associate classification and posting container
 		 */
 		eo.addClassification(c);
-		transaction.addObjectToSave(c);				
 
 		/* 
 		 * Add extrinsic object to container
 		 */
 		container.addRegistryObject(eo);
-		transaction.addObjectToSave(container);
 				
 		/*
 		 * Create association
@@ -190,10 +188,9 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Source object
 		 */
-		RegistryObjectImpl so = (RegistryObjectImpl)jaxrHandle.getDQM().getRegistryObject(posting);
+		ExtrinsicObjectImpl so = (ExtrinsicObjectImpl)jaxrHandle.getDQM().getRegistryObject(posting);
 		
 		so.addAssociation(a);
-		transaction.addObjectToSave(so);
 		
 		/*
 		 * Add association to container
@@ -310,8 +307,6 @@ public class PostingLCM extends JaxrLCM {
 		DataHandler handler = new DataHandler(FileUtil.createByteArrayDataSource(bytes, mimetype));                	
     	eo.setRepositoryItem(handler);				
 
-    	transaction.addObjectToSave(eo);
-
 		/*
 		 * Create classification
 		 */
@@ -322,13 +317,11 @@ public class PostingLCM extends JaxrLCM {
 		 * Associate classification and posting container
 		 */
 		eo.addClassification(c);
-		transaction.addObjectToSave(c);				
 
 		/* 
 		 * Add extrinsic object to container
 		 */
 		container.addRegistryObject(eo);
-		transaction.addObjectToSave(container);
 				
 		/*
 		 * Create association
@@ -343,10 +336,9 @@ public class PostingLCM extends JaxrLCM {
 		/*
 		 * Source object
 		 */
-		RegistryObjectImpl so = (RegistryObjectImpl)jaxrHandle.getDQM().getRegistryObject(recipient);
+		UserImpl so = (UserImpl)jaxrHandle.getDQM().getRegistryObject(recipient);
 		
 		so.addAssociation(a);
-		transaction.addObjectToSave(so);
 		
 		/*
 		 * Add association to container
@@ -358,6 +350,10 @@ public class PostingLCM extends JaxrLCM {
 		 */
 		confirmAssociation(a);
 		
+		/*
+		 * Only the registryPackage needs to be added for save
+		 * All dependent objects will be added automatically 
+		 */
 		transaction.addObjectToSave(container);
 		saveObjects(transaction.getObjectsToSave(), false, false);
 
