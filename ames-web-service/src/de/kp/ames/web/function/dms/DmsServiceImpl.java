@@ -46,6 +46,7 @@ import org.json.JSONArray;
 
 import de.kp.ames.web.core.regrep.JaxrClient;
 import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.core.util.ImageUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.dms.extract.ExtractFactory;
@@ -164,8 +165,8 @@ public class DmsServiceImpl extends BusinessImpl {
 					/*
 					 * Image response
 					 */
-					BufferedImage image = getImageResponse(item);
-					sendImageResponse(image, ctx.getResponse());
+					ImageUtil image = getImageResponse(item);
+					sendImageDownloadResponse(image, request, ctx.getResponse());
 					
 				}
 			
@@ -274,7 +275,7 @@ public class DmsServiceImpl extends BusinessImpl {
 					/*
 					 * Image response
 					 */
-					BufferedImage image = getImageResponse(item);
+					BufferedImage image = getImageResponse(item).getImage();
 					sendImageResponse(image, ctx.getResponse());
 					
 				} catch (Exception e) {
@@ -371,9 +372,9 @@ public class DmsServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private BufferedImage getImageResponse(String item) throws Exception {
+	private ImageUtil getImageResponse(String item) throws Exception {
 
-		BufferedImage image = null;
+		ImageUtil image = null;
 		
 		/*
 		 * Login

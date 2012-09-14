@@ -51,6 +51,7 @@ import de.kp.ames.web.core.graphics.GraphicsUtil;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.dqm.JaxrDQM;
 import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.core.util.ImageUtil;
 import de.kp.ames.web.function.dms.cache.DmsDocument;
 import de.kp.ames.web.function.dms.cache.DmsImage;
 import de.kp.ames.web.function.dms.cache.DocumentCacheManager;
@@ -118,33 +119,47 @@ public class DmsDQM extends JaxrDQM {
 	 * @return
 	 * @throws Exception
 	 */
-	public BufferedImage getImage(String item) throws Exception {
+	public ImageUtil getImage(String item) throws Exception {
 		
 		ImageCacheManager cacheManager = ImageCacheManager.getInstance();
 		DmsImage cacheEntry = (DmsImage)cacheManager.getFromCache(item);
 		
 		BufferedImage image = null;
+		String fileName = null;
+		String mimetype = null;
+		
 		if (cacheEntry == null) {
 
 	  		ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl) getRegistryObjectById(item);
 			if (eo == null) throw new Exception("[DmsDQM] An image with id <" + item + "> does not exist.");
 
-			String mimetype = eo.getMimeType();
+			mimetype = eo.getMimeType();
+			fileName = eo.getDisplayName();
+			
 			if ((mimetype != null) && mimetype.startsWith("image")) {
 		
 				DataHandler handler = eo.getRepositoryItem();
 				image = ImageIO.read(handler.getInputStream());
-				
+			
+				ImageUtil imageUtil = new ImageUtil(GraphicsUtil.createSource(image), mimetype);
+				imageUtil.setFileName(fileName);
+				return imageUtil;
+			} else {
+				return null;
 			}
 			
 		} else {
 			
 			image = cacheEntry.getImage();
+			mimetype = cacheEntry.getMimetype();
+			fileName = cacheEntry.getName();
+			
+			ImageUtil imageUtil = new ImageUtil(GraphicsUtil.createSource(image), mimetype);
+			imageUtil.setFileName(fileName);
+			return imageUtil;
 			
 		}
-		
-		return GraphicsUtil.createSource(image);
-
+				
 	}
 	
 	/**
@@ -164,14 +179,17 @@ public class DmsDQM extends JaxrDQM {
 			if (eo == null) throw new Exception("[DmsDQM] A document with id <" + item + "> does not exist.");
 
 			String mimetype = eo.getMimeType();
+			String fileName = eo.getDisplayName();
 			
 			DataHandler handler = eo.getRepositoryItem();
 			InputStream stream = handler.getInputStream();
 			
 			file = new FileUtil(stream, mimetype);
+			file.setFilename(fileName);
 
 		} else {			
 			file = cacheEntry.asFile();
+			file.setFilename(cacheEntry.getName());
 			
 		}
 		

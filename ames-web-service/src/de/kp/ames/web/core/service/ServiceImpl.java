@@ -46,6 +46,7 @@ import java.io.Writer;
 import java.net.URLEncoder;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,6 +56,7 @@ import de.kp.ames.web.GlobalConstants;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.util.DateUtil;
 import de.kp.ames.web.core.util.FileUtil;
+import de.kp.ames.web.core.util.ImageUtil;
 import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.http.RequestMethod;
 
@@ -262,6 +264,9 @@ public class ServiceImpl implements Service {
 
 		if (file == null) return;
 
+		String clientPath = request.getParameter("clientpath");
+		if (clientPath == null) return;
+
 		/*
 		 * Distinguish between secure and non-secure download requests
 		 */
@@ -306,6 +311,13 @@ public class ServiceImpl implements Service {
 
         }
 		
+		/*
+		 * Signal download ready with cookie
+		 */
+        Cookie cookie = new Cookie("DOWNLOAD_READY", "END");
+        cookie.setPath(clientPath);
+        response.addCookie(cookie);
+
 		// finally set http status
 		response.setStatus( HttpServletResponse.SC_OK );
 	
@@ -314,6 +326,74 @@ public class ServiceImpl implements Service {
 		os.write(file.getFile());				
 		os.close();
 		
+	}
+
+	public void sendImageDownloadResponse(ImageUtil image, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		if (image == null) return;
+		
+		String clientPath = request.getParameter("clientpath");
+		if (clientPath == null) return;
+
+		/*
+		 * Distinguish between secure and non-secure download requests
+		 */
+		if (request.isSecure()) {
+
+			response.addHeader("Cache-Control", "no-cache");
+	        response.addHeader("Pragma", "no-cache");
+            
+	        response.addHeader("Expires", "-1");
+        	
+        } else {
+          
+        	response.addHeader("Cache-Control", "private");
+            response.addHeader("Pragma", "public");
+
+        }
+
+		/*
+		 * Signal download ready with cookie
+		 */
+        Cookie cookie = new Cookie("DOWNLOAD_READY", "END");
+        cookie.setPath(clientPath);
+        response.addCookie(cookie);
+
+
+		/*
+		 * Determine user agent
+		 */
+		String ua = request.getHeader("User-Agent").toLowerCase();        
+		boolean isIE = ((ua.indexOf("msie 6.0") != -1) || (ua.indexOf("msie 7.0") != -1)) ? true : false;
+
+		/*
+		 * Encode file name
+		 */		
+        String encFileName = URLEncoder.encode(image.getFilename(), "UTF-8");
+
+        if (isIE) {
+                    
+        	response.addHeader("Content-Disposition", "attachment;  filename=\"" + encFileName + "\"" );
+            response.addHeader("Connection", "close");
+
+            response.setContentType("application/force-download;  name=\"" + encFileName + "\"" );
+            
+        } else {
+                    
+        	response.addHeader("Content-Disposition", "attachment; filename=\"" + encFileName + "\"" );
+                   
+        	response.setContentType("application/octet-stream; name=\"" + encFileName + "\"" );
+            response.setContentLength(image.getLength());
+
+        }
+		
+		// finally set http status
+		response.setStatus( HttpServletResponse.SC_OK );
+	
+		OutputStream os = response.getOutputStream();
+	
+		os.write(image.getBytes());				
+		os.close();		
 	}
 
 	/* (non-Javadoc)
