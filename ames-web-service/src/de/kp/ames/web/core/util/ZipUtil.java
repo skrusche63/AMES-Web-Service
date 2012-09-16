@@ -34,9 +34,7 @@ public class ZipUtil {
         scmRootFolderName = makeOSDependantAbsoluteFileName(scmRootFolderName);
  
         for (String fileName : files) {
-        	
-        	System.out.println("========> ZipUtil.zipFiles: " + fileName);
-        	
+        	        	
         	fileName = makeOSDependantAbsoluteFileName(fileName);
         	
             FileInputStream fis = new FileInputStream(fileName);
@@ -68,7 +66,6 @@ public class ZipUtil {
 	private static String getRelativeFileName(String fileName, String scmRootFolderName) {
 		String relativeFileName = fileName.replace(scmRootFolderName, "");
 		
-		System.out.println("========> ZipUtil.zipFiles:getrelative " + relativeFileName);
 		if (relativeFileName.startsWith(FILE_SEPARATOR))
 			relativeFileName = relativeFileName.substring(1);
 

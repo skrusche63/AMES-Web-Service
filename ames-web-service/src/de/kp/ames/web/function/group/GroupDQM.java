@@ -117,7 +117,6 @@ public class GroupDQM extends JaxrDQM {
 	
 				JSONObject jOrganization = JsonCoreProvider.getOrganization(jaxrHandle, organization);	
 				
-				System.out.println("====> GroupDQM.getCommunities org name: " + jOrganization.getString("rimName"));
 				collector.put(jOrganization.getString(JaxrConstants.RIM_NAME), jOrganization);
 	
 			}

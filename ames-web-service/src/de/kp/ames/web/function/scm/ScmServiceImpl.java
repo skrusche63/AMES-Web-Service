@@ -64,7 +64,6 @@ public class ScmServiceImpl extends BusinessImpl {
 
 
 		String type = this.method.getAttribute("type");
-		System.out.println("====> processRequest: " + type);
 		
 		if (type.equals("suggest")) {
 
@@ -141,9 +140,7 @@ public class ScmServiceImpl extends BusinessImpl {
 
 			// access post data
 			String data = this.getRequestData(ctx);
-			
-			System.out.println("====> ScmServiceImpl.checkout> data.len: " + data.length());
-				
+							
 			if ((!methodName.equals("apply")) || (data == null)) {
 				this.sendNotImplemented(ctx);
 
@@ -168,9 +165,6 @@ public class ScmServiceImpl extends BusinessImpl {
 			
 			// access post data, from named FORM field
 			String data = ctx.getRequest().getParameter("hiddenField");
-			
-			System.out.println("====> ScmServiceImpl.download> data.len: " + data.length());
-				
 			
 			if ((!methodName.equals("apply")) || (data == null)) {
 				this.sendNotImplemented(ctx);

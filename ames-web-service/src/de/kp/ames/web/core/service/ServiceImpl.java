@@ -187,9 +187,7 @@ public class ServiceImpl implements Service {
 	 * @see de.kp.ames.web.core.service.Service#sendJSONResponse(java.lang.String, javax.servlet.http.HttpServletResponse)
 	 */
 	public void sendJSONResponse(String content, HttpServletResponse response) throws IOException {
-		
-		System.out.println("======> sendJSONResponse: " + content);
-		
+				
 		if (content == null) return;
 		sendResponse(content, GlobalConstants.MT_JSON, response);		
 	}
@@ -198,15 +196,11 @@ public class ServiceImpl implements Service {
 		if (bytes == null)
 			return;
 		
-    	System.out.println("====> ServiceImpl.sendZIPResponse");
-
     	String timestamp = DateUtil.createTimeStamp("yyyyMMdd-HHmm");
 		
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + timestamp + 
 				"-SemanticCheckout.zip\"");
 		
-    	System.out.println("======> ServiceImpl.sendZIPResponse ts: " + timestamp);
-
 		sendResponse(bytes, "application/zip", response);
 	}
 

@@ -259,8 +259,6 @@ public class DomainLCM extends JaxrLCM {
 	
 		rp.setLid(uid);
 		rp.getKey().setId(uid);
-
-		System.out.println("====> DomainLCM.createBusinessPackage: uid: " + uid + " lid: " + rp.getLid() + " id: " + rp.getId() );
 		
 		/* 
 		 * Description

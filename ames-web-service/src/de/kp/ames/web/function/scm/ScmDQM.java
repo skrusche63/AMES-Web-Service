@@ -61,8 +61,6 @@ public class ScmDQM {
 	 */
 	public byte[] download(JSONArray jCheckout) throws Exception {
 
-    	System.out.println("====> SCMSearcher.download");
-
 		// generate HTML representation as readme
 		String semanticResearchReport = generateCheckoutHtml(jCheckout, true);
 		
@@ -74,8 +72,6 @@ public class ScmDQM {
 		
 		List<String> files = getAbsoluteFilenamesFromIds(ids);
 		byte[] zip = ZipUtil.zipFiles(bundle.getString("ames.scm.root"), files, semanticResearchReport);
-
-    	System.out.println("====> SCMSearcher.download.zipFiles packed");
 
 		return zip;
 	}
@@ -93,8 +89,6 @@ public class ScmDQM {
 			files.add(((ArrayList<String>) doc.getFieldValue(SolrConstants.EXTURI_FIELD)).get(0));
 		}
 		
-    	System.out.println("======> SCMSearcher.download.getAbsoluteFilenamesFormIds: " + files.size());
-
 		return files;
 	}
 
@@ -107,8 +101,6 @@ public class ScmDQM {
 	 */
 	public String checkout(JSONArray jCheckout) throws Exception {
 		
-		System.out.println("====> SCMSearcher.checkout: count: " + jCheckout.length());
-
 		String response = generateCheckoutHtml(jCheckout, false);
 	
 		return createCheckout(response);
@@ -357,8 +349,6 @@ public class ScmDQM {
 			String synonyms = scm.getSynonyms();
 			jDoc.put("result", ScmHtmlRenderer.getSuggestHtmlResult(scm));
 			
-			//System.out.println("====> SCM.suggest:result HTML: " + jDoc.get("result") );
-
 			/*
 			 * Hypernym
 			 */
@@ -407,7 +397,6 @@ public class ScmDQM {
 			} else {
 				// add new group header
 				groupHeaders.add(hypernym);
-				//System.out.println("====> SCM.suggest: new group: <" + hypernym+ ">");
 
 				// add new empty list
 				groupedList.add(new ArrayList<JSONObject>());
@@ -454,7 +443,6 @@ public class ScmDQM {
 		/*
 		 * increase total count with additional group-headers count
 		 */
-		System.out.println("====> SCM.suggest: term: <" + prefix + "> s/e: " + s + "/" + e +" total: " + total + " groups: " + groupHeaders.size());
 		if (suggestionLRUCache.containsKey(prefix)) {
 //			if (groupHeaders.size() == 0) {
 //				// no additional headers
@@ -470,7 +458,6 @@ public class ScmDQM {
 			total = total + groupHeaders.size();
 			suggestionLRUCache.put(prefix, (int) total);
 		}
-		System.out.println("======> SCM.suggest: LRU total: " + total);
 
 		/*
 		 * Render result
@@ -496,8 +483,6 @@ public class ScmDQM {
 
 			jResponse.put(ScConstants.SC_STATUS, 0);
 			jResponse.put(ScConstants.SC_TOTALROWS, total);
-			// jResponse.put(ScConstants.SC_STARTROW, start);
-			// jResponse.put(ScConstants.SC_ENDROW, end);
 
 			jResponse.put(ScConstants.SC_DATA, jArray);
 
@@ -561,8 +546,6 @@ public class ScmDQM {
 		String nodeId = (String) node.get("id");
 		int level = (Integer) node.get("level");
 
-    	//System.out.println("====> bfs: lv: " + level + " name: " + ((JSONObject)node.get("node")).get("name"));
-
 		if (level == 0) return;
 		int directChildrenCount = 0;
 
@@ -573,17 +556,12 @@ public class ScmDQM {
 				break;
 			
 			if (cache.contains(child.get("id"))) {
-				//System.out.println("======> bfs: skip: " + ((JSONObject)child.get("node")).get("name"));
 				continue;
 			}
 			// remember id
 			cache.add((String) child.get("id"));
 
 			// anchor children at parent
-	    	//System.out.println("======> bfs: anchor " +
-	    	//		"node: " + ((JSONObject)node.get("node")).get("name") + 
-	    	//		" / child: " + ((JSONObject)child.get("node")).get("name") 
-	    	//		);
 			((JSONArray)((JSONObject)node.get("node")).get("children") ).put(child.get("node"));
 			
 			child.put("level", level-1);

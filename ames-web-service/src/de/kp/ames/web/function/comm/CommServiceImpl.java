@@ -129,8 +129,6 @@ public class CommServiceImpl extends BusinessImpl {
 	 * @see de.kp.ames.web.core.service.ServiceImpl#doSubmitRequest(de.kp.ames.web.http.RequestContext)
 	 */
 	public void doSubmitRequest(RequestContext ctx) {
-
-		System.out.println("====> CommServiceImpl.doSubmitRequest");
 		
 		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);
 		if (type == null) {
@@ -275,8 +273,6 @@ public class CommServiceImpl extends BusinessImpl {
 			
 		CommLCM lcm = new CommLCM(jaxrHandle);
 		content = lcm.submitChat(data);
-		
-		System.out.println("====> CommServiceImpl.submitChat: response: " + content);
 		
 		/*
 		 * Logoff
