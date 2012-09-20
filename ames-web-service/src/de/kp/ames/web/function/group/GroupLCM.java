@@ -612,7 +612,7 @@ public class GroupLCM extends PartyLCM {
         org.addEmailAddress(emailAddress);
 
         /* 
-         * Telefone number
+         * Telephone number
          * 
          * Each organization instance MUST have a telephoneNumbers attribute that 
          * contains the Set of TelephoneNumber instances defined for that organization. 

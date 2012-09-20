@@ -65,7 +65,7 @@ public class PartyLCM extends JaxrLCM {
 	private static String RIM_STREET_NUMBER     = JaxrConstants.RIM_STREET_NUMBER;
 
 	/* 
-	 * Telefone number
+	 * Telephone number
 	 */
 	private static String RIM_COUNTRY_CODE   	= JaxrConstants.RIM_COUNTRY_CODE;
 	private static String RIM_AREA_CODE       	= JaxrConstants.RIM_AREA_CODE;

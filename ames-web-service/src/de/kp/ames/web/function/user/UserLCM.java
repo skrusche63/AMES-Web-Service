@@ -162,12 +162,14 @@ public class UserLCM extends PartyLCM {
         user.addEmailAddress(emailAddress);
 
         /* 
-         * Telefone number
+         * Telephone number
          * 
          * Each user instance MUST have a telephoneNumbers attribute that 
          * contains the Set of TelephoneNumber instances defined for that user. 
          * A user SHOULD have at least one telephone number.
          */
+        user.removeAllTelephoneNumbers();
+        
         TelephoneNumberImpl telephoneNumber = createTelephoneNumber(jForm);
         user.addTelephoneNumber(telephoneNumber);
 
