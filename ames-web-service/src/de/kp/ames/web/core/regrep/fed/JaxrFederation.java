@@ -167,7 +167,7 @@ public class JaxrFederation {
 	 * @param registryRef
 	 * @throws JAXRException
 	 */
-	public void leavFederation(String fid, String rid) throws JAXRException {
+	public void leaveFederation(String fid, String rid) throws JAXRException {
 
 		String endpoint = Bundle.getInstance().getString(GlobalConstants.FEDREP_ENDPOINT);
 		leaveFederation(fid, rid, endpoint);

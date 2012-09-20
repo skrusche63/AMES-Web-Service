@@ -141,7 +141,7 @@ public class XslProvider extends JaxrDQM {
 
 	    		/* 
 	    		 * Extrinsic objects must be restricted to xml documents; 
-	    		 * this is asserted by evaluating the assciated mimetype
+	    		 * this is asserted by evaluating the associated mimetype
 	    		 */
 	    		
 	    		ExtrinsicObjectImpl eo = (ExtrinsicObjectImpl)ro;

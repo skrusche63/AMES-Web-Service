@@ -44,6 +44,7 @@ import javax.xml.registry.JAXRException;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
+import org.freebxml.omar.client.xml.registry.infomodel.SlotImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -135,6 +136,21 @@ public class DocumentObject extends BusinessObject {
 			
 		}
 
+		/* 
+		 * Create slots
+		 */
+		JSONObject jSlots = jForm.has(RIM_SLOT) ? new JSONObject(jForm.getString(RIM_SLOT)) : null;
+		if (jSlots != null) {
+
+			List<SlotImpl> slots = createSlots(jSlots);
+			/*
+			 * Set composed object
+			 */
+			eo.addSlots(slots);
+		
+		}
+
+		
 		/*
 		 * Mimetype & repository item
 		 */
