@@ -20,6 +20,9 @@ package de.kp.ames.web.test.bulletin;
 
 import java.util.HashMap;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
@@ -33,6 +36,7 @@ import de.kp.ames.web.test.TestData;
 
 public class BulletinTestImpl extends JaxrTestImpl {
 
+
 	public BulletinTestImpl() {
 		super();
 	}
@@ -41,12 +45,35 @@ public class BulletinTestImpl extends JaxrTestImpl {
 		super(jaxrHandle, methodName);
 	}
 
+	/*
+	 * Explicit test suite definition.
+	 * 
+	 * (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTestImpl#suite(de.kp.ames.web.core.regrep.JaxrHandle, java.lang.String)
+	 */
+    @Override
+	public Test suite(JaxrHandle jaxrHandle, String clazzName) throws Exception {
+
+		System.out.println("====> BulletinTestImpl.suite: " + clazzName);
+		
+		TestSuite suite = new TestSuite();
+		
+        /*
+         * create, get
+         */
+        suite.addTest(new BulletinTestImpl(jaxrHandle, "testDoSubmitRequest"));
+        suite.addTest(new BulletinTestImpl(jaxrHandle, "testDoGetRequest"));
+
+		return suite;
+	}
+
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#getService()
 	 */
 	public Service getService() {
 		return new BulletinServiceImpl();
 	}
+
 
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#createJsonSubmitData()

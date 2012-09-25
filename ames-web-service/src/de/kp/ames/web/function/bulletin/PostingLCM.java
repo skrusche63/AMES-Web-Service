@@ -41,13 +41,13 @@ import java.util.Locale;
 
 import javax.activation.DataHandler;
 import javax.xml.registry.JAXRException;
+import javax.xml.registry.infomodel.RegistryObject;
 
 import org.freebxml.omar.client.xml.registry.infomodel.AssociationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ExtrinsicObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryPackageImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.GlobalConstants;
@@ -334,9 +334,10 @@ public class PostingLCM extends JaxrLCM {
 		setProperties(a, aid, "Recipient Link", "This is a directed association between a recipient and the respective posting.", home);
 
 		/*
-		 * Source object
+		 * Source object (could be User or Organization)
 		 */
-		UserImpl so = (UserImpl)jaxrHandle.getDQM().getRegistryObject(recipient);
+		
+		RegistryObject so = (RegistryObject)jaxrHandle.getDQM().getRegistryObject(recipient);
 		
 		so.addAssociation(a);
 		

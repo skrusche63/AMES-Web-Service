@@ -30,12 +30,12 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
-import org.springframework.mock.web.MockHttpServletResponse;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.json.JSONObject;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.service.Service;
@@ -106,6 +106,10 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTest#suite(de.kp.ames.web.core.regrep.JaxrHandle, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public Test suite(JaxrHandle jaxrHandle, String clazzName, String type, String data) throws Exception {
 		
 		/*
@@ -181,15 +185,22 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 		
 	}
 	
-	public void doDeleteRequest(RequestContext ctx) {
+	public void doDeleteRequest(RequestContext ctx) throws Exception {
 
-		RequestMethod method = createTestMethod(MethodConstants.METH_GET, getDeleteAttributes());
+		RequestMethod method = createTestMethod(MethodConstants.METH_DELETE, getDeleteAttributes());
 	
 		/*
 		 * Invoke specific test case
 		 */
 		doDelete(jaxrHandle, method, ctx);
-		assertEquals(HttpServletResponse.SC_OK, ((MockHttpServletResponse)ctx.getResponse()).getStatus());
+		MockHttpServletResponse response = (MockHttpServletResponse) ctx.getResponse();
+
+		if (response.getStatus() != HttpServletResponse.SC_OK) {
+			System.out.println("doDeleteRequest: " + response.getStatus() + " response: " + response.getContentAsString());
+		}
+
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+
 
 	}
 	
@@ -226,8 +237,15 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 		 * Invoke specific test case
 		 */
 		doGet(jaxrHandle, method, ctx);
-		assertEquals(HttpServletResponse.SC_OK, ((MockHttpServletResponse)ctx.getResponse()).getStatus());
+		MockHttpServletResponse response = (MockHttpServletResponse) ctx.getResponse();
 
+		if (response.getStatus() != HttpServletResponse.SC_OK) {
+			System.out.println("doGetRequest: " + response.getStatus() + " response: " + response.getContentAsString());
+		}
+
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+
+		
 	}
 
 	public void testDoGetRequest() throws Exception {		
@@ -269,11 +287,16 @@ public class JaxrTestImpl extends TestCase implements JaxrTest {
 		RequestMethod method = createTestMethod(MethodConstants.METH_SUBMIT, getSubmitAttributes());
 
 		/*
-		 * Invoke speific test case
+		 * Invoke specific test case
 		 */
 		doSubmit(jaxrHandle, method, ctx);
-		assertEquals(HttpServletResponse.SC_OK, ((MockHttpServletResponse)ctx.getResponse()).getStatus());
-		
+		MockHttpServletResponse response = (MockHttpServletResponse) ctx.getResponse();
+
+		if (response.getStatus() != HttpServletResponse.SC_OK) {
+			System.out.println("doSubmitRequest: " + response.getStatus() + " response: " + response.getContentAsString());
+		}
+
+		assertEquals(HttpServletResponse.SC_OK, response.getStatus());
 	}
 	
 	public void testDoSubmitRequest() throws Exception {

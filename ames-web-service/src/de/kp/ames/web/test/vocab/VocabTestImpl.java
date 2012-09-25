@@ -23,6 +23,7 @@ public class VocabTestImpl extends JaxrTestImpl {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#getService()
 	 */
+	@Override
 	public Service getService() {
 		return new VocabServiceImpl();
 	}
@@ -30,6 +31,7 @@ public class VocabTestImpl extends JaxrTestImpl {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#createJsonSubmitData()
 	 */
+	@Override
 	public JSONObject createJsonSubmitData() throws Exception {
 
 		if (this.data != null) return new JSONObject(this.data);
@@ -40,6 +42,7 @@ public class VocabTestImpl extends JaxrTestImpl {
 	/* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#getSubmitAttributes()
 	 */
+	@Override
 	public HashMap<String,String> getSubmitAttributes() {
 		
 		HashMap<String,String> attributes = new HashMap<String,String>();

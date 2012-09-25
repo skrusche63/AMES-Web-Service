@@ -80,7 +80,7 @@ public class SymbolProcessor {
 			/*
 			 * Load control information
 			 */
-			InputStream fis = ctx.getContext().getResourceAsStream(SYMBOL_PATH);;
+			InputStream fis = ctx.getContext().getResourceAsStream(SYMBOL_PATH);
 	
 			byte[] bytes = FileUtil.getByteArrayFromInputStream(fis);
 			jSymbols = new JSONObject(new String(bytes));

@@ -22,7 +22,9 @@ import java.util.HashMap;
 
 import org.json.JSONObject;
 
+import de.kp.ames.web.core.util.DateUtil;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
+import de.kp.ames.web.shared.constants.JaxrConstants;
 
 public class TestData {
 
@@ -43,16 +45,30 @@ public class TestData {
 	 * Access-Layer
 	 */
 	public JSONObject getAccessSubmitData() throws Exception {
-		// TODO
-		return null;
+		JSONObject jForm = new JSONObject();
+		jForm.put(JaxrConstants.RIM_NAME, "Test IMAP Accessor");
+		jForm.put(JaxrConstants.RIM_DESC, "Test desc");
+		jForm.put(JaxrConstants.RIM_SLOT, "{\"Port\":\"143\",\"Alias\":\"arwanitis@app6.org\",\"Keypass\":\"xregistry\",\"Endpoint\":\"localhost\"}");
+		jForm.put(JaxrConstants.RIM_SPEC, "[]");
+		
+		return jForm;
 	}
 
 	/*
 	 * Bulletin-Layer
 	 */
 	public JSONObject getBulletinSubmitData() throws Exception {
-		// TODO
-		return null;
+		
+		// {"rimSubject":"Test progress presentation", "rimMessage":"regards<br>PA<br>", "rimName":"freebXMLRegistry"}
+		
+		String timestamp = DateUtil.createTimeStamp("yyyyMMdd-HHmm");
+		
+		JSONObject jForm = new JSONObject();
+		jForm.put(JaxrConstants.RIM_SUBJECT, "[" + timestamp  + "] Test progress presentation");
+		jForm.put(JaxrConstants.RIM_MESSAGE, "regards<br>PA<br>");
+		jForm.put(JaxrConstants.RIM_NAME, "freebXMLRegistry");
+		
+		return jForm;
 	}
 	
 	/*
@@ -75,8 +91,23 @@ public class TestData {
 	 * Group-Layer
 	 */
 	public JSONObject getGroupSubmitData() throws Exception {
-		// TODO
-		return null;
+		
+		String data = "{\"rimName\":\"TestGroup\", " +
+				"\"rimDescription\":\"Test desc\", " +
+				"\"rimEmail\":\"test@test.org\", " +
+				"\"rimCountry\":\"Germany\", " +
+				"\"rimStateOrProvince\":\"\", " +
+				"\"rimPostalCode\":\"\", " +
+				"\"rimCity\":\"Munich\", " +
+				"\"rimStreet\":\"\", " +
+				"\"rimStreeNumber\":\"\", " +
+				"\"rimCountryCode\":\"49\", " +
+				"\"rimAreaCode\":\"89\", " +
+				"\"rimPhoneNumber\":\"8989\", " +
+				"\"rimPhoneExtension\":\"0\"}";
+
+		return new JSONObject(data);
+
 	}
 	
 	/*
@@ -91,12 +122,13 @@ public class TestData {
 	 * Ns-Layer
 	 */
 	public JSONObject getNsSubmitData() throws Exception {
-//		JSONObject jForm = new JSONObject();
-//		jForm.put(JaxrConstants.RIM_NAME, value);
-//		jForm.put(JaxrConstants.RIM_DESC, value);
-//		jForm.put(JaxrConstants.RIM_SLOT, value);
+
+		JSONObject jForm = new JSONObject();
+		jForm.put(JaxrConstants.RIM_NAME, "TestNS");
+		jForm.put(JaxrConstants.RIM_DESC, "Test desc");
+		jForm.put(JaxrConstants.RIM_SLOT, "{\"Alias\":\"tns\"}");
 		
-		return null;
+		return jForm;
 	}
 	
 	/*
@@ -135,8 +167,23 @@ public class TestData {
 	 * User-Layer
 	 */
 	public JSONObject getUserSubmitData() throws Exception {
-		// TODO
-		return null;
+		String data = "{\"rimFirstName\":\"\", " +
+				"\"rimMiddleName\":\"\", " +
+				"\"rimLastName\":\"Arwanitis (PKCS#12)\", " +
+				"\"rimEmail\":\"arwanitis@dr-kruscheundpartner.de\", " +
+				"\"rimCountry\":\"Germany\", " +
+				"\"rimStateOrProvince\":\"\", " +
+				"\"rimPostalCode\":\"89898\", " +
+				"\"rimCity\":\"Munich-Test\", " +
+				"\"rimStreet\":\"\", " +
+				"\"rimStreeNumber\":\"\", " +
+				"\"rimCountryCode\":\"49\", " +
+				"\"rimAreaCode\":\"89\", " +
+				"\"rimPhoneNumber\":\"8989\", " +
+				"\"rimPhoneExtension\":\"8\", " +
+				"\"rimId\":\"urn:uid:de:kp:samltest\"}";
+		
+		return new JSONObject(data);
 	}
 	
 	public String getIdentifier(String type) {
@@ -147,6 +194,11 @@ public class TestData {
 
 		uidMap = new HashMap<String,String>();
 		
+		/*
+		 * Bulletin Test
+		 */
+		uidMap.put(ClassificationConstants.FNC_ID_Community, "urn:freebxml:registry:Organization:freebXMLRegistry");
+
 		/*
 		 * Symbol Test
 		 */

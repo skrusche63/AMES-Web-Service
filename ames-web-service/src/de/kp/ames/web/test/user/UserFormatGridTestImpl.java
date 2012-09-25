@@ -85,7 +85,7 @@ public class UserFormatGridTestImpl extends JaxrTestImpl {
 				int totalRows = jObj.getJSONObject("response").getInt("totalRows");
 				System.out.println("====> testDoGetRequest:  run #" + i + " result totalRows: " +  totalRows);
 
-				assertEquals(8, totalRows);
+				assertTrue(totalRows > 0);
 
 			}
 			

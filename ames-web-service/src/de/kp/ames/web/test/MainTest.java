@@ -22,9 +22,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.kp.ames.http.HttpClient;
-
 import junit.framework.TestCase;
+import de.kp.ames.http.HttpClient;
+import de.kp.ames.http.Response;
 
 /*
  * This test case invokes all existing functional test cases
@@ -35,32 +35,64 @@ import junit.framework.TestCase;
  * known to the user management
  */
 public class MainTest extends TestCase {
-	
+
+	/*
+	 * This is one HttpClient instance used as a SAML-enabled session
+	 * for all requests
+	 */
+	private HttpClient client;
+
+	/*
+	 * This is a dummy url for an initial request against a SAML-based
+	 * security infrastructure that uses HTTP 302 (redirect)
+	 */
+	private static String PING_URL = "https://localhost:8443/ames/test/unit";
+
 	private String root = "de.kp.ames.web.test.";
 	
 	/*
 	 * List of test package names
 	 */
 	private String[] names = {
-		"access",
-		"bulletin",
-		"comm",
-		"dms",
-		"group",
+//		"access",
+//		"bulletin",
+//		"comm",
+//		"dms",
+//		"group",
 		"map",
-		"ns",
-		"product",
-		"role",
-		"rule",
-		"symbol",
-		"transform",
-		"upload",
-		"user"		
+//		"ns",
+//		"product",
+//		"role",
+//		"rule",
+//		"symbol",
+//		"transform",
+//		"upload",
+//		"user"		
 	};
 	
 	
 	private static String BASE_PATH = getBasePath();
 	private static String BASE_URL = "https://localhost:8443/ames/test/unit?name=";
+	
+	
+	public MainTest() {
+		
+		try {
+			/* 
+			 * Invoke HttpsClient with an initial GET request 
+			 * through SAML security redirection 
+			 * to enable subsequent POST requests with SAML assertion
+			 */		
+			client = new HttpClient();
+			client.doGet(PING_URL);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+
 	
 	
 	/**
@@ -104,9 +136,10 @@ public class MainTest extends TestCase {
 			/* 
 			 * Invoke HttpsClient
 			 */
-			HttpClient client = new HttpClient();
-			client.doGet(BASE_URL + clazzName);
+			Response response = client.doGet(BASE_URL + clazzName);
 		
+			System.out.println("====> MainTest.doPackageTest response.status: " + response.getHttpStatus());
+			System.out.println("====> MainTest.doPackageTest response: " + response.asString());
 		}
 
 	}
