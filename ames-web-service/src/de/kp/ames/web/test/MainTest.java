@@ -54,20 +54,23 @@ public class MainTest extends TestCase {
 	 * List of test package names
 	 */
 	private String[] names = {
+		// done
 //		"access",
 //		"bulletin",
-//		"comm",
 //		"dms",
+//		"comm",
 //		"group",
-		"map",
+//		"map",
 //		"ns",
+//		"symbol",
+//		"user",		
+//		"upload",
+
+		// to be done
 //		"product",
 //		"role",
 //		"rule",
-//		"symbol",
 //		"transform",
-//		"upload",
-//		"user"		
 	};
 	
 	

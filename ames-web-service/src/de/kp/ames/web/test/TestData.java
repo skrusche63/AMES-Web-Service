@@ -18,13 +18,17 @@ package de.kp.ames.web.test;
  */
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.util.DateUtil;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
 import de.kp.ames.web.shared.constants.JaxrConstants;
+import de.kp.ames.web.shared.constants.JsonConstants;
 
 public class TestData {
 
@@ -61,6 +65,7 @@ public class TestData {
 		
 		// {"rimSubject":"Test progress presentation", "rimMessage":"regards<br>PA<br>", "rimName":"freebXMLRegistry"}
 		
+		// significant test timestamp
 		String timestamp = DateUtil.createTimeStamp("yyyyMMdd-HHmm");
 		
 		JSONObject jForm = new JSONObject();
@@ -75,16 +80,24 @@ public class TestData {
 	 * Comm-Layer
 	 */
 	public JSONObject getCommSubmitData() throws Exception {
-		// TODO
-		return null;
+		// not needed for comm mail submit
+		return new JSONObject();
 	}
 
 	/*
 	 * Dms-Layer
 	 */
 	public JSONObject getDmsSubmitData() throws Exception {
-		// TODO
-		return null;
+		
+		// {"rimName":"TestDocument", "rimDescription":"test", "rimClassification":"[\"urn:oasis:names:tc:ebxml-regrep:FNC:Document\"]", "rimSlot":"{\"(Property name)\":\"(Property value)\"}", "key":"urn:uid:de:kp:samltest:54562DCE-C6C0-4DD0-B388-1ECDE19146CD"}
+		JSONObject jForm = new JSONObject();
+		jForm.put(JaxrConstants.RIM_NAME, "TestDMS");
+		jForm.put(JaxrConstants.RIM_DESC, "Test desc");
+		jForm.put(JaxrConstants.RIM_CLAS, "[\"urn:oasis:names:tc:ebxml-regrep:FNC:Document\"]");
+		jForm.put(JaxrConstants.RIM_SLOT, "{\"Alias\":\"tdms\"}");
+		jForm.put(JsonConstants.J_KEY, TestData.getInstance().getIdentifier(ClassificationConstants.FNC_ID_Document));
+		
+		return jForm;
 	}
 
 	/*
@@ -114,8 +127,8 @@ public class TestData {
 	 * Map-Layer
 	 */
 	public String getWmsEndpoint() {
-		// TODO
-		return null;
+		
+		return "http://localhost:9090/geoserver/wms";
 	}
 	
 	/*
@@ -209,6 +222,40 @@ public class TestData {
 		 */
 		uidMap.put(ClassificationConstants.FNC_ID_User, "urn:freebxml:registry:predefinedusers:farrukh");
 
+   		/*
+		 * User Test
+		 */
+		uidMap.put(ClassificationConstants.FNC_ID_Document, "urn:uid:de:kp:testdata:upload");
+		
+		
+   		/*
+		 * Comm Test
+		 */
+		// 	{"rimTimestamp":"2012-09-25 15:18:36", "rimFrom":"\"Dr. Stefan Krusche\" <krusche@app6.org>", "rimSubject":"Test Mail Workshop", "rimMessage":"<p style=\"font-family: monospace; font-size: 10pt;\">regards<br />SK<br /></p>", "rimMessageId":"urn:uid:arwanitis@app6.org:5"}
+
+		JSONObject jMail = new JSONObject();
+		String encodedJMail = null;
+		try {
+			// significant test timestamp
+			String timestamp = DateUtil.createTimeStamp("yyyyMMdd-HHmm");
+
+			jMail.put(JaxrConstants.RIM_TIMESTAMP, "2012-09-25 15:18:36");
+			jMail.put(JaxrConstants.RIM_FROM, "\"Dr. Stefan Krusche\" <krusche@app6.org>");
+			jMail.put(JaxrConstants.RIM_SUBJECT, "[" + timestamp + "] generated server Test-Case mail");
+			jMail.put(JaxrConstants.RIM_MESSAGE, "<p style=\"font-family: monospace; font-size: 10pt;\">regards<br />SK<br /></p>");
+			jMail.put(JaxrConstants.RIM_MESSAGE_ID, "urn:uid:arwanitis@app6.org:5");
+
+			encodedJMail  = URLEncoder.encode(jMail.toString(), "UTF-8");
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		uidMap.put(ClassificationConstants.FNC_ID_Mail, encodedJMail);
+		
+		
 	}
 	
 }

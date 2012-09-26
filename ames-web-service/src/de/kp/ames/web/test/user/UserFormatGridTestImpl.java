@@ -70,8 +70,8 @@ public class UserFormatGridTestImpl extends JaxrTestImpl {
 	public void testDoGetRequest() throws Exception {
 		
 		System.out.println("====> UserFormGridTestImpl.testDoGetRequest");
-		
-		for (int i = 0; i < 3; i++) {
+		int iterations = 5;
+		for (int i = 0; i < iterations; i++) {
 			RequestContext ctx = createDoGetMockContext();
 
 			super.doGetRequest(ctx);
@@ -79,11 +79,11 @@ public class UserFormatGridTestImpl extends JaxrTestImpl {
 			MockHttpServletResponse response = (MockHttpServletResponse) ctx.getResponse();
 			
 			if (response.getStatus() != HttpServletResponse.SC_OK) {
-				System.out.println("====> testDoGetRequest: run #" + i + " status: " +  response.getStatus() + "\n\n Response: " + response.getContentAsString());
+				System.out.println("======> UserFormGridTestImpl.testDoGetRequest: run #" + i + " status: " +  response.getStatus() + "\n\n Response: " + response.getContentAsString());
 			} else {
 				JSONObject jObj = new JSONObject(response.getContentAsString());
 				int totalRows = jObj.getJSONObject("response").getInt("totalRows");
-				System.out.println("====> testDoGetRequest:  run #" + i + " result totalRows: " +  totalRows);
+				System.out.println("======> UserFormGridTestImpl.testDoGetRequest:  run #" + i + " result totalRows: " +  totalRows);
 
 				assertTrue(totalRows > 0);
 

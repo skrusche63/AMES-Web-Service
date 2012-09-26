@@ -20,11 +20,18 @@ package de.kp.ames.web.test.comm;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletResponse;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import org.json.JSONObject;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.service.Service;
 import de.kp.ames.web.function.comm.CommServiceImpl;
+import de.kp.ames.web.http.RequestContext;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
 import de.kp.ames.web.shared.constants.FormatConstants;
 import de.kp.ames.web.shared.constants.MethodConstants;
@@ -41,7 +48,29 @@ public class CommTestImpl extends JaxrTestImpl {
 		super(jaxrHandle, methodName);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * Explicit test suite definition.
+	 * 
+	 * (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTestImpl#suite(de.kp.ames.web.core.regrep.JaxrHandle, java.lang.String)
+	 */
+    @Override
+	public Test suite(JaxrHandle jaxrHandle, String clazzName) throws Exception {
+
+		System.out.println("====> CommTestImpl.suite: " + clazzName);
+		
+		TestSuite suite = new TestSuite();
+		
+        /*
+         * create, get and delete
+         */
+        suite.addTest(new CommTestImpl(jaxrHandle, "testDoSubmitRequest"));
+        suite.addTest(new CommTestImpl(jaxrHandle, "testDoGetRequest"));
+
+		return suite;
+	}
+
+    /* (non-Javadoc)
 	 * @see de.kp.ames.web.test.JaxrTestImpl#getService()
 	 */
 	public Service getService() {
@@ -53,6 +82,32 @@ public class CommTestImpl extends JaxrTestImpl {
 	 */
 	public JSONObject createJsonSubmitData() throws Exception {
 		return TestData.getInstance().getCommSubmitData();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see de.kp.ames.web.test.JaxrTestImpl#testDoGetRequest()
+	 */
+	@Override
+	public void testDoGetRequest() throws Exception {
+		
+		System.out.println("====> CommTestImpl.testDoGetRequest");
+		RequestContext ctx = createDoGetMockContext();
+
+		super.doGetRequest(ctx);
+		
+		MockHttpServletResponse response = (MockHttpServletResponse) ctx.getResponse();
+
+		if (response.getStatus() == HttpServletResponse.SC_OK) {
+			JSONObject jObj = new JSONObject(response.getContentAsString());
+			int totalRows = jObj.getJSONObject("response").getInt("totalRows");
+			System.out.println("======> CommTestImpl.testDoGetRequest:  result totalRows: " +  totalRows);
+
+			assertTrue(totalRows > 0);
+
+		}
+		
+		
 	}
 
 	/* (non-Javadoc)
@@ -75,6 +130,7 @@ public class CommTestImpl extends JaxrTestImpl {
 		
 		HashMap<String,String> attributes = new HashMap<String,String>();
 		attributes.put(MethodConstants.ATTR_TYPE, ClassificationConstants.FNC_ID_Mail);
+		attributes.put(MethodConstants.ATTR_MAIL, TestData.getInstance().getIdentifier(ClassificationConstants.FNC_ID_Mail));
 		
 		return attributes;
 		
