@@ -15,4 +15,9 @@
         <app-name>ADF Showcase</app-name>
         <app-icon>scmsys.png</app-icon>
     </app>
+    <app>
+        <app-id>urn:oasis:names:tc:ebxml-regrep:FNC:App:Workshop</app-id>
+        <app-name>ADF Workshop</app-name>
+        <app-icon>scmsys.png</app-icon>
+    </app>
 </apps>

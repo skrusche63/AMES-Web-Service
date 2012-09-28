@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="spexmac7" name="de.kp.ames.web.test.map.MapTestImpl" tests="1" time="0.157" timestamp="2012-09-26T19:58:16">
+  <properties />
+  <testcase classname="de.kp.ames.web.test.map.MapTestImpl" name="testDoGetRequest" time="0.156" />
+</testsuite>

@@ -49,7 +49,6 @@ import de.kp.ames.web.core.util.BaseParam;
 import de.kp.ames.web.core.util.FileUtil;
 import de.kp.ames.web.function.BusinessImpl;
 import de.kp.ames.web.function.FncConstants;
-import de.kp.ames.web.function.office.OfficeBuilder;
 import de.kp.ames.web.function.office.OfficeConverter;
 import de.kp.ames.web.function.office.OfficeFactory;
 import de.kp.ames.web.function.transform.XslProcessor;
@@ -276,7 +275,9 @@ public class ProductServiceImpl extends BusinessImpl {
 	public void doSubmitRequest(RequestContext ctx) {
 
 		String data = this.getRequestData(ctx);
-		if (data == null) {
+		String type = this.method.getAttribute(MethodConstants.ATTR_TYPE);	
+
+		if ((data == null) || (type == null)) {
 			this.sendNotImplemented(ctx);
 			
 		} else {
@@ -285,7 +286,7 @@ public class ProductServiceImpl extends BusinessImpl {
 				/*
 				 * JSON response
 				 */
-				String content = submit(data);
+				String content = submit(type, data);
 				sendJSONResponse(content, ctx.getResponse());
 
 			} catch (Exception e) {
@@ -374,9 +375,15 @@ public class ProductServiceImpl extends BusinessImpl {
 		 * of the specific product
 		 */
 		OfficeFactory factory = new OfficeFactory(jaxrHandle, content);
-		OfficeBuilder builder = factory.getOfficeBuilder();
 		
-		content = builder.build();
+		/*
+		 * production code scenario:
+		 * 		if product does have OpenOffice XML format
+		 * 		following lines will enable builder for OpenOffice documents
+		 * 		For that use case the XML file needs to be OpenOffice namespace aware     
+		 */
+		//OfficeBuilder builder = factory.getOfficeBuilder();
+		//content = builder.build();
 		
 		/*
 		 * Convert office representation
@@ -500,7 +507,7 @@ public class ProductServiceImpl extends BusinessImpl {
 	 * @return
 	 * @throws Exception
 	 */
-	private String submit(String data) throws Exception {
+	private String submit(String type, String data) throws Exception {
 
 		String content = null;
 		
@@ -509,8 +516,18 @@ public class ProductServiceImpl extends BusinessImpl {
 		 */		
 		JaxrClient.getInstance().logon(jaxrHandle);
 
-		ProductLCM lcm = new ProductLCM(jaxrHandle);
-		content = lcm.submitProductor(data);
+		if (type.equals(ClassificationConstants.FNC_ID_Product)) {
+
+			ProductLCM lcm = new ProductLCM(jaxrHandle);
+			content = lcm.submitProduct(data);
+			
+		} else if (type.equals(ClassificationConstants.FNC_ID_Productor)) {
+
+			ProductLCM lcm = new ProductLCM(jaxrHandle);
+			content = lcm.submitProductor(data);
+
+		}
+
 		
 		/*
 		 * Logoff

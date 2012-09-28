@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="spexmac7" name="de.kp.ames.web.test.access.AccessTestImpl" tests="3" time="3.977" timestamp="2012-09-26T19:57:56">
+  <properties />
+  <testcase classname="de.kp.ames.web.test.access.AccessTestImpl" name="testDoSubmitRequest" time="2.386" />
+  <testcase classname="de.kp.ames.web.test.access.AccessTestImpl" name="testDoGetRequest" time="0.753" />
+  <testcase classname="de.kp.ames.web.test.access.AccessTestImpl" name="testDoDeleteRequest" time="0.838" />
+</testsuite>

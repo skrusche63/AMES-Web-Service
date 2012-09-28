@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="spexmac7" name="de.kp.ames.web.test.transform.TransformTestImpl" tests="3" time="6.731" timestamp="2012-09-28T17:21:05">
+  <properties />
+  <testcase classname="de.kp.ames.web.test.transform.TransformTestImpl" name="testDoSubmitRequest" time="5.276" />
+  <testcase classname="de.kp.ames.web.test.transform.TransformTestImpl" name="testDoGetRequest" time="0.317" />
+  <testcase classname="de.kp.ames.web.test.transform.TransformTestImpl" name="testDoDeleteRequest" time="1.138" />
+</testsuite>

@@ -268,6 +268,8 @@ public class ServiceObject extends BusinessObject {
 		
 		}
 		
+		if (serviceBinding != null) service.addServiceBinding(serviceBinding);
+		
 		/* 
 		 * Name & description
 		 */

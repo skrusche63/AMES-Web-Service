@@ -29,6 +29,7 @@ import de.kp.ames.web.core.util.DateUtil;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
 import de.kp.ames.web.shared.constants.JaxrConstants;
 import de.kp.ames.web.shared.constants.JsonConstants;
+import de.kp.ames.web.test.transform.TransformTestImpl;
 
 public class TestData {
 
@@ -148,8 +149,18 @@ public class TestData {
 	 * Product-Layer
 	 */
 	public JSONObject getProductSubmitData() throws Exception {
-		// TODO
-		return null;
+		// Productor submit
+		// {"rimName":"TestProductor", "rimDescription":"Processing Filter transformator", "rimClassification":"[\"urn:oasis:names:tc:ebxml-regrep:FNC:Productor\"]", "rimSlot":"{\"(Property name)\":\"(Property value)\"}", "rimSpecification":"[{\"rimSeqNo\":\"1\", \"rimId\":\"urn:de:kp:ames:transformator:46c9222e-5433-4405-9e9e-f80ecc021669\"}]"}
+		
+		JSONObject jForm = new JSONObject();
+		jForm.put(JaxrConstants.RIM_NAME, "TestProductor");
+		jForm.put(JaxrConstants.RIM_DESC, "Test desc");
+		jForm.put(JaxrConstants.RIM_CLAS, "[\"urn:oasis:names:tc:ebxml-regrep:FNC:Productor\"]");
+		jForm.put(JaxrConstants.RIM_SLOT, "{\"Alias\":\"tptor\"}");
+		// depends that TransformTestImpl submit test had run before
+		jForm.put(JaxrConstants.RIM_SPEC, "[{\"rimSeqNo\":\"1\", \"rimId\":\"" + TransformTestImpl.rimId + "\"}]");
+		
+		return jForm;
 	}
 	
 	/*
@@ -172,8 +183,15 @@ public class TestData {
 	 * Transform-Layer
 	 */
 	public JSONObject getTransformSubmitData() throws Exception {
-		// TODO
-		return null;
+		// {"key":"urn:uid:de:kp:samltest:794A4A01-5D04-4B27-A2B6-9FD3B70B7A66", "rimName":"TestFilter", "rimDescription":"Filter artist", "rimClassification":"[\"urn:oasis:names:tc:ebxml-regrep:FNC:Transformator\"]"}
+		JSONObject jForm = new JSONObject();
+		jForm.put(JaxrConstants.RIM_NAME, "TestTransformator");
+		jForm.put(JaxrConstants.RIM_DESC, "Test desc");
+		jForm.put(JaxrConstants.RIM_CLAS, "[\"urn:oasis:names:tc:ebxml-regrep:FNC:Transformator\"]");
+		jForm.put(JaxrConstants.RIM_SLOT, "{\"Alias\":\"txsl\"}");
+		jForm.put(JsonConstants.J_KEY, TestData.getInstance().getIdentifier(ClassificationConstants.FNC_ID_Transformator));
+		
+		return jForm;
 	}
 	
 	/*
@@ -212,21 +230,6 @@ public class TestData {
 		 */
 		uidMap.put(ClassificationConstants.FNC_ID_Community, "urn:freebxml:registry:Organization:freebXMLRegistry");
 
-		/*
-		 * Symbol Test
-		 */
-		uidMap.put(ClassificationConstants.FNC_SYMBOL_ID_APP6B, "1.X.3");
-		
-   		/*
-		 * User Test
-		 */
-		uidMap.put(ClassificationConstants.FNC_ID_User, "urn:freebxml:registry:predefinedusers:farrukh");
-
-   		/*
-		 * User Test
-		 */
-		uidMap.put(ClassificationConstants.FNC_ID_Document, "urn:uid:de:kp:testdata:upload");
-		
 		
    		/*
 		 * Comm Test
@@ -255,6 +258,26 @@ public class TestData {
 
 		uidMap.put(ClassificationConstants.FNC_ID_Mail, encodedJMail);
 		
+   		/*
+		 * Dms Test
+		 */
+		uidMap.put(ClassificationConstants.FNC_ID_Document, "urn:uid:de:kp:testdata:upload.doc");
+		
+		/*
+		 * Symbol Test
+		 */
+		uidMap.put(ClassificationConstants.FNC_SYMBOL_ID_APP6B, "1.X.3");
+		
+   		/*
+		 * Transform Test
+		 */
+		uidMap.put(ClassificationConstants.FNC_ID_Transformator, "urn:uid:de:kp:testdata:upload.xsl");
+		
+   		/*
+		 * User Test
+		 */
+		uidMap.put(ClassificationConstants.FNC_ID_User, "urn:freebxml:registry:predefinedusers:farrukh");
+
 		
 	}
 	

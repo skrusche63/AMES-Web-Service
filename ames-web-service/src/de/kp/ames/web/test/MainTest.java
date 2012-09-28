@@ -62,15 +62,15 @@ public class MainTest extends TestCase {
 //		"group",
 //		"map",
 //		"ns",
+//		"product",
 //		"symbol",
+//		"transform",
 //		"user",		
 //		"upload",
 
 		// to be done
-//		"product",
-//		"role",
+		"role",
 //		"rule",
-//		"transform",
 	};
 	
 	
@@ -169,9 +169,14 @@ public class MainTest extends TestCase {
 
 			if (file.isDirectory()) continue;
 
-			String relativeClassName = file.getName().substring(0, file.getName().length() - 5);
-			classes.add(packageName + '.' + relativeClassName);
-
+			/*
+			 * Naming convention
+			 */
+			if (file.getName().endsWith("TestImpl.java")) {
+				// strip .java
+				String relativeClassName = file.getName().substring(0, file.getName().length() - 5);
+				classes.add(packageName + '.' + relativeClassName);
+			}
 		}
 
 		return classes;

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="spexmac7" name="de.kp.ames.web.test.bulletin.BulletinTestImpl" tests="2" time="5.956" timestamp="2012-09-26T19:58:00">
+  <properties />
+  <testcase classname="de.kp.ames.web.test.bulletin.BulletinTestImpl" name="testDoSubmitRequest" time="4.542" />
+  <testcase classname="de.kp.ames.web.test.bulletin.BulletinTestImpl" name="testDoGetRequest" time="1.414" />
+</testsuite>

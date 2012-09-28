@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="0" name="AccessTestImpl" package="de.kp.ames.web.test.access" tests="3" time="3.977" timestamp="2012-09-26T19:57:56">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.access.AccessTestImpl" name="testDoSubmitRequest" time="2.386" />
+
+      <testcase classname="de.kp.ames.web.test.access.AccessTestImpl" name="testDoGetRequest" time="0.753" />
+
+      <testcase classname="de.kp.ames.web.test.access.AccessTestImpl" name="testDoDeleteRequest" time="0.838" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="1" name="BulletinTestImpl" package="de.kp.ames.web.test.bulletin" tests="2" time="5.956" timestamp="2012-09-26T19:58:00">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.bulletin.BulletinTestImpl" name="testDoSubmitRequest" time="4.542" />
+
+      <testcase classname="de.kp.ames.web.test.bulletin.BulletinTestImpl" name="testDoGetRequest" time="1.414" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="2" name="CommTestImpl" package="de.kp.ames.web.test.comm" tests="2" time="8.365" timestamp="2012-09-26T20:46:01">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.comm.CommTestImpl" name="testDoSubmitRequest" time="4.291" />
+
+      <testcase classname="de.kp.ames.web.test.comm.CommTestImpl" name="testDoGetRequest" time="4.074" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="3" name="DmsTestImpl" package="de.kp.ames.web.test.dms" tests="3" time="6.627" timestamp="2012-09-26T19:58:06">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.dms.DmsTestImpl" name="testDoSubmitRequest" time="5.4" />
+
+      <testcase classname="de.kp.ames.web.test.dms.DmsTestImpl" name="testDoGetRequest" time="0.321" />
+
+      <testcase classname="de.kp.ames.web.test.dms.DmsTestImpl" name="testDoDeleteRequest" time="0.906" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="4" name="GroupTestImpl" package="de.kp.ames.web.test.group" tests="3" time="3.152" timestamp="2012-09-26T19:58:12">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.group.GroupTestImpl" name="testDoSubmitRequest" time="0.994" />
+
+      <testcase classname="de.kp.ames.web.test.group.GroupTestImpl" name="testDoGetRequest" time="1.494" />
+
+      <testcase classname="de.kp.ames.web.test.group.GroupTestImpl" name="testDoDeleteRequest" time="0.664" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="5" name="MapTestImpl" package="de.kp.ames.web.test.map" tests="1" time="0.157" timestamp="2012-09-26T19:58:16">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.map.MapTestImpl" name="testDoGetRequest" time="0.156" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="6" name="NsTestImpl" package="de.kp.ames.web.test.ns" tests="3" time="5.333" timestamp="2012-09-26T19:58:16">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.ns.NsTestImpl" name="testDoSubmitRequest" time="3.563" />
+
+      <testcase classname="de.kp.ames.web.test.ns.NsTestImpl" name="testDoGetRequest" time="0.767" />
+
+      <testcase classname="de.kp.ames.web.test.ns.NsTestImpl" name="testDoDeleteRequest" time="1.003" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="7" name="ProductTestImpl" package="de.kp.ames.web.test.product" tests="3" time="15.547" timestamp="2012-09-28T18:52:10">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.product.ProductTestImpl" name="testDoSubmitRequest" time="13.014" />
+
+      <testcase classname="de.kp.ames.web.test.product.ProductTestImpl" name="testDoGetRequest" time="0.99" />
+
+      <testcase classname="de.kp.ames.web.test.product.ProductTestImpl" name="testDoDeleteRequest" time="1.543" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="8" name="SymbolTestImpl" package="de.kp.ames.web.test.symbol" tests="1" time="0.102" timestamp="2012-09-26T19:58:21">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.symbol.SymbolTestImpl" name="testDoGetRequest" time="0.102" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="9" name="TransformTestImpl" package="de.kp.ames.web.test.transform" tests="3" time="6.731" timestamp="2012-09-28T17:21:05">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.transform.TransformTestImpl" name="testDoSubmitRequest" time="5.276" />
+
+      <testcase classname="de.kp.ames.web.test.transform.TransformTestImpl" name="testDoGetRequest" time="0.317" />
+
+      <testcase classname="de.kp.ames.web.test.transform.TransformTestImpl" name="testDoDeleteRequest" time="1.138" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="10" name="UploadTestImpl" package="de.kp.ames.web.test.upload" tests="2" time="3.703" timestamp="2012-09-26T19:58:37">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.upload.UploadTestImpl" name="testDoGetRequest" time="3.694" />
+
+      <testcase classname="de.kp.ames.web.test.upload.UploadTestImpl" name="testDoDeleteRequest" time="0.0090" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="11" name="UserFormatGridTestImpl" package="de.kp.ames.web.test.user" tests="1" time="13.109" timestamp="2012-09-26T19:58:21">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.user.UserFormatGridTestImpl" name="testDoGetRequest" time="13.109" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="spexmac7" id="12" name="UserTestImpl" package="de.kp.ames.web.test.user" tests="2" time="2.236" timestamp="2012-09-26T19:58:34">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.user.UserTestImpl" name="testDoGetRequest" time="0.773" />
+
+      <testcase classname="de.kp.ames.web.test.user.UserTestImpl" name="testDoSubmitRequest" time="1.463" />
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="i5ffb" id="13" name="VocabTestImpl" package="de.kp.ames.web.test.vocab" tests="1" time="0.673" timestamp="2012-08-29T11:30:17">
+      <properties />
+
+      <testcase classname="de.kp.ames.web.test.vocab.VocabTestImpl" name="testDoSubmitRequest" time="0.673" />
+
+  </testsuite>
+</testsuites>

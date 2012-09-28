@@ -143,7 +143,7 @@ public class JsonProductor extends JsonService {
 
     		JSONObject jTransformator = new JSONObject();
 
-    		jTransformator.put(JaxrConstants.RIM_SEQNO, seqNo);
+    		jTransformator.put(JaxrConstants.RIM_SEQNO,  (new Integer(seqNo)).toString());
 
     		jTransformator.put(JaxrConstants.RIM_ID,   ro.getId());
     		String name = jaxrBase.getName(ro);

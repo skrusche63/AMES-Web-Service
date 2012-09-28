@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="spexmac7" name="de.kp.ames.web.test.symbol.SymbolTestImpl" tests="1" time="0.102" timestamp="2012-09-26T19:58:21">
+  <properties />
+  <testcase classname="de.kp.ames.web.test.symbol.SymbolTestImpl" name="testDoGetRequest" time="0.102" />
+</testsuite>

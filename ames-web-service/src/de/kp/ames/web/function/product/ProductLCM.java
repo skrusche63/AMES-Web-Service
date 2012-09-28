@@ -191,6 +191,75 @@ public class ProductLCM extends JaxrLCM {
 	}
 	
 	/**
+	 * Submit ProductObject
+	 * 
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public String submitProduct(String data) throws Exception {
+
+		/*
+		 * Create or retrieve registry package that is 
+		 * responsible for managing products
+		 */
+		RegistryPackageImpl container = null;		
+		JaxrDQM dqm = new JaxrDQM(jaxrHandle);
+		
+		List<RegistryPackageImpl> list = dqm.getRegistryPackage_ByClasNode(ClassificationConstants.FNC_ID_Product);
+		if (list.size() == 0) {
+			/*
+			 * Create container
+			 */
+			container = createProductPackage();
+			
+		} else {
+			/*
+			 * Retrieve container
+			 */
+			container = list.get(0);
+
+		}
+		
+		/*
+		 * Initialize transaction
+		 */
+		JaxrTransaction transaction = new JaxrTransaction();
+
+		/*
+		 * Create ProductObject
+		 */
+		ProductObject productObject = new ProductObject(jaxrHandle, this);
+		RegistryObjectImpl ro = productObject.submit(data);
+
+		transaction.addObjectToSave(ro);
+		
+		/*
+		 * Add ProductObject to the respective container
+		 */
+		container.addRegistryObject(ro);
+
+		/*
+		 * Save objects
+		 */
+		transaction.addObjectToSave(container);
+		saveObjects(transaction.getObjectsToSave(), false, false);
+
+		/*
+		 * Supply reactor
+		 */
+		ReactorParams reactorParams = new ReactorParams(jaxrHandle, ro, ClassificationConstants.FNC_ID_Product, RAction.C_INDEX_RSS);
+		ReactorImpl.onSubmit(reactorParams);
+
+		/*
+		 * Retrieve response
+		 */
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.PRODUCT_CREATED);
+		return jResponse.toString();
+		
+	}
+	
+	/**
 	 * Submit Productor
 	 * 
 	 * @param data

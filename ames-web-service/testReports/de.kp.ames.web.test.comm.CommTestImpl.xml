@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="spexmac7" name="de.kp.ames.web.test.comm.CommTestImpl" tests="2" time="8.365" timestamp="2012-09-26T20:46:01">
+  <properties />
+  <testcase classname="de.kp.ames.web.test.comm.CommTestImpl" name="testDoSubmitRequest" time="4.291" />
+  <testcase classname="de.kp.ames.web.test.comm.CommTestImpl" name="testDoGetRequest" time="4.074" />
+</testsuite>

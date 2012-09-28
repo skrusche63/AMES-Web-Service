@@ -77,7 +77,7 @@ public class ProductDQM extends JaxrDQM {
 		if (ro == null) throw new Exception("[ProductDQM] RegistryObject with id <" + item + "> does not exist.");
 
     	String objectType = ro.getObjectType().getKey().getId();	    	
-    	if (!objectType.startsWith(EXTRINSIC_OBJECT)) throw new Exception("[ProductDQM] Product is no ExtrinsicObject");
+    	if (!objectType.startsWith(EXTRINSIC_OBJECT)) throw new Exception("[ProductDQM] Product is not an ExtrinsicObject");
 
 		/* 
 		 * Extrinsic objects must be restricted to xml document;

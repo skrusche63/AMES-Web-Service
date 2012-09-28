@@ -196,6 +196,8 @@ public class XmlObject {
 
             xml = output.toString();
             
+            System.out.println("====> XmlObject.toXml: " + xml);
+            
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         
@@ -637,6 +639,11 @@ public class XmlObject {
 		
 		RegistryPackageType registryPackageType = rimFactory.createRegistryPackageType();
 		
+		/*
+		 * Initialize member list
+		 */
+		RegistryObjectListType registryObjectListType = rimFactory.createRegistryObjectListType();
+		registryPackageType.setRegistryObjectList(registryObjectListType);
 		/*
 		 * Registry Object List
 		 */

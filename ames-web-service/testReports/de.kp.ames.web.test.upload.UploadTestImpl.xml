@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="spexmac7" name="de.kp.ames.web.test.upload.UploadTestImpl" tests="2" time="3.703" timestamp="2012-09-26T19:58:37">
+  <properties />
+  <testcase classname="de.kp.ames.web.test.upload.UploadTestImpl" name="testDoGetRequest" time="3.694" />
+  <testcase classname="de.kp.ames.web.test.upload.UploadTestImpl" name="testDoDeleteRequest" time="0.0090" />
+</testsuite>

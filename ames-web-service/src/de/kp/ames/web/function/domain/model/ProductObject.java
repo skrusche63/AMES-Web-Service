@@ -134,4 +134,37 @@ public class ProductObject extends BusinessObject {
 		return eo;
 		
 	}
+	
+	/**
+	 * Update ProductObject from JSON representation
+	 * 
+	 * @param jForm
+	 * @return
+	 * @throws Exception
+	 */
+	public RegistryObjectImpl update(JSONObject jForm) throws Exception {
+
+		/* 
+		 * Determine document from unique identifier
+		 */
+		String uid = jForm.getString(RIM_ID);
+		
+		RegistryObjectImpl ro = (RegistryObjectImpl)jaxrLCM.getRegistryObjectById(uid);
+		if (ro == null) throw new Exception("[ProductObject] RegistryObject with id <" + uid + "> does not exist.");
+	
+		/*
+		 * Update metadata
+		 */
+		updateMetadata(ro, jForm);
+		
+		/*
+		 * Indicate as updated
+		 */
+		this.created = false;
+		
+		return ro;
+		
+	}
+
+	
 }
