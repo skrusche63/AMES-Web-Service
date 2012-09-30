@@ -178,7 +178,7 @@ public class TransformServiceImpl extends BusinessImpl {
 					 * HTML Response
 					 */
 					FileUtil content = getFileResponse(type, item);					
-					String xml = content.toString();
+					String xml = new String(content.getFile());
 					
 					sendHTMLResponse(xmlToHtml(xml), ctx.getResponse());
 
