@@ -55,7 +55,7 @@ public class TestServiceImpl implements TestService {
 	}
 
 	/*
-	 * This method repesents the entry point to request parameter based
+	 * This method represents the entry point to request parameter based
 	 * processing
 	 */
 	public void execute(HttpServletRequest request, HttpServletResponse response, ServletContext context) {

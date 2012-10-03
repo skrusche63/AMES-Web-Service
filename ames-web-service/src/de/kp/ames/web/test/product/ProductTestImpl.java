@@ -88,7 +88,7 @@ public class ProductTestImpl extends JaxrTestImpl {
         /*
          * teardown the transformator
          */
-    	new TransformTestImpl(jaxrHandle, "testDoSubmitRequest").run();
+    	new TransformTestImpl(jaxrHandle, "testDoDeleteRequest").run();
 
 
 	}	

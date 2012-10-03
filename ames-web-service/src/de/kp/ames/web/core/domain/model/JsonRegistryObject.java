@@ -49,7 +49,6 @@ import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ConceptImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.InternationalStringImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -184,7 +183,7 @@ public class JsonRegistryObject extends JsonRegistryEntry implements IJsonRegist
 		/*
 		 * Classifications
 		 */
-		JSONArray jClases = getClassifications(ro);
+		JSONObject jClases = getClassifications(ro);
 		put(JaxrConstants.RIM_CLAS, jClases.toString());
 
 		/*
@@ -197,16 +196,16 @@ public class JsonRegistryObject extends JsonRegistryEntry implements IJsonRegist
     
     /**
      * A helper method to retrieve the classifications 
-     * of a certain registry object as a JSONArray
+     * of a certain registry object as a JSONObject
      * 
      * @param ro
      * @return
      * @throws JAXRException
      * @throws JSONException
      */
-    private JSONArray getClassifications(RegistryObjectImpl ro) throws JAXRException, JSONException {
+    private JSONObject getClassifications(RegistryObjectImpl ro) throws JAXRException, JSONException {
 
-		JSONArray jArray = new JSONArray();
+    	JSONObject jClas = new JSONObject();
 		
 		Collection<?> classifications = ro.getClassifications();
 		Iterator<?> iter = classifications.iterator();
@@ -216,11 +215,11 @@ public class JsonRegistryObject extends JsonRegistryEntry implements IJsonRegist
 			ClassificationImpl clas = (ClassificationImpl) iter.next();
 			ConceptImpl cpt = (ConceptImpl) clas.getConcept();
 				
-			if (cpt != null) jArray.put(cpt.getId());
+			if (cpt != null) jClas.put(cpt.getId(), cpt.getDisplayName());
 
 		}
 
-		return jArray;
+		return jClas;
 		
 	}
 

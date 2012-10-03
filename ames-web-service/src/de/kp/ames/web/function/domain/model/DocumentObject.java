@@ -187,7 +187,7 @@ public class DocumentObject extends BusinessObject {
 		if (ro == null) throw new Exception("[DocumentObject] RegistryObject with id <" + uid + "> does not exist.");
 	
 		/*
-		 * Update metadata
+		 * Update core metadata
 		 */
 		updateMetadata(ro, jForm);
 		

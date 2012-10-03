@@ -269,26 +269,32 @@ public class ServiceObject extends BusinessObject {
 		}
 		
 		if (serviceBinding != null) service.addServiceBinding(serviceBinding);
-		
-		/* 
-		 * Name & description
-		 */
-		if (jForm.has(RIM_NAME)) service.setName(jaxrLCM.createInternationalString(jForm.getString(RIM_NAME)));
-		if (jForm.has(RIM_DESC)) service.setDescription(jaxrLCM.createInternationalString(jForm.getString(RIM_DESC)));				
 
-		/* 
-		 * Update slots
+		/*
+		 * Update core metadata
 		 */
-		JSONObject jSlots = jForm.has(RIM_SLOT) ? new JSONObject(jForm.getString(RIM_SLOT)) : null;
-		if (jSlots != null) {
+		updateMetadata(service, jForm);
 
-			List<SlotImpl> slots = updateSlots(service, jSlots);
-			/*
-			 * Set composed object
-			 */
-			service.addSlots(slots);
 		
-		}
+//		/* 
+//		 * Name & description
+//		 */
+//		if (jForm.has(RIM_NAME)) service.setName(jaxrLCM.createInternationalString(jForm.getString(RIM_NAME)));
+//		if (jForm.has(RIM_DESC)) service.setDescription(jaxrLCM.createInternationalString(jForm.getString(RIM_DESC)));				
+//
+//		/* 
+//		 * Update slots
+//		 */
+//		JSONObject jSlots = jForm.has(RIM_SLOT) ? new JSONObject(jForm.getString(RIM_SLOT)) : null;
+//		if (jSlots != null) {
+//
+//			List<SlotImpl> slots = updateSlots(service, jSlots);
+//			/*
+//			 * Set composed object
+//			 */
+//			service.addSlots(slots);
+//		
+//		}
 
 		/*
 		 * Indicate as updated

@@ -19,6 +19,14 @@
 	</service>
     
     <service>
+		<service-id>clas</service-id>
+		<service-class>de.kp.ames.web.core.clas.ClasServiceImpl</service-class>
+        <service-desc>
+         Service to retrieve concepts.
+        </service-desc>
+	</service>
+    
+    <service>
 		<service-id>comm</service-id>
 		<service-class>de.kp.ames.web.function.comm.CommServiceImpl</service-class>
         <service-desc>
