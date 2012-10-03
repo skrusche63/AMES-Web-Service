@@ -254,7 +254,7 @@ public class ProductLCM extends JaxrLCM {
 		/*
 		 * Retrieve response
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.PRODUCT_CREATED);
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), productObject.isCreated() ? FncMessages.PRODUCT_CREATED : FncMessages.PRODUCT_UPDATED);
 		return jResponse.toString();
 		
 	}
@@ -319,7 +319,7 @@ public class ProductLCM extends JaxrLCM {
 		/*
 		 * Retrieve response
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.PRODUCTOR_CREATED);
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), productorObject.isCreated() ? FncMessages.PRODUCTOR_CREATED : FncMessages.PRODUCTOR_UPDATED);
 		return jResponse.toString();
 		
 	}

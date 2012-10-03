@@ -151,7 +151,7 @@ public class TransformLCM extends JaxrLCM {
 		/*
 		 * Retrieve response
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.TRANSFORMATOR_CREATED);
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), transformatorObject.isCreated() ? FncMessages.TRANSFORMATOR_CREATED : FncMessages.TRANSFORMATOR_UPDATED);
 		return jResponse.toString();
 		
 	}

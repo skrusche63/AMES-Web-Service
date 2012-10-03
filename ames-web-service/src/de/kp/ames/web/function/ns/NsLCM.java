@@ -180,7 +180,7 @@ public class NsLCM extends JaxrLCM {
 		/*
 		 * Retrieve response
 		 */
-		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.FOLDER_CREATED);
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), namespaceObject.isCreated() ? FncMessages.FOLDER_CREATED : FncMessages.FOLDER_UPDATED);
 		return jResponse.toString();
 		
 	}

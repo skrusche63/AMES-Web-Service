@@ -36,35 +36,16 @@ package de.kp.ames.web.function.user;
  *
  */
 
-import org.freebxml.omar.client.xml.registry.infomodel.EmailAddressImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.PersonNameImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.PostalAddressImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
-
 
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
 import de.kp.ames.web.core.regrep.lcm.PartyLCM;
 import de.kp.ames.web.function.FncMessages;
-import de.kp.ames.web.shared.constants.JaxrConstants;
+import de.kp.ames.web.function.domain.model.UserObject;
 
 public class UserLCM extends PartyLCM {
-
-	/*
-	 * Response messages
-	 */
-	private static String USER_UPDATED = FncMessages.USER_UPDATED;
-
-	private static String NO_DESCRIPTION = "No description available.";
-	
-	/*
-	 * Registry object
-	 */
-	private static String RIM_DESC = JaxrConstants.RIM_DESC;
-	private static String RIM_ID   = JaxrConstants.RIM_ID;
 
 	public UserLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
@@ -77,104 +58,26 @@ public class UserLCM extends PartyLCM {
 		 */
 		JaxrTransaction transaction = new JaxrTransaction();
 	
-		/*
-		 * Initialize data
-		 */
-		JSONObject jForm = new JSONObject(data);
-
-		/*
-		 * Determine user
-		 */
-		String uid = jForm.has(RIM_ID) ? jForm.getString(RIM_ID) : null;			
-		if (uid == null) return transaction.getJResponse().toString();
 		
-		RegistryObjectImpl ro = getRegistryObjectById(uid);
-		if (ro == null) throw new Exception("[UserLCM] User with id <" + uid + "> not found.");
-		
-		UserImpl user = (UserImpl)ro;
-		user = setUser(user, jForm);
+		/*
+		 * Create UserObject
+		 */
+		UserObject UserObject = new UserObject(jaxrHandle, this);
+		RegistryObjectImpl ro = UserObject.submit(data);
 
 		/*
 		 * Save objects (without versioning)
 		 */
-		transaction.addObjectToSave(user);
+		transaction.addObjectToSave(ro);
 		saveObjects(transaction.getObjectsToSave(), false, false);
 	
 		/*
 		 * Retrieve response message
 		 */
-		JSONObject jResponse = transaction.getJResponse(uid, USER_UPDATED);
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), FncMessages.USER_UPDATED);
 		return jResponse.toString();
 		
 	}
 
-	/**
-	 * Update user specific information of an already
-	 * registered user
-	 * 
-	 * @param user
-	 * @param jForm
-	 * @return
-	 * @throws Exception
-	 */
-	public UserImpl setUser(UserImpl user, JSONObject jForm) throws Exception {
-
-	    /* 
-	     * Person name              
-	     */
-        PersonNameImpl personName = createPersonName(jForm);
-        user.setPersonName(personName);
- 
-		/* 
-		 * Description
-		 */
-		String rimDescription = jForm.has(RIM_DESC) ? jForm.getString(RIM_DESC) : NO_DESCRIPTION;
-		user.setDescription(createInternationalString(rimDescription));
-		
-		/* 
-		 * Home url
-		 */
-		String rimHome = jaxrHandle.getEndpoint().replace("/saml", "");
-		user.setHome(rimHome);
-
-        /* 
-         * Postal address
-         * 
-         * Each user instance MAY have an addresses attribute that is a 
-         * Set of PostalAddress instances. Each PostalAddress provides a postal 
-         * address for that user. A user SHOULD have at least one PostalAddress.
-         */
-		user.removeAllPostalAddresses();
-
-        PostalAddressImpl postalAddress = createPostalAddress(jForm);
-        user.addPostalAddress(postalAddress);
-
-        /* 
-         * Email
-         * 
-         * Each user instance MAY have an attribute emailAddresses that 
-         * is a Set of EmailAddress instances. Each EmailAddress provides an email 
-         * address for that user. A user SHOULD have at least one EmailAddress.
-          */
-        user.removeAllEmailAddresses();
-
-        EmailAddressImpl emailAddress = createEmailAddress(jForm);
-        user.addEmailAddress(emailAddress);
-
-        /* 
-         * Telephone number
-         * 
-         * Each user instance MUST have a telephoneNumbers attribute that 
-         * contains the Set of TelephoneNumber instances defined for that user. 
-         * A user SHOULD have at least one telephone number.
-         */
-        user.removeAllTelephoneNumbers();
-        
-        TelephoneNumberImpl telephoneNumber = createTelephoneNumber(jForm);
-        user.addTelephoneNumber(telephoneNumber);
-
-        return user;
-
-	}
 
 }

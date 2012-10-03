@@ -41,19 +41,12 @@ import java.util.List;
 
 import org.freebxml.omar.client.xml.registry.infomodel.AssociationImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.ClassificationImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.EmailAddressImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.OrganizationImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.PostalAddressImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.RegistryObjectImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.SlotImpl;
-import org.freebxml.omar.client.xml.registry.infomodel.TelephoneNumberImpl;
 import org.freebxml.omar.client.xml.registry.infomodel.UserImpl;
 import org.json.JSONObject;
 
 import de.kp.ames.web.core.json.JsonUtil;
-import de.kp.ames.web.core.reactor.ReactorImpl;
-import de.kp.ames.web.core.reactor.ReactorParams;
-import de.kp.ames.web.core.reactor.ReactorParams.RAction;
 import de.kp.ames.web.core.regrep.JaxrHandle;
 import de.kp.ames.web.core.regrep.JaxrIdentity;
 import de.kp.ames.web.core.regrep.JaxrTransaction;
@@ -62,6 +55,7 @@ import de.kp.ames.web.core.regrep.lcm.PartyLCM;
 import de.kp.ames.web.core.regrep.sql.JaxrSQL;
 import de.kp.ames.web.function.FncConstants;
 import de.kp.ames.web.function.FncMessages;
+import de.kp.ames.web.function.domain.model.CommunityObject;
 import de.kp.ames.web.shared.constants.ClassificationConstants;
 import de.kp.ames.web.shared.constants.JaxrConstants;
 
@@ -75,8 +69,7 @@ public class GroupLCM extends PartyLCM {
 	private static String AFFILIATION_UPDATED  = FncMessages.AFFILIATION_UPDATED;
 	private static String CATEGORY_CREATED     = FncMessages.CATEGORY_CREATED;
 	private static String CONTACT_CREATED      = FncMessages.CONTACT_CREATED;
-	private static String ORGANIZATION_CREATED = FncMessages.ORGANIZATION_CREATED;
-	private static String ORGANIZATION_UPDATED = FncMessages.ORGANIZATION_UPDATED;
+
 
 	/*
 	 * Predefined name for a system generated affiliation
@@ -93,9 +86,6 @@ public class GroupLCM extends PartyLCM {
 	 */
 	private static String RIM_CATE   = JaxrConstants.RIM_CATE;
 	private static String RIM_CLAS   = JaxrConstants.RIM_CLAS;
-	private static String RIM_DESC 	 = JaxrConstants.RIM_DESC;
-	private static String RIM_ID   	 = JaxrConstants.RIM_ID;
-	private static String RIM_NAME 	 = JaxrConstants.RIM_NAME;
 	private static String RIM_SOURCE = JaxrConstants.RIM_SOURCE;
 	private static String RIM_TARGET = JaxrConstants.RIM_TARGET;
 
@@ -103,11 +93,6 @@ public class GroupLCM extends PartyLCM {
 	 * Primary contact
 	 */
 	private static String RIM_CONTACT = JaxrConstants.RIM_CONTACT;
-	
-	/*
-	 * Symbol
-	 */
-	private static String SLOT_SYMBOL = JaxrConstants.SLOT_SYMBOL;
 	
 	public GroupLCM(JaxrHandle jaxrHandle) {
 		super(jaxrHandle);
@@ -454,193 +439,24 @@ public class GroupLCM extends PartyLCM {
 		 * Initialize transaction
 		 */
 		JaxrTransaction transaction = new JaxrTransaction();
+		
+		/*
+		 * Create UserObject
+		 */
+		CommunityObject communityObject = new CommunityObject(jaxrHandle, this);
+		RegistryObjectImpl ro = communityObject.submit(data);
 
 		/*
-		 * Initialize data
+		 * Save objects (without versioning)
 		 */
-		JSONObject jForm = new JSONObject(data);
-			
-		OrganizationImpl org = null;
-		
-		/* 
-		 * Determine whether this request references an existing 
-		 * organization or intents to create a new one
-		 */
-			
-		String source = jForm.has(RIM_ID) ? jForm.getString(RIM_ID) : null;			
-		if (source == null) {
-				
-			/* 
-			 * Name				
-			 */
-			String rimName = jForm.getString(RIM_NAME);
-			org = createOrganization(rimName);
-
-			/* 
-			 * Unique identifier
-			 */
-			String oid = JaxrIdentity.getInstance().getPrefixUID(FncConstants.COMMUNITY_PRE);
-			
-			org.setLid(oid);
-			org.getKey().setId(oid);
-
-			/* 
-			 * Set community information
-			 */
-			org = setCommunity(org, jForm);
-
-			/*
-			 * Save organisation (without versioning)
-			 */
-			transaction.addObjectToSave(org);
-			saveObjects(transaction.getObjectsToSave(), false, false);
-
-			/*
-			 * Index community
-			 */				
-			ReactorParams reactorParams = new ReactorParams(jaxrHandle, org, ClassificationConstants.FNC_ID_Community, RAction.C_INDEX);
-			ReactorImpl.onSubmit(reactorParams);
-
-			/*
-			 * Retrieve response message
-			 */
-			JSONObject jResponse = transaction.getJResponse(oid, ORGANIZATION_CREATED);
-			return jResponse.toString();
-
-		} else {
-
-			/*
-			 * Retrieve existing organization
-			 */
-			RegistryObjectImpl ro = getRegistryObjectById(source);
-			if (ro == null) {
-				/*
-				 * This should not happen
-				 */
-				throw new Exception("[GroupLCM] Organisation with id <" + source + "> does not exist.");
-				
-			} else {
-
-				org = (OrganizationImpl)ro;
-				
-				/* 
-				 * Name	(always replaced with a SET request)	
-				 */
-				String rimName = jForm.getString(RIM_NAME);
-				org.setName(createInternationalString(rimName));
-
-				/* 
-				 * Update community information
-				 */
-				org = setCommunity(org, jForm);
-
-				/*
-				 * Save organisation (without versioning)
-				 */
-				transaction.addObjectToSave(org);
-				saveObjects(transaction.getObjectsToSave(), false, false);
-
-				/*
-				 * Index community
-				 */				
-				ReactorParams reactorParams = new ReactorParams(jaxrHandle, org, ClassificationConstants.FNC_ID_Community, RAction.C_INDEX);
-				ReactorImpl.onSubmit(reactorParams);
-
-				/*
-				 * Retrieve response message
-				 */
-				JSONObject jResponse = transaction.getJResponse(org.getId(), ORGANIZATION_UPDATED);
-				return jResponse.toString();
-
-			}
-
-		}
-		
-	}
-
-	/**
-	 * A helper method to set organization specific information
-	 * from a JSON object
-	 * 
-	 * @param org
-	 * @param jData
-	 * @return
-	 * @throws Exception
-	 */
-	private OrganizationImpl setCommunity(OrganizationImpl org, JSONObject jData) throws Exception {
-
-		/* 
-		 * Description
-		 */
-		
-		String rimDescription = jData.has(RIM_DESC) ? jData.getString(RIM_DESC) : "No description available.";
-		org.setDescription(createInternationalString(rimDescription));
-		
-		/* 
-		 * Home url
-		 */
-
-		String rimHome = jaxrHandle.getEndpoint().replace("/saml", "");
-		org.setHome(rimHome);
-
-        /* 
-         * Postal address
-         * 
-         * Each organization instance MAY have an addresses attribute that is a 
-         * Set of PostalAddress instances. Each PostalAddress provides a postal 
-         * address for that organization. An Organization SHOULD have at least 
-         * one PostalAddress.
-         */
-        
-        org.removeAllPostalAddresses();
-
-        PostalAddressImpl postalAddress = createPostalAddress(jData);
-        org.addPostalAddress(postalAddress);
-
-        /* 
-         * Email address
-         * 
-         * Each organization instance MAY have an attribute emailAddresses that 
-         * is a Set of EmailAddress instances. Each EmailAddress provides an email 
-         * address for that Organization. An Organization SHOULD have at least one 
-         * EmailAddress.
-         */
-      
-        org.removeAllEmailAddresses();
-
-        EmailAddressImpl emailAddress = createEmailAddress(jData);
-        org.addEmailAddress(emailAddress);
-
-        /* 
-         * Telephone number
-         * 
-         * Each organization instance MUST have a telephoneNumbers attribute that 
-         * contains the Set of TelephoneNumber instances defined for that organization. 
-         * An Organization SHOULD have at least one telephone number.
-         */
-
-        org.removeAllTelephoneNumbers();
-        
-        TelephoneNumberImpl telephoneNumber = createTelephoneNumber(jData);
-        org.addTelephoneNumber(telephoneNumber);
-
-        /* 
-         * Symbol
-         * 
-         * A reference to a (military) symbol is represented by a certain
-         * predefined slot
-         */
-
-        String symbol = jData.has(SLOT_SYMBOL) ? jData.getString(SLOT_SYMBOL) : null;
-        if (symbol != null) {
-        	
-    		SlotImpl slot = createSlot(JaxrConstants.SLOT_SYMBOL, symbol, JaxrConstants.SLOT_TYPE);
-    		org.addSlot(slot);
-    	
-        }
-        
-        return org;
+		transaction.addObjectToSave(ro);
+		saveObjects(transaction.getObjectsToSave(), false, false);
 	
+		/*
+		 * Retrieve response message
+		 */
+		JSONObject jResponse = transaction.getJResponse(ro.getId(), communityObject.isCreated() ? FncMessages.ORGANIZATION_CREATED : FncMessages.ORGANIZATION_UPDATED);
+		return jResponse.toString();
+		
 	}
-
 }

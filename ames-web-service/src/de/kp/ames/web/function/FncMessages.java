@@ -75,14 +75,15 @@ public class FncMessages extends CoreMessages {
 	public static String AFFILIATION_UPDATED   = "Affiliation successfully updated.";
 	public static String CATEGORY_CREATED      = "Category successfully submitted.";
 	public static String CONTACT_CREATED       = "Primary contact successfully submitted.";
-	public static String ORGANIZATION_CREATED  = "Organization successfully submitted.";
+	public static String ORGANIZATION_CREATED  = "Organization successfully created.";
 	public static String ORGANIZATION_UPDATED  = "Organization successfully updated.";
 	public static String ORGANIZATION_DELETED  = "Organization successfully deleted.";
 	
 	/*
 	 * Namespace specific messages
 	 */
-	public static String FOLDER_CREATED = "Namespace folder successfully submitted.";
+	public static String FOLDER_CREATED = "Namespace folder successfully created.";
+	public static String FOLDER_UPDATED = "Namespace folder successfully updated.";
 	public static String FOLDER_DELETED = "Namespace folder successfully deleted.";
 	
 	/*
@@ -106,11 +107,14 @@ public class FncMessages extends CoreMessages {
 	/*
 	 * Transformation specific messages
 	 */
-	public static String PRODUCT_CREATED       = "Product successfully submitted.";
+	public static String PRODUCT_CREATED       = "Product successfully created.";
+	public static String PRODUCT_UPDATED       = "Product successfully upated.";
 	public static String PRODUCT_DELETED       = "Product successfully deleted.";
-	public static String PRODUCTOR_CREATED     = "Productor successfully submitted.";
+	public static String PRODUCTOR_CREATED     = "Productor successfully created.";
+	public static String PRODUCTOR_UPDATED 	   = "Productor successfully updated.";
 	public static String PRODUCTOR_DELETED     = "Productor successfully deleted.";
-	public static String TRANSFORMATOR_CREATED = "Transformator successfully submitted.";
+	public static String TRANSFORMATOR_CREATED = "Transformator successfully created.";
+	public static String TRANSFORMATOR_UPDATED = "Transformator successfully updated.";
 	public static String TRANSFORMATOR_DELETED = "Transformator successfully deleted.";
 
 	public static String CACHE_ENTRY_DELETE = "Cache Entry successfully deleted.";
